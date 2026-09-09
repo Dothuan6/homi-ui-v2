@@ -317,7 +317,7 @@ def footer_html(prefix="", pol_prefix=""):
         for pid, label in POLICY_LINKS)
     return (
         '\n  <footer style="background:var(--c12);border-top:1px solid rgba(170,170,170,.35);'
-        'padding:var(--s10) var(--s7) var(--s8);margin-top:var(--s10)">\n'
+        'padding:var(--s10) var(--s7) var(--s8);margin-top:auto">\n'
         '    <div style="max-width:1160px;margin:0 auto;display:flex;flex-direction:column;'
         'gap:var(--s7)">\n'
         '      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:var(--s9)" '
@@ -364,7 +364,10 @@ POLICY_PAGE = """<!DOCTYPE html>
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/tokens.css">
 <style>
-  body{font-family:var(--ff);background:var(--warm-50);color:var(--c1);margin:0}
+  body{font-family:var(--ff);background:var(--warm-50);color:var(--c1);margin:0;
+       min-height:100vh;display:flex;flex-direction:column}
+  body>footer{margin-top:auto}
+  main{flex:1}
   a{color:var(--c6)}
   .bar{position:sticky;top:0;z-index:50;background:var(--c12);
        border-bottom:1px solid rgba(154,163,176,.35);padding:16px var(--s7)}
@@ -2106,7 +2109,10 @@ def main():
         "  outline-offset: 2px;\n"
         "}\n", encoding="utf-8")
 
-    root_open = ('<div style="%s">' % "; ".join(rest)).replace(
+    # Khung gốc là cột co giãn để footer luôn nằm đáy, kể cả khi nội dung màn
+    # ngắn hơn màn hình (màn OTP, màn đăng nhập…).
+    root_open = ('<div style="%s; display:flex; flex-direction:column">'
+                 % "; ".join(rest)).replace(
         "background:var(--c12)", "background:var(--warm-50)")
 
     # --- runtime + font ---------------------------------------------------
