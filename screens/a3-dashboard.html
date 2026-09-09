@@ -80,7 +80,12 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
       </div>
 
       <sc-if value="{{isNewAgent}}" hint-placeholder-val="{{false}}">
-        <div style="font-size:13px;color:var(--c2);background:rgba(150,92,10,.14);border-radius:var(--r-md);padding:var(--s5)">Chào mừng bạn đến với HOMI365! Hoa hồng của bạn sẽ được tính toán sau khi đơn hàng hoàn tất. Theo dõi số liệu tại đây.</div>
+        <div style="border:1px solid rgba(150,92,10,.35);background:rgba(150,92,10,.1);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s5)">
+        <div style="display:flex;align-items:center;gap:var(--s3);flex-wrap:wrap"><span style="display:inline-block;padding:4px 10px;border-radius:var(--r-xl);font-size:11px;font-weight:700;background:rgba(150,92,10,.2);color:#965C0A">CHỜ KÍCH HOẠT</span><span style="font-size:13px;font-weight:600;color:var(--c1)">Tài khoản đang chờ quản trị viên kích hoạt</span></div>
+        <div style="font-size:13px;color:var(--c2);line-height:1.7">Bạn <strong>bán hàng được ngay</strong> qua hai link bên trên — đơn hàng và tuyến dưới vẫn ghi nhận đầy đủ. Nhưng tới khi được kích hoạt: hoa hồng bị <strong>tạm giữ</strong>, <strong>chưa tính điểm</strong> và <strong>chưa rút được</strong>.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);border-top:1px solid rgba(150,92,10,.3);padding-top:var(--s5)"><div><div style="font-size:12px;color:var(--c5)">Hoa hồng đang tạm giữ</div><div style="font-size:22px;font-weight:800;color:#965C0A">{{heldCommissionLabel}}</div></div><div style="text-align:right"><div style="font-size:12px;color:var(--c5)">Số dư khả dụng</div><div style="font-size:22px;font-weight:800;color:var(--c5)">0đ</div></div></div>
+        <button disabled="{{true}}" style="height:44px;border:none;border-radius:var(--r-md);font-size:14px;font-weight:600;color:#FFFFFF;background:rgba(154,163,176,.5);cursor:not-allowed">Chưa thể rút tiền — chờ kích hoạt</button>
+      </div>
       </sc-if>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s5)">
@@ -689,7 +694,9 @@ class Component extends DCLogic {
       isNewAgent, isActiveAgent,
       metricOrders: (s.agentStage === 'active' ? this.ORDER_RANGE_VALUES
         : this.ORDER_RANGE_VALUES_NEW)[s.orderRange || 'month'],
-      metricPoints: s.agentStage === 'active' ? '1.240' : '80',
+      // Chưa kích hoạt thì hoa hồng bị giữ, chưa được tính điểm.
+      heldCommissionLabel: '1.200.000đ',
+      metricPoints: s.agentStage === 'active' ? '1.240' : '0',
       metricRank: s.agentStage === 'active' ? 'Bạc' : 'Đồng',
       metricWithdrawn: s.agentStage === 'active' ? '1.200.000đ' : '0đ',
       chartTitle, chartRanges, chartBars,

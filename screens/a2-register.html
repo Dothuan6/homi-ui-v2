@@ -134,7 +134,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
       <sc-if value="{{isRegStep5}}" hint-placeholder-val="{{false}}">
         <div style="display:flex;flex-direction:column;gap:var(--s8);text-align:center;align-items:center">
           <div style="width:64px;height:64px;border-radius:var(--r-full);background:rgba(47,122,72,.15);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--c8)">✓</div>
-          <div><div style="font-size:24px;font-weight:700">Kích hoạt thành công</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Bạn đã chính thức là seller HOMI365</div></div>
+          <div><div style="font-size:24px;font-weight:700">Đăng ký thành công</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2);line-height:1.6">Bạn bán hàng được ngay qua 2 link bên dưới. Hoa hồng sẽ được tạm giữ cho tới khi quản trị viên kích hoạt tài khoản.</div></div>
           <div style="width:100%;border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s5);background:var(--c12);box-shadow:var(--sh)">
             <div style="font-size:12px;color:var(--c5);text-transform:uppercase;letter-spacing:.04em">Mã giới thiệu (aff_id)</div>
             <div style="font-size:30px;font-weight:900;color:var(--c1);letter-spacing:.02em">923983</div>
@@ -684,7 +684,9 @@ class Component extends DCLogic {
       isNewAgent, isActiveAgent,
       metricOrders: (s.agentStage === 'active' ? this.ORDER_RANGE_VALUES
         : this.ORDER_RANGE_VALUES_NEW)[s.orderRange || 'month'],
-      metricPoints: s.agentStage === 'active' ? '1.240' : '80',
+      // Chưa kích hoạt thì hoa hồng bị giữ, chưa được tính điểm.
+      heldCommissionLabel: '1.200.000đ',
+      metricPoints: s.agentStage === 'active' ? '1.240' : '0',
       metricRank: s.agentStage === 'active' ? 'Bạc' : 'Đồng',
       metricWithdrawn: s.agentStage === 'active' ? '1.200.000đ' : '0đ',
       chartTitle, chartRanges, chartBars,

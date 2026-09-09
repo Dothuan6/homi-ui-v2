@@ -192,6 +192,64 @@ BG_PATCHES = [
     # Cột biểu đồ hoa hồng (A3): dùng teal thay màu chính.
     ("border-radius:var(--r-sm) var(--r-sm) 0 0;background:var(--c6)",
      "border-radius:var(--r-sm) var(--r-sm) 0 0;background:var(--c-chart)"),
+    # Chốt 09/09 — agent đăng ký xong ACTIVE ngay, bán được qua link, nhưng
+    # hoa hồng bị tạm giữ và chưa tính điểm cho tới khi admin kích hoạt.
+    # (2 mục này phải đứng TRƯỚC bản vá "Medigo" bên dưới vì neo còn chữ cũ.)
+    ('<div style="font-size:24px;font-weight:700">Kích hoạt thành công</div>'
+     '<div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">'
+     'Bạn đã chính thức là seller Medigo</div>',
+     '<div style="font-size:24px;font-weight:700">Đăng ký thành công</div>'
+     '<div style="font-size:13px;color:var(--c5);margin-top:var(--s2);line-height:1.6">'
+     'Bạn bán hàng được ngay qua 2 link bên dưới. Hoa hồng sẽ được tạm giữ '
+     'cho tới khi quản trị viên kích hoạt tài khoản.</div>'),
+
+    ('<div style="font-size:13px;color:var(--c2);background:rgba(255,165,0,.14);'
+     'border-radius:var(--r-md);padding:var(--s5)">Chào mừng bạn đến với Medigo! '
+     'Hoa hồng của bạn sẽ được tính toán sau khi đơn hàng hoàn tất. '
+     'Theo dõi số liệu tại đây.</div>',
+     '<div style="border:1px solid rgba(255,165,0,.35);background:rgba(255,165,0,.1);'
+     'border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;'
+     'gap:var(--s5)">\n'
+     '        <div style="display:flex;align-items:center;gap:var(--s3);flex-wrap:wrap">'
+     '<span style="display:inline-block;padding:4px 10px;border-radius:var(--r-xl);'
+     'font-size:11px;font-weight:700;background:rgba(255,165,0,.2);color:#a36400">'
+     'CHỜ KÍCH HOẠT</span>'
+     '<span style="font-size:13px;font-weight:600;color:var(--c1)">'
+     'Tài khoản đang chờ quản trị viên kích hoạt</span></div>\n'
+     '        <div style="font-size:13px;color:var(--c2);line-height:1.7">'
+     'Bạn <strong>bán hàng được ngay</strong> qua hai link bên trên — đơn hàng và '
+     'tuyến dưới vẫn ghi nhận đầy đủ. Nhưng tới khi được kích hoạt: hoa hồng bị '
+     '<strong>tạm giữ</strong>, <strong>chưa tính điểm</strong> và '
+     '<strong>chưa rút được</strong>.</div>\n'
+     '        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);'
+     'border-top:1px solid rgba(255,165,0,.3);padding-top:var(--s5)">'
+     '<div><div style="font-size:12px;color:var(--c5)">Hoa hồng đang tạm giữ</div>'
+     '<div style="font-size:22px;font-weight:800;color:#a36400">'
+     '{{heldCommissionLabel}}</div></div>'
+     '<div style="text-align:right"><div style="font-size:12px;color:var(--c5)">'
+     'Số dư khả dụng</div>'
+     '<div style="font-size:22px;font-weight:800;color:var(--c5)">0đ</div></div></div>\n'
+     '        <button disabled="{{true}}" style="height:44px;border:none;'
+     'border-radius:var(--r-md);font-size:14px;font-weight:600;color:#FFFFFF;'
+     'background:rgba(170,170,170,.5);cursor:not-allowed">'
+     'Chưa thể rút tiền — chờ kích hoạt</button>\n'
+     '      </div>'),
+
+    # Kích hoạt = mở khoá tiền. Nói rõ trong hộp xác nhận là sẽ giải phóng
+    # toàn bộ hoa hồng và điểm đã tạm giữ, cộng dồn về quá khứ (chốt 09/09).
+    ('<div style="font-size:14px;color:var(--c2);line-height:1.6">Xác nhận duyệt '
+     'hồ sơ đăng ký của <strong>{{actionMember.name}}</strong> '
+     '({{actionMember.affId}})?</div>',
+     '<div style="font-size:14px;color:var(--c2);line-height:1.6">Xác nhận duyệt '
+     'hồ sơ đăng ký của <strong>{{actionMember.name}}</strong> '
+     '({{actionMember.affId}})?</div>\n'
+     '          <div style="font-size:12px;color:var(--c2);background:'
+     'rgba(132,190,82,.12);border-radius:var(--r-md);padding:var(--s5);'
+     'line-height:1.7">Đủ 2 lượt duyệt là tài khoản được kích hoạt: toàn bộ '
+     '<strong>hoa hồng đang tạm giữ</strong> và <strong>điểm tích luỹ</strong> '
+     'của thành viên được <strong>cộng dồn về quá khứ</strong> — tính từ đơn '
+     'đầu tiên, không phải từ thời điểm kích hoạt — và mở khoá cho rút tiền.</div>'),
+
     # Còn sót tên "Medigo" trong sản phẩm đã re-skin sang HOMI365 (T&C, câu
     # chúc mừng ở A2, lời chào ở A3, tiêu đề đăng nhập quản trị).
     ("Medigo", "HOMI365"),
@@ -861,7 +919,13 @@ JS_PATCHES = [
     # 7.3.2 — số đơn đổi theo khoảng thời gian đang chọn.
     ("      metricOrders: s.agentStage === 'active' ? '10' : '1',",
      "      metricOrders: (s.agentStage === 'active' ? this.ORDER_RANGE_VALUES\n"
-     "        : this.ORDER_RANGE_VALUES_NEW)[s.orderRange || 'month'],"),
+     "        : this.ORDER_RANGE_VALUES_NEW)[s.orderRange || 'month'],\n"
+     "      // Chưa kích hoạt thì hoa hồng bị giữ, chưa được tính điểm.\n"
+     "      heldCommissionLabel: '1.200.000đ',"),
+
+    # Chưa kích hoạt -> điểm tích luỹ = 0 (chốt 09/09).
+    ("      metricPoints: s.agentStage === 'active' ? '1.240' : '80',",
+     "      metricPoints: s.agentStage === 'active' ? '1.240' : '0',"),
 
     # 7.5.2 — dữ liệu cây tuyến thêm cấp F2 (markup đã có vòng lặp con).
     ("      tree:[{name:'Lê Văn Cường', orders:4},{name:'Phạm Thị Dung', orders:1}] },",
@@ -1881,15 +1945,32 @@ __CARDS__
              "(0/2)*. `7.9.2` đang bắt hồ sơ đăng ký phải đủ 2 lượt xác nhận mới "
              "kích hoạt → phải bỏ phần đăng ký ra khỏi phạm vi duyệt 2 lớp, chỉ "
              "giữ cho rút tiền và đơn hàng.", "",
-             "⚠ Kéo theo một mâu thuẫn **bên trong chính sản phẩm**, cần chốt "
-             "nốt: màn A2 báo *\"đã chính thức là seller\"* trong khi màn B2 vẫn "
-             "có thành viên ở trạng thái *Chờ duyệt (0/2)* với nút Duyệt / Từ "
-             "chối. Nếu ai đăng ký cũng active ngay thì luồng duyệt hồ sơ ở B2 "
-             "để làm gì?", "",
-             "Cách dung hoà thường dùng (và là cách prototype-v2 đã làm): agent "
-             "**hoạt động được ngay** — có link, bán được hàng — nhưng **hoa hồng "
-             "bị tạm giữ** cho tới khi đủ 2 lượt duyệt. Vừa đúng \"vào thẳng "
-             "dashboard\", vừa giữ được lý do tồn tại của màn duyệt.", "",
+             "**Cơ chế tạm giữ hoa hồng — chốt 09/09.** Đăng ký xong là **active ngay**, "
+             "nhưng kích hoạt của admin mới mở khoá phần tiền:", "",
+             "| | Sau khi đăng ký | Sau khi admin kích hoạt |", "|---|---|---|",
+             "| Link giới thiệu & link mua hàng | có, dùng được ngay | có |",
+             "| Bán hàng, ghi nhận đơn & tuyến dưới | bình thường | bình thường |",
+             "| Hoa hồng phát sinh | **tạm giữ** | được giải phóng |",
+             "| Điểm tích luỹ | **không cộng** (= 0) | cộng đủ, kể cả phần trước đó |",
+             "| Rút tiền | **không được** | được |", "",
+             "Đã dựng vào prototype:", "",
+             "- A2 bước 5: đổi *\"Kích hoạt thành công · đã chính thức là seller\"* "
+             "→ **\"Đăng ký thành công\"** kèm câu giải thích hoa hồng bị giữ.",
+             "- A3 agent mới: thay banner chào mừng bằng khối **CHỜ KÍCH HOẠT** — "
+             "nêu rõ bán được ngay nhưng hoa hồng tạm giữ, chưa tính điểm, chưa "
+             "rút được; hiện số **hoa hồng đang tạm giữ** và **số dư khả dụng 0đ**; "
+             "nút rút tiền để trạng thái khoá.",
+             "- Điểm tích luỹ của agent chưa kích hoạt đổi từ 80 về **0**.", "",
+             "Nhờ vậy màn duyệt hồ sơ ở B2 vẫn có lý do tồn tại: nó là chỗ mở "
+             "khoá tiền, không phải chỗ cho phép bán hàng.", "",
+             "**Chốt 09/09: cộng dồn toàn bộ về quá khứ.** Khi admin kích hoạt, "
+             "hoa hồng đã tạm giữ và điểm tích luỹ được tính **từ đơn đầu tiên**, "
+             "không phải từ thời điểm kích hoạt. Hộp xác nhận duyệt ở B2 đã ghi "
+             "rõ điều này để admin biết mình đang mở khoá cái gì.", "",
+             "Kéo theo cho dev: bản ghi hoa hồng phải tồn tại **ngay khi đơn "
+             "thanh toán**, mang một cờ *đang giữ*, chứ không phải sinh ra lúc "
+             "kích hoạt — nếu sinh lúc kích hoạt thì không còn dữ liệu quá khứ để "
+             "cộng dồn. Điểm tích luỹ cũng vậy.", "",
 
              "## Ghi chú", "",
              "- Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` "

@@ -212,9 +212,25 @@ Rủi ro vận hành cần KH biết trước: **Specialist nghỉ là mọi th�
 
 **3. Agent sau đăng ký vào thẳng dashboard**, không qua *Chờ duyệt (0/2)*. `7.9.2` đang bắt hồ sơ đăng ký phải đủ 2 lượt xác nhận mới kích hoạt → phải bỏ phần đăng ký ra khỏi phạm vi duyệt 2 lớp, chỉ giữ cho rút tiền và đơn hàng.
 
-⚠ Kéo theo một mâu thuẫn **bên trong chính sản phẩm**, cần chốt nốt: màn A2 báo *"đã chính thức là seller"* trong khi màn B2 vẫn có thành viên ở trạng thái *Chờ duyệt (0/2)* với nút Duyệt / Từ chối. Nếu ai đăng ký cũng active ngay thì luồng duyệt hồ sơ ở B2 để làm gì?
+**Cơ chế tạm giữ hoa hồng — chốt 09/09.** Đăng ký xong là **active ngay**, nhưng kích hoạt của admin mới mở khoá phần tiền:
 
-Cách dung hoà thường dùng (và là cách prototype-v2 đã làm): agent **hoạt động được ngay** — có link, bán được hàng — nhưng **hoa hồng bị tạm giữ** cho tới khi đủ 2 lượt duyệt. Vừa đúng "vào thẳng dashboard", vừa giữ được lý do tồn tại của màn duyệt.
+| | Sau khi đăng ký | Sau khi admin kích hoạt |
+|---|---|---|
+| Link giới thiệu & link mua hàng | có, dùng được ngay | có |
+| Bán hàng, ghi nhận đơn & tuyến dưới | bình thường | bình thường |
+| Hoa hồng phát sinh | **tạm giữ** | được giải phóng |
+| Điểm tích luỹ | **không cộng** (= 0) | cộng đủ, kể cả phần trước đó |
+| Rút tiền | **không được** | được |
+
+Đã dựng vào prototype:
+
+- A2 bước 5: đổi *"Kích hoạt thành công · đã chính thức là seller"* → **"Đăng ký thành công"** kèm câu giải thích hoa hồng bị giữ.
+- A3 agent mới: thay banner chào mừng bằng khối **CHỜ KÍCH HOẠT** — nêu rõ bán được ngay nhưng hoa hồng tạm giữ, chưa tính điểm, chưa rút được; hiện số **hoa hồng đang tạm giữ** và **số dư khả dụng 0đ**; nút rút tiền để trạng thái khoá.
+- Điểm tích luỹ của agent chưa kích hoạt đổi từ 80 về **0**.
+
+Nhờ vậy màn duyệt hồ sơ ở B2 vẫn có lý do tồn tại: nó là chỗ mở khoá tiền, không phải chỗ cho phép bán hàng.
+
+Còn phải chốt với dev: khi admin kích hoạt, phần hoa hồng đã giữ được cộng dồn **toàn bộ về quá khứ** hay chỉ tính từ thời điểm kích hoạt trở đi — bản này đang mô tả theo hướng cộng dồn toàn bộ.
 
 ## Ghi chú
 
