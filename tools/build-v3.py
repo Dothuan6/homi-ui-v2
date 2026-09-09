@@ -859,6 +859,48 @@ BG_PATCHES += [
      '        <div style="text-align:center;font-size:11px;color:var(--c5);'
      'font-family:monospace">Đơn hàng #{{orderId}} · {{cn02PackagePrice}}</div>'),
 
+    # Modal tra cứu có 2 mặt: chưa có kết quả thì hỏi SĐT, có rồi thì khoe đơn.
+    ('<div style="text-align:left"><div style="font-size:18px;font-weight:700;'
+     'color:var(--c1)">Nhập số điện thoại</div><div style="font-size:12px;'
+     'color:var(--c5);margin-top:var(--s1)">Hệ thống sẽ đối chiếu với đơn hàng '
+     'để xác định agent bán hàng · thử SĐT 0901111111 (agent bán là hạng Bạc) '
+     'hoặc 0902222222 (agent bán là hạng Đồng)</div></div>',
+     '<div style="text-align:left">'
+     '<sc-if value="{{noLookupResult}}" hint-placeholder-val="{{true}}">'
+     '<div style="font-size:18px;font-weight:700;color:var(--c1)">'
+     'Nhập số điện thoại</div>'
+     '<div style="font-size:12px;color:var(--c5);margin-top:var(--s1);'
+     'line-height:1.6">Hệ thống sẽ đối chiếu với đơn hàng để xác định người '
+     'giới thiệu · thử SĐT 0901111111 (người giới thiệu hạng Silver) hoặc '
+     '0902222222 (hạng Copper)</div></sc-if>'
+     '<sc-if value="{{hasLookupResult}}" hint-placeholder-val="{{false}}">'
+     '<div style="font-size:18px;font-weight:700;color:var(--c1)">'
+     'Bạn đã từng mua hàng</div>'
+     '<div style="font-size:12px;color:var(--c5);margin-top:var(--s1);'
+     'line-height:1.6">Đơn hàng dưới đây gắn với số điện thoại này. Bấm '
+     '<strong>Đăng ký thành viên</strong> để tiếp tục — thông tin sẽ được '
+     'điền sẵn từ đơn.</div></sc-if></div>'),
+
+    # Có kết quả rồi thì ẩn ô nhập SĐT.
+    ('<div style="display:flex;flex-direction:column;gap:var(--s2)">\n'
+     '          <label style="font-size:14px;font-weight:600;color:var(--c2)">'
+     'Số điện thoại khách hàng đã mua đơn</label>',
+     '<sc-if value="{{noLookupResult}}" hint-placeholder-val="{{true}}">\n'
+     '        <div style="display:flex;flex-direction:column;gap:var(--s2)">\n'
+     '          <label style="font-size:14px;font-weight:600;color:var(--c2)">'
+     'Số điện thoại khách hàng đã mua đơn</label>'),
+    ('          <sc-if value="{{orderLookupError}}" hint-placeholder-val="{{false}}">\n'
+     '            <div style="font-size:12px;color:#E20707">Không tìm thấy đơn hàng '
+     'với số điện thoại này. Vui lòng kiểm tra lại.</div>\n'
+     '          </sc-if>\n'
+     '        </div>',
+     '          <sc-if value="{{orderLookupError}}" hint-placeholder-val="{{false}}">\n'
+     '            <div style="font-size:12px;color:#E20707">Không tìm thấy đơn hàng '
+     'với số điện thoại này. Vui lòng kiểm tra lại.</div>\n'
+     '          </sc-if>\n'
+     '        </div>\n'
+     '        </sc-if>'),
+
     # (10) Tra cứu đơn: hiện kết quả đơn hàng ngay trong modal thay vì nhảy
     # thẳng sang màn đăng ký.
     ('<button sc-camel-on-click="{{submitOrderLookup}}" style="height:46px;'
@@ -903,7 +945,7 @@ BG_PATCHES += [
      '          <button sc-camel-on-click="{{lookupContinue}}" style="height:46px;'
      'background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);'
      'font-size:16px;font-weight:600;box-shadow:var(--sh)" '
-     'style-hover="background:#0099d1">Đăng ký thành viên với đơn này</button>\n'
+     'style-hover="background:#0099d1">Đăng ký thành viên</button>\n'
      '        </sc-if>\n'
      '        <sc-if value="{{noLookupResult}}" hint-placeholder-val="{{true}}">\n'
      '          <button sc-camel-on-click="{{submitOrderLookup}}" style="height:46px;'
@@ -1324,6 +1366,9 @@ SCREENS = [
             ("mat-khau", "Bước 2 — nhập mật khẩu", {"agentLoginStep": "login",
                                                      "agentPhone": "0901234567",
                                                      "loginPhoneChecked": True}),
+            ("chua-du-dk", "SĐT chưa mua hàng — chưa đủ điều kiện",
+             {"agentLoginStep": "login", "agentPhone": "0900000000",
+              "loginNotEligible": True}),
             ("otp", "Xác thực OTP", {"agentLoginStep": "otp"}),
             ("quen-sdt", "Quên mật khẩu — nhập SĐT", {"agentLoginStep": "forgot_phone"}),
             ("quen-otp", "Quên mật khẩu — OTP", {"agentLoginStep": "forgot_otp"}),
@@ -1648,12 +1693,26 @@ JS_PATCHES = [
             loginNotEligible: false, agentLoginError: false });
           return;
         }
-        // Đã mua hàng nhưng chưa đăng ký -> sang màn đăng ký, điền sẵn đơn cũ.
+        // Đã mua hàng nhưng chưa đăng ký -> mở modal khoe đơn cũ trước.
+        // Bấm "Đăng ký thành viên" trong modal mới sang form, điền sẵn.
         const o = this.ORDERS_BY_PHONE[ph];
         if (o) {
-          GO('A2', { regStep: 1, orderId: o.orderId, buyerName: o.buyerName, buyerPhone: ph,
-            buyerEmail: o.buyerEmail, buyerCccd: o.buyerCccd,
-            buyerAddress: o.buyerAddress, buyerDob: o.buyerDob });
+          const ag = this.MEMBERS.find(m => m.id === o.agentId);
+          const rankMap = { 'Đồng': 'bronze', 'Bạc': 'silver', 'Vàng': 'gold' };
+          this.setState({
+            loginNotEligible: false, loginPhoneEmpty: false,
+            uplineRank: ag ? (rankMap[ag.rank] || 'silver') : 'silver',
+            showOrderLookup: true, orderLookupInput: ph, orderLookupError: false,
+            lookupResult: {
+              orderId: o.orderId, buyerName: o.buyerName, phone: ph,
+              email: o.buyerEmail, cccd: o.buyerCccd,
+              address: o.buyerAddress, dob: o.buyerDob,
+              pkg: 'Gói 1 năm · CN02', amount: '10.000.000đ', date: '03/09/2026',
+              referrer: (ag && ag.name) || '—',
+              statusLabel: 'Đã thanh toán',
+              badgeBg: 'rgba(132,190,82,.14)', badgeColor: '#4c7a2e'
+            }
+          });
           return;
         }
         // Chưa mua đơn nào -> chưa đủ điều kiện.
