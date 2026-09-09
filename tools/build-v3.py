@@ -912,6 +912,16 @@ BG_PATCHES += [
     ('Bạn có muốn đăng ký làm seller Homi365 để nhận hoa hồng giới thiệu không?',
      'Bạn có muốn đăng ký làm Thành viên HOMI365 để nhận các ưu đãi không?'),
 
+    # A1: mã giới thiệu của người bán cũng là alias, không còn số 6 chữ số.
+    ('<label style="font-size:14px;font-weight:600;color:var(--c2)">Mã giới thiệu</label>'
+     '<input type="text" value="923983" readonly="{{true}}"',
+     '<label style="font-size:14px;font-weight:600;color:var(--c2)">Mã giới thiệu</label>'
+     '<input type="text" value="TTB4123" readonly="{{true}}"'),
+
+    # A3: dòng chào hiện mã giới thiệu dạng alias.
+    ('<div style="font-size:12px;color:var(--c5)">aff_id: 923983</div>',
+     '<div style="font-size:12px;color:var(--c5)">Mã giới thiệu: {{refCode}}</div>'),
+
     # (2) Ngày sinh: nhập số, tự chèn dấu /.
     ('placeholder="dd/mm/yyyy" value="{{buyerDob}}" sc-camel-on-change="{{setBuyerDob}}"',
      'placeholder="22/01/1991" inputmode="numeric" maxlength="10" '
@@ -1445,10 +1455,30 @@ JS_PATCHES = [
     ("      metricPoints: s.agentStage === 'active' ? '1.240' : '80',",
      "      metricPoints: s.agentStage === 'active' ? '1.240' : '0',"),
 
-    # (15) Mã tuyến trên hiển thị cạnh tên tuyến trên.
+    # Mã thành viên = alias (8.1.C-4), trùng thì -2, -3…
+    ("        const affCode = m.name.split(' ').map(w => w[0]).join('').toUpperCase() + m.phone.slice(-4);",
+     "        const affCode = ALIAS[m.id];"),
+    ("    const members = this.MEMBERS",
+     "    const ALIAS = this.aliasMap();\n    const members = this.MEMBERS"),
+
+    # Thêm một thành viên trùng alias để thấy quy tắc hậu tố -2 hoạt động.
+    ("upline:'Trần Thị Bích', rank:'Đồng', joined:'02/09/2026', status:'pending', tree:[] }",
+     "upline:'Trần Thị Bích', rank:'Đồng', joined:'02/09/2026', status:'pending', tree:[] },\n"
+     "    { id:7, name:'Trương Thanh Bình', phone:'0938884123', contact:'093•••123',\n"
+     "      affId:'780314', upline:'Vũ Minh Khang', rank:'Đồng', joined:'05/09/2026',\n"
+     "      status:'active', tree:[] }"),
+
+    # (15) Mã tuyến trên hiển thị cạnh tên tuyến trên — cũng dùng alias.
     ("        return { ...m, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,",
-     "        return { ...m, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,\n"
-     "          uplineCode: (this.MEMBERS.find(u => u.name === m.upline) || {}).affId || '',"),
+     "        const up = this.MEMBERS.find(u => u.name === m.upline);\n"
+     "        return { ...m, affId: affCode, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,\n"
+     "          uplineCode: up ? ALIAS[up.id] : '',"),
+
+    # Link form của agent cũng về đúng một dạng homi365.com.vn/<alias>.
+    ("formLink: 'portal.homi365.com.vn/' + affCode",
+     "formLink: 'homi365.com.vn/' + affCode"),
+    ("navigator.clipboard.writeText('portal.homi365.com.vn/' + affCode)",
+     "navigator.clipboard.writeText('homi365.com.vn/' + affCode)"),
 
     # (16) Ngày hiệu lực = lúc admin xác nhận thanh toán và gửi mã cho khách.
     # Ngày hết hiệu lực = cộng thời hạn gói (bản mẫu dùng gói 1 năm).
@@ -1636,20 +1666,20 @@ JS_PATCHES = [
     const raw = [
       { id:'DH923983', buyer:'Nguyễn Văn A', phone:'0901111111', email:'nguyenvana@gmail.com',
         address:'12 Nguyễn Huệ, Phường Bến Nghé, TP. Hồ Chí Minh',
-        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Trần Thị Bích', refCode:'923983',
+        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Trần Thị Bích', refCode:'TTB4123',
         date:'03/09/2026 09:12', status:'order_pending', proof:'bill-DH923983.jpg', activationCode:null,
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'03/09/2026 09:12'},
                   {label:'Khách tải ảnh chuyển khoản', actor:'Nguyễn Văn A', time:'03/09/2026 09:20'}] },
       { id:'DH100511', buyer:'Lý Thị Hoa', phone:'0902222222', email:'lythihoa@gmail.com',
         address:'45 Lê Lợi, Phường Bến Thành, TP. Hồ Chí Minh',
-        pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Lê Văn Cường', refCode:'118820',
+        pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Lê Văn Cường', refCode:'LVC5456',
         date:'02/09/2026 15:40', status:'order_confirmed1', proof:'bill-DH100511.jpg', activationCode:null,
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'02/09/2026 15:40'},
                   {label:'Khách tải ảnh chuyển khoản', actor:'Lý Thị Hoa', time:'02/09/2026 15:52'},
                   {label:'Admin Specialist xác nhận tiền về (chờ Head Admin)', actor:'Admin Specialist', time:'02/09/2026 16:30'}] },
       { id:'DH100234', buyer:'Đỗ Anh Tuấn', phone:'0903333333', email:'doanhtuan@gmail.com',
         address:'88 Trần Hưng Đạo, Phường Cầu Ông Lãnh, TP. Hồ Chí Minh',
-        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Vũ Minh Khang', refCode:'552017',
+        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Vũ Minh Khang', refCode:'VMK7998',
         date:'30/08/2026 08:05', status:'order_paid', proof:'bill-DH100234.jpg', activationCode:'ACT-100481',
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'30/08/2026 08:05'},
                   {label:'Khách tải ảnh chuyển khoản', actor:'Đỗ Anh Tuấn', time:'30/08/2026 08:19'},
@@ -1657,13 +1687,13 @@ JS_PATCHES = [
                   {label:'Head Admin xác nhận & cấp mã kích hoạt ACT-100481', actor:'Head Admin', time:'30/08/2026 10:02'}] },
       { id:'DH100088', buyer:'Ngô Thị Em', phone:'0904444444', email:'ngothiem@gmail.com',
         address:'7 Nguyễn Trãi, Phường Bến Thành, TP. Hồ Chí Minh',
-        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Lê Văn Cường', refCode:'118820',
+        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Lê Văn Cường', refCode:'LVC5456',
         date:'28/08/2026 11:30', status:'order_paid', proof:'bill-DH100088.jpg', activationCode:'ACT-100337',
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'28/08/2026 11:30'},
                   {label:'Head Admin xác nhận & cấp mã kích hoạt ACT-100337', actor:'Head Admin', time:'28/08/2026 14:00'}] },
       { id:'DH100012', buyer:'Phạm Quốc Bảo', phone:'0905555555', email:'pqbao@gmail.com',
         address:'201 Cách Mạng Tháng 8, Phường Hoà Hưng, TP. Hồ Chí Minh',
-        pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Trần Thị Bích', refCode:'923983',
+        pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Trần Thị Bích', refCode:'TTB4123',
         date:'26/08/2026 19:12', status:'order_rejected', proof:'bill-DH100012.jpg', activationCode:null,
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'26/08/2026 19:12'},
                   {label:'Từ chối: số tiền chuyển khoản không khớp', actor:'Admin Specialist', time:'27/08/2026 09:00'}] }

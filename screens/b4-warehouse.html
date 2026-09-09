@@ -849,7 +849,10 @@ class Component extends DCLogic {
     { id:3, name:'Phạm Thị Dung', phone:'0987654789', contact:'098•••789', affId:'302914', upline:'Trần Thị Bích', rank:'Đồng', joined:'22/08/2026', status:'locked', tree:[] },
     { id:4, name:'Ngô Thị Em', phone:'0976543112', contact:'097•••112', affId:'440221', upline:'Lê Văn Cường', rank:'Đồng', joined:'25/08/2026', status:'active', tree:[] },
     { id:5, name:'Vũ Minh Khang', phone:'0934567998', contact:'093•••998', affId:'552017', upline:'—', rank:'Vàng', joined:'01/08/2026', status:'active', tree:[{name:'Đỗ Anh Tuấn', orders:9}] },
-    { id:6, name:'Đặng Văn Phúc', phone:'0945678221', contact:'094•••221', affId:'671205', upline:'Trần Thị Bích', rank:'Đồng', joined:'02/09/2026', status:'pending', tree:[] }
+    { id:6, name:'Đặng Văn Phúc', phone:'0945678221', contact:'094•••221', affId:'671205', upline:'Trần Thị Bích', rank:'Đồng', joined:'02/09/2026', status:'pending', tree:[] },
+    { id:7, name:'Trương Thanh Bình', phone:'0938884123', contact:'093•••123',
+      affId:'780314', upline:'Vũ Minh Khang', rank:'Đồng', joined:'05/09/2026',
+      status:'active', tree:[] }
   ];
 
   ORDER_FILTERS = [['all','Tất cả'],['order_pending','Chờ đối soát'],['order_confirmed1','Chờ Head Admin'],['order_paid','Đã thanh toán'],['order_rejected','Từ chối']];
@@ -858,20 +861,20 @@ class Component extends DCLogic {
     const raw = [
       { id:'DH923983', buyer:'Nguyễn Văn A', phone:'0901111111', email:'nguyenvana@gmail.com',
         address:'12 Nguyễn Huệ, Phường Bến Nghé, TP. Hồ Chí Minh',
-        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Trần Thị Bích', refCode:'923983',
+        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Trần Thị Bích', refCode:'TTB4123',
         date:'03/09/2026 09:12', status:'order_pending', proof:'bill-DH923983.jpg', activationCode:null,
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'03/09/2026 09:12'},
                   {label:'Khách tải ảnh chuyển khoản', actor:'Nguyễn Văn A', time:'03/09/2026 09:20'}] },
       { id:'DH100511', buyer:'Lý Thị Hoa', phone:'0902222222', email:'lythihoa@gmail.com',
         address:'45 Lê Lợi, Phường Bến Thành, TP. Hồ Chí Minh',
-        pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Lê Văn Cường', refCode:'118820',
+        pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Lê Văn Cường', refCode:'LVC5456',
         date:'02/09/2026 15:40', status:'order_confirmed1', proof:'bill-DH100511.jpg', activationCode:null,
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'02/09/2026 15:40'},
                   {label:'Khách tải ảnh chuyển khoản', actor:'Lý Thị Hoa', time:'02/09/2026 15:52'},
                   {label:'Admin Specialist xác nhận tiền về (chờ Head Admin)', actor:'Admin Specialist', time:'02/09/2026 16:30'}] },
       { id:'DH100234', buyer:'Đỗ Anh Tuấn', phone:'0903333333', email:'doanhtuan@gmail.com',
         address:'88 Trần Hưng Đạo, Phường Cầu Ông Lãnh, TP. Hồ Chí Minh',
-        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Vũ Minh Khang', refCode:'552017',
+        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Vũ Minh Khang', refCode:'VMK7998',
         date:'30/08/2026 08:05', status:'order_paid', proof:'bill-DH100234.jpg', activationCode:'ACT-100481',
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'30/08/2026 08:05'},
                   {label:'Khách tải ảnh chuyển khoản', actor:'Đỗ Anh Tuấn', time:'30/08/2026 08:19'},
@@ -879,13 +882,13 @@ class Component extends DCLogic {
                   {label:'Head Admin xác nhận & cấp mã kích hoạt ACT-100481', actor:'Head Admin', time:'30/08/2026 10:02'}] },
       { id:'DH100088', buyer:'Ngô Thị Em', phone:'0904444444', email:'ngothiem@gmail.com',
         address:'7 Nguyễn Trãi, Phường Bến Thành, TP. Hồ Chí Minh',
-        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Lê Văn Cường', refCode:'118820',
+        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Lê Văn Cường', refCode:'LVC5456',
         date:'28/08/2026 11:30', status:'order_paid', proof:'bill-DH100088.jpg', activationCode:'ACT-100337',
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'28/08/2026 11:30'},
                   {label:'Head Admin xác nhận & cấp mã kích hoạt ACT-100337', actor:'Head Admin', time:'28/08/2026 14:00'}] },
       { id:'DH100012', buyer:'Phạm Quốc Bảo', phone:'0905555555', email:'pqbao@gmail.com',
         address:'201 Cách Mạng Tháng 8, Phường Hoà Hưng, TP. Hồ Chí Minh',
-        pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Trần Thị Bích', refCode:'923983',
+        pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Trần Thị Bích', refCode:'TTB4123',
         date:'26/08/2026 19:12', status:'order_rejected', proof:'bill-DH100012.jpg', activationCode:null,
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'26/08/2026 19:12'},
                   {label:'Từ chối: số tiền chuyển khoản không khớp', actor:'Admin Specialist', time:'27/08/2026 09:00'}] }
@@ -1119,17 +1122,19 @@ class Component extends DCLogic {
     const agentInputBorder = s.agentLoginError ? '#C0392B' : 'rgba(154,163,176,.6)';
 
     // Members (B2)
+    const ALIAS = this.aliasMap();
     const members = this.MEMBERS
       .filter(m => !s.memberSearch || m.name.toLowerCase().includes(s.memberSearch.toLowerCase()) || m.affId.includes(s.memberSearch))
       .map(m => {
         const effStatus = s.memberStatusOverrides[m.id] || m.status;
         const [bg, color, label] = this.badge(effStatus);
-        const affCode = m.name.split(' ').map(w => w[0]).join('').toUpperCase() + m.phone.slice(-4);
-        return { ...m, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,
-          uplineCode: (this.MEMBERS.find(u => u.name === m.upline) || {}).affId || '',
-          formLink: 'portal.homi365.com.vn/' + affCode, formLinkShort: '.../' + affCode,
+        const affCode = ALIAS[m.id];
+        const up = this.MEMBERS.find(u => u.name === m.upline);
+        return { ...m, affId: affCode, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,
+          uplineCode: up ? ALIAS[up.id] : '',
+          formLink: 'homi365.com.vn/' + affCode, formLinkShort: '.../' + affCode,
           loginLink: 'homi365.com.vn/dang-nhap/' + affCode, loginLinkShort: '.../dang-nhap/' + affCode,
-          copyFormLink: (e) => { e.stopPropagation(); navigator.clipboard.writeText('portal.homi365.com.vn/' + affCode); this.setState({ copiedLinkId: 'form-' + m.id }); setTimeout(() => this.setState(st => st.copiedLinkId === 'form-' + m.id ? { copiedLinkId: null } : null), 1500); },
+          copyFormLink: (e) => { e.stopPropagation(); navigator.clipboard.writeText('homi365.com.vn/' + affCode); this.setState({ copiedLinkId: 'form-' + m.id }); setTimeout(() => this.setState(st => st.copiedLinkId === 'form-' + m.id ? { copiedLinkId: null } : null), 1500); },
           copyLoginLink: (e) => { e.stopPropagation(); navigator.clipboard.writeText('homi365.com.vn/dang-nhap/' + affCode); this.setState({ copiedLinkId: 'login-' + m.id }); setTimeout(() => this.setState(st => st.copiedLinkId === 'login-' + m.id ? { copiedLinkId: null } : null), 1500); },
           formLinkCopyIcon: s.copiedLinkId === 'form-' + m.id ? '✓' : '⧉', loginLinkCopyIcon: s.copiedLinkId === 'login-' + m.id ? '✓' : '⧉',
           onClick: () => this.setState({ selectedMemberId: m.id }) };
