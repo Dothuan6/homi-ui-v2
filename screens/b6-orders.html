@@ -92,7 +92,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
         <div style="display:flex;flex-direction:column;gap:var(--s7)">
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s5)">
             <div style="font-size:24px;font-weight:700">Yêu cầu rút tiền</div>
-            <div style="display:flex;gap:var(--s3);flex-wrap:wrap"><button style="height:38px;padding:0 var(--s6);background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)" style-hover="background:rgba(154,163,176,.08)">Xuất file Excel</button><button sc-camel-on-click="{{openImportStock}}" style="height:38px;padding:0 var(--s6);background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)" style-hover="background:rgba(154,163,176,.08)">Import hàng loạt</button><button sc-camel-on-click="{{openAddStock}}" style="height:38px;padding:0 var(--s6);background:var(--c6);border:none;border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c12)" style-hover="background:#1B3358">+ Thêm hàng vào kho</button></div>
+            <button style="height:38px;padding:0 var(--s6);background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)" style-hover="background:rgba(154,163,176,.08)">Xuất file Excel</button>
           </div>
           <div style="display:flex;gap:var(--s5);flex-wrap:wrap;align-items:center">
             <div style="display:flex;gap:var(--s2);flex-wrap:wrap">
@@ -130,7 +130,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
         <div style="display:flex;flex-direction:column;gap:var(--s7)">
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s5)">
             <div><div style="font-size:24px;font-weight:700">Quản lý đơn hàng</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">{{orderTotal}} đơn · đối soát chuyển khoản và cấp mã kích hoạt</div></div>
-            <div style="display:flex;gap:var(--s3);flex-wrap:wrap"><button style="height:38px;padding:0 var(--s6);background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)" style-hover="background:rgba(154,163,176,.08)">Xuất file Excel</button><button sc-camel-on-click="{{openImportStock}}" style="height:38px;padding:0 var(--s6);background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)" style-hover="background:rgba(154,163,176,.08)">Import hàng loạt</button><button sc-camel-on-click="{{openAddStock}}" style="height:38px;padding:0 var(--s6);background:var(--c6);border:none;border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c12)" style-hover="background:#1B3358">+ Thêm hàng vào kho</button></div>
+            <button style="height:38px;padding:0 var(--s6);background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)" style-hover="background:rgba(154,163,176,.08)">Xuất file Excel</button>
           </div>
 
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s5)">
@@ -149,29 +149,33 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             <input type="text" value="{{orderSearch}}" sc-camel-on-change="{{setOrderSearch}}" placeholder="Tìm theo mã đơn, tên hoặc SĐT khách…" style="flex:1;min-width:220px;height:38px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
           </div>
 
-          <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);overflow:hidden">
-            <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:1180px">
               <thead>
                 <tr style="background:rgba(154,163,176,.08);text-align:left">
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Mã đơn</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Khách hàng</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Gói</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Số tiền</th>
+                  <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Nội dung chuyển khoản</th>
+                  <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Minh chứng</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Người giới thiệu</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Ngày đặt</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Trạng thái</th>
                 </tr>
               </thead>
               <tbody>
-                <sc-for list="{{orders}}" as="o" hint-placeholder-count="5">
+                <sc-for list="{{orders}}" as="o" hint-placeholder-count="8">
                   <tr sc-camel-on-click="{{o.onClick}}" style="border-top:1px solid rgba(154,163,176,.2);cursor:pointer" style-hover="background:rgba(30,58,102,.05)">
-                    <td style="padding:var(--s5);font-family:monospace;font-weight:600;color:var(--c1)">{{o.id}}</td>
-                    <td style="padding:var(--s5)"><div style="font-weight:600;color:var(--c1)">{{o.buyer}}</div><div style="font-size:12px;color:var(--c5)">{{o.phone}}</div></td>
-                    <td style="padding:var(--s5);color:var(--c2)">{{o.pkg}}</td>
-                    <td style="padding:var(--s5);font-weight:600;color:var(--c1)">{{o.amount}}</td>
-                    <td style="padding:var(--s5);color:var(--c2)">{{o.referrer}}</td>
-                    <td style="padding:var(--s5);color:var(--c5)">{{o.date}}</td>
-                    <td style="padding:var(--s5)"><span style="display:inline-block;padding:4px 10px;border-radius:var(--r-xl);font-size:11px;font-weight:600;background:{{o.badgeBg}};color:{{o.badgeColor}}">{{o.statusLabel}}</span></td>
+                    <td style="padding:var(--s5);font-family:monospace;font-weight:600;color:var(--c1);white-space:nowrap">{{o.id}}</td>
+                    <td style="padding:var(--s5)"><div style="font-weight:600;color:var(--c1);white-space:nowrap">{{o.buyer}}</div><div style="font-size:12px;color:var(--c5)">{{o.phone}}</div></td>
+                    <td style="padding:var(--s5);color:var(--c2);white-space:nowrap">{{o.pkg}}</td>
+                    <td style="padding:var(--s5);font-weight:600;color:var(--c1);white-space:nowrap">{{o.amount}}</td>
+                    <td style="padding:var(--s5);color:var(--c2);font-family:monospace;font-size:12px">{{o.transferNote}}</td>
+                    <td style="padding:var(--s5)"><span style="display:inline-block;padding:4px 10px;border-radius:var(--r-xl);font-size:11px;font-weight:600;background:{{o.proofBg}};color:{{o.proofColor}};white-space:nowrap">{{o.proofLabel}}</span></td>
+                    <td style="padding:var(--s5);color:var(--c2);white-space:nowrap">{{o.referrer}}</td>
+                    <td style="padding:var(--s5);color:var(--c5);white-space:nowrap">{{o.date}}</td>
+                    <td style="padding:var(--s5)"><span style="display:inline-block;padding:4px 10px;border-radius:var(--r-xl);font-size:11px;font-weight:600;background:{{o.badgeBg}};color:{{o.badgeColor}};white-space:nowrap">{{o.statusLabel}}</span></td>
                   </tr>
                 </sc-for>
               </tbody>
@@ -889,6 +893,8 @@ class Component extends DCLogic {
         { label:'Tham gia · hạng Đồng', time:'22/08/2026' }]
   };
 
+  // 1 sản phẩm pilot duy nhất theo 6.1.C-3. Gói license (1 năm / nửa năm) và
+  // giá KHÔNG quản ở màn này — chốt 09/09.
   PRODUCTS = [
     { id: 'CN02', sku: 'CN02', name: 'Gói Bác sĩ 24/7 · kèm đồng hồ HW01',
       imageLabel: 'cn02.png',
@@ -1143,6 +1149,11 @@ class Component extends DCLogic {
       .map(o => {
         const [bg, color, label] = this.badge(o.status);
         return { ...o, badgeBg: bg, badgeColor: color, statusLabel: label,
+          // Nội dung chuyển khoản đúng cú pháp hướng dẫn ở màn QR (A1).
+          transferNote: o.buyer + ' - Chuyen khoan don hang ' + o.id,
+          proofLabel: o.proof ? 'Đã tải lên' : 'Chưa có',
+          proofBg: o.proof ? 'rgba(47,122,72,.14)' : 'rgba(154,163,176,.18)',
+          proofColor: o.proof ? '#2F7A48' : '#5B6472',
           onClick: () => this.setState({ selectedOrderId: o.id }) };
       });
     const selOrderRaw = s.selectedOrderId ? ordersRaw.find(o => o.id === s.selectedOrderId) : null;

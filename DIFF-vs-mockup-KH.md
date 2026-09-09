@@ -125,7 +125,9 @@ Mockup KH không có màn này, dù requirement **7.7.1 Logic quản lý sản p
 
 Nội dung: bảng sản phẩm với 3 cột theo đúng yêu cầu — **Tên · Hình ảnh · Mô tả** — cùng nút *Thêm sản phẩm* và nút *Sửa* trên từng dòng, cả hai mở cùng một hộp thoại 3 trường.
 
-**Đã chốt 08/09** — phạm vi màn này đúng bằng 3 trường trên, không hơn: không quản lý giá và bảng hoa hồng ở đây (giữ nguyên ở màn Hạng), không có công tắc bật/tắt bán, mỗi sản phẩm **chỉ 1 ảnh**.
+**Đã chốt 08–09/09** — phạm vi màn này đúng bằng 3 trường trên, không hơn: không quản lý giá, không quản lý gói, không có công tắc bật/tắt bán, mỗi sản phẩm **chỉ 1 ảnh**.
+
+Danh sách chỉ có **1 sản phẩm CN02**, đúng theo **6.1.C-3** (*"cho 1 sản phẩm pilot (CN02)"*). Hai lựa chọn *Gói 1 năm 10.000.000đ* và *Gói nửa năm 6.000.000đ* ở màn mua hàng là **gói license của cùng sản phẩm đó**, không phải 2 sản phẩm — khớp với kho B4, nơi cả 1.200 thiết bị đều mang một dòng SKU `CN02-xxxx`.
 
 ## 9. Bổ sung Thêm hàng vào kho (B4)
 

@@ -198,6 +198,8 @@ class Component extends DCLogic {
         { label:'Tham gia · hạng Đồng', time:'22/08/2026' }]
   };
 
+  // 1 sản phẩm pilot duy nhất theo 6.1.C-3. Gói license (1 năm / nửa năm) và
+  // giá KHÔNG quản ở màn này — chốt 09/09.
   PRODUCTS = [
     { id: 'CN02', sku: 'CN02', name: 'Gói Bác sĩ 24/7 · kèm đồng hồ HW01',
       imageLabel: 'cn02.png',
@@ -452,6 +454,11 @@ class Component extends DCLogic {
       .map(o => {
         const [bg, color, label] = this.badge(o.status);
         return { ...o, badgeBg: bg, badgeColor: color, statusLabel: label,
+          // Nội dung chuyển khoản đúng cú pháp hướng dẫn ở màn QR (A1).
+          transferNote: o.buyer + ' - Chuyen khoan don hang ' + o.id,
+          proofLabel: o.proof ? 'Đã tải lên' : 'Chưa có',
+          proofBg: o.proof ? 'rgba(47,122,72,.14)' : 'rgba(154,163,176,.18)',
+          proofColor: o.proof ? '#2F7A48' : '#5B6472',
           onClick: () => this.setState({ selectedOrderId: o.id }) };
       });
     const selOrderRaw = s.selectedOrderId ? ordersRaw.find(o => o.id === s.selectedOrderId) : null;
