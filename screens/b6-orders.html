@@ -795,6 +795,7 @@ class Component extends DCLogic {
     wardQuery: 'Phường Bến Thành', wardOpen: false,
     accountHolder: '', buyTcChecked: false,
     cccdIssueDate: '', cccdIssuePlace: '', lookupResult: null,
+    loginPhoneChecked: false, loginPhoneEmpty: false,
     showAdminUserForm: false, editingAdminUserId: null, adminUserLocks: {},
     orderRange: 'month',
     ordersData: null, orderSearch: '', orderStatusFilter: 'all',
@@ -994,6 +995,23 @@ class Component extends DCLogic {
       order_rejected: ['rgba(192,57,43,.12)', '#C0392B', 'Từ chối']
     };
     return map[status] || ['rgba(154,163,176,.18)', '#5B6472', status];
+  }
+
+  aliasOf(name, phone) {
+    const ini = (name || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+      .trim().split(/\s+/).map(w => w[0] || '').join('').toUpperCase();
+    return ini + (phone || '').slice(-4);
+  }
+
+  aliasMap() {
+    const seen = {}, out = {};
+    this.MEMBERS.forEach(m => {
+      const base = this.aliasOf(m.name, m.phone);
+      seen[base] = (seen[base] || 0) + 1;
+      out[m.id] = seen[base] === 1 ? base : base + '-' + seen[base];
+    });
+    return out;
   }
 
   makeWithdrawals() {
@@ -1346,7 +1364,7 @@ class Component extends DCLogic {
       tncChecked: s.tncChecked, toggleTnc: () => this.setState({ tncChecked: !s.tncChecked }),
       tncDisabled, regSubmitStyle,
       copyLabel: s.copyLabel,
-      copyLink: () => { navigator.clipboard.writeText('homi365.vn/san-pham/CN02?aff_id=923983'); this.setState({ copyLabel: 'Đã copy!' }); setTimeout(() => this.setState({ copyLabel: 'Copy link' }), 1500); },
+      copyLink: () => { navigator.clipboard.writeText('homi365.com.vn/NVA1111'); this.setState({ copyLabel: 'Đã copy!' }); setTimeout(() => this.setState({ copyLabel: 'Copy link' }), 1500); },
       goToA3: () => GO('A3'),
 
       toggleAgentStage: () => this.setState({ agentStage: s.agentStage === 'new' ? 'active' : 'new' }),
@@ -1393,6 +1411,24 @@ class Component extends DCLogic {
         }
         if (ph && s.agentPassword === '123456') { GO('A3'); }
         else { this.setState({ agentLoginError: true, agentLoginStep: 'otp' }); }
+      },
+
+      loginPhoneChecked: s.loginPhoneChecked,
+      loginPhoneUnchecked: !s.loginPhoneChecked,
+      loginPhoneEmpty: s.loginPhoneEmpty,
+      checkLoginPhone: () => {
+        const ph = s.agentPhone.trim();
+        if (!ph) { this.setState({ loginPhoneEmpty: true }); return; }
+        if (this.REGISTERED_PHONES.includes(ph)) {
+          this.setState({ loginPhoneChecked: true, loginPhoneEmpty: false, agentLoginError: false });
+          return;
+        }
+        const o = this.ORDERS_BY_PHONE[ph];
+        GO('A2', o
+          ? { regStep: 1, orderId: o.orderId, buyerName: o.buyerName, buyerPhone: ph,
+              buyerEmail: o.buyerEmail, buyerCccd: o.buyerCccd,
+              buyerAddress: o.buyerAddress, buyerDob: o.buyerDob }
+          : { regStep: 1, buyerPhone: ph });
       },
       agentMaskedPhone: s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123',
       agentBackToLogin: () => this.setState({ agentLoginStep: 'login' }),
@@ -1545,16 +1581,10 @@ class Component extends DCLogic {
                                               : 'rgba(154,163,176,.4);background:transparent;color:var(--c5)')
       })),
 
-      // Hai link của agent: ref_code (giới thiệu) và alias (mua hàng cá nhân).
-      refCode: '923983',
-      refLink: 'homi365.vn/san-pham/CN02?aff_id=923983',
-      personalLink: 'homi365.com.vn/NVA1111',
-      copyPersonalLabel: s.copyPersonalLabel,
-      copyPersonalLink: () => {
-        navigator.clipboard.writeText('homi365.com.vn/NVA1111');
-        this.setState({ copyPersonalLabel: 'Đã copy!' });
-        setTimeout(() => this.setState({ copyPersonalLabel: 'Copy link' }), 1500);
-      },
+      // Chốt 09/09: agent chỉ có MỘT link. Mã giới thiệu = alias theo
+      // 8.1.C-4 (viết tắt họ tên + 4 số cuối SĐT), trùng thì thêm -2, -3…
+      refCode: 'NVA1111',
+      refLink: 'homi365.com.vn/NVA1111',
 
       orderTotal: (s.ordersData || []).length,
       orderPendingCount: (s.ordersData || []).filter(o => o.status === 'order_pending').length,

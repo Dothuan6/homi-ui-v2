@@ -107,29 +107,54 @@ BG_PATCHES = [
           </div>
           <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử đơn hàng &amp; hoa hồng</div>"""),
 
-    # 7.1.3 — gợi ý cho khách đã mua hàng nhưng chưa là thành viên.
-    ("""            <button sc-camel-on-click="{{agentLoginSubmit}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Đăng nhập</button>""",
-     """            <button sc-camel-on-click="{{agentLoginSubmit}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Đăng nhập</button>
-            <div style="font-size:12px;color:var(--c5);background:rgba(170,170,170,.08);border-radius:var(--r-sm);padding:var(--s4);line-height:1.6">Đã mua hàng nhưng chưa đăng ký thành viên? Nhập số điện thoại đã mua rồi bấm Đăng nhập — hệ thống sẽ đưa bạn sang màn đăng ký và điền sẵn thông tin từ đơn cũ.</div>"""),
+    # C1 — luồng 2 bước: nhập SĐT trước, hệ thống kiểm tra rồi mới hiện ô mật
+    # khẩu; SĐT chưa đăng ký thì chuyển thẳng sang màn đăng ký Agent.
+    # Ô mật khẩu chỉ hiện sau khi SĐT được xác nhận là đã có tài khoản.
+    ("""            <div style="display:flex;flex-direction:column;gap:var(--s2)">
+              <div style="display:flex;justify-content:space-between;align-items:center"><label style="font-size:14px;font-weight:600;color:var(--c2)">Mật khẩu</label><a href="#" sc-camel-on-click="{{openForgotPassword}}" style="font-size:12px;font-weight:600;color:var(--c6);text-decoration:none">Quên mật khẩu?</a></div>""",
+     """            <sc-if value="{{loginPhoneChecked}}" hint-placeholder-val="{{true}}">
+            <div style="display:flex;flex-direction:column;gap:var(--s2)">
+              <div style="display:flex;justify-content:space-between;align-items:center"><label style="font-size:14px;font-weight:600;color:var(--c2)">Mật khẩu</label><a href="#" sc-camel-on-click="{{openForgotPassword}}" style="font-size:12px;font-weight:600;color:var(--c6);text-decoration:none">Quên mật khẩu?</a></div>"""),
 
-    # A2 bước 5: mockup chỉ đưa link giới thiệu. Thêm link mua hàng cá nhân
-    # ngay bên dưới để agent nhận đủ 2 link ngay lúc kích hoạt (8.1.C-4).
-    ('<button sc-camel-on-click="{{copyLink}}" style="height:44px;background:var(--c6);'
-     'color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;'
-     'font-weight:600" style-hover="background:#0099d1">{{copyLabel}}</button>',
-     '<button sc-camel-on-click="{{copyLink}}" style="height:44px;background:var(--c6);'
-     'color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;'
-     'font-weight:600" style-hover="background:#0099d1">{{copyLabel}}</button>\n'
-     '            <div style="height:1px;background:rgba(170,170,170,.25)"></div>\n'
-     '            <div style="font-size:12px;color:var(--c5);text-transform:uppercase;'
-     'letter-spacing:.04em">Link mua hàng cá nhân</div>\n'
-     '            <div style="font-size:13px;color:var(--c4);word-break:break-all;'
+    # Đóng sc-if của khối mật khẩu + đổi nút theo bước, bỏ dòng mô tả và nút
+    # "Đăng ký giới thiệu thành viên mới".
+    ("""            </div>
+            <sc-if value="{{agentLoginError}}" hint-placeholder-val="{{false}}">
+              <div style="font-size:12px;color:var(--err);background:rgba(217,52,43,.08);border-radius:var(--r-sm);padding:var(--s4)">Số điện thoại hoặc mật khẩu không đúng. Vui lòng xác thực lại số điện thoại của bạn.</div>
+            </sc-if>
+            <button sc-camel-on-click="{{agentLoginSubmit}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Đăng nhập</button>
+            <div style="font-size:13px;color:var(--c5);text-align:center;line-height:1.6">Chưa có tài khoản? <br><a href="#" sc-camel-on-click="{{openOrderLookup}}" style="color: var(--c6); font-weight: 600; text-decoration: none;">Đăng ký giới thiệu thành viên mới</a></div>""",
+     """            </div>
+            </sc-if>
+            <sc-if value="{{agentLoginError}}" hint-placeholder-val="{{false}}">
+              <div style="font-size:12px;color:var(--err);background:rgba(217,52,43,.08);border-radius:var(--r-sm);padding:var(--s4)">Số điện thoại hoặc mật khẩu không đúng. Vui lòng xác thực lại số điện thoại của bạn.</div>
+            </sc-if>
+            <sc-if value="{{loginPhoneEmpty}}" hint-placeholder-val="{{false}}">
+              <div style="font-size:12px;color:var(--err);background:rgba(217,52,43,.08);border-radius:var(--r-sm);padding:var(--s4)">Vui lòng nhập số điện thoại.</div>
+            </sc-if>
+            <sc-if value="{{loginPhoneUnchecked}}" hint-placeholder-val="{{false}}">
+              <button sc-camel-on-click="{{checkLoginPhone}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Tiếp tục</button>
+            </sc-if>
+            <sc-if value="{{loginPhoneChecked}}" hint-placeholder-val="{{true}}">
+              <button sc-camel-on-click="{{agentLoginSubmit}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Đăng nhập</button>
+            </sc-if>"""),
+
+    # A2 bước 5 — chốt 09/09: CHỈ MỘT link. Mã giới thiệu chính là alias
+    # (viết tắt họ tên + 4 số cuối SĐT), link là homi365.com.vn/<alias>.
+    ('<div style="font-size:12px;color:var(--c5);text-transform:uppercase;'
+     'letter-spacing:.04em">Mã giới thiệu (aff_id)</div>',
+     '<div style="font-size:12px;color:var(--c5);text-transform:uppercase;'
+     'letter-spacing:.04em">Mã giới thiệu</div>'),
+    ('<div style="font-size:30px;font-weight:900;color:var(--c1);'
+     'letter-spacing:.02em">923983</div>',
+     '<div style="font-size:30px;font-weight:900;color:var(--c1);'
+     'letter-spacing:.02em">{{refCode}}</div>'),
+    ('<div style="font-size:13px;color:var(--c4);word-break:break-all;'
      'background:rgba(170,170,170,.08);border-radius:var(--r-sm);padding:var(--s4)">'
-     '{{personalLink}}</div>\n'
-     '            <button sc-camel-on-click="{{copyPersonalLink}}" style="height:44px;'
-     'background:var(--c12);color:var(--c6);border:1px solid var(--c6);'
-     'border-radius:var(--r-md);font-size:15px;font-weight:600" '
-     'style-hover="background:rgba(0,173,238,.06)">{{copyPersonalLabel}}</button>'),
+     'homi365.vn/san-pham/CN02?aff_id=923983</div>',
+     '<div style="font-size:13px;color:var(--c4);word-break:break-all;'
+     'background:rgba(170,170,170,.08);border-radius:var(--r-sm);padding:var(--s4)">'
+     '{{refLink}}</div>'),
     # A3 thiếu hẳn link bán hàng — agent rời màn "kích hoạt thành công" là mất
     # đường lấy link. Chèn một thẻ link + nút copy ngay dưới phần chào.
     # copyLink / copyLabel đã có sẵn trong renderVals nên dùng lại được.
@@ -143,18 +168,10 @@ BG_PATCHES = [
         <div style="font-size:12px;color:var(--c5);text-transform:uppercase;letter-spacing:.04em">Link bán hàng của bạn</div>
 
         <div style="display:flex;flex-direction:column;gap:var(--s3)">
-          <div style="font-size:12px;font-weight:600;color:var(--c2)">Link giới thiệu · mã {{refCode}}</div>
+          <div style="font-size:12px;font-weight:600;color:var(--c2)">Mã giới thiệu · {{refCode}}</div>
           <div style="display:flex;gap:var(--s3);align-items:center">
             <div style="flex:1;min-width:0;font-size:13px;color:var(--c4);word-break:break-all;background:rgba(170,170,170,.08);border-radius:var(--r-sm);padding:var(--s4)">{{refLink}}</div>
             <button sc-camel-on-click="{{copyLink}}" style="flex:none;height:40px;padding:0 var(--s6);background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:14px;font-weight:600" style-hover="background:#0099d1">{{copyLabel}}</button>
-          </div>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:var(--s3)">
-          <div style="font-size:12px;font-weight:600;color:var(--c2)">Link mua hàng cá nhân</div>
-          <div style="display:flex;gap:var(--s3);align-items:center">
-            <div style="flex:1;min-width:0;font-size:13px;color:var(--c4);word-break:break-all;background:rgba(170,170,170,.08);border-radius:var(--r-sm);padding:var(--s4)">{{personalLink}}</div>
-            <button sc-camel-on-click="{{copyPersonalLink}}" style="flex:none;height:40px;padding:0 var(--s6);background:var(--c12);color:var(--c6);border:1px solid var(--c6);border-radius:var(--r-md);font-size:14px;font-weight:600" style-hover="background:rgba(0,173,238,.06)">{{copyPersonalLabel}}</button>
           </div>
         </div>
       </div>
@@ -1256,7 +1273,10 @@ SCREENS = [
         "code": "C1", "title": "C1 · Đăng nhập thành viên", "group": "Thành viên",
         "blocks": ["C1", "LOOKUP"],
         "states": [
-            ("", "Đăng nhập", {"agentLoginStep": "login"}),
+            ("", "Bước 1 — nhập số điện thoại", {"agentLoginStep": "login"}),
+            ("mat-khau", "Bước 2 — nhập mật khẩu", {"agentLoginStep": "login",
+                                                     "agentPhone": "0901234567",
+                                                     "loginPhoneChecked": True}),
             ("otp", "Xác thực OTP", {"agentLoginStep": "otp"}),
             ("quen-sdt", "Quên mật khẩu — nhập SĐT", {"agentLoginStep": "forgot_phone"}),
             ("quen-otp", "Quên mật khẩu — OTP", {"agentLoginStep": "forgot_otp"}),
@@ -1477,6 +1497,7 @@ JS_PATCHES = [
      "    wardQuery: 'Phường Bến Thành', wardOpen: false,\n"
      "    accountHolder: '', buyTcChecked: false,\n"
      "    cccdIssueDate: '', cccdIssuePlace: '', lookupResult: null,\n"
+     "    loginPhoneChecked: false, loginPhoneEmpty: false,\n"
      "    showAdminUserForm: false, editingAdminUserId: null, adminUserLocks: {},\n"
      "    orderRange: 'month',\n"
      "    ordersData: null, orderSearch: '', orderStatusFilter: 'all',\n"
@@ -1533,7 +1554,51 @@ JS_PATCHES = [
         }
         if (ph && s.agentPassword === '123456') { GO('A3'); }
         else { this.setState({ agentLoginError: true, agentLoginStep: 'otp' }); }
+      },
+
+      loginPhoneChecked: s.loginPhoneChecked,
+      loginPhoneUnchecked: !s.loginPhoneChecked,
+      loginPhoneEmpty: s.loginPhoneEmpty,
+      checkLoginPhone: () => {
+        const ph = s.agentPhone.trim();
+        if (!ph) { this.setState({ loginPhoneEmpty: true }); return; }
+        if (this.REGISTERED_PHONES.includes(ph)) {
+          this.setState({ loginPhoneChecked: true, loginPhoneEmpty: false, agentLoginError: false });
+          return;
+        }
+        const o = this.ORDERS_BY_PHONE[ph];
+        GO('A2', o
+          ? { regStep: 1, orderId: o.orderId, buyerName: o.buyerName, buyerPhone: ph,
+              buyerEmail: o.buyerEmail, buyerCccd: o.buyerCccd,
+              buyerAddress: o.buyerAddress, buyerDob: o.buyerDob }
+          : { regStep: 1, buyerPhone: ph });
       },"""),
+
+    # Nút copy phải chép đúng link alias duy nhất.
+    ("navigator.clipboard.writeText('homi365.vn/san-pham/CN02?aff_id=923983')",
+     "navigator.clipboard.writeText('homi365.com.vn/NVA1111')"),
+
+    # 8.1.C-4 / 8.1.C-5 — sinh alias từ họ tên + 4 số cuối SĐT, trùng thì
+    # thêm hậu tố -2, -3… theo thứ tự đăng ký.
+    ("  makeWithdrawals() {",
+     """  aliasOf(name, phone) {
+    const ini = (name || '').normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
+      .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+      .trim().split(/\\s+/).map(w => w[0] || '').join('').toUpperCase();
+    return ini + (phone || '').slice(-4);
+  }
+
+  aliasMap() {
+    const seen = {}, out = {};
+    this.MEMBERS.forEach(m => {
+      const base = this.aliasOf(m.name, m.phone);
+      seen[base] = (seen[base] || 0) + 1;
+      out[m.id] = seen[base] === 1 ? base : base + '-' + seen[base];
+    });
+    return out;
+  }
+
+  makeWithdrawals() {"""),
 
     # Badge cho vòng đời đơn hàng (khác badge rút tiền: 'paid' đã dùng cho chi trả).
     ("      activated: ['rgba(0,173,238,.14)', '#00728f', 'Đã kích hoạt']",
@@ -1828,16 +1893,10 @@ JS_PATCHES = [
                                               : 'rgba(170,170,170,.4);background:transparent;color:var(--c5)')
       })),
 
-      // Hai link của agent: ref_code (giới thiệu) và alias (mua hàng cá nhân).
-      refCode: '923983',
-      refLink: 'homi365.vn/san-pham/CN02?aff_id=923983',
-      personalLink: 'homi365.com.vn/NVA1111',
-      copyPersonalLabel: s.copyPersonalLabel,
-      copyPersonalLink: () => {
-        navigator.clipboard.writeText('homi365.com.vn/NVA1111');
-        this.setState({ copyPersonalLabel: 'Đã copy!' });
-        setTimeout(() => this.setState({ copyPersonalLabel: 'Copy link' }), 1500);
-      },
+      // Chốt 09/09: agent chỉ có MỘT link. Mã giới thiệu = alias theo
+      // 8.1.C-4 (viết tắt họ tên + 4 số cuối SĐT), trùng thì thêm -2, -3…
+      refCode: 'NVA1111',
+      refLink: 'homi365.com.vn/NVA1111',
 
       orderTotal: (s.ordersData || []).length,
       orderPendingCount: (s.ordersData || []).filter(o => o.status === 'order_pending').length,
