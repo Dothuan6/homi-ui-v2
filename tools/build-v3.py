@@ -2713,7 +2713,7 @@ __CARDS__
                 dup.append("%s: %s xuất hiện %d lần" % (f, name, t.count(tag)))
 
     diff = ["# DIFF — prototype-v3 so với mockup của khách hàng", "",
-            "Sinh tự động bởi `tools/build-v3.py`. Ngoài 12 mục dưới đây, "
+            "Sinh tự động bởi `tools/build-v3.py`. Ngoài 13 mục dưới đây, "
             "**không có thay đổi nào khác**: layout, khoảng cách, bo góc, font "
             "giữ nguyên 100%.", "",
             "## 1. Đổi giá trị màu", "",
@@ -2864,13 +2864,8 @@ __CARDS__
              "thái, ô tìm theo mã đơn / tên / SĐT, bảng đơn, và ngăn chi tiết bên "
              "phải với thông tin khách, thông tin đơn, ảnh chuyển khoản, lịch sử "
              "xử lý và nút hành động.", "",
-             "**Duyệt 2 cấp** (theo quyết định 08/09), giống luồng rút tiền:", "",
-             "| Bước | Ai làm | Kết quả |", "|---|---|---|",
-             "| 1 | Admin Specialist | Xác nhận tiền về → `Chờ Head Admin xác nhận` |",
-             "| 2 | Head Admin | Xác nhận → `Đã thanh toán`, hệ thống cấp mã kích hoạt |",
-             "| — | Cả hai vai | Từ chối đơn (khi tiền chưa về hoặc sai số tiền) |", "",
-             "Nút bước 2 khoá với vai Specialist và ngược lại — đổi vai bằng nút "
-             "*Vai trò (demo)* ở cuối sidebar để thử cả hai.", "",
+             "⚠ Bản 08/09 làm duyệt 2 cấp cho đơn hàng. **Đã bỏ ngày 09/09** — "
+             "xem mục 13 để biết mô hình duyệt cuối cùng.", "",
              "**Đã chốt 08/09:**", "",
              "- **Tách vai theo bước, không tách theo người.** Specialist làm "
              "bước 1; bước 2 thuộc về Head Admin, và Head Admin làm luôn việc "
@@ -2987,6 +2982,27 @@ __CARDS__
              "thanh toán**, mang một cờ *đang giữ*, chứ không phải sinh ra lúc "
              "kích hoạt — nếu sinh lúc kích hoạt thì không còn dữ liệu quá khứ để "
              "cộng dồn. Điểm tích luỹ cũng vậy.", "",
+
+             "## 13. Mô hình duyệt — bản chốt cuối 09/09", "",
+             "Mô hình duyệt đã đổi ba lần trong hai ngày. Đây là bản cuối, **ghi "
+             "đè mọi mô tả duyệt ở các mục trên**:", "",
+             "| Luồng | Số lượt duyệt | Ai làm | Ghi chú |", "|---|---|---|---|",
+             "| **Đơn hàng** (B6) | **1** | Admin bất kỳ (Specialist hoặc Head) | "
+             "Xác nhận tiền về + chọn mã kích hoạt từ kho → đơn `Đã thanh toán`, "
+             "mã sang `Đã gán đơn hàng`, hệ thống gửi email kèm mã cho khách ngay |",
+             "| **Thành viên** (B2) | **1** | Chỉ Manager / Head Admin | "
+             "Chỉ duyệt được khi đơn của thành viên đó đã xác nhận thanh toán. "
+             "Duyệt xong mở khoá điểm và ưu đãi đang tạm giữ |",
+             "| **Rút tiền** (B3) | **2** | Specialist bước 1, Head Admin bước 2 | "
+             "Giữ nguyên duyệt 2 lượt — chốt 09/09, khác hai luồng trên |", "",
+             "Vòng đời hồ sơ thành viên: `Chờ xác nhận thanh toán` → "
+             "`Chờ Manager duyệt` → `Đang hoạt động`. Bước một không nằm ở màn "
+             "Thành viên mà ở màn Đơn hàng — đây là điểm dễ hiểu nhầm nhất, cần "
+             "nói rõ khi bàn giao cho dev.", "",
+             "Kỹ thuật: hai trạng thái `pending` và `specialist_approved` dùng "
+             "chung giữa thành viên và rút tiền, nhưng nhãn hiển thị khác nhau "
+             "(thành viên có bảng nhãn riêng). Khi dev thiết kế bảng nên tách "
+             "hẳn hai bộ trạng thái, đừng dùng chung enum.", "",
 
              "## Ghi chú", "",
              "- Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` "
