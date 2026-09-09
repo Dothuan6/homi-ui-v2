@@ -107,6 +107,13 @@ BG_PATCHES = [
           </div>
           <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử đơn hàng &amp; hoa hồng</div>"""),
 
+    # C1 — tiêu đề nói thẳng mục đích, bỏ dòng phụ trùng ý.
+    ('<div style="font-size:22px;font-weight:700;color:var(--c1)">Đăng nhập thành viên'
+     '</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">'
+     'Đăng nhập để quản lý hoa hồng &amp; đơn hàng của bạn</div>',
+     '<div style="font-size:22px;font-weight:700;color:var(--c1);line-height:1.4">'
+     'Đăng nhập để quản lý hoa hồng &amp; đơn hàng của bạn</div>'),
+
     # C1 — luồng 2 bước: nhập SĐT trước, hệ thống kiểm tra rồi mới hiện ô mật
     # khẩu; SĐT chưa đăng ký thì chuyển thẳng sang màn đăng ký Agent.
     # Ô mật khẩu chỉ hiện sau khi SĐT được xác nhận là đã có tài khoản.
@@ -168,7 +175,6 @@ BG_PATCHES = [
         <div style="font-size:12px;color:var(--c5);text-transform:uppercase;letter-spacing:.04em">Link bán hàng của bạn</div>
 
         <div style="display:flex;flex-direction:column;gap:var(--s3)">
-          <div style="font-size:12px;font-weight:600;color:var(--c2)">Mã giới thiệu · {{refCode}}</div>
           <div style="display:flex;gap:var(--s3);align-items:center">
             <div style="flex:1;min-width:0;font-size:13px;color:var(--c4);word-break:break-all;background:rgba(170,170,170,.08);border-radius:var(--r-sm);padding:var(--s4)">{{refLink}}</div>
             <button sc-camel-on-click="{{copyLink}}" style="flex:none;height:40px;padding:0 var(--s6);background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:14px;font-weight:600" style-hover="background:#0099d1">{{copyLabel}}</button>
@@ -969,12 +975,7 @@ BG_PATCHES += [
     ('<div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">'
      'Bước 1/5 · Thông tin cá nhân &amp; nhận hoa hồng</div></div>',
      '<div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">'
-     'Bước 1/5 · Thông tin cá nhân &amp; nhận ưu đãi</div></div>\n'
-     '          <div style="font-size:12px;color:var(--c2);background:rgba(0,173,238,.06);'
-     'border-radius:var(--r-md);padding:var(--s5);line-height:1.7">Thông tin đã được '
-     'điền sẵn từ đơn hàng của bạn. Bạn có thể chỉnh sửa nếu cần, '
-     '<strong>trừ email và số điện thoại</strong> — hai trường này gắn với đơn đã '
-     'thanh toán nên không đổi được.</div>'),
+     'Bước 1/5 · Thông tin cá nhân &amp; nhận ưu đãi</div></div>'),
 
     # A2 cũng cần Tên chủ tài khoản như form mua hàng.
     ('<div style="font-size:11px;color:var(--c5)">Chỉ hiển thị đầy đủ trong '
@@ -2081,7 +2082,7 @@ LOGIN_BTN = (
     # để thanh trên không lệch tông với phần bên dưới.
     'border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);color:var(--c6);'
     'background:var(--c12);font-size:14px;font-weight:600;text-decoration:none"'
-    ' style-hover="background:rgba(170,170,170,.08)">Đăng nhập Agent</a>'
+    ' style-hover="background:rgba(170,170,170,.08)">Đăng nhập thành viên HOMI365</a>'
 )
 
 
