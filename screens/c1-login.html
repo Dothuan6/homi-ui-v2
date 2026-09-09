@@ -260,7 +260,7 @@ class Component extends DCLogic {
   ];
 
   ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu rút tiền'],['B6','Đơn hàng'],['B4','Kho hàng'],['B5','Sản phẩm'],['B7','Tài khoản admin']];
-  STOCK_FILTERS = [['all','Tất cả'],['available','Sẵn hàng'],['assigned','Đã gán đơn hàng'],['activated','Đã kích hoạt']];
+  STOCK_FILTERS = [['all','Tất cả'],['received','Nhập kho'],['available','Sẵn hàng'],['assigned','Đã gán đơn hàng'],['shipped','Xuất kho'],['delivered','Giao hàng thành công']];
   WITHDRAWAL_FILTERS = [['all','Tất cả'],['pending','Chờ duyệt'],['specialist_approved','Chờ Head Admin'],['approved','Đã duyệt'],['rejected','Từ chối'],['paid','Đã chi trả']];
   STATUS_ORDER = { pending: 0, specialist_approved: 1, approved: 2, rejected: 3, paid: 4 };
   SELLER_BALANCE = { 'Trần Thị Bích': 4000000 };
@@ -302,10 +302,10 @@ class Component extends DCLogic {
     { id:6, name:'Đặng Văn Phúc', phone:'0945678221', contact:'094•••221', affId:'671205', upline:'Trần Thị Bích', rank:'Đồng', joined:'02/09/2026', status:'pending', tree:[] },
     { id:7, name:'Trương Thanh Bình', phone:'0938884123', contact:'093•••123',
       affId:'780314', upline:'Vũ Minh Khang', rank:'Đồng', joined:'05/09/2026',
-      status:'active', tree:[] }
+      status:'specialist_approved', tree:[] }
   ];
 
-  ORDER_FILTERS = [['all','Tất cả'],['order_pending','Chờ đối soát'],['order_confirmed1','Chờ Head Admin'],['order_paid','Đã thanh toán'],['order_rejected','Từ chối']];
+  ORDER_FILTERS = [['all','Tất cả'],['order_pending','Chờ đối soát'],['order_paid','Đã thanh toán'],['order_rejected','Từ chối']];
 
   makeOrders() {
     const raw = [
@@ -318,14 +318,13 @@ class Component extends DCLogic {
       { id:'DH100511', buyer:'Lý Thị Hoa', phone:'0902222222', email:'lythihoa@gmail.com',
         address:'45 Lê Lợi, Phường Bến Thành, TP. Hồ Chí Minh',
         pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Lê Văn Cường', refCode:'LVC5456',
-        date:'02/09/2026 15:40', status:'order_confirmed1', proof:'bill-DH100511.jpg', activationCode:null,
+        date:'02/09/2026 15:40', status:'order_pending', proof:'bill-DH100511.jpg', activationCode:null,
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'02/09/2026 15:40'},
-                  {label:'Khách tải ảnh chuyển khoản', actor:'Lý Thị Hoa', time:'02/09/2026 15:52'},
-                  {label:'Admin Specialist xác nhận tiền về (chờ Head Admin)', actor:'Admin Specialist', time:'02/09/2026 16:30'}] },
+                  {label:'Khách tải ảnh chuyển khoản', actor:'Lý Thị Hoa', time:'02/09/2026 15:52'}] },
       { id:'DH100234', buyer:'Đỗ Anh Tuấn', phone:'0903333333', email:'doanhtuan@gmail.com',
         address:'88 Trần Hưng Đạo, Phường Cầu Ông Lãnh, TP. Hồ Chí Minh',
         pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Vũ Minh Khang', refCode:'VMK7998',
-        date:'30/08/2026 08:05', status:'order_paid', proof:'bill-DH100234.jpg', activationCode:'ACT-100481',
+        date:'30/08/2026 08:05', status:'order_paid', proof:'bill-DH100234.jpg', activationCode:'ACT-100481', activatedAt:'30/08/2026',
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'30/08/2026 08:05'},
                   {label:'Khách tải ảnh chuyển khoản', actor:'Đỗ Anh Tuấn', time:'30/08/2026 08:19'},
                   {label:'Admin Specialist xác nhận tiền về (chờ Head Admin)', actor:'Admin Specialist', time:'30/08/2026 09:10'},
@@ -333,7 +332,7 @@ class Component extends DCLogic {
       { id:'DH100088', buyer:'Ngô Thị Em', phone:'0904444444', email:'ngothiem@gmail.com',
         address:'7 Nguyễn Trãi, Phường Bến Thành, TP. Hồ Chí Minh',
         pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Lê Văn Cường', refCode:'LVC5456',
-        date:'28/08/2026 11:30', status:'order_paid', proof:'bill-DH100088.jpg', activationCode:'ACT-100337',
+        date:'28/08/2026 11:30', status:'order_paid', proof:'bill-DH100088.jpg', activationCode:'ACT-100337', activatedAt:'28/08/2026',
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'28/08/2026 11:30'},
                   {label:'Head Admin xác nhận & cấp mã kích hoạt ACT-100337', actor:'Head Admin', time:'28/08/2026 14:00'}] },
       { id:'DH100012', buyer:'Phạm Quốc Bảo', phone:'0905555555', email:'pqbao@gmail.com',
@@ -387,6 +386,15 @@ class Component extends DCLogic {
   ORDER_RANGES = [['today','Hôm nay'],['week','Tuần này'],['month','Tháng này'],['all','Tất cả'],['custom','Khoảng ngày…']];
   ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27', custom:'6' };
   ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1', custom:'1' };
+
+  // Trạng thái hồ sơ thành viên (khác vòng duyệt 2 lượt của rút tiền).
+  MEMBER_STATUS_LABEL = {
+    pending: 'Chờ xác nhận thanh toán',
+    specialist_approved: 'Chờ Manager duyệt',
+    active: 'Đang hoạt động',
+    locked: 'Đã khoá',
+    rejected: 'Từ chối'
+  };
 
   // 6 hạng chính thức — không dịch sang tiếng Việt.
   RANKS = ['Copper', 'Silver', 'Gold', 'Diamond', 'Titanium', 'Lithium'];
@@ -448,8 +456,10 @@ class Component extends DCLogic {
       available: ['rgba(47,122,72,.14)', '#2F7A48', 'Sẵn hàng'],
       assigned: ['rgba(150,92,10,.15)', '#965C0A', 'Đã gán đơn hàng'],
       activated: ['rgba(15,127,150,.14)', '#0F7F96', 'Đã kích hoạt'],
+      received: ['rgba(154,163,176,.18)', '#5B6472', 'Nhập kho'],
+      shipped: ['rgba(15,127,150,.14)', '#0F7F96', 'Xuất kho'],
+      delivered: ['rgba(47,122,72,.14)', '#2F7A48', 'Giao hàng thành công'],
       order_pending: ['rgba(150,92,10,.15)', '#965C0A', 'Chờ đối soát'],
-      order_confirmed1: ['rgba(150,92,10,.15)', '#965C0A', 'Chờ Head Admin xác nhận'],
       order_paid: ['rgba(47,122,72,.14)', '#2F7A48', 'Đã thanh toán · đã cấp mã'],
       order_rejected: ['rgba(192,57,43,.12)', '#C0392B', 'Từ chối']
     };
@@ -486,7 +496,7 @@ class Component extends DCLogic {
 
   makeStock() {
     const items = [];
-    const statuses = ['available','available','assigned','activated'];
+    const statuses = ['received','available','available','assigned','shipped','delivered'];
     for (let i = 1; i <= 24; i++) {
       const status = statuses[i % statuses.length];
       items.push({
@@ -494,6 +504,8 @@ class Component extends DCLogic {
         orderId: status === 'available' ? '—' : 'DH' + (100000 + i * 13),
         seller: status === 'available' ? '—' : this.MEMBERS[i % this.MEMBERS.length].name,
         stockedAt: '0' + (1 + i % 9) + '/08/2026', status,
+        tracking: (status === 'shipped' || status === 'delivered')
+          ? 'VN' + (830000000 + i * 137) : '—',
         log: [{ label: 'Nhập kho', time: '0' + (1 + i % 9) + '/08/2026 08:00' }]
       });
     }
@@ -587,7 +599,10 @@ class Component extends DCLogic {
         const affCode = ALIAS[m.id];
         const up = this.MEMBERS.find(u => u.name === m.upline);
         return { ...m, affId: affCode, rank: this.RANK_LABEL[m.rank] || m.rank,
-          status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,
+          status: effStatus, badgeBg: bg, badgeColor: color,
+          // Nhãn riêng cho thành viên — badge() dùng chung với rút tiền,
+          // mà rút tiền vẫn giữ mô hình duyệt 2 lượt.
+          statusLabel: this.MEMBER_STATUS_LABEL[effStatus] || label,
           uplineCode: up ? ALIAS[up.id] : '',
           formLink: 'homi365.com.vn/' + affCode, formLinkShort: '.../' + affCode,
           loginLink: 'homi365.com.vn/dang-nhap/' + affCode, loginLinkShort: '.../dang-nhap/' + affCode,
@@ -634,7 +649,7 @@ class Component extends DCLogic {
     };
     const stockItems = stockFiltered.slice((stockPage - 1) * stockPageSize, stockPage * stockPageSize).map(p => {
       const [bg, color, label] = this.badge(p.status);
-      const live = p.status !== 'available';
+      const live = !['received', 'available'].includes(p.status);
       return { ...p, badgeBg: bg, badgeColor: color, statusLabel: label,
         activeFrom: live ? p.stockedAt : '—',
         activeTo: live ? plusYear(p.stockedAt) : '—',
@@ -651,16 +666,33 @@ class Component extends DCLogic {
       selectedMember = {
         ...selectedMemberRaw, status: effStatus,
         rank: this.RANK_LABEL[selectedMemberRaw.rank] || selectedMemberRaw.rank,
+        // (1) Hồ sơ đăng ký đầy đủ, đúng những gì thành viên đã khai.
+        email: (selectedMemberRaw.name.split(' ').slice(-1)[0] || 'user')
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+          + selectedMemberRaw.phone.slice(-4) + '@gmail.com',
+        cccd: '079' + selectedMemberRaw.phone.slice(-9),
+        cccdIssue: '22/01/2021 · Cục Cảnh sát QLHC về TTXH',
+        dobGender: '15/03/1992 · Nữ',
+        address: '12 Nguyễn Huệ, Phường Bến Thành, TP. Hồ Chí Minh',
+        bank: 'Vietcombank — NH TMCP Ngoại thương Việt Nam',
+        bankAccount: '0071' + selectedMemberRaw.phone.slice(-9),
+        bankHolder: this.vnUpper(selectedMemberRaw.name),
+        cccdFront: 'cccd-truoc-' + ALIAS[selectedMemberRaw.id] + '.jpg',
+        cccdBack: 'cccd-sau-' + ALIAS[selectedMemberRaw.id] + '.jpg',
         rankHistory: this.RANK_HISTORY[selectedMemberRaw.id]
           || [{ label: 'Tham gia · hạng '
                  + (this.RANK_LABEL[selectedMemberRaw.rank] || selectedMemberRaw.rank),
                time: selectedMemberRaw.joined }],
         needsApproval: ['pending', 'specialist_approved'].includes(effStatus),
         isActiveOrLocked: ['active', 'locked'].includes(effStatus),
-        canApproveMember: (isSpecialist && effStatus === 'pending') || (!isSpecialist && effStatus === 'specialist_approved'),
-        canRejectMember: ['pending', 'specialist_approved'].includes(effStatus),
-        approveMemberButtonLabel: isSpecialist ? 'Duyệt hồ sơ (Specialist)' : 'Duyệt & kích hoạt (Head Admin)',
-        approvalStageNote: effStatus === 'pending' ? 'Đang chờ Admin Specialist duyệt hồ sơ (bước 1/2).' : effStatus === 'specialist_approved' ? 'Đã qua Specialist — chờ Head Admin xác nhận để kích hoạt (bước 2/2).' : (effStatus === 'rejected' ? 'Hồ sơ đã bị từ chối.' : null)
+        canApproveMember: !isSpecialist && effStatus === 'specialist_approved',
+        canRejectMember: !isSpecialist && effStatus === 'specialist_approved',
+        approveMemberButtonLabel: 'Duyệt thành viên · mở khoá điểm và ưu đãi',
+        approvalStageNote: effStatus === 'pending'
+          ? 'Chưa xác nhận thanh toán. Vào màn Đơn hàng xác nhận tiền về trước, hồ sơ này mới duyệt được.'
+          : effStatus === 'specialist_approved'
+            ? 'Đơn hàng đã được xác nhận thanh toán. Manager duyệt để thành viên nhận điểm và ưu đãi đang tạm giữ.'
+            : (effStatus === 'rejected' ? 'Hồ sơ đã bị từ chối.' : null)
       };
     }
     const isLocked = selectedMember ? selectedMember.status === 'locked' : false;
@@ -723,6 +755,12 @@ class Component extends DCLogic {
         return { ...o, badgeBg: bg, badgeColor: color, statusLabel: label,
           // Nội dung chuyển khoản đúng cú pháp hướng dẫn ở màn QR (A1).
           transferNote: o.buyer + ' - Chuyen khoan don hang ' + o.id,
+          // Ngày kích hoạt = lúc admin xác nhận tiền về; hết hiệu lực theo gói.
+          activatedLabel: o.activatedAt || '—',
+          expiresLabel: o.activatedAt
+            ? (function (d) { const q = d.split('/');
+                return q.length === 3 ? q[0] + '/' + q[1] + '/' + (parseInt(q[2], 10) + 1) : '—'; })(o.activatedAt)
+            : '—',
           proofLabel: o.proof ? 'Đã tải lên' : 'Chưa có',
           proofBg: o.proof ? 'rgba(47,122,72,.14)' : 'rgba(154,163,176,.18)',
           proofColor: o.proof ? '#2F7A48' : '#5B6472',
@@ -733,24 +771,20 @@ class Component extends DCLogic {
     if (selOrderRaw) {
       const [obg, ocolor, olabel] = this.badge(selOrderRaw.status);
       const isSpecO = s.adminRole === 'specialist';
-      const canConfirmO = (isSpecO && selOrderRaw.status === 'order_pending')
-        || (!isSpecO && selOrderRaw.status === 'order_confirmed1');
-      const canRejectO = ['order_pending', 'order_confirmed1'].includes(selOrderRaw.status);
+      // Chốt 09/09 (bản mới): đơn hàng CHỈ CẦN 1 admin xác nhận, không duyệt
+      // 2 lớp. Xác nhận tiền về + chọn mã kích hoạt -> gửi email cho khách ngay.
+      const canConfirmO = selOrderRaw.status === 'order_pending';
+      const canRejectO = selOrderRaw.status === 'order_pending';
       selectedOrder = { ...selOrderRaw, badgeBg: obg, badgeColor: ocolor, statusLabel: olabel,
         activationCodeLabel: selOrderRaw.activationCode || '— chưa cấp —',
         canConfirm: canConfirmO, canReject: canRejectO, canAct: canConfirmO || canRejectO,
-        needsCodePick: canConfirmO && !isSpecO,
+        needsCodePick: canConfirmO,
         isRejected: selOrderRaw.status === 'order_rejected',
-        confirmLabel: isSpecO ? 'Xác nhận tiền về (Specialist)'
-                              : 'Xác nhận, cấp mã & kích hoạt tài khoản (Head Admin)',
+        confirmLabel: 'Xác nhận tiền về & cấp mã kích hoạt',
         stageNote: selOrderRaw.status === 'order_pending'
-          ? 'Đang chờ Admin Specialist đối soát tiền về (bước 1/2).'
-          : selOrderRaw.status === 'order_confirmed1'
-            ? 'Đã qua Specialist — chờ Head Admin xác nhận để cấp mã kích hoạt (bước 2/2).'
-            : (selOrderRaw.status === 'order_rejected' ? 'Đơn đã bị từ chối.' : null),
-        actHint: isSpecO
-          ? 'Bạn đang ở vai Admin Specialist — chỉ xác nhận được bước 1 (tiền về). Bước 2 do Head Admin làm: chọn mã kích hoạt và kích hoạt tài khoản.'
-          : 'Bạn đang ở vai Head Admin — chọn mã kích hoạt còn Sẵn hàng trong kho, xác nhận là hệ thống gán mã cho đơn, gửi cho khách và kích hoạt tài khoản.' };
+          ? 'Đang chờ admin đối soát tiền về. Xác nhận xong hệ thống gửi email kèm mã kích hoạt cho khách ngay.'
+          : (selOrderRaw.status === 'order_rejected' ? 'Đơn đã bị từ chối.' : null),
+        actHint: 'Chọn mã kích hoạt còn Sẵn hàng trong kho rồi xác nhận. Hệ thống gán mã cho đơn, chuyển mã sang Đã gán đơn hàng và gửi email báo thanh toán thành công kèm mã kích hoạt cho khách.' };
     }
 
     return {
@@ -962,7 +996,11 @@ class Component extends DCLogic {
       openRejectModal: () => this.setState({ actionModal: { type: 'reject', kind: 'withdrawal', id: s.selectedWithdrawalId }, rejectReason: '' }),
       openPaidModal: () => this.setState({ actionModal: { type: 'paid', kind: 'withdrawal', id: s.selectedWithdrawalId }, paidNote: '' }),
 
-      stockTotal: stockData.length, stockAvailable: stockData.filter(p => p.status === 'available').length,
+      stockTotal: stockData.length,
+      stockReceived: stockData.filter(p => p.status === 'received').length,
+      stockShipped: stockData.filter(p => p.status === 'shipped').length,
+      stockDelivered: stockData.filter(p => p.status === 'delivered').length,
+      stockAvailable: stockData.filter(p => p.status === 'available').length,
       stockAssigned: stockData.filter(p => p.status === 'assigned').length, stockActivated: stockData.filter(p => p.status === 'activated').length,
       stockFilters, stockSearch: s.stockSearch, setStockSearch: (e) => this.setState({ stockSearch: e.target.value, stockPage: 1 }),
       stockItems, stockItemsEmpty, stockRangeStart, stockRangeEnd, stockFilteredCount: stockFiltered.length,
@@ -1083,7 +1121,7 @@ class Component extends DCLogic {
 
       orderTotal: (s.ordersData || []).length,
       orderPendingCount: (s.ordersData || []).filter(o => o.status === 'order_pending').length,
-      orderConfirm1Count: (s.ordersData || []).filter(o => o.status === 'order_confirmed1').length,
+      orderRejectedCount: (s.ordersData || []).filter(o => o.status === 'order_rejected').length,
       orderPaidCount: (s.ordersData || []).filter(o => o.status === 'order_paid').length,
       orderRevenue: (s.ordersData || []).filter(o => o.status === 'order_paid')
         .reduce((t, o) => t + o.amountNum, 0).toLocaleString('vi-VN') + 'đ',
@@ -1108,31 +1146,26 @@ class Component extends DCLogic {
       confirmOrder: () => {
         const o = (s.ordersData || []).find(x => x.id === s.selectedOrderId);
         if (!o) return;
-        const isSpec = s.adminRole === 'specialist', now = '08/09/2026 10:00';
-        // Bước 1: Specialist xác nhận tiền về. Bước 2: Head Admin chọn mã kích
-        // hoạt còn Sẵn hàng trong kho, gán vào đơn và kích hoạt tài khoản.
-        if (!isSpec) {
-          const code = s.orderActivationCode;
-          if (!code) { this.setState({ orderCodeError: 'Chọn mã kích hoạt từ kho trước khi xác nhận.' }); return; }
-          const item = stockData.find(p => p.activationCode === code && p.status === 'available');
-          if (!item) { this.setState({ orderCodeError: 'Mã ' + code + ' không còn ở trạng thái Sẵn hàng.' }); return; }
-          this.setState({
-            ordersData: s.ordersData.map(x => x.id === o.id
-              ? { ...x, status: 'order_paid', activationCode: code,
-                  auditLog: [...x.auditLog, { label: 'Head Admin xác nhận thanh toán, cấp mã ' + code + ' và kích hoạt tài khoản', actor: 'Head Admin', time: now }] }
-              : x),
-            stockData: stockData.map(p => p.activationCode === code
-              ? { ...p, status: 'assigned', orderId: o.id, seller: o.referrer,
-                  log: [...p.log, { label: 'Gán cho đơn ' + o.id, time: now }] }
-              : p),
-            orderActivationCode: '', orderCodeError: ''
-          });
-          return;
-        }
-        this.setState({ ordersData: s.ordersData.map(x => x.id === o.id
-          ? { ...x, status: 'order_confirmed1',
-              auditLog: [...x.auditLog, { label: 'Admin Specialist xác nhận tiền về (chờ Head Admin)', actor: 'Admin Specialist', time: now }] }
-          : x) });
+        const now = '08/09/2026 10:00';
+        const who = s.adminRole === 'specialist' ? 'Admin Specialist' : 'Head Admin';
+        const code = s.orderActivationCode;
+        if (!code) { this.setState({ orderCodeError: 'Chọn mã kích hoạt từ kho trước khi xác nhận.' }); return; }
+        const item = stockData.find(p => p.activationCode === code && p.status === 'available');
+        if (!item) { this.setState({ orderCodeError: 'Mã ' + code + ' không còn ở trạng thái Sẵn hàng.' }); return; }
+        this.setState({
+          ordersData: s.ordersData.map(x => x.id === o.id
+            ? { ...x, status: 'order_paid', activationCode: code,
+                activatedAt: now.slice(0, 10),
+                auditLog: [...x.auditLog,
+                  { label: 'Xác nhận tiền về và cấp mã kích hoạt ' + code, actor: who, time: now },
+                  { label: 'Gửi email báo thanh toán thành công kèm mã kích hoạt cho khách', actor: 'Hệ thống', time: now }] }
+            : x),
+          stockData: stockData.map(p => p.activationCode === code
+            ? { ...p, status: 'assigned', orderId: o.id, seller: o.referrer,
+                log: [...p.log, { label: 'Gán cho đơn ' + o.id, time: now }] }
+            : p),
+          orderActivationCode: '', orderCodeError: ''
+        });
       },
       rejectOrder: () => {
         const now = '08/09/2026 10:05';
@@ -1218,9 +1251,9 @@ class Component extends DCLogic {
         const { id, kind } = s.actionModal, now = '03/09/2026 10:00';
         const isSpecialist = s.adminRole === 'specialist';
         if (kind === 'member') {
-          const nextStatus = isSpecialist ? 'specialist_approved' : 'active';
-          const label = isSpecialist ? 'Admin Specialist duyệt hồ sơ (chờ Head Admin)' : 'Head Admin xác nhận & kích hoạt thành viên';
-          const actor = isSpecialist ? 'Admin Specialist' : 'Head Admin';
+          const nextStatus = 'active';
+          const label = 'Manager duyệt thành viên — mở khoá điểm và ưu đãi đang tạm giữ';
+          const actor = 'Head Admin';
           this.setState({
             memberStatusOverrides: { ...s.memberStatusOverrides, [id]: nextStatus },
             memberAuditLog: { ...s.memberAuditLog, [id]: [...(s.memberAuditLog[id] || []), { label, actor, time: now }] },

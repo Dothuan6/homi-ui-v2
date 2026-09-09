@@ -99,7 +99,28 @@ BG_PATCHES = [
                 <div style="font-size:13px;padding:var(--s3) var(--s5);margin-left:var(--s10);border-left:2px solid rgba(170,170,170,.25);color:var(--c5)">{{g.name}} — F2 · {{g.orders}} đơn</div>
               </sc-for>"""),
     ("""          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử đơn hàng &amp; hoa hồng</div>""",
-     """          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử thăng/giáng hạng</div>
+     """          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Thông tin đăng ký</div>
+          <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px;margin-bottom:var(--s7)">
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Họ và tên</span><span style="font-weight:600;text-align:right">{{selectedMember.name}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số điện thoại</span><span style="font-weight:600;font-family:monospace">{{selectedMember.phone}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Email</span><span style="color:var(--c2);text-align:right">{{selectedMember.email}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số CCCD</span><span style="color:var(--c2);font-family:monospace">{{selectedMember.cccd}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngày cấp · Nơi cấp</span><span style="color:var(--c2);text-align:right">{{selectedMember.cccdIssue}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngày sinh · Giới tính</span><span style="color:var(--c2);text-align:right">{{selectedMember.dobGender}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Địa chỉ</span><span style="color:var(--c2);text-align:right;max-width:60%">{{selectedMember.address}}</span></div>
+          </div>
+          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Thông tin nhận ưu đãi</div>
+          <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px;margin-bottom:var(--s7)">
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngân hàng</span><span style="color:var(--c2);text-align:right">{{selectedMember.bank}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số tài khoản</span><span style="font-weight:600;font-family:monospace">{{selectedMember.bankAccount}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Tên chủ tài khoản</span><span style="font-weight:600;text-align:right">{{selectedMember.bankHolder}}</span></div>
+          </div>
+          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Ảnh CCCD</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);margin-bottom:var(--s7)">
+            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-md);padding:var(--s6);text-align:center;background:rgba(170,170,170,.05)"><div style="font-size:22px;color:var(--c5)">&#128196;</div><div style="font-size:11px;color:var(--c2);font-family:monospace;margin-top:var(--s2)">{{selectedMember.cccdFront}}</div><div style="font-size:10px;color:var(--c5)">Mặt trước</div></div>
+            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-md);padding:var(--s6);text-align:center;background:rgba(170,170,170,.05)"><div style="font-size:22px;color:var(--c5)">&#128196;</div><div style="font-size:11px;color:var(--c2);font-family:monospace;margin-top:var(--s2)">{{selectedMember.cccdBack}}</div><div style="font-size:10px;color:var(--c5)">Mặt sau</div></div>
+          </div>
+          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử thăng/giáng hạng</div>
           <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px;margin-bottom:var(--s7)">
             <sc-for list="{{selectedMember.rankHistory}}" as="rh" hint-placeholder-count="2">
               <div style="display:flex;justify-content:space-between;gap:var(--s5);color:var(--c2)"><span>{{rh.label}}</span><span style="color:var(--c5);flex:none">{{rh.time}}</span></div>
@@ -647,7 +668,7 @@ B6_ORDERS = """      <!-- B6 ORDERS (bổ sung, không có trong mockup KH) -->
 
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s5)">
             <div style="background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Chờ đối soát</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{orderPendingCount}}</div></div>
-            <div style="background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Chờ Head Admin</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{orderConfirm1Count}}</div></div>
+            <div style="background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Từ chối</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{orderRejectedCount}}</div></div>
             <div style="background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Đã thanh toán</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{orderPaidCount}}</div></div>
             <div style="background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Doanh thu đã đối soát</div><div style="font-size:22px;font-weight:700;color:var(--c1)">{{orderRevenue}}</div></div>
           </div>
@@ -673,6 +694,8 @@ B6_ORDERS = """      <!-- B6 ORDERS (bổ sung, không có trong mockup KH) -->
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Minh chứng</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Người giới thiệu</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Ngày đặt</th>
+                  <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Ngày kích hoạt</th>
+                  <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Ngày hết hiệu lực</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Trạng thái</th>
                 </tr>
               </thead>
@@ -685,8 +708,10 @@ B6_ORDERS = """      <!-- B6 ORDERS (bổ sung, không có trong mockup KH) -->
                     <td style="padding:var(--s5);font-weight:600;color:var(--c1);white-space:nowrap">{{o.amount}}</td>
                     <td style="padding:var(--s5);color:var(--c2);font-family:monospace;font-size:12px">{{o.transferNote}}</td>
                     <td style="padding:var(--s5)"><span style="display:inline-block;padding:4px 10px;border-radius:var(--r-xl);font-size:11px;font-weight:600;background:{{o.proofBg}};color:{{o.proofColor}};white-space:nowrap">{{o.proofLabel}}</span></td>
-                    <td style="padding:var(--s5);color:var(--c2);white-space:nowrap">{{o.referrer}}</td>
+                    <td style="padding:var(--s5);color:var(--c2);white-space:nowrap"><div>{{o.referrer}}</div><div style="font-size:11px;color:var(--c5);font-family:monospace">{{o.refCode}}</div></td>
                     <td style="padding:var(--s5);color:var(--c5);white-space:nowrap">{{o.date}}</td>
+                    <td style="padding:var(--s5);color:var(--c4);white-space:nowrap">{{o.activatedLabel}}</td>
+                    <td style="padding:var(--s5);color:var(--c4);white-space:nowrap">{{o.expiresLabel}}</td>
                     <td style="padding:var(--s5)"><span style="display:inline-block;padding:4px 10px;border-radius:var(--r-xl);font-size:11px;font-weight:600;background:{{o.badgeBg}};color:{{o.badgeColor}};white-space:nowrap">{{o.statusLabel}}</span></td>
                   </tr>
                 </sc-for>
@@ -1140,6 +1165,42 @@ BG_PATCHES += [
     ('<span style="font-weight:600;font-family:monospace">{{buyerBankAccount}}</span>',
      '<span style="font-weight:600;font-family:monospace">{{withdrawAccount}}</span>'),
 
+    # (2) B2 chỉ giữ MỘT link, đổi tên thành "Link giới thiệu".
+    ('<div>Tên</div><div>Liên hệ</div><div>Mã TV</div><div>Link form</div>'
+     '<div>Link đăng nhập</div><div>Tuyến trên</div>',
+     '<div>Tên</div><div>Liên hệ</div><div>Mã TV</div><div>Link giới thiệu</div>'
+     '<div>Tuyến trên</div>'),
+    ('grid-template-columns:1.3fr 1fr .8fr 1fr 1.1fr .9fr .6fr .8fr .8fr .6fr;'
+     'min-width:1080px',
+     'grid-template-columns:1.3fr 1fr .8fr 1.2fr .9fr .7fr .9fr .9fr .6fr;'
+     'min-width:1020px'),
+    ('                <div title="{{m.loginLink}}" style="position:relative;display:flex;'
+     'align-items:center;gap:4px;color:var(--c6);font-family:monospace;font-size:12px;'
+     'overflow:hidden" style-hover="background:rgba(0,173,238,.08)">\n'
+     '                  <span style="overflow:hidden;text-overflow:ellipsis;'
+     'white-space:nowrap">{{m.loginLinkShort}}</span>\n'
+     '                  <button sc-camel-on-click="{{m.copyLoginLink}}" '
+     'title="Sao chép link" style="flex:none;width:20px;height:20px;border:none;'
+     'background:none;color:var(--c6);cursor:pointer;opacity:0;font-size:13px;'
+     'line-height:1" style-hover="opacity:1">{{m.loginLinkCopyIcon}}</button>\n'
+     '                </div>\n', ''),
+
+    # (6) Ô thống kê kho: 3 -> 5 trạng thái.
+    ('<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s5)">\n'
+     '            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Sẵn hàng</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{stockAvailable}}</div></div>\n'
+     '            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Đã gán đơn hàng</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{stockAssigned}}</div></div>\n'
+     '            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Đã kích hoạt</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{stockActivated}}</div></div>',
+     '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:var(--s5)">\n'
+     '            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Nhập kho</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{stockReceived}}</div></div>\n'
+     '            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Sẵn hàng</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{stockAvailable}}</div></div>\n'
+     '            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Đã gán đơn hàng</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{stockAssigned}}</div></div>\n'
+     '            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Xuất kho</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{stockShipped}}</div></div>\n'
+     '            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Giao thành công</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{stockDelivered}}</div></div>'),
+
+    # (3) (7) Cột "Seller" -> "Thành viên" ở màn rút tiền và màn kho.
+    ('<div>Seller</div>', '<div>Thành viên</div>'),
+    ('>Seller<', '>Thành viên<'),
+
     # ----- (15) B2: hiện mã tuyến trên cạnh tên tuyến trên ----------------
     ('<div style="color:var(--c4);overflow:hidden;text-overflow:ellipsis;'
      'white-space:nowrap">{{m.upline}}</div>',
@@ -1153,14 +1214,16 @@ BG_PATCHES += [
      '<div>Seller</div><div>Ngày nhập kho</div><div>Trạng thái</div><div></div>',
      '<div>Mã sản phẩm</div><div>Mã kích hoạt</div><div>Đơn hàng gắn</div>'
      '<div>Seller</div><div>Ngày nhập kho</div><div>Ngày hiệu lực</div>'
-     '<div>Ngày hết hiệu lực</div><div>Trạng thái</div><div></div>'),
+     '<div>Ngày hết hiệu lực</div><div>Mã vận đơn</div><div>Trạng thái</div><div></div>'),
     ('<div style="color:var(--c5)">{{p.stockedAt}}</div>',
      '<div style="color:var(--c5)">{{p.stockedAt}}</div>\n'
      '                <div style="color:var(--c4)">{{p.activeFrom}}</div>\n'
-     '                <div style="color:var(--c4)">{{p.activeTo}}</div>'),
-    # Lưới bảng kho: 7 cột -> 9 cột.
+     '                <div style="color:var(--c4)">{{p.activeTo}}</div>\n'
+     '                <div style="color:var(--c4);font-family:monospace">{{p.tracking}}</div>'),
+    # Lưới bảng kho: 7 cột -> 10 cột.
     ('grid-template-columns:1fr 1.4fr 1fr 1fr 1fr .9fr 1fr;min-width:900px',
-     'grid-template-columns:1fr 1.3fr .9fr 1fr .9fr .9fr 1fr .9fr .8fr;min-width:1180px'),
+     'grid-template-columns:1fr 1.2fr .9fr 1fr .9fr .9fr .9fr 1fr 1.1fr .8fr;'
+     'min-width:1380px'),
 
     # Chèn màn Đơn hàng (B6) và Quản lý sản phẩm (B5) ngay trước khối B4.
     ("      <!-- B4 WAREHOUSE -->",
@@ -1542,6 +1605,31 @@ JS_PATCHES = [
      "      metricRank: s.agentStage === 'active' ? 'Silver' : 'Copper',"),
     # (Hạng của từng dòng trong bảng thành viên được đổi ngay trong bản vá
     #  "(15) Mã tuyến trên" bên dưới — cùng một dòng return nên gộp lại.)
+    # (8) Bỏ duyệt 2 lượt ở màn thành viên. Đơn hàng được admin xác nhận
+    # thanh toán trước (màn Đơn hàng), sau đó Manager duyệt thành viên để mở
+    # khoá điểm và ưu đãi đang tạm giữ.
+    ("        canApproveMember: (isSpecialist && effStatus === 'pending') || (!isSpecialist && effStatus === 'specialist_approved'),\n"
+     "        canRejectMember: ['pending', 'specialist_approved'].includes(effStatus),\n"
+     "        approveMemberButtonLabel: isSpecialist ? 'Duyệt hồ sơ (Specialist)' : 'Duyệt & kích hoạt (Head Admin)',\n"
+     "        approvalStageNote: effStatus === 'pending' ? 'Đang chờ Admin Specialist duyệt hồ sơ (bước 1/2).' : effStatus === 'specialist_approved' ? 'Đã qua Specialist — chờ Head Admin xác nhận để kích hoạt (bước 2/2).' : (effStatus === 'rejected' ? 'Hồ sơ đã bị từ chối.' : null)",
+     "        canApproveMember: !isSpecialist && effStatus === 'specialist_approved',\n"
+     "        canRejectMember: !isSpecialist && effStatus === 'specialist_approved',\n"
+     "        approveMemberButtonLabel: 'Duyệt thành viên · mở khoá điểm và ưu đãi',\n"
+     "        approvalStageNote: effStatus === 'pending'\n"
+     "          ? 'Chưa xác nhận thanh toán. Vào màn Đơn hàng xác nhận tiền về trước, hồ sơ này mới duyệt được.'\n"
+     "          : effStatus === 'specialist_approved'\n"
+     "            ? 'Đơn hàng đã được xác nhận thanh toán. Manager duyệt để thành viên nhận điểm và ưu đãi đang tạm giữ.'\n"
+     "            : (effStatus === 'rejected' ? 'Hồ sơ đã bị từ chối.' : null)"),
+
+    # Duyệt thành viên chỉ còn MỘT lượt, do Manager (Head Admin) thực hiện.
+    ("          const nextStatus = isSpecialist ? 'specialist_approved' : 'active';\n"
+     "          const label = isSpecialist ? 'Admin Specialist duyệt hồ sơ (chờ Head Admin)' : 'Head Admin xác nhận & kích hoạt thành viên';\n"
+     "          const actor = isSpecialist ? 'Admin Specialist' : 'Head Admin';",
+     "          const nextStatus = 'active';\n"
+     "          const label = 'Manager duyệt thành viên — mở khoá điểm và ưu đãi đang tạm giữ';\n"
+     "          const actor = 'Head Admin';"),
+
+
     # (Hạng trong ngăn chi tiết cũng gộp vào bản vá lịch sử hạng bên dưới —
     #  cùng một dòng nên không tách được.)
 
@@ -1556,13 +1644,16 @@ JS_PATCHES = [
      "upline:'Trần Thị Bích', rank:'Đồng', joined:'02/09/2026', status:'pending', tree:[] },\n"
      "    { id:7, name:'Trương Thanh Bình', phone:'0938884123', contact:'093•••123',\n"
      "      affId:'780314', upline:'Vũ Minh Khang', rank:'Đồng', joined:'05/09/2026',\n"
-     "      status:'active', tree:[] }"),
+     "      status:'specialist_approved', tree:[] }"),
 
     # (15) Mã tuyến trên hiển thị cạnh tên tuyến trên — cũng dùng alias.
     ("        return { ...m, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,",
      "        const up = this.MEMBERS.find(u => u.name === m.upline);\n"
      "        return { ...m, affId: affCode, rank: this.RANK_LABEL[m.rank] || m.rank,\n"
-     "          status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,\n"
+     "          status: effStatus, badgeBg: bg, badgeColor: color,\n"
+     "          // Nhãn riêng cho thành viên — badge() dùng chung với rút tiền,\n"
+     "          // mà rút tiền vẫn giữ mô hình duyệt 2 lượt.\n"
+     "          statusLabel: this.MEMBER_STATUS_LABEL[effStatus] || label,\n"
      "          uplineCode: up ? ALIAS[up.id] : '',"),
 
     # Link form của agent cũng về đúng một dạng homi365.com.vn/<alias>.
@@ -1570,6 +1661,30 @@ JS_PATCHES = [
      "formLink: 'homi365.com.vn/' + affCode"),
     ("navigator.clipboard.writeText('portal.homi365.com.vn/' + affCode)",
      "navigator.clipboard.writeText('homi365.com.vn/' + affCode)"),
+
+    # (6) Đếm theo 5 trạng thái kho.
+    ("      stockTotal: stockData.length, stockAvailable: stockData.filter(p => p.status === 'available').length,",
+     "      stockTotal: stockData.length,\n"
+     "      stockReceived: stockData.filter(p => p.status === 'received').length,\n"
+     "      stockShipped: stockData.filter(p => p.status === 'shipped').length,\n"
+     "      stockDelivered: stockData.filter(p => p.status === 'delivered').length,\n"
+     "      stockAvailable: stockData.filter(p => p.status === 'available').length,"),
+
+    # (6) Vòng đời kho 5 bước: Nhập kho -> Sẵn hàng -> Gán đơn (kích hoạt)
+    # -> Xuất kho -> Giao hàng thành công (kèm mã vận đơn).
+    ("  STOCK_FILTERS = [['all','Tất cả'],['available','Sẵn hàng'],['assigned','Đã gán đơn hàng'],['activated','Đã kích hoạt']];",
+     "  STOCK_FILTERS = [['all','Tất cả'],['received','Nhập kho'],['available','Sẵn hàng'],"
+     "['assigned','Đã gán đơn hàng'],['shipped','Xuất kho'],['delivered','Giao hàng thành công']];"),
+
+    ("""    const statuses = ['available','available','assigned','activated'];""",
+     """    const statuses = ['received','available','available','assigned','shipped','delivered'];"""),
+
+    ("""        stockedAt: '0' + (1 + i % 9) + '/08/2026', status,
+        log: [{ label: 'Nhập kho', time: '0' + (1 + i % 9) + '/08/2026 08:00' }]""",
+     """        stockedAt: '0' + (1 + i % 9) + '/08/2026', status,
+        tracking: (status === 'shipped' || status === 'delivered')
+          ? 'VN' + (830000000 + i * 137) : '—',
+        log: [{ label: 'Nhập kho', time: '0' + (1 + i % 9) + '/08/2026 08:00' }]"""),
 
     # (16) Ngày hiệu lực = lúc admin xác nhận thanh toán và gửi mã cho khách.
     # Ngày hết hiệu lực = cộng thời hạn gói (bản mẫu dùng gói 1 năm).
@@ -1583,7 +1698,7 @@ JS_PATCHES = [
     };
     const stockItems = stockFiltered.slice((stockPage - 1) * stockPageSize, stockPage * stockPageSize).map(p => {
       const [bg, color, label] = this.badge(p.status);
-      const live = p.status !== 'available';
+      const live = !['received', 'available'].includes(p.status);
       return { ...p, badgeBg: bg, badgeColor: color, statusLabel: label,
         activeFrom: live ? p.stockedAt : '—',
         activeTo: live ? plusYear(p.stockedAt) : '—',
@@ -1601,6 +1716,19 @@ JS_PATCHES = [
     ("      selectedMember = {\n        ...selectedMemberRaw, status: effStatus,",
      "      selectedMember = {\n        ...selectedMemberRaw, status: effStatus,\n"
      "        rank: this.RANK_LABEL[selectedMemberRaw.rank] || selectedMemberRaw.rank,\n"
+     "        // (1) Hồ sơ đăng ký đầy đủ, đúng những gì thành viên đã khai.\n"
+     "        email: (selectedMemberRaw.name.split(' ').slice(-1)[0] || 'user')\n"
+     "          .normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase()\n"
+     "          + selectedMemberRaw.phone.slice(-4) + '@gmail.com',\n"
+     "        cccd: '079' + selectedMemberRaw.phone.slice(-9),\n"
+     "        cccdIssue: '22/01/2021 · Cục Cảnh sát QLHC về TTXH',\n"
+     "        dobGender: '15/03/1992 · Nữ',\n"
+     "        address: '12 Nguyễn Huệ, Phường Bến Thành, TP. Hồ Chí Minh',\n"
+     "        bank: 'Vietcombank — NH TMCP Ngoại thương Việt Nam',\n"
+     "        bankAccount: '0071' + selectedMemberRaw.phone.slice(-9),\n"
+     "        bankHolder: this.vnUpper(selectedMemberRaw.name),\n"
+     "        cccdFront: 'cccd-truoc-' + ALIAS[selectedMemberRaw.id] + '.jpg',\n"
+     "        cccdBack: 'cccd-sau-' + ALIAS[selectedMemberRaw.id] + '.jpg',\n"
      "        rankHistory: this.RANK_HISTORY[selectedMemberRaw.id]\n"
      "          || [{ label: 'Tham gia · hạng '\n"
      "                 + (this.RANK_LABEL[selectedMemberRaw.rank] || selectedMemberRaw.rank),\n"
@@ -1751,8 +1879,10 @@ JS_PATCHES = [
     # Badge cho vòng đời đơn hàng (khác badge rút tiền: 'paid' đã dùng cho chi trả).
     ("      activated: ['rgba(0,173,238,.14)', '#00728f', 'Đã kích hoạt']",
      "      activated: ['rgba(0,173,238,.14)', '#00728f', 'Đã kích hoạt'],\n"
+     "      received: ['rgba(170,170,170,.18)', '#5c5c5c', 'Nhập kho'],\n"
+     "      shipped: ['rgba(0,173,238,.14)', '#00728f', 'Xuất kho'],\n"
+     "      delivered: ['rgba(132,190,82,.14)', '#4c7a2e', 'Giao hàng thành công'],\n"
      "      order_pending: ['rgba(255,165,0,.15)', '#a36400', 'Chờ đối soát'],\n"
-     "      order_confirmed1: ['rgba(255,165,0,.15)', '#a36400', 'Chờ Head Admin xác nhận'],\n"
      "      order_paid: ['rgba(132,190,82,.14)', '#4c7a2e', 'Đã thanh toán · đã cấp mã'],\n"
      "      order_rejected: ['rgba(217,52,43,.12)', '#D9342B', 'Từ chối']"),
 
@@ -1778,7 +1908,7 @@ JS_PATCHES = [
 
     # Dữ liệu sản phẩm + đơn hàng (mockup KH không có 2 màn này).
     ("  componentDidMount() {",
-     """  ORDER_FILTERS = [['all','Tất cả'],['order_pending','Chờ đối soát'],['order_confirmed1','Chờ Head Admin'],['order_paid','Đã thanh toán'],['order_rejected','Từ chối']];
+     """  ORDER_FILTERS = [['all','Tất cả'],['order_pending','Chờ đối soát'],['order_paid','Đã thanh toán'],['order_rejected','Từ chối']];
 
   makeOrders() {
     const raw = [
@@ -1791,14 +1921,13 @@ JS_PATCHES = [
       { id:'DH100511', buyer:'Lý Thị Hoa', phone:'0902222222', email:'lythihoa@gmail.com',
         address:'45 Lê Lợi, Phường Bến Thành, TP. Hồ Chí Minh',
         pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Lê Văn Cường', refCode:'LVC5456',
-        date:'02/09/2026 15:40', status:'order_confirmed1', proof:'bill-DH100511.jpg', activationCode:null,
+        date:'02/09/2026 15:40', status:'order_pending', proof:'bill-DH100511.jpg', activationCode:null,
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'02/09/2026 15:40'},
-                  {label:'Khách tải ảnh chuyển khoản', actor:'Lý Thị Hoa', time:'02/09/2026 15:52'},
-                  {label:'Admin Specialist xác nhận tiền về (chờ Head Admin)', actor:'Admin Specialist', time:'02/09/2026 16:30'}] },
+                  {label:'Khách tải ảnh chuyển khoản', actor:'Lý Thị Hoa', time:'02/09/2026 15:52'}] },
       { id:'DH100234', buyer:'Đỗ Anh Tuấn', phone:'0903333333', email:'doanhtuan@gmail.com',
         address:'88 Trần Hưng Đạo, Phường Cầu Ông Lãnh, TP. Hồ Chí Minh',
         pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Vũ Minh Khang', refCode:'VMK7998',
-        date:'30/08/2026 08:05', status:'order_paid', proof:'bill-DH100234.jpg', activationCode:'ACT-100481',
+        date:'30/08/2026 08:05', status:'order_paid', proof:'bill-DH100234.jpg', activationCode:'ACT-100481', activatedAt:'30/08/2026',
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'30/08/2026 08:05'},
                   {label:'Khách tải ảnh chuyển khoản', actor:'Đỗ Anh Tuấn', time:'30/08/2026 08:19'},
                   {label:'Admin Specialist xác nhận tiền về (chờ Head Admin)', actor:'Admin Specialist', time:'30/08/2026 09:10'},
@@ -1806,7 +1935,7 @@ JS_PATCHES = [
       { id:'DH100088', buyer:'Ngô Thị Em', phone:'0904444444', email:'ngothiem@gmail.com',
         address:'7 Nguyễn Trãi, Phường Bến Thành, TP. Hồ Chí Minh',
         pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Lê Văn Cường', refCode:'LVC5456',
-        date:'28/08/2026 11:30', status:'order_paid', proof:'bill-DH100088.jpg', activationCode:'ACT-100337',
+        date:'28/08/2026 11:30', status:'order_paid', proof:'bill-DH100088.jpg', activationCode:'ACT-100337', activatedAt:'28/08/2026',
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'28/08/2026 11:30'},
                   {label:'Head Admin xác nhận & cấp mã kích hoạt ACT-100337', actor:'Head Admin', time:'28/08/2026 14:00'}] },
       { id:'DH100012', buyer:'Phạm Quốc Bảo', phone:'0905555555', email:'pqbao@gmail.com',
@@ -1861,6 +1990,15 @@ JS_PATCHES = [
   ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27', custom:'6' };
   ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1', custom:'1' };
 
+  // Trạng thái hồ sơ thành viên (khác vòng duyệt 2 lượt của rút tiền).
+  MEMBER_STATUS_LABEL = {
+    pending: 'Chờ xác nhận thanh toán',
+    specialist_approved: 'Chờ Manager duyệt',
+    active: 'Đang hoạt động',
+    locked: 'Đã khoá',
+    rejected: 'Từ chối'
+  };
+
   // 6 hạng chính thức — không dịch sang tiếng Việt.
   RANKS = ['Copper', 'Silver', 'Gold', 'Diamond', 'Titanium', 'Lithium'];
   RANK_LABEL = { 'Đồng': 'Copper', 'Bạc': 'Silver', 'Vàng': 'Gold',
@@ -1914,6 +2052,12 @@ JS_PATCHES = [
         return { ...o, badgeBg: bg, badgeColor: color, statusLabel: label,
           // Nội dung chuyển khoản đúng cú pháp hướng dẫn ở màn QR (A1).
           transferNote: o.buyer + ' - Chuyen khoan don hang ' + o.id,
+          // Ngày kích hoạt = lúc admin xác nhận tiền về; hết hiệu lực theo gói.
+          activatedLabel: o.activatedAt || '—',
+          expiresLabel: o.activatedAt
+            ? (function (d) { const q = d.split('/');
+                return q.length === 3 ? q[0] + '/' + q[1] + '/' + (parseInt(q[2], 10) + 1) : '—'; })(o.activatedAt)
+            : '—',
           proofLabel: o.proof ? 'Đã tải lên' : 'Chưa có',
           proofBg: o.proof ? 'rgba(132,190,82,.14)' : 'rgba(170,170,170,.18)',
           proofColor: o.proof ? '#4c7a2e' : '#5c5c5c',
@@ -1924,24 +2068,20 @@ JS_PATCHES = [
     if (selOrderRaw) {
       const [obg, ocolor, olabel] = this.badge(selOrderRaw.status);
       const isSpecO = s.adminRole === 'specialist';
-      const canConfirmO = (isSpecO && selOrderRaw.status === 'order_pending')
-        || (!isSpecO && selOrderRaw.status === 'order_confirmed1');
-      const canRejectO = ['order_pending', 'order_confirmed1'].includes(selOrderRaw.status);
+      // Chốt 09/09 (bản mới): đơn hàng CHỈ CẦN 1 admin xác nhận, không duyệt
+      // 2 lớp. Xác nhận tiền về + chọn mã kích hoạt -> gửi email cho khách ngay.
+      const canConfirmO = selOrderRaw.status === 'order_pending';
+      const canRejectO = selOrderRaw.status === 'order_pending';
       selectedOrder = { ...selOrderRaw, badgeBg: obg, badgeColor: ocolor, statusLabel: olabel,
         activationCodeLabel: selOrderRaw.activationCode || '— chưa cấp —',
         canConfirm: canConfirmO, canReject: canRejectO, canAct: canConfirmO || canRejectO,
-        needsCodePick: canConfirmO && !isSpecO,
+        needsCodePick: canConfirmO,
         isRejected: selOrderRaw.status === 'order_rejected',
-        confirmLabel: isSpecO ? 'Xác nhận tiền về (Specialist)'
-                              : 'Xác nhận, cấp mã & kích hoạt tài khoản (Head Admin)',
+        confirmLabel: 'Xác nhận tiền về & cấp mã kích hoạt',
         stageNote: selOrderRaw.status === 'order_pending'
-          ? 'Đang chờ Admin Specialist đối soát tiền về (bước 1/2).'
-          : selOrderRaw.status === 'order_confirmed1'
-            ? 'Đã qua Specialist — chờ Head Admin xác nhận để cấp mã kích hoạt (bước 2/2).'
-            : (selOrderRaw.status === 'order_rejected' ? 'Đơn đã bị từ chối.' : null),
-        actHint: isSpecO
-          ? 'Bạn đang ở vai Admin Specialist — chỉ xác nhận được bước 1 (tiền về). Bước 2 do Head Admin làm: chọn mã kích hoạt và kích hoạt tài khoản.'
-          : 'Bạn đang ở vai Head Admin — chọn mã kích hoạt còn Sẵn hàng trong kho, xác nhận là hệ thống gán mã cho đơn, gửi cho khách và kích hoạt tài khoản.' };
+          ? 'Đang chờ admin đối soát tiền về. Xác nhận xong hệ thống gửi email kèm mã kích hoạt cho khách ngay.'
+          : (selOrderRaw.status === 'order_rejected' ? 'Đơn đã bị từ chối.' : null),
+        actHint: 'Chọn mã kích hoạt còn Sẵn hàng trong kho rồi xác nhận. Hệ thống gán mã cho đơn, chuyển mã sang Đã gán đơn hàng và gửi email báo thanh toán thành công kèm mã kích hoạt cho khách.' };
     }
 
     return {
@@ -2060,7 +2200,7 @@ JS_PATCHES = [
 
       orderTotal: (s.ordersData || []).length,
       orderPendingCount: (s.ordersData || []).filter(o => o.status === 'order_pending').length,
-      orderConfirm1Count: (s.ordersData || []).filter(o => o.status === 'order_confirmed1').length,
+      orderRejectedCount: (s.ordersData || []).filter(o => o.status === 'order_rejected').length,
       orderPaidCount: (s.ordersData || []).filter(o => o.status === 'order_paid').length,
       orderRevenue: (s.ordersData || []).filter(o => o.status === 'order_paid')
         .reduce((t, o) => t + o.amountNum, 0).toLocaleString('vi-VN') + 'đ',
@@ -2085,31 +2225,26 @@ JS_PATCHES = [
       confirmOrder: () => {
         const o = (s.ordersData || []).find(x => x.id === s.selectedOrderId);
         if (!o) return;
-        const isSpec = s.adminRole === 'specialist', now = '08/09/2026 10:00';
-        // Bước 1: Specialist xác nhận tiền về. Bước 2: Head Admin chọn mã kích
-        // hoạt còn Sẵn hàng trong kho, gán vào đơn và kích hoạt tài khoản.
-        if (!isSpec) {
-          const code = s.orderActivationCode;
-          if (!code) { this.setState({ orderCodeError: 'Chọn mã kích hoạt từ kho trước khi xác nhận.' }); return; }
-          const item = stockData.find(p => p.activationCode === code && p.status === 'available');
-          if (!item) { this.setState({ orderCodeError: 'Mã ' + code + ' không còn ở trạng thái Sẵn hàng.' }); return; }
-          this.setState({
-            ordersData: s.ordersData.map(x => x.id === o.id
-              ? { ...x, status: 'order_paid', activationCode: code,
-                  auditLog: [...x.auditLog, { label: 'Head Admin xác nhận thanh toán, cấp mã ' + code + ' và kích hoạt tài khoản', actor: 'Head Admin', time: now }] }
-              : x),
-            stockData: stockData.map(p => p.activationCode === code
-              ? { ...p, status: 'assigned', orderId: o.id, seller: o.referrer,
-                  log: [...p.log, { label: 'Gán cho đơn ' + o.id, time: now }] }
-              : p),
-            orderActivationCode: '', orderCodeError: ''
-          });
-          return;
-        }
-        this.setState({ ordersData: s.ordersData.map(x => x.id === o.id
-          ? { ...x, status: 'order_confirmed1',
-              auditLog: [...x.auditLog, { label: 'Admin Specialist xác nhận tiền về (chờ Head Admin)', actor: 'Admin Specialist', time: now }] }
-          : x) });
+        const now = '08/09/2026 10:00';
+        const who = s.adminRole === 'specialist' ? 'Admin Specialist' : 'Head Admin';
+        const code = s.orderActivationCode;
+        if (!code) { this.setState({ orderCodeError: 'Chọn mã kích hoạt từ kho trước khi xác nhận.' }); return; }
+        const item = stockData.find(p => p.activationCode === code && p.status === 'available');
+        if (!item) { this.setState({ orderCodeError: 'Mã ' + code + ' không còn ở trạng thái Sẵn hàng.' }); return; }
+        this.setState({
+          ordersData: s.ordersData.map(x => x.id === o.id
+            ? { ...x, status: 'order_paid', activationCode: code,
+                activatedAt: now.slice(0, 10),
+                auditLog: [...x.auditLog,
+                  { label: 'Xác nhận tiền về và cấp mã kích hoạt ' + code, actor: who, time: now },
+                  { label: 'Gửi email báo thanh toán thành công kèm mã kích hoạt cho khách', actor: 'Hệ thống', time: now }] }
+            : x),
+          stockData: stockData.map(p => p.activationCode === code
+            ? { ...p, status: 'assigned', orderId: o.id, seller: o.referrer,
+                log: [...p.log, { label: 'Gán cho đơn ' + o.id, time: now }] }
+            : p),
+          orderActivationCode: '', orderCodeError: ''
+        });
       },
       rejectOrder: () => {
         const now = '08/09/2026 10:05';
