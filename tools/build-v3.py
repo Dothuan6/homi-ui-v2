@@ -937,6 +937,21 @@ BG_PATCHES += [
      '<strong>trừ email và số điện thoại</strong> — hai trường này gắn với đơn đã '
      'thanh toán nên không đổi được.</div>'),
 
+    # A2 cũng cần Tên chủ tài khoản như form mua hàng.
+    ('<div style="font-size:11px;color:var(--c5)">Chỉ hiển thị đầy đủ trong '
+     'khu vực quản trị nội bộ.</div></div>',
+     '<div style="font-size:11px;color:var(--c5)">Chỉ hiển thị đầy đủ trong '
+     'khu vực quản trị nội bộ.</div></div>\n'
+     '          <div style="display:flex;flex-direction:column;gap:var(--s2)">'
+     '<label style="font-size:14px;font-weight:600;color:var(--c2)">'
+     'Tên chủ tài khoản (*)</label>'
+     '<input type="text" placeholder="NGUYEN VAN AN" value="{{accountHolder}}" '
+     'sc-camel-on-change="{{setAccountHolder}}" style="height:44px;padding:0 var(--s5);'
+     'border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px;'
+     'text-transform:uppercase" style-focus="%s">'
+     '<div style="font-size:11px;color:var(--c5);line-height:1.5">Viết hoa, không dấu '
+     '— hệ thống tự chuẩn hoá khi bạn gõ.</div></div>' % _FOCUS),
+
     # ----- (12) Ngày cấp / Nơi cấp ngay dưới số CCCD ----------------------
     ('<div style="display:flex;flex-direction:column;gap:var(--s2)">'
      '<label style="font-size:14px;font-weight:600;color:var(--c2)">Địa chỉ (*)</label>'
