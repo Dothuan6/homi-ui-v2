@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 · Đăng nhập quản trị · HOMI365</title>
+<link rel="icon" href="../assets/Icon_viewweb_final.jpg">
+<meta name="theme-color" content="#1E3A66">
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<script>
+window.__FILES = {"A1": "a1-buy.html", "A2": "a2-register.html", "A3": "a3-dashboard.html", "C1": "c1-login.html", "B1": "b1-admin-login.html", "B2": "b2-members.html", "B3": "b3-withdrawals.html", "B4": "b4-warehouse.html", "B5": "b5-products.html", "B6": "b6-orders.html", "B7": "b7-admin-users.html"};
+window.__STATE__ = {"screen": "B1"};
+// dữ liệu mang sang từ màn trước (bấm nút điều hướng)
+try { var c = sessionStorage.getItem('__homi_carry');
+      if (c) { Object.assign(window.__STATE__, JSON.parse(c)); sessionStorage.removeItem('__homi_carry'); } } catch (e) {}
+// mở thẳng một trạng thái: b1-admin-login.html#...
+var H = {}, h = location.hash.slice(1);
+if (H[h]) Object.assign(window.__STATE__, H[h]);
+</script>
+<script src="../js/dc-runtime.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics=""></helmet>
+<div style="font-family:var(--ff); background:var(--warm-50); min-height:100vh; color:var(--c1)">
+
+  <div style="position:sticky;top:0;z-index:50;background:var(--c12);border-bottom:1px solid rgba(154,163,176,.35);display:flex;align-items:center;gap:var(--s7);padding:16px var(--s7);flex-wrap:wrap">
+    <div style="width:100%;max-width:1160px;margin:0 auto;display:flex;align-items:center">
+      <a href="../index.html" title="Danh sách màn hình" style="display:flex;align-items:center;text-decoration:none"><img src="../assets/logo homi-01.png" alt="HOMI365" style="height:40px;width:auto;display:block"></a>
+    </div>
+  </div>
+
+  <sc-if value="{{isB1}}" hint-placeholder-val="{{false}}">
+  <div style="min-height:calc(100vh - 73px);display:flex;justify-content:center;align-items:center;background:var(--c3);padding:var(--s10) var(--s7)">
+    <div style="width:100%;max-width:380px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s10);box-shadow:0 8px 30px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:var(--s8)">
+      <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:var(--c1)">Medigo Admin</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Khu vực vận hành nội bộ Homi365</div></div>
+      <div style="display:flex;flex-direction:column;gap:var(--s7)">
+        <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Email/username</label><input type="text" placeholder="admin@homi365.vn" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1B3358;box-shadow:0 0 0 3px rgba(27,51,88,.25)"></div>
+        <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Mật khẩu</label><input type="password" placeholder="Nhập mật khẩu" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1B3358;box-shadow:0 0 0 3px rgba(27,51,88,.25)"></div>
+        
+        <button sc-camel-on-click="{{adminLoginSubmit}}" style="height:46px;background:var(--c3);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600" style-hover="background:#122544">Đăng nhập</button>
+        <div style="font-size:11px;color:var(--c5);text-align:center">Hệ thống thao tác tài chính — tách biệt hoàn toàn với đăng nhập seller.</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="">
+class Component extends DCLogic {
+  state = {
+    screen: 'A1',
+    buyerName: '', buyerPhone: '', buyerEmail: '', buyerCccd: '', buyerAddress: '', buyerDob: '', buyerBankAccount: '',
+    cn02Package: '1y',
+    showQRPayment: false, orderId: 'DH923983',
+    showPaymentSuccess: false,
+    showOrderLookup: false, orderLookupInput: '', orderLookupError: false,
+    showUplineBlockedModal: false, uplineRank: 'silver',
+    regStep: 1, regPassword: '', regConfirmPassword: '', regPasswordErrorMsg: '', tncChecked: false,
+    copyLabel: 'Copy link',
+    agentStage: 'new',
+    chartRange: '7d',
+    showWithdrawForm: false, withdrawAmount: '', showWithdrawSuccess: false,
+    withdrawalsData: null, stockData: null,
+    agentPhone: '', agentPassword: '', agentLoginStep: 'login', agentLoginError: false, pwdVisible: false,
+    forgotPhone: '', forgotPhoneError: false, forgotNewPassword: '', forgotConfirmPassword: '', forgotResetErrorMsg: '',
+    adminRole: 'specialist',
+    memberSearch: '', memberStatusOverrides: {}, memberAuditLog: {},
+    lockedIds: {}, copiedLinkId: null,
+    withdrawalSearch: '', withdrawalStatusFilter: 'all',
+    stockSearch: '', stockStatusFilter: 'all', stockPage: 1,
+    selectedMemberId: null, selectedWithdrawalId: null, selectedStockId: null,
+    actionModal: null, rejectReason: '', paidNote: '',
+    showProductForm: false, editingProductId: null,
+    showAddStock: false, addStockSku: '', addStockCode: '', addStockError: '',
+    showImportStock: false, importText: '', importResult: null,
+    orderActivationCode: '', orderCodeError: '',
+    copyPersonalLabel: 'Copy link',
+    showAdminUserForm: false, editingAdminUserId: null, adminUserLocks: {},
+    orderRange: 'month',
+    ordersData: null, orderSearch: '', orderStatusFilter: 'all',
+    selectedOrderId: null,
+    ...(window.__STATE__ || {})
+  };
+
+  NAV = [
+    ['A1','A1 · Thông tin nhận hàng'],['A2','A2 · Đăng ký Agent'],['A3','A3 · Dashboard'],
+    ['C1','C1 · Đăng nhập Agent'],
+    ['B1','B1 · Đăng nhập admin'],['B2','B2 · Thành viên'],['B3','B3 · Rút tiền'],['B4','B4 · Kho hàng']
+  ];
+
+  ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu rút tiền'],['B6','Đơn hàng'],['B4','Kho hàng'],['B5','Sản phẩm'],['B7','Tài khoản admin']];
+  STOCK_FILTERS = [['all','Tất cả'],['available','Sẵn hàng'],['assigned','Đã gán đơn hàng'],['activated','Đã kích hoạt']];
+  WITHDRAWAL_FILTERS = [['all','Tất cả'],['pending','Chờ duyệt'],['specialist_approved','Chờ Head Admin'],['approved','Đã duyệt'],['rejected','Từ chối'],['paid','Đã chi trả']];
+  STATUS_ORDER = { pending: 0, specialist_approved: 1, approved: 2, rejected: 3, paid: 4 };
+  SELLER_BALANCE = { 'Trần Thị Bích': 4000000 };
+  REGISTERED_PHONES = ['0901234567', '0912345678', '0987654321'];
+  ORDERS_BY_PHONE = {
+    '0901111111': { orderId: 'DH100234', buyerName: 'Nguyễn Văn A', buyerEmail: 'nguyenvana@gmail.com', buyerCccd: '079203001234', buyerAddress: '12 Nguyễn Huệ', buyerDob: '15/03/1992', agentId: 1 },
+    '0902222222': { orderId: 'DH100511', buyerName: 'Lý Thị Hoa', buyerEmail: 'lythihoa@gmail.com', buyerCccd: '079203005678', buyerAddress: '45 Lê Lợi', buyerDob: '02/11/1990', agentId: 2 }
+  };
+
+  CN02_PACKAGES = [
+    { id: '1y', label: 'Gói 1 năm', priceNum: 10000000, price: '10.000.000đ' },
+    { id: '6m', label: 'Gói nửa năm', priceNum: 6000000, price: '6.000.000đ' }
+  ];
+
+  CHART_SETS = {
+    '7d': { title: 'Xu hướng hoa hồng · 7 ngày gần nhất', bars: [
+      { label:'T2', v:.4 },{ label:'T3', v:.65 },{ label:'T4', v:.5 },{ label:'T5', v:.9 },
+      { label:'T6', v:.7 },{ label:'T7', v:.55 },{ label:'CN', v:.35 }
+    ]},
+    'month': { title: 'Xu hướng hoa hồng · Theo tuần trong tháng', bars: [
+      { label:'Tuần 1', v:.5 },{ label:'Tuần 2', v:.75 },{ label:'Tuần 3', v:.6 },{ label:'Tuần 4', v:.85 }
+    ]},
+    'year': { title: 'Xu hướng hoa hồng · Theo tháng trong năm', bars: [
+      { label:'T1', v:.3 },{ label:'T2', v:.45 },{ label:'T3', v:.5 },{ label:'T4', v:.4 },
+      { label:'T5', v:.6 },{ label:'T6', v:.55 },{ label:'T7', v:.7 },{ label:'T8', v:.65 },
+      { label:'T9', v:.5 },{ label:'T10', v:.8 },{ label:'T11', v:.75 },{ label:'T12', v:.9 }
+    ]}
+  };
+  CHART_RANGES = [['7d','7 ngày'],['month','Tháng'],['year','Năm']];
+
+  MEMBERS = [
+    { id:1, name:'Trần Thị Bích', phone:'0901234123', contact:'090•••123', affId:'923983', upline:'—', rank:'Bạc', joined:'12/08/2026', status:'active',
+      tree:[{name:'Lê Văn Cường', orders:4},{name:'Phạm Thị Dung', orders:1}] },
+    { id:2, name:'Lê Văn Cường', phone:'0912345456', contact:'091•••456', affId:'118820', upline:'Trần Thị Bích', rank:'Đồng', joined:'20/08/2026', status:'active',
+      tree:[{name:'Ngô Thị Em', orders:2}] },
+    { id:3, name:'Phạm Thị Dung', phone:'0987654789', contact:'098•••789', affId:'302914', upline:'Trần Thị Bích', rank:'Đồng', joined:'22/08/2026', status:'locked', tree:[] },
+    { id:4, name:'Ngô Thị Em', phone:'0976543112', contact:'097•••112', affId:'440221', upline:'Lê Văn Cường', rank:'Đồng', joined:'25/08/2026', status:'active', tree:[] },
+    { id:5, name:'Vũ Minh Khang', phone:'0934567998', contact:'093•••998', affId:'552017', upline:'—', rank:'Vàng', joined:'01/08/2026', status:'active', tree:[{name:'Đỗ Anh Tuấn', orders:9}] },
+    { id:6, name:'Đặng Văn Phúc', phone:'0945678221', contact:'094•••221', affId:'671205', upline:'Trần Thị Bích', rank:'Đồng', joined:'02/09/2026', status:'pending', tree:[] }
+  ];
+
+  ORDER_FILTERS = [['all','Tất cả'],['order_pending','Chờ đối soát'],['order_confirmed1','Chờ Head Admin'],['order_paid','Đã thanh toán'],['order_rejected','Từ chối']];
+
+  makeOrders() {
+    const raw = [
+      { id:'DH923983', buyer:'Nguyễn Văn A', phone:'0901111111', email:'nguyenvana@gmail.com',
+        address:'12 Nguyễn Huệ, Phường Bến Nghé, TP. Hồ Chí Minh',
+        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Trần Thị Bích', refCode:'923983',
+        date:'03/09/2026 09:12', status:'order_pending', proof:'bill-DH923983.jpg', activationCode:null,
+        auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'03/09/2026 09:12'},
+                  {label:'Khách tải ảnh chuyển khoản', actor:'Nguyễn Văn A', time:'03/09/2026 09:20'}] },
+      { id:'DH100511', buyer:'Lý Thị Hoa', phone:'0902222222', email:'lythihoa@gmail.com',
+        address:'45 Lê Lợi, Phường Bến Thành, TP. Hồ Chí Minh',
+        pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Lê Văn Cường', refCode:'118820',
+        date:'02/09/2026 15:40', status:'order_confirmed1', proof:'bill-DH100511.jpg', activationCode:null,
+        auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'02/09/2026 15:40'},
+                  {label:'Khách tải ảnh chuyển khoản', actor:'Lý Thị Hoa', time:'02/09/2026 15:52'},
+                  {label:'Admin Specialist xác nhận tiền về (chờ Head Admin)', actor:'Admin Specialist', time:'02/09/2026 16:30'}] },
+      { id:'DH100234', buyer:'Đỗ Anh Tuấn', phone:'0903333333', email:'doanhtuan@gmail.com',
+        address:'88 Trần Hưng Đạo, Phường Cầu Ông Lãnh, TP. Hồ Chí Minh',
+        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Vũ Minh Khang', refCode:'552017',
+        date:'30/08/2026 08:05', status:'order_paid', proof:'bill-DH100234.jpg', activationCode:'ACT-100481',
+        auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'30/08/2026 08:05'},
+                  {label:'Khách tải ảnh chuyển khoản', actor:'Đỗ Anh Tuấn', time:'30/08/2026 08:19'},
+                  {label:'Admin Specialist xác nhận tiền về (chờ Head Admin)', actor:'Admin Specialist', time:'30/08/2026 09:10'},
+                  {label:'Head Admin xác nhận & cấp mã kích hoạt ACT-100481', actor:'Head Admin', time:'30/08/2026 10:02'}] },
+      { id:'DH100088', buyer:'Ngô Thị Em', phone:'0904444444', email:'ngothiem@gmail.com',
+        address:'7 Nguyễn Trãi, Phường Bến Thành, TP. Hồ Chí Minh',
+        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Lê Văn Cường', refCode:'118820',
+        date:'28/08/2026 11:30', status:'order_paid', proof:'bill-DH100088.jpg', activationCode:'ACT-100337',
+        auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'28/08/2026 11:30'},
+                  {label:'Head Admin xác nhận & cấp mã kích hoạt ACT-100337', actor:'Head Admin', time:'28/08/2026 14:00'}] },
+      { id:'DH100012', buyer:'Phạm Quốc Bảo', phone:'0905555555', email:'pqbao@gmail.com',
+        address:'201 Cách Mạng Tháng 8, Phường Hoà Hưng, TP. Hồ Chí Minh',
+        pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Trần Thị Bích', refCode:'923983',
+        date:'26/08/2026 19:12', status:'order_rejected', proof:'bill-DH100012.jpg', activationCode:null,
+        auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'26/08/2026 19:12'},
+                  {label:'Từ chối: số tiền chuyển khoản không khớp', actor:'Admin Specialist', time:'27/08/2026 09:00'}] }
+    ];
+    return raw.map(o => ({ ...o, amount: o.amountNum.toLocaleString('vi-VN') + 'đ' }));
+  }
+
+  ADMIN_USERS = [
+    { id:1, name:'Trần Quốc Head', email:'head@homi365.com.vn', role:'head', status:'active' },
+    { id:2, name:'Hoàng Thị Mỹ Trinh', email:'trinh@homi365.com.vn', role:'head', status:'active' },
+    { id:3, name:'Nguyễn Thu Hà', email:'ha.nt@homi365.com.vn', role:'specialist', status:'active' },
+    { id:4, name:'Lê Minh Quân', email:'quan.lm@homi365.com.vn', role:'specialist', status:'active' },
+    { id:5, name:'Phạm Bảo Ngọc', email:'ngoc.pb@homi365.com.vn', role:'specialist', status:'locked' }
+  ];
+
+  ORDER_RANGES = [['today','Hôm nay'],['week','Tuần này'],['month','Tháng này'],['all','Tất cả']];
+  ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27' };
+  ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1' };
+
+  RANK_HISTORY = {
+    1: [{ label:'Thăng hạng Đồng → Bạc', time:'01/09/2026' },
+        { label:'Tham gia · hạng Đồng', time:'12/08/2026' }],
+    5: [{ label:'Thăng hạng Bạc → Vàng', time:'01/09/2026' },
+        { label:'Thăng hạng Đồng → Bạc', time:'20/08/2026' },
+        { label:'Tham gia · hạng Đồng', time:'01/08/2026' }],
+    3: [{ label:'Giáng hạng Bạc → Đồng · 0 đơn trong tháng', time:'01/09/2026' },
+        { label:'Tham gia · hạng Đồng', time:'22/08/2026' }]
+  };
+
+  PRODUCTS = [
+    { id: 'CN02', sku: 'CN02', name: 'Gói Bác sĩ 24/7 · License 12 tháng · kèm đồng hồ HW01',
+      imageLabel: 'cn02-12m.png',
+      desc: 'Gói dịch vụ cao cấp gồm 01 đồng hồ thông minh HW01 theo dõi nhịp tim / SOS giao tận nơi và 01 năm phần mềm Bác sĩ 24/7 (mã kích hoạt gửi qua SMS).' },
+    { id: 'CN02-6M', sku: 'CN02-6M', name: 'Gói Bác sĩ 24/7 · License 6 tháng · kèm đồng hồ HW01',
+      imageLabel: 'cn02-6m.png',
+      desc: 'Phiên bản nửa năm của gói CN02, cùng đồng hồ HW01 và đầy đủ tính năng theo dõi sức khoẻ.' }
+  ];
+
+  componentDidMount() {
+    if (!this.state.withdrawalsData) this.setState({ withdrawalsData: this.makeWithdrawals() });
+    if (!this.state.stockData) this.setState({ stockData: this.makeStock() });
+    if (!this.state.ordersData) this.setState({ ordersData: this.makeOrders() });
+  }
+
+  badge(status) {
+    const map = {
+      active: ['rgba(47,122,72,.14)', '#2F7A48', 'Đang hoạt động'],
+      locked: ['rgba(154,163,176,.18)', '#5B6472', 'Đã khóa'],
+      pending: ['rgba(150,92,10,.15)', '#965C0A', 'Chờ duyệt (0/2)'],
+      specialist_approved: ['rgba(150,92,10,.15)', '#965C0A', 'Chờ Head Admin (1/2)'],
+      approved: ['rgba(15,127,150,.14)', '#0F7F96', 'Đã duyệt (2/2)'],
+      rejected: ['rgba(192,57,43,.12)', '#C0392B', 'Từ chối'],
+      paid: ['rgba(47,122,72,.14)', '#2F7A48', 'Đã chi trả'],
+      available: ['rgba(47,122,72,.14)', '#2F7A48', 'Sẵn hàng'],
+      assigned: ['rgba(150,92,10,.15)', '#965C0A', 'Đã gán đơn hàng'],
+      activated: ['rgba(15,127,150,.14)', '#0F7F96', 'Đã kích hoạt'],
+      order_pending: ['rgba(150,92,10,.15)', '#965C0A', 'Chờ đối soát'],
+      order_confirmed1: ['rgba(150,92,10,.15)', '#965C0A', 'Chờ Head Admin xác nhận'],
+      order_paid: ['rgba(47,122,72,.14)', '#2F7A48', 'Đã thanh toán · đã cấp mã'],
+      order_rejected: ['rgba(192,57,43,.12)', '#C0392B', 'Từ chối']
+    };
+    return map[status] || ['rgba(154,163,176,.18)', '#5B6472', status];
+  }
+
+  makeWithdrawals() {
+    const raw = [
+      { id:1, seller:'Trần Thị Bích', amountNum:2000000, date:'28/08/2026', accountNumber:'0071001234567', bankName:'Vietcombank', branch:'CN TP.HCM', accountHolder:'TRAN THI BICH', status:'pending', auditLog:[{label:'Tạo yêu cầu', actor:'Trần Thị Bích', time:'28/08/2026 09:12'}] },
+      { id:2, seller:'Lê Văn Cường', amountNum:800000, date:'27/08/2026', accountNumber:'1903123456', bankName:'Techcombank', branch:'CN Hà Nội', accountHolder:'LE VAN CUONG', status:'specialist_approved', auditLog:[{label:'Tạo yêu cầu', actor:'Lê Văn Cường', time:'27/08/2026 10:00'},{label:'Admin Specialist duyệt (chờ Head Admin)', actor:'Admin Specialist', time:'27/08/2026 14:20'}] },
+      { id:3, seller:'Vũ Minh Khang', amountNum:5000000, date:'25/08/2026', accountNumber:'0501234567', bankName:'BIDV', branch:'CN Đà Nẵng', accountHolder:'VU MINH KHANG', status:'approved', auditLog:[{label:'Tạo yêu cầu', actor:'Vũ Minh Khang', time:'25/08/2026 08:30'},{label:'Admin Specialist duyệt (chờ Head Admin)', actor:'Admin Specialist', time:'25/08/2026 09:00'},{label:'Head Admin xác nhận duyệt', actor:'Head Admin', time:'25/08/2026 15:00'}] },
+      { id:4, seller:'Phạm Thị Dung', amountNum:300000, date:'20/08/2026', accountNumber:'0331234567', bankName:'ACB', branch:'CN TP.HCM', accountHolder:'PHAM THI DUNG', status:'rejected', reason:'Thông tin tài khoản không khớp CCCD.', auditLog:[{label:'Tạo yêu cầu', actor:'Phạm Thị Dung', time:'20/08/2026 08:00'},{label:'Từ chối yêu cầu', actor:'Admin Specialist', time:'20/08/2026 11:00'}] },
+      { id:5, seller:'Ngô Thị Em', amountNum:1200000, date:'15/08/2026', accountNumber:'0221234567', bankName:'MB Bank', branch:'CN TP.HCM', accountHolder:'NGO THI EM', status:'paid', paidNote:'FT26081512345', auditLog:[{label:'Tạo yêu cầu', actor:'Ngô Thị Em', time:'15/08/2026 08:00'},{label:'Admin Specialist duyệt (chờ Head Admin)', actor:'Admin Specialist', time:'15/08/2026 09:00'},{label:'Head Admin xác nhận duyệt', actor:'Head Admin', time:'15/08/2026 10:00'},{label:'Đánh dấu đã chi trả', actor:'Head Admin', time:'16/08/2026 09:00'}] }
+    ];
+    return raw.map(w => ({ ...w, amount: w.amountNum.toLocaleString('vi-VN') + 'đ' }));
+  }
+
+  makeStock() {
+    const items = [];
+    const statuses = ['available','available','assigned','activated'];
+    for (let i = 1; i <= 24; i++) {
+      const status = statuses[i % statuses.length];
+      items.push({
+        id: i, sku: 'CN02-' + String(i).padStart(4,'0'), activationCode: 'ACT-' + (100000 + i * 37),
+        orderId: status === 'available' ? '—' : 'DH' + (100000 + i * 13),
+        seller: status === 'available' ? '—' : this.MEMBERS[i % this.MEMBERS.length].name,
+        stockedAt: '0' + (1 + i % 9) + '/08/2026', status,
+        log: [{ label: 'Nhập kho', time: '0' + (1 + i % 9) + '/08/2026 08:00' }]
+      });
+    }
+    return items;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const GO = (id, carry) => {
+      const f = (window.__FILES || {})[id];
+      if (!f) return;
+      try { sessionStorage.setItem('__homi_carry', JSON.stringify(carry || {})); } catch (e) {}
+      location.href = f;
+    };
+    const set = (id) => () => GO(id);
+    const nav = this.NAV.map(([id, label]) => ({
+      id, label, onClick: set(id),
+      style: 'font-size:12px;font-weight:600;padding:8px 12px;border-radius:5px;border:none;background:' +
+        (s.screen === id ? 'rgba(30,58,102,.1)' : 'transparent') + ';color:' + (s.screen === id ? '#1E3A66' : 'var(--c5)')
+    }));
+
+    const adminOn = ['B2','B3','B4','B5','B6','B7'].includes(s.screen);
+    const adminNav = this.ADMIN_NAV.map(([id, label]) => ({
+      id, label, onClick: set(id),
+      style: 'text-align:left;font-size:13px;font-weight:600;padding:10px 12px;border-radius:5px;border:none;background:' +
+        (s.screen === id ? 'rgba(255,255,255,.14)' : 'transparent') + ';color:#FFFFFF;opacity:' + (s.screen === id ? '1' : '.75')
+    }));
+
+    // A1 payment
+    const cn02Packages = this.CN02_PACKAGES.map(pkg => {
+      const checked = s.cn02Package === pkg.id;
+      return { ...pkg, checked, borderColor: checked ? '#1E3A66' : 'rgba(154,163,176,.35)', bg: checked ? 'rgba(30,58,102,.05)' : '#FFFFFF',
+        onSelect: () => this.setState({ cn02Package: pkg.id }) };
+    });
+    const cn02SelectedPackage = this.CN02_PACKAGES.find(p => p.id === s.cn02Package) || this.CN02_PACKAGES[0];
+    const isFinder = (r, c) => (r < 7 && c < 7) || (r < 7 && c > 9) || (r > 9 && c < 7);
+    const inFinderRing = (r, c) => {
+      const local = (rr, cc) => (rr === 0 || rr === 6 || cc === 0 || cc === 6) || (rr >= 2 && rr <= 4 && cc >= 2 && cc <= 4);
+      if (r < 7 && c < 7) return local(r, c);
+      if (r < 7 && c > 9) return local(r, c - 10);
+      if (r > 9 && c < 7) return local(r - 10, c);
+      return false;
+    };
+    const qrModules = Array.from({ length: 289 }, (_, i) => {
+      const r = Math.floor(i / 17), c = i % 17;
+      let dark;
+      if (isFinder(r, c)) dark = inFinderRing(r, c);
+      else dark = ((r * 928371 + c * 137 + r * c * 7919) % 5) < 2;
+      return { color: dark ? '#2B303A' : '#FFFFFF' };
+    });
+
+    // A2
+    const regStepBg = (n) => s.regStep >= n ? '#1E3A66' : 'rgba(154,163,176,.3)';
+    const regSteps = [1,2,3,4].map(n => ({ bg: regStepBg(n) }));
+    const otpBoxes = Array.from({ length: 6 }, () => ({}));
+    const tncDisabled = !s.tncChecked;
+    const regSubmitStyle = 'flex:2;height:46px;border:none;border-radius:5px;font-size:16px;font-weight:600;box-shadow:var(--sh);color:#FFFFFF;background:' + (tncDisabled ? 'rgba(154,163,176,.5)' : 'var(--c6)') + ';cursor:' + (tncDisabled ? 'not-allowed' : 'pointer');
+
+    // A3 dashboard metrics
+    const isNewAgent = s.agentStage === 'new', isActiveAgent = s.agentStage === 'active';
+    const chartBars = this.CHART_SETS[s.chartRange || '7d'].bars.map(c => ({ label: c.label, h: Math.round(c.v * 100) + '%' }));
+    const chartTitle = this.CHART_SETS[s.chartRange || '7d'].title;
+    const chartRanges = this.CHART_RANGES.map(([id, label]) => ({
+      id, label, onClick: () => this.setState({ chartRange: id }),
+      style: 'font-size:12px;font-weight:600;padding:6px 14px;border-radius:30px;border:1px solid ' +
+        ((s.chartRange || '7d') === id ? '#1E3A66;background:rgba(30,58,102,.08);color:#1E3A66' : 'rgba(154,163,176,.4);background:transparent;color:var(--c5)')
+    }));
+    const hasActiveThisMonth = false;
+    const withdrawButtonDisabled = hasActiveThisMonth;
+    const withdrawButtonStyle = 'height:44px;border:none;border-radius:5px;font-size:14px;font-weight:600;color:#FFFFFF;background:' + (withdrawButtonDisabled ? 'rgba(154,163,176,.5)' : 'var(--c6)') + ';cursor:' + (withdrawButtonDisabled ? 'not-allowed' : 'pointer');
+
+    // withdraw form
+    const withdrawAmountNum = parseInt((s.withdrawAmount || '').replace(/\D/g, ''), 10) || 0;
+    const availableBalance = 4000000;
+    const withdrawAmountError = s.withdrawAmount && (withdrawAmountNum <= 0 ? 'Vui lòng nhập số tiền hợp lệ.' : (withdrawAmountNum > availableBalance ? 'Số tiền vượt quá số dư khả dụng.' : ''));
+    const withdrawSubmitDisabled = !s.withdrawAmount || !!withdrawAmountError;
+    const withdrawSubmitStyle = 'height:46px;border:none;border-radius:5px;font-size:16px;font-weight:600;color:#FFFFFF;background:' + (withdrawSubmitDisabled ? 'rgba(154,163,176,.5)' : 'var(--c6)') + ';cursor:' + (withdrawSubmitDisabled ? 'not-allowed' : 'pointer');
+
+    // C1 login
+    const agentInputBorder = s.agentLoginError ? '#C0392B' : 'rgba(154,163,176,.6)';
+
+    // Members (B2)
+    const members = this.MEMBERS
+      .filter(m => !s.memberSearch || m.name.toLowerCase().includes(s.memberSearch.toLowerCase()) || m.affId.includes(s.memberSearch))
+      .map(m => {
+        const effStatus = s.memberStatusOverrides[m.id] || m.status;
+        const [bg, color, label] = this.badge(effStatus);
+        const affCode = m.name.split(' ').map(w => w[0]).join('').toUpperCase() + m.phone.slice(-4);
+        return { ...m, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,
+          formLink: 'portal.homi365.com.vn/' + affCode, formLinkShort: '.../' + affCode,
+          loginLink: 'homi365.com.vn/dang-nhap/' + affCode, loginLinkShort: '.../dang-nhap/' + affCode,
+          copyFormLink: (e) => { e.stopPropagation(); navigator.clipboard.writeText('portal.homi365.com.vn/' + affCode); this.setState({ copiedLinkId: 'form-' + m.id }); setTimeout(() => this.setState(st => st.copiedLinkId === 'form-' + m.id ? { copiedLinkId: null } : null), 1500); },
+          copyLoginLink: (e) => { e.stopPropagation(); navigator.clipboard.writeText('homi365.com.vn/dang-nhap/' + affCode); this.setState({ copiedLinkId: 'login-' + m.id }); setTimeout(() => this.setState(st => st.copiedLinkId === 'login-' + m.id ? { copiedLinkId: null } : null), 1500); },
+          formLinkCopyIcon: s.copiedLinkId === 'form-' + m.id ? '✓' : '⧉', loginLinkCopyIcon: s.copiedLinkId === 'login-' + m.id ? '✓' : '⧉',
+          onClick: () => this.setState({ selectedMemberId: m.id }) };
+      });
+
+    // Withdrawals (B3)
+    const withdrawalsData = s.withdrawalsData || [];
+    const withdrawalFilters = this.WITHDRAWAL_FILTERS.map(([id, label]) => ({
+      id, label, onClick: () => this.setState({ withdrawalStatusFilter: id }),
+      style: 'height:34px;padding:0 14px;border-radius:30px;font-size:12px;font-weight:600;border:1px solid ' +
+        ((s.withdrawalStatusFilter || 'all') === id ? '#1E3A66;background:rgba(30,58,102,.08);color:#1E3A66' : 'rgba(154,163,176,.4);background:transparent;color:var(--c5)')
+    }));
+    const withdrawals = withdrawalsData
+      .filter(w => (s.withdrawalStatusFilter === 'all' || !s.withdrawalStatusFilter) || w.status === s.withdrawalStatusFilter)
+      .filter(w => !s.withdrawalSearch || w.seller.toLowerCase().includes(s.withdrawalSearch.toLowerCase()))
+      .map(w => {
+        const [bg, color, label] = this.badge(w.status);
+        return { ...w, badgeBg: bg, badgeColor: color, statusLabel: label, onClick: () => this.setState({ selectedWithdrawalId: w.id }) };
+      });
+    const withdrawalsEmpty = withdrawals.length === 0;
+
+    // Stock (B4)
+    const stockData = s.stockData || [];
+    const stockFilters = this.STOCK_FILTERS.map(([id, label]) => ({
+      id, label, onClick: () => this.setState({ stockStatusFilter: id, stockPage: 1 }),
+      style: 'height:34px;padding:0 14px;border-radius:30px;font-size:12px;font-weight:600;border:1px solid ' +
+        ((s.stockStatusFilter || 'all') === id ? '#1E3A66;background:rgba(30,58,102,.08);color:#1E3A66' : 'rgba(154,163,176,.4);background:transparent;color:var(--c5)')
+    }));
+    const stockFiltered = stockData
+      .filter(p => (s.stockStatusFilter === 'all' || !s.stockStatusFilter) || p.status === s.stockStatusFilter)
+      .filter(p => !s.stockSearch || p.sku.toLowerCase().includes(s.stockSearch.toLowerCase()) || p.activationCode.toLowerCase().includes(s.stockSearch.toLowerCase()));
+    const stockPageSize = 8;
+    const stockPageCount = Math.max(1, Math.ceil(stockFiltered.length / stockPageSize));
+    const stockPage = Math.min(s.stockPage || 1, stockPageCount);
+    const stockRangeStart = stockFiltered.length ? (stockPage - 1) * stockPageSize + 1 : 0;
+    const stockRangeEnd = Math.min(stockPage * stockPageSize, stockFiltered.length);
+    const stockItems = stockFiltered.slice((stockPage - 1) * stockPageSize, stockPage * stockPageSize).map(p => {
+      const [bg, color, label] = this.badge(p.status);
+      return { ...p, badgeBg: bg, badgeColor: color, statusLabel: label, onClick: () => this.setState({ selectedStockId: p.id }) };
+    });
+    const stockItemsEmpty = stockItems.length === 0;
+
+    // Slide-overs
+    const selectedMemberRaw = s.selectedMemberId ? this.MEMBERS.find(m => m.id === s.selectedMemberId) : null;
+    let selectedMember = null;
+    if (selectedMemberRaw) {
+      const effStatus = s.memberStatusOverrides[selectedMemberRaw.id] || selectedMemberRaw.status;
+      const isSpecialist = s.adminRole === 'specialist';
+      selectedMember = {
+        ...selectedMemberRaw, status: effStatus,
+        rankHistory: this.RANK_HISTORY[selectedMemberRaw.id]
+          || [{ label: 'Tham gia · hạng ' + selectedMemberRaw.rank, time: selectedMemberRaw.joined }],
+        needsApproval: ['pending', 'specialist_approved'].includes(effStatus),
+        isActiveOrLocked: ['active', 'locked'].includes(effStatus),
+        canApproveMember: (isSpecialist && effStatus === 'pending') || (!isSpecialist && effStatus === 'specialist_approved'),
+        canRejectMember: ['pending', 'specialist_approved'].includes(effStatus),
+        approveMemberButtonLabel: isSpecialist ? 'Duyệt hồ sơ (Specialist)' : 'Duyệt & kích hoạt (Head Admin)',
+        approvalStageNote: effStatus === 'pending' ? 'Đang chờ Admin Specialist duyệt hồ sơ (bước 1/2).' : effStatus === 'specialist_approved' ? 'Đã qua Specialist — chờ Head Admin xác nhận để kích hoạt (bước 2/2).' : (effStatus === 'rejected' ? 'Hồ sơ đã bị từ chối.' : null)
+      };
+    }
+    const isLocked = selectedMember ? selectedMember.status === 'locked' : false;
+    const lockButtonLabel = isLocked ? 'Mở khóa tài khoản' : 'Khóa tài khoản';
+    const lockButtonStyle = 'flex:1;height:42px;border-radius:5px;font-size:14px;font-weight:600;border:1px solid ' + (isLocked ? 'var(--c6);background:var(--c12);color:var(--c6)' : 'var(--err);background:var(--c12);color:var(--err)');
+    const toggleLockSelected = () => selectedMember && this.setState({
+      memberStatusOverrides: { ...s.memberStatusOverrides, [selectedMember.id]: isLocked ? 'active' : 'locked' }
+    });
+
+    const selectedStockRaw = s.selectedStockId ? stockData.find(p => p.id === s.selectedStockId) : null;
+    let selectedStock = null;
+    if (selectedStockRaw) {
+      const [bg, color, label] = this.badge(selectedStockRaw.status);
+      selectedStock = { ...selectedStockRaw, badgeBg: bg, badgeColor: color, statusLabel: label };
+    }
+
+    const selectedWithdrawalRaw = s.selectedWithdrawalId ? withdrawalsData.find(w => w.id === s.selectedWithdrawalId) : null;
+    let selectedWithdrawal = null;
+    if (selectedWithdrawalRaw) {
+      const [bg, color, label] = this.badge(selectedWithdrawalRaw.status);
+      const isSpecialist = s.adminRole === 'specialist';
+      selectedWithdrawal = { ...selectedWithdrawalRaw, badgeBg: bg, badgeColor: color, statusLabel: label,
+        canApprove: (isSpecialist && selectedWithdrawalRaw.status === 'pending') || (!isSpecialist && selectedWithdrawalRaw.status === 'specialist_approved'),
+        canReject: ['pending', 'specialist_approved'].includes(selectedWithdrawalRaw.status),
+        canMarkPaid: selectedWithdrawalRaw.status === 'approved',
+        approveButtonLabel: isSpecialist ? 'Duyệt (Specialist)' : 'Duyệt (Head Admin)',
+        approvalStageNote: selectedWithdrawalRaw.status === 'pending' ? 'Đang chờ Admin Specialist duyệt (bước 1/2).' : selectedWithdrawalRaw.status === 'specialist_approved' ? 'Đã qua Admin Specialist — đang chờ Head Admin xác nhận (bước 2/2).' : selectedWithdrawalRaw.status === 'approved' ? 'Đã duyệt đủ 2 cấp — chờ chi trả.' : null,
+        hasReason: !!selectedWithdrawalRaw.reason, hasPaidNote: !!selectedWithdrawalRaw.paidNote };
+    }
+
+    // Action modal
+    const actionWithdrawalRaw = (s.actionModal && s.actionModal.kind !== 'member') ? withdrawalsData.find(w => w.id === s.actionModal.id) : null;
+    const sellerBalance = actionWithdrawalRaw ? (this.SELLER_BALANCE[actionWithdrawalRaw.seller] ?? Infinity) : 0;
+    const approveOverBalance = !!(actionWithdrawalRaw && actionWithdrawalRaw.amountNum > sellerBalance);
+    const actionWithdrawal = actionWithdrawalRaw ? { ...actionWithdrawalRaw, sellerBalanceLabel: sellerBalance.toLocaleString('vi-VN') + 'đ' } : null;
+    const actionMember = (s.actionModal && s.actionModal.kind === 'member') ? this.MEMBERS.find(m => m.id === s.actionModal.id) : null;
+    const actionStageLabel = s.adminRole === 'specialist' ? 'Bước 1/2 · Admin Specialist duyệt' : 'Bước 2/2 · Head Admin xác nhận';
+    const rejectDisabled = !s.rejectReason || !s.rejectReason.trim();
+    const rejectConfirmStyle = 'flex:1;height:44px;border:none;border-radius:5px;font-size:14px;font-weight:600;color:#FFFFFF;background:' + (rejectDisabled ? 'rgba(154,163,176,.5)' : 'var(--err)') + ';cursor:' + (rejectDisabled ? 'not-allowed' : 'pointer');
+
+    // Đơn hàng (B6) — bổ sung, không có trong mockup KH
+    const ordersRaw = s.ordersData || [];
+    const orderRows = ordersRaw
+      .filter(o => (s.orderStatusFilter === 'all' || !s.orderStatusFilter) || o.status === s.orderStatusFilter)
+      .filter(o => !s.orderSearch
+        || o.id.toLowerCase().includes(s.orderSearch.toLowerCase())
+        || o.buyer.toLowerCase().includes(s.orderSearch.toLowerCase())
+        || o.phone.includes(s.orderSearch))
+      .map(o => {
+        const [bg, color, label] = this.badge(o.status);
+        return { ...o, badgeBg: bg, badgeColor: color, statusLabel: label,
+          onClick: () => this.setState({ selectedOrderId: o.id }) };
+      });
+    const selOrderRaw = s.selectedOrderId ? ordersRaw.find(o => o.id === s.selectedOrderId) : null;
+    let selectedOrder = null;
+    if (selOrderRaw) {
+      const [obg, ocolor, olabel] = this.badge(selOrderRaw.status);
+      const isSpecO = s.adminRole === 'specialist';
+      const canConfirmO = (isSpecO && selOrderRaw.status === 'order_pending')
+        || (!isSpecO && selOrderRaw.status === 'order_confirmed1');
+      const canRejectO = ['order_pending', 'order_confirmed1'].includes(selOrderRaw.status);
+      selectedOrder = { ...selOrderRaw, badgeBg: obg, badgeColor: ocolor, statusLabel: olabel,
+        activationCodeLabel: selOrderRaw.activationCode || '— chưa cấp —',
+        canConfirm: canConfirmO, canReject: canRejectO, canAct: canConfirmO || canRejectO,
+        needsCodePick: canConfirmO && !isSpecO,
+        isRejected: selOrderRaw.status === 'order_rejected',
+        confirmLabel: isSpecO ? 'Xác nhận tiền về (Specialist)'
+                              : 'Xác nhận, cấp mã & kích hoạt tài khoản (Head Admin)',
+        stageNote: selOrderRaw.status === 'order_pending'
+          ? 'Đang chờ Admin Specialist đối soát tiền về (bước 1/2).'
+          : selOrderRaw.status === 'order_confirmed1'
+            ? 'Đã qua Specialist — chờ Head Admin xác nhận để cấp mã kích hoạt (bước 2/2).'
+            : (selOrderRaw.status === 'order_rejected' ? 'Đơn đã bị từ chối.' : null),
+        actHint: isSpecO
+          ? 'Bạn đang ở vai Admin Specialist — chỉ xác nhận được bước 1 (tiền về). Bước 2 do Head Admin làm: chọn mã kích hoạt và kích hoạt tài khoản.'
+          : 'Bạn đang ở vai Head Admin — chọn mã kích hoạt còn Sẵn hàng trong kho, xác nhận là hệ thống gán mã cho đơn, gửi cho khách và kích hoạt tài khoản.' };
+    }
+
+    return {
+      nav, adminNav,
+      isA1: s.screen === 'A1', isA2: s.screen === 'A2', isA3: s.screen === 'A3',
+      isC1: s.screen === 'C1', isB1: s.screen === 'B1', isB2: s.screen === 'B2', isB3: s.screen === 'B3', isB4: s.screen === 'B4', isB5: s.screen === 'B5', isB6: s.screen === 'B6', isB7: s.screen === 'B7',
+      isAdminShell: adminOn,
+
+      buyerName: s.buyerName, setBuyerName: (e) => this.setState({ buyerName: e.target.value }),
+      buyerPhone: s.buyerPhone, setBuyerPhone: (e) => this.setState({ buyerPhone: e.target.value }),
+      buyerEmail: s.buyerEmail, setBuyerEmail: (e) => this.setState({ buyerEmail: e.target.value }),
+      buyerCccd: s.buyerCccd, setBuyerCccd: (e) => this.setState({ buyerCccd: e.target.value }),
+      buyerAddress: s.buyerAddress, setBuyerAddress: (e) => this.setState({ buyerAddress: e.target.value }),
+      buyerDob: s.buyerDob, setBuyerDob: (e) => this.setState({ buyerDob: e.target.value }),
+      buyerBankAccount: s.buyerBankAccount, setBuyerBankAccount: (e) => this.setState({ buyerBankAccount: e.target.value }),
+      cn02Packages, cn02PackagePrice: cn02SelectedPackage.price,
+      openQRPayment: () => this.setState({ showQRPayment: true }),
+      closeQRPayment: () => this.setState({ showQRPayment: false }),
+      showQRPayment: s.showQRPayment, orderId: s.orderId, qrModules,
+      confirmQRPayment: () => this.setState({ showQRPayment: false, showPaymentSuccess: true }),
+      showPaymentSuccess: s.showPaymentSuccess,
+      choosRegisterSeller: () => GO('A2', { regStep: 1 }),
+      choosSkipSeller: () => this.setState({ showPaymentSuccess: false }),
+
+      showOrderLookup: s.showOrderLookup, orderLookupInput: s.orderLookupInput, orderLookupError: s.orderLookupError,
+      openOrderLookup: (e) => { if (e) e.preventDefault(); this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false }); },
+      closeOrderLookup: () => this.setState({ showOrderLookup: false }),
+      setOrderLookupInput: (e) => this.setState({ orderLookupInput: e.target.value, orderLookupError: false }),
+      submitOrderLookup: () => {
+        const phone = s.orderLookupInput.trim();
+        const order = this.ORDERS_BY_PHONE[phone];
+        if (!order) { this.setState({ orderLookupError: true }); return; }
+        const agent = this.MEMBERS.find(m => m.id === order.agentId);
+        const rankMap = { 'Đồng': 'bronze', 'Bạc': 'silver', 'Vàng': 'gold' };
+        const uplineRank = agent ? (rankMap[agent.rank] || 'silver') : 'silver';
+        if (uplineRank === 'bronze') { this.setState({ showOrderLookup: false, showUplineBlockedModal: true }); return; }
+        GO('A2', {
+          regStep: 1,
+          orderId: order.orderId, uplineRank,
+          buyerName: order.buyerName, buyerPhone: phone, buyerEmail: order.buyerEmail,
+          buyerCccd: order.buyerCccd, buyerAddress: order.buyerAddress, buyerDob: order.buyerDob
+        });
+      },
+      showUplineBlockedModal: s.showUplineBlockedModal,
+      closeUplineBlockedModal: () => this.setState({ showUplineBlockedModal: false }),
+
+      regSteps, isRegStep1: s.regStep === 1, isRegStep2: s.regStep === 2, isRegStep3: s.regStep === 3, isRegStep4: s.regStep === 4, isRegStep5: s.regStep === 5,
+      regNext: () => this.setState({ regStep: Math.min(5, s.regStep + 1) }),
+      regPrev: () => this.setState({ regStep: Math.max(1, s.regStep - 1) }),
+      otpBoxes,
+      regPassword: s.regPassword, setRegPassword: (e) => this.setState({ regPassword: e.target.value, regPasswordErrorMsg: '' }),
+      regConfirmPassword: s.regConfirmPassword, setRegConfirmPassword: (e) => this.setState({ regConfirmPassword: e.target.value, regPasswordErrorMsg: '' }),
+      regPasswordError: s.regPasswordErrorMsg,
+      regStep1Submit: () => {
+        if (s.uplineRank === 'bronze') { this.setState({ showUplineBlockedModal: true }); return; }
+        this.setState({ regStep: 2 });
+      },
+      regStep3Next: () => {
+        if (!s.regPassword || s.regPassword.length < 6) { this.setState({ regPasswordErrorMsg: 'Mật khẩu phải có ít nhất 6 ký tự.' }); return; }
+        if (s.regPassword !== s.regConfirmPassword) { this.setState({ regPasswordErrorMsg: 'Mật khẩu xác nhận không khớp.' }); return; }
+        this.setState({ regStep: 4 });
+      },
+      tncChecked: s.tncChecked, toggleTnc: () => this.setState({ tncChecked: !s.tncChecked }),
+      tncDisabled, regSubmitStyle,
+      copyLabel: s.copyLabel,
+      copyLink: () => { navigator.clipboard.writeText('homi365.vn/san-pham/CN02?aff_id=923983'); this.setState({ copyLabel: 'Đã copy!' }); setTimeout(() => this.setState({ copyLabel: 'Copy link' }), 1500); },
+      goToA3: () => GO('A3'),
+
+      toggleAgentStage: () => this.setState({ agentStage: s.agentStage === 'new' ? 'active' : 'new' }),
+      agentStageToggleLabel: s.agentStage === 'new' ? 'Xem: Đã tính hoa hồng' : 'Xem: Agent mới',
+      isNewAgent, isActiveAgent,
+      metricOrders: (s.agentStage === 'active' ? this.ORDER_RANGE_VALUES
+        : this.ORDER_RANGE_VALUES_NEW)[s.orderRange || 'month'],
+      metricPoints: s.agentStage === 'active' ? '1.240' : '80',
+      metricRank: s.agentStage === 'active' ? 'Bạc' : 'Đồng',
+      metricWithdrawn: s.agentStage === 'active' ? '1.200.000đ' : '0đ',
+      chartTitle, chartRanges, chartBars,
+      availableBalanceLabel: '4.000.000đ', pendingBalanceLabel: '800.000đ', earnedBalanceLabel: '6.000.000đ',
+      hasActiveThisMonth, nextWithdrawDate: '01/10/2026',
+      openWithdrawForm: () => this.setState({ showWithdrawForm: true, withdrawAmount: '' }),
+      withdrawButtonDisabled, withdrawButtonStyle,
+      noF1: true,
+
+      showWithdrawForm: s.showWithdrawForm, closeWithdrawForm: () => this.setState({ showWithdrawForm: false }),
+      withdrawAmount: s.withdrawAmount, setWithdrawAmount: (e) => this.setState({ withdrawAmount: e.target.value }),
+      withdrawAmountError, withdrawSubmitDisabled, withdrawSubmitStyle,
+      submitWithdrawForm: () => this.setState({ showWithdrawForm: false, showWithdrawSuccess: true }),
+      showWithdrawSuccess: s.showWithdrawSuccess, closeWithdrawSuccess: () => this.setState({ showWithdrawSuccess: false }),
+
+      isAgentLoginStep: s.agentLoginStep === 'login', isAgentOtpStep: s.agentLoginStep === 'otp',
+      isForgotPhoneStep: s.agentLoginStep === 'forgot_phone', isForgotOtpStep: s.agentLoginStep === 'forgot_otp',
+      isForgotResetStep: s.agentLoginStep === 'forgot_reset', isForgotSuccessStep: s.agentLoginStep === 'forgot_success',
+      agentPhone: s.agentPhone, setAgentPhone: (e) => this.setState({ agentPhone: e.target.value, agentLoginError: false }),
+      agentPassword: s.agentPassword, setAgentPassword: (e) => this.setState({ agentPassword: e.target.value, agentLoginError: false }),
+      agentInputBorder, agentLoginError: s.agentLoginError,
+      pwdInputType: s.pwdVisible ? 'text' : 'password', togglePwd: () => this.setState({ pwdVisible: !s.pwdVisible }),
+      pwdToggleLabel: s.pwdVisible ? 'Ẩn' : 'Hiện',
+      agentLoginSubmit: () => {
+        const ph = s.agentPhone.trim();
+        const boughtOrder = this.ORDERS_BY_PHONE[ph];
+        const isAgent = this.REGISTERED_PHONES.includes(ph);
+        if (boughtOrder && !isAgent) {
+          GO('A2', { regStep: 1, orderId: boughtOrder.orderId,
+            buyerName: boughtOrder.buyerName, buyerPhone: ph, buyerEmail: boughtOrder.buyerEmail,
+            buyerCccd: boughtOrder.buyerCccd, buyerAddress: boughtOrder.buyerAddress,
+            buyerDob: boughtOrder.buyerDob });
+          return;
+        }
+        if (ph && s.agentPassword === '123456') { GO('A3'); }
+        else { this.setState({ agentLoginError: true, agentLoginStep: 'otp' }); }
+      },
+      agentMaskedPhone: s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123',
+      agentBackToLogin: () => this.setState({ agentLoginStep: 'login' }),
+      agentOtpConfirm: () => GO('A3'),
+      openForgotPassword: (e) => { if (e) e.preventDefault(); this.setState({ agentLoginStep: 'forgot_phone', forgotPhoneError: false }); },
+      openOrderLookup: (e) => { if (e) e.preventDefault(); this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false }); },
+      forgotPhone: s.forgotPhone, setForgotPhone: (e) => this.setState({ forgotPhone: e.target.value, forgotPhoneError: false }),
+      forgotPhoneError: s.forgotPhoneError, forgotPhoneBorder: s.forgotPhoneError ? '#C0392B' : 'rgba(154,163,176,.6)',
+      submitForgotPhone: () => {
+        if (this.REGISTERED_PHONES.includes(s.forgotPhone.trim())) this.setState({ agentLoginStep: 'forgot_otp' });
+        else this.setState({ forgotPhoneError: true });
+      },
+      forgotMaskedPhone: s.forgotPhone ? s.forgotPhone.slice(0, 3) + '•••' + s.forgotPhone.slice(-3) : '090•••123',
+      confirmForgotOtp: () => this.setState({ agentLoginStep: 'forgot_reset', forgotNewPassword: '', forgotConfirmPassword: '', forgotResetErrorMsg: '' }),
+      forgotNewPassword: s.forgotNewPassword, setForgotNewPassword: (e) => this.setState({ forgotNewPassword: e.target.value, forgotResetErrorMsg: '' }),
+      forgotConfirmPassword: s.forgotConfirmPassword, setForgotConfirmPassword: (e) => this.setState({ forgotConfirmPassword: e.target.value, forgotResetErrorMsg: '' }),
+      forgotResetError: s.forgotResetErrorMsg,
+      submitForgotReset: () => {
+        if (!s.forgotNewPassword || s.forgotNewPassword.length < 6) { this.setState({ forgotResetErrorMsg: 'Mật khẩu phải có ít nhất 6 ký tự.' }); return; }
+        if (s.forgotNewPassword !== s.forgotConfirmPassword) { this.setState({ forgotResetErrorMsg: 'Mật khẩu xác nhận không khớp.' }); return; }
+        this.setState({ agentLoginStep: 'forgot_success' });
+      },
+
+      adminLoginSubmit: () => GO('B2'),
+      adminRole: s.adminRole,
+      adminRoleLabel: s.adminRole === 'specialist' ? '⚙ Admin Specialist · đổi vai trò' : '⚙ Head Admin · đổi vai trò',
+      toggleAdminRole: () => this.setState({ adminRole: s.adminRole === 'specialist' ? 'head' : 'specialist' }),
+
+      memberSearch: s.memberSearch, setMemberSearch: (e) => this.setState({ memberSearch: e.target.value }),
+      members,
+      closeMember: () => this.setState({ selectedMemberId: null }),
+      hasSelectedMember: !!selectedMember, selectedMember,
+      toggleLockSelected, lockButtonLabel, lockButtonStyle,
+      openApproveMemberModal: () => this.setState({ actionModal: { type: 'approve', kind: 'member', id: s.selectedMemberId } }),
+      openRejectMemberModal: () => this.setState({ actionModal: { type: 'reject', kind: 'member', id: s.selectedMemberId }, rejectReason: '' }),
+
+      withdrawalFilters, withdrawalSearch: s.withdrawalSearch, setWithdrawalSearch: (e) => this.setState({ withdrawalSearch: e.target.value }),
+      withdrawals, withdrawalsEmpty,
+      closeWithdrawal: () => this.setState({ selectedWithdrawalId: null }),
+      hasSelectedWithdrawal: !!selectedWithdrawal, selectedWithdrawal,
+      openApproveModal: () => this.setState({ actionModal: { type: 'approve', kind: 'withdrawal', id: s.selectedWithdrawalId } }),
+      openRejectModal: () => this.setState({ actionModal: { type: 'reject', kind: 'withdrawal', id: s.selectedWithdrawalId }, rejectReason: '' }),
+      openPaidModal: () => this.setState({ actionModal: { type: 'paid', kind: 'withdrawal', id: s.selectedWithdrawalId }, paidNote: '' }),
+
+      stockTotal: stockData.length, stockAvailable: stockData.filter(p => p.status === 'available').length,
+      stockAssigned: stockData.filter(p => p.status === 'assigned').length, stockActivated: stockData.filter(p => p.status === 'activated').length,
+      stockFilters, stockSearch: s.stockSearch, setStockSearch: (e) => this.setState({ stockSearch: e.target.value, stockPage: 1 }),
+      stockItems, stockItemsEmpty, stockRangeStart, stockRangeEnd, stockFilteredCount: stockFiltered.length,
+      stockPage, stockPageCount,
+      stockPrevPage: () => this.setState({ stockPage: Math.max(1, stockPage - 1) }), stockPrevDisabled: stockPage <= 1,
+      stockNextPage: () => this.setState({ stockPage: Math.min(stockPageCount, stockPage + 1) }), stockNextDisabled: stockPage >= stockPageCount,
+      closeStock: () => this.setState({ selectedStockId: null }),
+      hasSelectedStock: !!selectedStock, selectedStock,
+
+      // 7.9.1 — Tài khoản admin
+      adminUsers: this.ADMIN_USERS.map(u => {
+        const locked = (s.adminUserLocks[u.id] || u.status) === 'locked';
+        return { ...u,
+          roleLabel: u.role === 'head' ? 'Head Admin' : 'Admin Specialist',
+          roleBg: u.role === 'head' ? 'rgba(15,127,150,.14)' : 'rgba(154,163,176,.18)',
+          roleColor: u.role === 'head' ? '#0F7F96' : '#5B6472',
+          statusLabel: locked ? 'Đã khoá' : 'Đang hoạt động',
+          badgeBg: locked ? 'rgba(154,163,176,.18)' : 'rgba(47,122,72,.14)',
+          badgeColor: locked ? '#5B6472' : '#2F7A48',
+          lockLabel: locked ? 'Mở khoá' : 'Khoá',
+          lockStyle: 'height:32px;padding:0 var(--s5);background:var(--c12);border-radius:var(--r-md);font-size:12px;font-weight:600;border:1px solid '
+            + (locked ? 'var(--c6);color:var(--c6)' : '#C0392B;color:#C0392B'),
+          onToggleLock: () => this.setState({ adminUserLocks: { ...s.adminUserLocks, [u.id]: locked ? 'active' : 'locked' } }),
+          onEdit: () => this.setState({ showAdminUserForm: true, editingAdminUserId: u.id }) };
+      }),
+      adminUserCount: this.ADMIN_USERS.length,
+      showAdminUserForm: s.showAdminUserForm,
+      adminUserFormTitle: s.editingAdminUserId ? 'Sửa tài khoản admin' : 'Thêm tài khoản admin',
+      adminUserFormName: (this.ADMIN_USERS.find(u => u.id === s.editingAdminUserId) || {}).name || '',
+      adminUserFormEmail: (this.ADMIN_USERS.find(u => u.id === s.editingAdminUserId) || {}).email || '',
+      openAdminUserForm: () => this.setState({ showAdminUserForm: true, editingAdminUserId: null }),
+      closeAdminUserForm: () => this.setState({ showAdminUserForm: false, editingAdminUserId: null }),
+
+      // 7.3.2 — lọc số đơn theo khoảng thời gian
+      orderRanges: this.ORDER_RANGES.map(([id, label]) => ({
+        id, label, onClick: () => this.setState({ orderRange: id }),
+        style: 'font-size:12px;font-weight:600;padding:6px 14px;border-radius:30px;border:1px solid '
+          + ((s.orderRange || 'month') === id ? '#1E3A66;background:rgba(30,58,102,.08);color:#1E3A66'
+                                              : 'rgba(154,163,176,.4);background:transparent;color:var(--c5)')
+      })),
+
+      // Hai link của agent: ref_code (giới thiệu) và alias (mua hàng cá nhân).
+      refCode: '923983',
+      refLink: 'homi365.vn/san-pham/CN02?aff_id=923983',
+      personalLink: 'homi365.com.vn/NVA1111',
+      copyPersonalLabel: s.copyPersonalLabel,
+      copyPersonalLink: () => {
+        navigator.clipboard.writeText('homi365.com.vn/NVA1111');
+        this.setState({ copyPersonalLabel: 'Đã copy!' });
+        setTimeout(() => this.setState({ copyPersonalLabel: 'Copy link' }), 1500);
+      },
+
+      orderTotal: (s.ordersData || []).length,
+      orderPendingCount: (s.ordersData || []).filter(o => o.status === 'order_pending').length,
+      orderConfirm1Count: (s.ordersData || []).filter(o => o.status === 'order_confirmed1').length,
+      orderPaidCount: (s.ordersData || []).filter(o => o.status === 'order_paid').length,
+      orderRevenue: (s.ordersData || []).filter(o => o.status === 'order_paid')
+        .reduce((t, o) => t + o.amountNum, 0).toLocaleString('vi-VN') + 'đ',
+      orderSearch: s.orderSearch,
+      setOrderSearch: (e) => this.setState({ orderSearch: e.target.value }),
+      orderFilters: this.ORDER_FILTERS.map(([id, label]) => ({
+        id, label, onClick: () => this.setState({ orderStatusFilter: id }),
+        style: 'height:34px;padding:0 14px;border-radius:30px;font-size:12px;font-weight:600;border:1px solid ' +
+          ((s.orderStatusFilter || 'all') === id ? '#1E3A66;background:rgba(30,58,102,.08);color:#1E3A66'
+                                                 : 'rgba(154,163,176,.4);background:transparent;color:var(--c5)')
+      })),
+      orders: orderRows, ordersEmpty: orderRows.length === 0,
+      hasSelectedOrder: !!selectedOrder, selectedOrder,
+      closeOrder: () => this.setState({ selectedOrderId: null }),
+      availableStockCodes: stockData.filter(p => p.status === 'available').slice(0, 60)
+        .map(p => ({ code: p.activationCode, sku: p.sku,
+                     label: p.activationCode + '  ·  ' + p.sku })),
+      availableStockCount: stockData.filter(p => p.status === 'available').length,
+      orderActivationCode: s.orderActivationCode,
+      setOrderActivationCode: (e) => this.setState({ orderActivationCode: e.target.value, orderCodeError: '' }),
+      orderCodeError: s.orderCodeError,
+      confirmOrder: () => {
+        const o = (s.ordersData || []).find(x => x.id === s.selectedOrderId);
+        if (!o) return;
+        const isSpec = s.adminRole === 'specialist', now = '08/09/2026 10:00';
+        // Bước 1: Specialist xác nhận tiền về. Bước 2: Head Admin chọn mã kích
+        // hoạt còn Sẵn hàng trong kho, gán vào đơn và kích hoạt tài khoản.
+        if (!isSpec) {
+          const code = s.orderActivationCode;
+          if (!code) { this.setState({ orderCodeError: 'Chọn mã kích hoạt từ kho trước khi xác nhận.' }); return; }
+          const item = stockData.find(p => p.activationCode === code && p.status === 'available');
+          if (!item) { this.setState({ orderCodeError: 'Mã ' + code + ' không còn ở trạng thái Sẵn hàng.' }); return; }
+          this.setState({
+            ordersData: s.ordersData.map(x => x.id === o.id
+              ? { ...x, status: 'order_paid', activationCode: code,
+                  auditLog: [...x.auditLog, { label: 'Head Admin xác nhận thanh toán, cấp mã ' + code + ' và kích hoạt tài khoản', actor: 'Head Admin', time: now }] }
+              : x),
+            stockData: stockData.map(p => p.activationCode === code
+              ? { ...p, status: 'assigned', orderId: o.id, seller: o.referrer,
+                  log: [...p.log, { label: 'Gán cho đơn ' + o.id, time: now }] }
+              : p),
+            orderActivationCode: '', orderCodeError: ''
+          });
+          return;
+        }
+        this.setState({ ordersData: s.ordersData.map(x => x.id === o.id
+          ? { ...x, status: 'order_confirmed1',
+              auditLog: [...x.auditLog, { label: 'Admin Specialist xác nhận tiền về (chờ Head Admin)', actor: 'Admin Specialist', time: now }] }
+          : x) });
+      },
+      rejectOrder: () => {
+        const now = '08/09/2026 10:05';
+        const actor = s.adminRole === 'specialist' ? 'Admin Specialist' : 'Head Admin';
+        this.setState({ ordersData: s.ordersData.map(x => x.id === s.selectedOrderId
+          ? { ...x, status: 'order_rejected',
+              auditLog: [...x.auditLog, { label: 'Từ chối đơn', actor, time: now }] }
+          : x) });
+      },
+
+      products: this.PRODUCTS.map(p => ({ ...p,
+        onEdit: () => this.setState({ showProductForm: true, editingProductId: p.id }) })),
+      productCount: this.PRODUCTS.length,
+      showProductForm: s.showProductForm,
+      productFormTitle: s.editingProductId ? 'Sửa sản phẩm' : 'Thêm sản phẩm',
+      productFormName: (this.PRODUCTS.find(p => p.id === s.editingProductId) || {}).name || '',
+      productFormDesc: (this.PRODUCTS.find(p => p.id === s.editingProductId) || {}).desc || '',
+      openProductForm: () => this.setState({ showProductForm: true, editingProductId: null }),
+      closeProductForm: () => this.setState({ showProductForm: false, editingProductId: null }),
+
+      showAddStock: s.showAddStock,
+      openAddStock: () => this.setState({ showAddStock: true, addStockSku: '', addStockCode: '', addStockError: '' }),
+      closeAddStock: () => this.setState({ showAddStock: false }),
+      addStockSku: s.addStockSku, setAddStockSku: (e) => this.setState({ addStockSku: e.target.value, addStockError: '' }),
+      addStockCode: s.addStockCode, setAddStockCode: (e) => this.setState({ addStockCode: e.target.value, addStockError: '' }),
+      addStockError: s.addStockError,
+      submitAddStock: () => {
+        const sku = (s.addStockSku || '').trim(), code = (s.addStockCode || '').trim();
+        if (!sku || !code) { this.setState({ addStockError: 'Nhập đủ mã sản phẩm và mã kích hoạt.' }); return; }
+        if (stockData.some(p => p.activationCode.toLowerCase() === code.toLowerCase())) {
+          this.setState({ addStockError: 'Mã kích hoạt ' + code + ' đã có trong kho.' }); return; }
+        if (stockData.some(p => p.sku.toLowerCase() === sku.toLowerCase())) {
+          this.setState({ addStockError: 'Mã sản phẩm ' + sku + ' đã có trong kho.' }); return; }
+        this.setState({
+          stockData: [{ id: 900000 + stockData.length, sku, activationCode: code,
+            orderId: '—', seller: '—', stockedAt: '08/09/2026', status: 'available',
+            log: [{ label: 'Nhập kho (thủ công)', time: '08/09/2026 10:00' }] }, ...stockData],
+          showAddStock: false, addStockError: ''
+        });
+      },
+
+      showImportStock: s.showImportStock,
+      openImportStock: () => this.setState({ showImportStock: true, importText: '', importResult: null }),
+      closeImportStock: () => this.setState({ showImportStock: false }),
+      importText: s.importText, setImportText: (e) => this.setState({ importText: e.target.value }),
+      importResult: s.importResult, hasImportResult: !!s.importResult,
+      runImportStock: () => {
+        // Nhập từng phần: dòng nào hợp lệ thì nhận, dòng trùng hoặc thiếu dữ
+        // liệu thì bỏ qua và liệt kê lý do. Chặn trùng cả với kho hiện có lẫn
+        // trùng nhau trong chính danh sách đang dán.
+        const lines = (s.importText || '').split('\n').map(l => l.trim()).filter(Boolean);
+        const seenCode = new Set(stockData.map(p => p.activationCode.toLowerCase()));
+        const seenSku = new Set(stockData.map(p => p.sku.toLowerCase()));
+        const added = [], skipped = [];
+        lines.forEach((line, i) => {
+          const parts = line.split(/[,;\t]+/).map(x => x.trim());
+          const sku = parts[0], code = parts[1];
+          if (!sku || !code) { skipped.push({ line, reason: 'Thiếu mã sản phẩm hoặc mã kích hoạt' }); return; }
+          if (seenCode.has(code.toLowerCase())) { skipped.push({ line, reason: 'Trùng mã kích hoạt' }); return; }
+          if (seenSku.has(sku.toLowerCase())) { skipped.push({ line, reason: 'Trùng mã sản phẩm' }); return; }
+          seenCode.add(code.toLowerCase()); seenSku.add(sku.toLowerCase());
+          added.push({ id: 950000 + i, sku, activationCode: code, orderId: '—', seller: '—',
+            stockedAt: '08/09/2026', status: 'available',
+            log: [{ label: 'Nhập kho (import hàng loạt)', time: '08/09/2026 10:00' }] });
+        });
+        this.setState({
+          stockData: [...added, ...stockData],
+          importResult: { total: lines.length, ok: added.length, skip: skipped.length,
+            hasSkipped: skipped.length > 0, skipped: skipped.slice(0, 30) }
+        });
+      },
+
+      hasActionModal: !!s.actionModal,
+      isApproveModal: s.actionModal && s.actionModal.type === 'approve' && s.actionModal.kind !== 'member',
+      isRejectModal: s.actionModal && s.actionModal.type === 'reject' && s.actionModal.kind !== 'member',
+      isPaidModal: s.actionModal && s.actionModal.type === 'paid',
+      isApproveMemberModal: s.actionModal && s.actionModal.type === 'approve' && s.actionModal.kind === 'member',
+      isRejectMemberModal: s.actionModal && s.actionModal.type === 'reject' && s.actionModal.kind === 'member',
+      actionWithdrawal, approveOverBalance, actionMember, actionStageLabel,
+      approveConfirmLabel: approveOverBalance ? 'Vẫn duyệt' : 'Xác nhận',
+      closeActionModal: () => this.setState({ actionModal: null }),
+      confirmApprove: () => {
+        const { id, kind } = s.actionModal, now = '03/09/2026 10:00';
+        const isSpecialist = s.adminRole === 'specialist';
+        if (kind === 'member') {
+          const nextStatus = isSpecialist ? 'specialist_approved' : 'active';
+          const label = isSpecialist ? 'Admin Specialist duyệt hồ sơ (chờ Head Admin)' : 'Head Admin xác nhận & kích hoạt thành viên';
+          const actor = isSpecialist ? 'Admin Specialist' : 'Head Admin';
+          this.setState({
+            memberStatusOverrides: { ...s.memberStatusOverrides, [id]: nextStatus },
+            memberAuditLog: { ...s.memberAuditLog, [id]: [...(s.memberAuditLog[id] || []), { label, actor, time: now }] },
+            actionModal: null
+          });
+          return;
+        }
+        const nextStatus = isSpecialist ? 'specialist_approved' : 'approved';
+        const label = isSpecialist ? 'Admin Specialist duyệt (chờ Head Admin)' : 'Head Admin xác nhận duyệt';
+        const actor = isSpecialist ? 'Admin Specialist' : 'Head Admin';
+        this.setState({ withdrawalsData: withdrawalsData.map(w => w.id === id ? { ...w, status: nextStatus, auditLog: [...w.auditLog, { label, actor, time: now }] } : w), actionModal: null });
+      },
+      rejectReason: s.rejectReason, setRejectReason: (e) => this.setState({ rejectReason: e.target.value }),
+      rejectDisabled, rejectConfirmStyle,
+      confirmReject: () => {
+        if (!s.rejectReason.trim()) return;
+        const { id, kind } = s.actionModal, now = '03/09/2026 10:05';
+        const actor = s.adminRole === 'specialist' ? 'Admin Specialist' : 'Head Admin';
+        if (kind === 'member') {
+          this.setState({
+            memberStatusOverrides: { ...s.memberStatusOverrides, [id]: 'rejected' },
+            memberAuditLog: { ...s.memberAuditLog, [id]: [...(s.memberAuditLog[id] || []), { label: 'Từ chối hồ sơ: ' + s.rejectReason.trim(), actor, time: now }] },
+            actionModal: null, rejectReason: ''
+          });
+          return;
+        }
+        this.setState({ withdrawalsData: withdrawalsData.map(w => w.id === id ? { ...w, status: 'rejected', reason: s.rejectReason.trim(), auditLog: [...w.auditLog, { label: 'Từ chối yêu cầu', actor, time: now }] } : w), actionModal: null, rejectReason: '' });
+      },
+      paidNote: s.paidNote, setPaidNote: (e) => this.setState({ paidNote: e.target.value }),
+      confirmPaid: () => {
+        const id = s.actionModal.id, now = '03/09/2026 10:10';
+        this.setState({ withdrawalsData: withdrawalsData.map(w => w.id === id ? { ...w, status: 'paid', paidNote: s.paidNote, auditLog: [...w.auditLog, { label: 'Đánh dấu đã chi trả', actor: s.adminRole === 'specialist' ? 'Admin Specialist' : 'Head Admin', time: now }] } : w), actionModal: null, paidNote: '' });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+Nguồn      : D:\BA\ProjectBA\Medigo\Prototypev-v3\Homi365_Mockup-0409.html
+Số asset   : 17
+Trang lồng : 0
+
+uuid                                   mime                         kích thước
+--------------------------------------------------------------------------------
+d3a2f2c4-e44e-4524-ab01-ec4bd8675302   text/javascript                 67.5 KB
+f8a6c965-56cb-4069-9986-84e96bd0b925   text/javascript                 10.5 KB
+e2f3f7ba-3ade-42f2-9f2f-ad53d4e6dc73   text/javascript                128.7 KB
+1d422d68-7b1b-4db5-bfd8-e91551c15c9c   font/woff2                      28.2 KB
+36ffef6d-983f-4528-a9f7-0cf3e031be0a   font/woff2                      20.3 KB
+5416824f-a72a-46ff-9c4b-39370a638d86   font/woff2                      12.8 KB
+b797aeba-554d-40d7-8df1-5b73eb013e28   font/woff2                      34.8 KB
+9440158c-2cb7-4204-a577-a95d4c7a13a6   font/woff2                      38.2 KB
+a41c01b0-edc6-4dc0-90d5-e489be10b695   font/woff2                      35.8 KB
+da0d8bfa-a1c9-4a3c-a21a-adf607163167   font/woff2                      23.1 KB
+7c6fe463-d52c-4453-b88e-44115a27e9de   font/woff2                       4.2 KB
+f4e719ed-f830-41a5-950a-b35208fe3e5a   font/woff2                      17.2 KB
+140850a9-1262-40ff-ad3a-fd5241523031   font/woff2                      40.4 KB
+6be289a7-0405-4375-940a-392be6d627fa   font/woff2                      20.1 KB
+8e343d36-8b15-4250-b69c-7db7aa5f809c   font/woff2                      14.0 KB
+22d01ec4-50f9-476e-a7ed-14aa4aeece8e   font/woff2                      28.7 KB
+f7c25f54-d80a-4c03-b91b-d94e7275d56c   font/woff2                      42.1 KB
+
+Cờ màn hình tìm thấy (27): isA1, isA2, isA3, isActiveAgent, isAdminShell, isAgentLoginStep, isAgentOtpStep, isApproveMemberModal, isApproveModal, isB1, isB2, isB3, isB4, isC1, isForgotOtpStep, isForgotPhoneStep, isForgotResetStep, isForgotSuccessStep, isNewAgent, isPaidModal, isRegStep1, isRegStep2, isRegStep3, isRegStep4, isRegStep5, isRejectMemberModal, isRejectModal
+Số chỗ hardcode #00ADEE / #0099d1: 65

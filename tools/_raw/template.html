@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="res/d3a2f2c4-e44e-4524-ab01-ec4bd8675302.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics="">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>/* cyrillic-ext */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("res/1d422d68-7b1b-4db5-bfd8-e91551c15c9c.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("res/36ffef6d-983f-4528-a9f7-0cf3e031be0a.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("res/5416824f-a72a-46ff-9c4b-39370a638d86.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("res/b797aeba-554d-40d7-8df1-5b73eb013e28.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("res/9440158c-2cb7-4204-a577-a95d4c7a13a6.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("res/1d422d68-7b1b-4db5-bfd8-e91551c15c9c.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("res/36ffef6d-983f-4528-a9f7-0cf3e031be0a.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("res/5416824f-a72a-46ff-9c4b-39370a638d86.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("res/b797aeba-554d-40d7-8df1-5b73eb013e28.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("res/9440158c-2cb7-4204-a577-a95d4c7a13a6.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("res/1d422d68-7b1b-4db5-bfd8-e91551c15c9c.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("res/36ffef6d-983f-4528-a9f7-0cf3e031be0a.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("res/5416824f-a72a-46ff-9c4b-39370a638d86.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("res/b797aeba-554d-40d7-8df1-5b73eb013e28.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("res/9440158c-2cb7-4204-a577-a95d4c7a13a6.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("res/1d422d68-7b1b-4db5-bfd8-e91551c15c9c.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("res/36ffef6d-983f-4528-a9f7-0cf3e031be0a.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("res/5416824f-a72a-46ff-9c4b-39370a638d86.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("res/b797aeba-554d-40d7-8df1-5b73eb013e28.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("res/9440158c-2cb7-4204-a577-a95d4c7a13a6.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/a41c01b0-edc6-4dc0-90d5-e489be10b695.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/da0d8bfa-a1c9-4a3c-a21a-adf607163167.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/7c6fe463-d52c-4453-b88e-44115a27e9de.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/f4e719ed-f830-41a5-950a-b35208fe3e5a.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* math */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/140850a9-1262-40ff-ad3a-fd5241523031.woff2") format('woff2');
+  unicode-range: U+0302-0303, U+0305, U+0307-0308, U+0310, U+0312, U+0315, U+031A, U+0326-0327, U+032C, U+032F-0330, U+0332-0333, U+0338, U+033A, U+0346, U+034D, U+0391-03A1, U+03A3-03A9, U+03B1-03C9, U+03D1, U+03D5-03D6, U+03F0-03F1, U+03F4-03F5, U+2016-2017, U+2034-2038, U+203C, U+2040, U+2043, U+2047, U+2050, U+2057, U+205F, U+2070-2071, U+2074-208E, U+2090-209C, U+20D0-20DC, U+20E1, U+20E5-20EF, U+2100-2112, U+2114-2115, U+2117-2121, U+2123-214F, U+2190, U+2192, U+2194-21AE, U+21B0-21E5, U+21F1-21F2, U+21F4-2211, U+2213-2214, U+2216-22FF, U+2308-230B, U+2310, U+2319, U+231C-2321, U+2336-237A, U+237C, U+2395, U+239B-23B7, U+23D0, U+23DC-23E1, U+2474-2475, U+25AF, U+25B3, U+25B7, U+25BD, U+25C1, U+25CA, U+25CC, U+25FB, U+266D-266F, U+27C0-27FF, U+2900-2AFF, U+2B0E-2B11, U+2B30-2B4C, U+2BFE, U+3030, U+FF5B, U+FF5D, U+1D400-1D7FF, U+1EE00-1EEFF;
+}
+/* symbols */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/6be289a7-0405-4375-940a-392be6d627fa.woff2") format('woff2');
+  unicode-range: U+0001-000C, U+000E-001F, U+007F-009F, U+20DD-20E0, U+20E2-20E4, U+2150-218F, U+2190, U+2192, U+2194-2199, U+21AF, U+21E6-21F0, U+21F3, U+2218-2219, U+2299, U+22C4-22C6, U+2300-243F, U+2440-244A, U+2460-24FF, U+25A0-27BF, U+2800-28FF, U+2921-2922, U+2981, U+29BF, U+29EB, U+2B00-2BFF, U+4DC0-4DFF, U+FFF9-FFFB, U+10140-1018E, U+10190-1019C, U+101A0, U+101D0-101FD, U+102E0-102FB, U+10E60-10E7E, U+1D2C0-1D2D3, U+1D2E0-1D37F, U+1F000-1F0FF, U+1F100-1F1AD, U+1F1E6-1F1FF, U+1F30D-1F30F, U+1F315, U+1F31C, U+1F31E, U+1F320-1F32C, U+1F336, U+1F378, U+1F37D, U+1F382, U+1F393-1F39F, U+1F3A7-1F3A8, U+1F3AC-1F3AF, U+1F3C2, U+1F3C4-1F3C6, U+1F3CA-1F3CE, U+1F3D4-1F3E0, U+1F3ED, U+1F3F1-1F3F3, U+1F3F5-1F3F7, U+1F408, U+1F415, U+1F41F, U+1F426, U+1F43F, U+1F441-1F442, U+1F444, U+1F446-1F449, U+1F44C-1F44E, U+1F453, U+1F46A, U+1F47D, U+1F4A3, U+1F4B0, U+1F4B3, U+1F4B9, U+1F4BB, U+1F4BF, U+1F4C8-1F4CB, U+1F4D6, U+1F4DA, U+1F4DF, U+1F4E3-1F4E6, U+1F4EA-1F4ED, U+1F4F7, U+1F4F9-1F4FB, U+1F4FD-1F4FE, U+1F503, U+1F507-1F50B, U+1F50D, U+1F512-1F513, U+1F53E-1F54A, U+1F54F-1F5FA, U+1F610, U+1F650-1F67F, U+1F687, U+1F68D, U+1F691, U+1F694, U+1F698, U+1F6AD, U+1F6B2, U+1F6B9-1F6BA, U+1F6BC, U+1F6C6-1F6CF, U+1F6D3-1F6D7, U+1F6E0-1F6EA, U+1F6F0-1F6F3, U+1F6F7-1F6FC, U+1F700-1F7FF, U+1F800-1F80B, U+1F810-1F847, U+1F850-1F859, U+1F860-1F887, U+1F890-1F8AD, U+1F8B0-1F8BB, U+1F8C0-1F8C1, U+1F900-1F90B, U+1F93B, U+1F946, U+1F984, U+1F996, U+1F9E9, U+1FA00-1FA6F, U+1FA70-1FA7C, U+1FA80-1FA89, U+1FA8F-1FAC6, U+1FACE-1FADC, U+1FADF-1FAE9, U+1FAF0-1FAF8, U+1FB00-1FBFF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/8e343d36-8b15-4250-b69c-7db7aa5f809c.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/22d01ec4-50f9-476e-a7ed-14aa4aeece8e.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/f7c25f54-d80a-4c03-b91b-d94e7275d56c.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/a41c01b0-edc6-4dc0-90d5-e489be10b695.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/da0d8bfa-a1c9-4a3c-a21a-adf607163167.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/7c6fe463-d52c-4453-b88e-44115a27e9de.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/f4e719ed-f830-41a5-950a-b35208fe3e5a.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* math */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/140850a9-1262-40ff-ad3a-fd5241523031.woff2") format('woff2');
+  unicode-range: U+0302-0303, U+0305, U+0307-0308, U+0310, U+0312, U+0315, U+031A, U+0326-0327, U+032C, U+032F-0330, U+0332-0333, U+0338, U+033A, U+0346, U+034D, U+0391-03A1, U+03A3-03A9, U+03B1-03C9, U+03D1, U+03D5-03D6, U+03F0-03F1, U+03F4-03F5, U+2016-2017, U+2034-2038, U+203C, U+2040, U+2043, U+2047, U+2050, U+2057, U+205F, U+2070-2071, U+2074-208E, U+2090-209C, U+20D0-20DC, U+20E1, U+20E5-20EF, U+2100-2112, U+2114-2115, U+2117-2121, U+2123-214F, U+2190, U+2192, U+2194-21AE, U+21B0-21E5, U+21F1-21F2, U+21F4-2211, U+2213-2214, U+2216-22FF, U+2308-230B, U+2310, U+2319, U+231C-2321, U+2336-237A, U+237C, U+2395, U+239B-23B7, U+23D0, U+23DC-23E1, U+2474-2475, U+25AF, U+25B3, U+25B7, U+25BD, U+25C1, U+25CA, U+25CC, U+25FB, U+266D-266F, U+27C0-27FF, U+2900-2AFF, U+2B0E-2B11, U+2B30-2B4C, U+2BFE, U+3030, U+FF5B, U+FF5D, U+1D400-1D7FF, U+1EE00-1EEFF;
+}
+/* symbols */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/6be289a7-0405-4375-940a-392be6d627fa.woff2") format('woff2');
+  unicode-range: U+0001-000C, U+000E-001F, U+007F-009F, U+20DD-20E0, U+20E2-20E4, U+2150-218F, U+2190, U+2192, U+2194-2199, U+21AF, U+21E6-21F0, U+21F3, U+2218-2219, U+2299, U+22C4-22C6, U+2300-243F, U+2440-244A, U+2460-24FF, U+25A0-27BF, U+2800-28FF, U+2921-2922, U+2981, U+29BF, U+29EB, U+2B00-2BFF, U+4DC0-4DFF, U+FFF9-FFFB, U+10140-1018E, U+10190-1019C, U+101A0, U+101D0-101FD, U+102E0-102FB, U+10E60-10E7E, U+1D2C0-1D2D3, U+1D2E0-1D37F, U+1F000-1F0FF, U+1F100-1F1AD, U+1F1E6-1F1FF, U+1F30D-1F30F, U+1F315, U+1F31C, U+1F31E, U+1F320-1F32C, U+1F336, U+1F378, U+1F37D, U+1F382, U+1F393-1F39F, U+1F3A7-1F3A8, U+1F3AC-1F3AF, U+1F3C2, U+1F3C4-1F3C6, U+1F3CA-1F3CE, U+1F3D4-1F3E0, U+1F3ED, U+1F3F1-1F3F3, U+1F3F5-1F3F7, U+1F408, U+1F415, U+1F41F, U+1F426, U+1F43F, U+1F441-1F442, U+1F444, U+1F446-1F449, U+1F44C-1F44E, U+1F453, U+1F46A, U+1F47D, U+1F4A3, U+1F4B0, U+1F4B3, U+1F4B9, U+1F4BB, U+1F4BF, U+1F4C8-1F4CB, U+1F4D6, U+1F4DA, U+1F4DF, U+1F4E3-1F4E6, U+1F4EA-1F4ED, U+1F4F7, U+1F4F9-1F4FB, U+1F4FD-1F4FE, U+1F503, U+1F507-1F50B, U+1F50D, U+1F512-1F513, U+1F53E-1F54A, U+1F54F-1F5FA, U+1F610, U+1F650-1F67F, U+1F687, U+1F68D, U+1F691, U+1F694, U+1F698, U+1F6AD, U+1F6B2, U+1F6B9-1F6BA, U+1F6BC, U+1F6C6-1F6CF, U+1F6D3-1F6D7, U+1F6E0-1F6EA, U+1F6F0-1F6F3, U+1F6F7-1F6FC, U+1F700-1F7FF, U+1F800-1F80B, U+1F810-1F847, U+1F850-1F859, U+1F860-1F887, U+1F890-1F8AD, U+1F8B0-1F8BB, U+1F8C0-1F8C1, U+1F900-1F90B, U+1F93B, U+1F946, U+1F984, U+1F996, U+1F9E9, U+1FA00-1FA6F, U+1FA70-1FA7C, U+1FA80-1FA89, U+1FA8F-1FAC6, U+1FACE-1FADC, U+1FADF-1FAE9, U+1FAF0-1FAF8, U+1FB00-1FBFF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/8e343d36-8b15-4250-b69c-7db7aa5f809c.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/22d01ec4-50f9-476e-a7ed-14aa4aeece8e.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/f7c25f54-d80a-4c03-b91b-d94e7275d56c.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/a41c01b0-edc6-4dc0-90d5-e489be10b695.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/da0d8bfa-a1c9-4a3c-a21a-adf607163167.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/7c6fe463-d52c-4453-b88e-44115a27e9de.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/f4e719ed-f830-41a5-950a-b35208fe3e5a.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* math */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/140850a9-1262-40ff-ad3a-fd5241523031.woff2") format('woff2');
+  unicode-range: U+0302-0303, U+0305, U+0307-0308, U+0310, U+0312, U+0315, U+031A, U+0326-0327, U+032C, U+032F-0330, U+0332-0333, U+0338, U+033A, U+0346, U+034D, U+0391-03A1, U+03A3-03A9, U+03B1-03C9, U+03D1, U+03D5-03D6, U+03F0-03F1, U+03F4-03F5, U+2016-2017, U+2034-2038, U+203C, U+2040, U+2043, U+2047, U+2050, U+2057, U+205F, U+2070-2071, U+2074-208E, U+2090-209C, U+20D0-20DC, U+20E1, U+20E5-20EF, U+2100-2112, U+2114-2115, U+2117-2121, U+2123-214F, U+2190, U+2192, U+2194-21AE, U+21B0-21E5, U+21F1-21F2, U+21F4-2211, U+2213-2214, U+2216-22FF, U+2308-230B, U+2310, U+2319, U+231C-2321, U+2336-237A, U+237C, U+2395, U+239B-23B7, U+23D0, U+23DC-23E1, U+2474-2475, U+25AF, U+25B3, U+25B7, U+25BD, U+25C1, U+25CA, U+25CC, U+25FB, U+266D-266F, U+27C0-27FF, U+2900-2AFF, U+2B0E-2B11, U+2B30-2B4C, U+2BFE, U+3030, U+FF5B, U+FF5D, U+1D400-1D7FF, U+1EE00-1EEFF;
+}
+/* symbols */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/6be289a7-0405-4375-940a-392be6d627fa.woff2") format('woff2');
+  unicode-range: U+0001-000C, U+000E-001F, U+007F-009F, U+20DD-20E0, U+20E2-20E4, U+2150-218F, U+2190, U+2192, U+2194-2199, U+21AF, U+21E6-21F0, U+21F3, U+2218-2219, U+2299, U+22C4-22C6, U+2300-243F, U+2440-244A, U+2460-24FF, U+25A0-27BF, U+2800-28FF, U+2921-2922, U+2981, U+29BF, U+29EB, U+2B00-2BFF, U+4DC0-4DFF, U+FFF9-FFFB, U+10140-1018E, U+10190-1019C, U+101A0, U+101D0-101FD, U+102E0-102FB, U+10E60-10E7E, U+1D2C0-1D2D3, U+1D2E0-1D37F, U+1F000-1F0FF, U+1F100-1F1AD, U+1F1E6-1F1FF, U+1F30D-1F30F, U+1F315, U+1F31C, U+1F31E, U+1F320-1F32C, U+1F336, U+1F378, U+1F37D, U+1F382, U+1F393-1F39F, U+1F3A7-1F3A8, U+1F3AC-1F3AF, U+1F3C2, U+1F3C4-1F3C6, U+1F3CA-1F3CE, U+1F3D4-1F3E0, U+1F3ED, U+1F3F1-1F3F3, U+1F3F5-1F3F7, U+1F408, U+1F415, U+1F41F, U+1F426, U+1F43F, U+1F441-1F442, U+1F444, U+1F446-1F449, U+1F44C-1F44E, U+1F453, U+1F46A, U+1F47D, U+1F4A3, U+1F4B0, U+1F4B3, U+1F4B9, U+1F4BB, U+1F4BF, U+1F4C8-1F4CB, U+1F4D6, U+1F4DA, U+1F4DF, U+1F4E3-1F4E6, U+1F4EA-1F4ED, U+1F4F7, U+1F4F9-1F4FB, U+1F4FD-1F4FE, U+1F503, U+1F507-1F50B, U+1F50D, U+1F512-1F513, U+1F53E-1F54A, U+1F54F-1F5FA, U+1F610, U+1F650-1F67F, U+1F687, U+1F68D, U+1F691, U+1F694, U+1F698, U+1F6AD, U+1F6B2, U+1F6B9-1F6BA, U+1F6BC, U+1F6C6-1F6CF, U+1F6D3-1F6D7, U+1F6E0-1F6EA, U+1F6F0-1F6F3, U+1F6F7-1F6FC, U+1F700-1F7FF, U+1F800-1F80B, U+1F810-1F847, U+1F850-1F859, U+1F860-1F887, U+1F890-1F8AD, U+1F8B0-1F8BB, U+1F8C0-1F8C1, U+1F900-1F90B, U+1F93B, U+1F946, U+1F984, U+1F996, U+1F9E9, U+1FA00-1FA6F, U+1FA70-1FA7C, U+1FA80-1FA89, U+1FA8F-1FAC6, U+1FACE-1FADC, U+1FADF-1FAE9, U+1FAF0-1FAF8, U+1FB00-1FBFF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/8e343d36-8b15-4250-b69c-7db7aa5f809c.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/22d01ec4-50f9-476e-a7ed-14aa4aeece8e.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/f7c25f54-d80a-4c03-b91b-d94e7275d56c.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/a41c01b0-edc6-4dc0-90d5-e489be10b695.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/da0d8bfa-a1c9-4a3c-a21a-adf607163167.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/7c6fe463-d52c-4453-b88e-44115a27e9de.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/f4e719ed-f830-41a5-950a-b35208fe3e5a.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* math */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/140850a9-1262-40ff-ad3a-fd5241523031.woff2") format('woff2');
+  unicode-range: U+0302-0303, U+0305, U+0307-0308, U+0310, U+0312, U+0315, U+031A, U+0326-0327, U+032C, U+032F-0330, U+0332-0333, U+0338, U+033A, U+0346, U+034D, U+0391-03A1, U+03A3-03A9, U+03B1-03C9, U+03D1, U+03D5-03D6, U+03F0-03F1, U+03F4-03F5, U+2016-2017, U+2034-2038, U+203C, U+2040, U+2043, U+2047, U+2050, U+2057, U+205F, U+2070-2071, U+2074-208E, U+2090-209C, U+20D0-20DC, U+20E1, U+20E5-20EF, U+2100-2112, U+2114-2115, U+2117-2121, U+2123-214F, U+2190, U+2192, U+2194-21AE, U+21B0-21E5, U+21F1-21F2, U+21F4-2211, U+2213-2214, U+2216-22FF, U+2308-230B, U+2310, U+2319, U+231C-2321, U+2336-237A, U+237C, U+2395, U+239B-23B7, U+23D0, U+23DC-23E1, U+2474-2475, U+25AF, U+25B3, U+25B7, U+25BD, U+25C1, U+25CA, U+25CC, U+25FB, U+266D-266F, U+27C0-27FF, U+2900-2AFF, U+2B0E-2B11, U+2B30-2B4C, U+2BFE, U+3030, U+FF5B, U+FF5D, U+1D400-1D7FF, U+1EE00-1EEFF;
+}
+/* symbols */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/6be289a7-0405-4375-940a-392be6d627fa.woff2") format('woff2');
+  unicode-range: U+0001-000C, U+000E-001F, U+007F-009F, U+20DD-20E0, U+20E2-20E4, U+2150-218F, U+2190, U+2192, U+2194-2199, U+21AF, U+21E6-21F0, U+21F3, U+2218-2219, U+2299, U+22C4-22C6, U+2300-243F, U+2440-244A, U+2460-24FF, U+25A0-27BF, U+2800-28FF, U+2921-2922, U+2981, U+29BF, U+29EB, U+2B00-2BFF, U+4DC0-4DFF, U+FFF9-FFFB, U+10140-1018E, U+10190-1019C, U+101A0, U+101D0-101FD, U+102E0-102FB, U+10E60-10E7E, U+1D2C0-1D2D3, U+1D2E0-1D37F, U+1F000-1F0FF, U+1F100-1F1AD, U+1F1E6-1F1FF, U+1F30D-1F30F, U+1F315, U+1F31C, U+1F31E, U+1F320-1F32C, U+1F336, U+1F378, U+1F37D, U+1F382, U+1F393-1F39F, U+1F3A7-1F3A8, U+1F3AC-1F3AF, U+1F3C2, U+1F3C4-1F3C6, U+1F3CA-1F3CE, U+1F3D4-1F3E0, U+1F3ED, U+1F3F1-1F3F3, U+1F3F5-1F3F7, U+1F408, U+1F415, U+1F41F, U+1F426, U+1F43F, U+1F441-1F442, U+1F444, U+1F446-1F449, U+1F44C-1F44E, U+1F453, U+1F46A, U+1F47D, U+1F4A3, U+1F4B0, U+1F4B3, U+1F4B9, U+1F4BB, U+1F4BF, U+1F4C8-1F4CB, U+1F4D6, U+1F4DA, U+1F4DF, U+1F4E3-1F4E6, U+1F4EA-1F4ED, U+1F4F7, U+1F4F9-1F4FB, U+1F4FD-1F4FE, U+1F503, U+1F507-1F50B, U+1F50D, U+1F512-1F513, U+1F53E-1F54A, U+1F54F-1F5FA, U+1F610, U+1F650-1F67F, U+1F687, U+1F68D, U+1F691, U+1F694, U+1F698, U+1F6AD, U+1F6B2, U+1F6B9-1F6BA, U+1F6BC, U+1F6C6-1F6CF, U+1F6D3-1F6D7, U+1F6E0-1F6EA, U+1F6F0-1F6F3, U+1F6F7-1F6FC, U+1F700-1F7FF, U+1F800-1F80B, U+1F810-1F847, U+1F850-1F859, U+1F860-1F887, U+1F890-1F8AD, U+1F8B0-1F8BB, U+1F8C0-1F8C1, U+1F900-1F90B, U+1F93B, U+1F946, U+1F984, U+1F996, U+1F9E9, U+1FA00-1FA6F, U+1FA70-1FA7C, U+1FA80-1FA89, U+1FA8F-1FAC6, U+1FACE-1FADC, U+1FADF-1FAE9, U+1FAF0-1FAF8, U+1FB00-1FBFF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/8e343d36-8b15-4250-b69c-7db7aa5f809c.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/22d01ec4-50f9-476e-a7ed-14aa4aeece8e.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/f7c25f54-d80a-4c03-b91b-d94e7275d56c.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/a41c01b0-edc6-4dc0-90d5-e489be10b695.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/da0d8bfa-a1c9-4a3c-a21a-adf607163167.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/7c6fe463-d52c-4453-b88e-44115a27e9de.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/f4e719ed-f830-41a5-950a-b35208fe3e5a.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* math */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/140850a9-1262-40ff-ad3a-fd5241523031.woff2") format('woff2');
+  unicode-range: U+0302-0303, U+0305, U+0307-0308, U+0310, U+0312, U+0315, U+031A, U+0326-0327, U+032C, U+032F-0330, U+0332-0333, U+0338, U+033A, U+0346, U+034D, U+0391-03A1, U+03A3-03A9, U+03B1-03C9, U+03D1, U+03D5-03D6, U+03F0-03F1, U+03F4-03F5, U+2016-2017, U+2034-2038, U+203C, U+2040, U+2043, U+2047, U+2050, U+2057, U+205F, U+2070-2071, U+2074-208E, U+2090-209C, U+20D0-20DC, U+20E1, U+20E5-20EF, U+2100-2112, U+2114-2115, U+2117-2121, U+2123-214F, U+2190, U+2192, U+2194-21AE, U+21B0-21E5, U+21F1-21F2, U+21F4-2211, U+2213-2214, U+2216-22FF, U+2308-230B, U+2310, U+2319, U+231C-2321, U+2336-237A, U+237C, U+2395, U+239B-23B7, U+23D0, U+23DC-23E1, U+2474-2475, U+25AF, U+25B3, U+25B7, U+25BD, U+25C1, U+25CA, U+25CC, U+25FB, U+266D-266F, U+27C0-27FF, U+2900-2AFF, U+2B0E-2B11, U+2B30-2B4C, U+2BFE, U+3030, U+FF5B, U+FF5D, U+1D400-1D7FF, U+1EE00-1EEFF;
+}
+/* symbols */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/6be289a7-0405-4375-940a-392be6d627fa.woff2") format('woff2');
+  unicode-range: U+0001-000C, U+000E-001F, U+007F-009F, U+20DD-20E0, U+20E2-20E4, U+2150-218F, U+2190, U+2192, U+2194-2199, U+21AF, U+21E6-21F0, U+21F3, U+2218-2219, U+2299, U+22C4-22C6, U+2300-243F, U+2440-244A, U+2460-24FF, U+25A0-27BF, U+2800-28FF, U+2921-2922, U+2981, U+29BF, U+29EB, U+2B00-2BFF, U+4DC0-4DFF, U+FFF9-FFFB, U+10140-1018E, U+10190-1019C, U+101A0, U+101D0-101FD, U+102E0-102FB, U+10E60-10E7E, U+1D2C0-1D2D3, U+1D2E0-1D37F, U+1F000-1F0FF, U+1F100-1F1AD, U+1F1E6-1F1FF, U+1F30D-1F30F, U+1F315, U+1F31C, U+1F31E, U+1F320-1F32C, U+1F336, U+1F378, U+1F37D, U+1F382, U+1F393-1F39F, U+1F3A7-1F3A8, U+1F3AC-1F3AF, U+1F3C2, U+1F3C4-1F3C6, U+1F3CA-1F3CE, U+1F3D4-1F3E0, U+1F3ED, U+1F3F1-1F3F3, U+1F3F5-1F3F7, U+1F408, U+1F415, U+1F41F, U+1F426, U+1F43F, U+1F441-1F442, U+1F444, U+1F446-1F449, U+1F44C-1F44E, U+1F453, U+1F46A, U+1F47D, U+1F4A3, U+1F4B0, U+1F4B3, U+1F4B9, U+1F4BB, U+1F4BF, U+1F4C8-1F4CB, U+1F4D6, U+1F4DA, U+1F4DF, U+1F4E3-1F4E6, U+1F4EA-1F4ED, U+1F4F7, U+1F4F9-1F4FB, U+1F4FD-1F4FE, U+1F503, U+1F507-1F50B, U+1F50D, U+1F512-1F513, U+1F53E-1F54A, U+1F54F-1F5FA, U+1F610, U+1F650-1F67F, U+1F687, U+1F68D, U+1F691, U+1F694, U+1F698, U+1F6AD, U+1F6B2, U+1F6B9-1F6BA, U+1F6BC, U+1F6C6-1F6CF, U+1F6D3-1F6D7, U+1F6E0-1F6EA, U+1F6F0-1F6F3, U+1F6F7-1F6FC, U+1F700-1F7FF, U+1F800-1F80B, U+1F810-1F847, U+1F850-1F859, U+1F860-1F887, U+1F890-1F8AD, U+1F8B0-1F8BB, U+1F8C0-1F8C1, U+1F900-1F90B, U+1F93B, U+1F946, U+1F984, U+1F996, U+1F9E9, U+1FA00-1FA6F, U+1FA70-1FA7C, U+1FA80-1FA89, U+1FA8F-1FAC6, U+1FACE-1FADC, U+1FADF-1FAE9, U+1FAF0-1FAF8, U+1FB00-1FBFF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/8e343d36-8b15-4250-b69c-7db7aa5f809c.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/22d01ec4-50f9-476e-a7ed-14aa4aeece8e.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/f7c25f54-d80a-4c03-b91b-d94e7275d56c.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/a41c01b0-edc6-4dc0-90d5-e489be10b695.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/da0d8bfa-a1c9-4a3c-a21a-adf607163167.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/7c6fe463-d52c-4453-b88e-44115a27e9de.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/f4e719ed-f830-41a5-950a-b35208fe3e5a.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* math */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/140850a9-1262-40ff-ad3a-fd5241523031.woff2") format('woff2');
+  unicode-range: U+0302-0303, U+0305, U+0307-0308, U+0310, U+0312, U+0315, U+031A, U+0326-0327, U+032C, U+032F-0330, U+0332-0333, U+0338, U+033A, U+0346, U+034D, U+0391-03A1, U+03A3-03A9, U+03B1-03C9, U+03D1, U+03D5-03D6, U+03F0-03F1, U+03F4-03F5, U+2016-2017, U+2034-2038, U+203C, U+2040, U+2043, U+2047, U+2050, U+2057, U+205F, U+2070-2071, U+2074-208E, U+2090-209C, U+20D0-20DC, U+20E1, U+20E5-20EF, U+2100-2112, U+2114-2115, U+2117-2121, U+2123-214F, U+2190, U+2192, U+2194-21AE, U+21B0-21E5, U+21F1-21F2, U+21F4-2211, U+2213-2214, U+2216-22FF, U+2308-230B, U+2310, U+2319, U+231C-2321, U+2336-237A, U+237C, U+2395, U+239B-23B7, U+23D0, U+23DC-23E1, U+2474-2475, U+25AF, U+25B3, U+25B7, U+25BD, U+25C1, U+25CA, U+25CC, U+25FB, U+266D-266F, U+27C0-27FF, U+2900-2AFF, U+2B0E-2B11, U+2B30-2B4C, U+2BFE, U+3030, U+FF5B, U+FF5D, U+1D400-1D7FF, U+1EE00-1EEFF;
+}
+/* symbols */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/6be289a7-0405-4375-940a-392be6d627fa.woff2") format('woff2');
+  unicode-range: U+0001-000C, U+000E-001F, U+007F-009F, U+20DD-20E0, U+20E2-20E4, U+2150-218F, U+2190, U+2192, U+2194-2199, U+21AF, U+21E6-21F0, U+21F3, U+2218-2219, U+2299, U+22C4-22C6, U+2300-243F, U+2440-244A, U+2460-24FF, U+25A0-27BF, U+2800-28FF, U+2921-2922, U+2981, U+29BF, U+29EB, U+2B00-2BFF, U+4DC0-4DFF, U+FFF9-FFFB, U+10140-1018E, U+10190-1019C, U+101A0, U+101D0-101FD, U+102E0-102FB, U+10E60-10E7E, U+1D2C0-1D2D3, U+1D2E0-1D37F, U+1F000-1F0FF, U+1F100-1F1AD, U+1F1E6-1F1FF, U+1F30D-1F30F, U+1F315, U+1F31C, U+1F31E, U+1F320-1F32C, U+1F336, U+1F378, U+1F37D, U+1F382, U+1F393-1F39F, U+1F3A7-1F3A8, U+1F3AC-1F3AF, U+1F3C2, U+1F3C4-1F3C6, U+1F3CA-1F3CE, U+1F3D4-1F3E0, U+1F3ED, U+1F3F1-1F3F3, U+1F3F5-1F3F7, U+1F408, U+1F415, U+1F41F, U+1F426, U+1F43F, U+1F441-1F442, U+1F444, U+1F446-1F449, U+1F44C-1F44E, U+1F453, U+1F46A, U+1F47D, U+1F4A3, U+1F4B0, U+1F4B3, U+1F4B9, U+1F4BB, U+1F4BF, U+1F4C8-1F4CB, U+1F4D6, U+1F4DA, U+1F4DF, U+1F4E3-1F4E6, U+1F4EA-1F4ED, U+1F4F7, U+1F4F9-1F4FB, U+1F4FD-1F4FE, U+1F503, U+1F507-1F50B, U+1F50D, U+1F512-1F513, U+1F53E-1F54A, U+1F54F-1F5FA, U+1F610, U+1F650-1F67F, U+1F687, U+1F68D, U+1F691, U+1F694, U+1F698, U+1F6AD, U+1F6B2, U+1F6B9-1F6BA, U+1F6BC, U+1F6C6-1F6CF, U+1F6D3-1F6D7, U+1F6E0-1F6EA, U+1F6F0-1F6F3, U+1F6F7-1F6FC, U+1F700-1F7FF, U+1F800-1F80B, U+1F810-1F847, U+1F850-1F859, U+1F860-1F887, U+1F890-1F8AD, U+1F8B0-1F8BB, U+1F8C0-1F8C1, U+1F900-1F90B, U+1F93B, U+1F946, U+1F984, U+1F996, U+1F9E9, U+1FA00-1FA6F, U+1FA70-1FA7C, U+1FA80-1FA89, U+1FA8F-1FAC6, U+1FACE-1FADC, U+1FADF-1FAE9, U+1FAF0-1FAF8, U+1FB00-1FBFF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/8e343d36-8b15-4250-b69c-7db7aa5f809c.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/22d01ec4-50f9-476e-a7ed-14aa4aeece8e.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("res/f7c25f54-d80a-4c03-b91b-d94e7275d56c.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+body{margin:0;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+input,textarea{font-family:inherit;outline:none}
+button{cursor:pointer;font-family:inherit}
+@keyframes medigo-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+</style>
+</helmet>
+<div style="--c1:#1F1F1F;--c2:#424242;--c4:#414445;--c5:#939393;--c6:#00ADEE;--c8:#84BE52;--c9:#FFA500;--c10:#FBAE40;--c11:#FFBC40;--c3:#344557;--c7:#AAAAAA;--c12:#FFFFFF;--err:#D9342B;--s1:5px;--s2:6px;--s3:8px;--s4:10px;--s5:12px;--s6:15px;--s7:16px;--s8:20px;--s9:30px;--s10:40px;--s11:50px;--r-sm:4px;--r-md:5px;--r-lg:6px;--r-xl:30px;--r-full:50%;--sh:1px 1px 5px 0 rgba(204,204,204,.9);--ff:'Roboto','Nunito',sans-serif; font-family:var(--ff); background:var(--c12); min-height:100vh; color:var(--c1);">
+
+  <!-- TOP BAR -->
+  <div style="position:sticky;top:0;z-index:50;background:var(--c12);border-bottom:1px solid rgba(170,170,170,.35);display:flex;align-items:center;gap:var(--s7);padding:var(--s5) var(--s8);flex-wrap:wrap">
+    <div style="font-weight:700;font-size:18px;color:var(--c1);letter-spacing:-.2px">Homi365&nbsp;<span style="color: var(--c6);">●</span></div>
+    <div style="font-size:11px;color:var(--c5);padding-left:var(--s5);border-left:1px solid rgba(170,170,170,.35);white-space:nowrap">WhiteCoat Việt Nam · 7 màn hình MVP</div>
+    <div style="display:flex;gap:var(--s2);margin-left:auto;flex-wrap:wrap">
+      <sc-for list="{{nav}}" as="item" hint-placeholder-count="8">
+        <button sc-camel-on-click="{{item.onClick}}" style="{{item.style}}">{{item.label}}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ================= A1 THÔNG TIN NHẬN HÀNG ================= -->
+  <sc-if value="{{isA1}}" hint-placeholder-val="{{true}}">
+  <div style="display:flex;justify-content:center;padding:var(--s8) var(--s7) var(--s10);background:rgba(170,170,170,.05)">
+    <div style="width:100%;max-width:1160px;display:grid;grid-template-columns:1fr 380px;gap:var(--s8);align-items:start">
+
+      <div style="display:flex;flex-direction:column;gap:var(--s7)">
+        <div style="background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s7)">
+          <div style="font-size:18px;font-weight:700;color:var(--c1)">Thông tin nhận hàng</div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)">
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Họ tên (*)</label><input type="text" placeholder="Nhập họ tên" value="{{buyerName}}" sc-camel-on-change="{{setBuyerName}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số điện thoại (*)</label><input type="text" placeholder="Nhập SĐT" value="{{buyerPhone}}" sc-camel-on-change="{{setBuyerPhone}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Email (*)</label><input type="text" placeholder="Nhập email" value="{{buyerEmail}}" sc-camel-on-change="{{setBuyerEmail}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số CCCD (*)</label><input type="text" placeholder="Nhập số CCCD" value="{{buyerCccd}}" sc-camel-on-change="{{setBuyerCccd}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Địa chỉ (*)</label><input type="text" placeholder="Nhập địa chỉ" value="{{buyerAddress}}" sc-camel-on-change="{{setBuyerAddress}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--s7)">
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Tỉnh/Thành phố (*)</label>
+              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>TP. Hồ Chí Minh</option></sc-raw-select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Quận/Huyện (*)</label>
+              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Quận 1</option></sc-raw-select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Phường/Xã (*)</label>
+              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Phường Bến Nghé</option></sc-raw-select>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)">
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngày sinh</label><input type="text" placeholder="dd/mm/yyyy" value="{{buyerDob}}" sc-camel-on-change="{{setBuyerDob}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Giới tính</label>
+              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Nam</option><option>Nữ</option><option>Khác</option></sc-raw-select>
+            </div>
+          </div>
+
+          <div style="height:1px;background:rgba(170,170,170,.25);margin:var(--s2) 0"></div>
+          <div style="font-size:14px;font-weight:700;color:var(--c1)">Thông tin nhận hoa hồng</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)">
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngân hàng (*)</label>
+              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Vietcombank</option></sc-raw-select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số tài khoản (*)</label><input type="text" placeholder="Nhập số tài khoản" value="{{buyerBankAccount}}" sc-camel-on-change="{{setBuyerBankAccount}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Mã giới thiệu</label><input type="text" value="923983" readonly="{{true}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;background:rgba(170,170,170,.08);color:var(--c4)" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+        </div>
+
+        
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--s7)">
+        <div style="background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s5)">
+          <div style="font-size:16px;font-weight:700;color:var(--c1)">Thông tin đơn hàng</div>
+          <div style="display:flex;gap:var(--s5)">
+            <div style="width:64px;height:64px;border-radius:var(--r-md);background:repeating-linear-gradient(45deg,rgba(0,173,238,.12),rgba(0,173,238,.12) 6px,rgba(0,173,238,.22) 6px,rgba(0,173,238,.22) 12px);flex:none;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--c6);font-family:monospace;text-align:center">SP ẢNH</div>
+            <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:var(--c1)">CN02 — Bác sĩ 24/7 hỗ trợ tư vấn sức khỏe</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Giá: {{cn02PackagePrice}} x 1</div></div>
+          </div>
+          <div style="height:1px;background:rgba(170,170,170,.25)"></div>
+          <div style="font-size:14px;font-weight:600;color:var(--c1)">Chọn gói đăng ký</div>
+          <sc-for list="{{cn02Packages}}" as="pkg" hint-placeholder-count="2">
+            <label style="display:flex;align-items:center;justify-content:space-between;gap:var(--s5);padding:var(--s5);border:1px solid {{pkg.borderColor}};border-radius:var(--r-md);cursor:pointer;background:{{pkg.bg}}" style-hover="background:rgba(0,173,238,.04)">
+              <span style="display:flex;align-items:center;gap:var(--s5)">
+                <input type="radio" name="cn02-package" checked="{{pkg.checked}}" sc-camel-on-change="{{pkg.onSelect}}" style="width:18px;height:18px;accent-color:#00ADEE;flex:none">
+                <span style="font-size:14px;color:var(--c2);font-weight:500">{{pkg.label}}</span>
+              </span>
+              <span style="font-size:14px;color:var(--c1);font-weight:700">{{pkg.price}}</span>
+            </label>
+          </sc-for>
+        </div>
+
+        <div style="background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s5)">
+          <div style="font-size:16px;font-weight:700;color:var(--c1)">Thanh toán</div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--c2)"><span>Tạm tính</span><span style="font-weight:600">{{cn02PackagePrice}}</span></div>
+          
+          <div style="height:1px;background:rgba(170,170,170,.25)"></div>
+          <div style="display:flex;justify-content:space-between;font-size:16px;color:var(--c1);font-weight:700"><span>Thành tiền</span><span style="color:var(--c6)">{{cn02PackagePrice}}</span></div>
+          <button sc-camel-on-click="{{openQRPayment}}" style="height: 48px; color: var(--c12); border: none; border-radius: var(--r-md); font-size: 16px; font-weight: 700; box-shadow: var(--sh); background-color: #EE0000" style-hover="background:#0099d1" style-active="background:#0088ba" style-focus="box-shadow:0 0 0 3px rgba(0,173,238,.4)">Thanh toán</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <sc-if value="{{showQRPayment}}" hint-placeholder-val="{{false}}">
+    <div style="position:fixed;inset:0;background:rgba(31,31,31,.5);display:flex;align-items:flex-start;justify-content:center;z-index:200;padding:var(--s7);overflow-y:auto">
+      <div style="width:100%;max-width:380px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25);text-align:center;margin:var(--s10) 0">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="text-align:left"><div style="font-size:18px;font-weight:700;color:var(--c1)">Quét mã để thanh toán</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">Đơn hàng #{{orderId}}</div></div>
+          <button sc-camel-on-click="{{closeQRPayment}}" style="background:none;border:none;font-size:18px;color:var(--c5)">✕</button>
+        </div>
+
+        <div style="width:240px;margin:0 auto;background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:16px;padding:var(--s6);display:flex;flex-direction:column;align-items:center;gap:var(--s4);box-shadow:0 2px 12px rgba(0,0,0,.08)">
+          <div style="display:flex;align-items:center;gap:var(--s2)">
+            <span style="font-size:15px;font-weight:900;letter-spacing:-.02em"><span style="color:#ED1C24">TECHCOM</span><span style="color:#1F1F1F">BANK</span></span>
+            <span style="display:inline-flex;width:16px;height:16px;background:#ED1C24;border-radius:3px;transform:rotate(45deg)"></span>
+          </div>
+          <div style="width:190px;height:190px;display:grid;grid-template-columns:repeat(17,1fr);grid-template-rows:repeat(17,1fr)">
+            <sc-for list="{{qrModules}}" as="mod" hint-placeholder-count="289">
+              <div style="background:{{mod.color}}"></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--s4)">
+            <span style="font-size:13px;font-weight:800"><span style="color:#ED1C24">V</span>IETQR</span>
+            <span style="font-size:12px;font-weight:700;color:#00A19A">napas<span style="color:#003DA5">247</span></span>
+          </div>
+        </div>
+        <div style="text-align:center;font-size:11px;color:var(--c5);font-family:monospace">Đơn hàng #{{orderId}} · {{cn02PackagePrice}}</div>
+
+        <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-md);padding:var(--s6);display:flex;flex-direction:column;gap:var(--s4);text-align:left;font-size:13px">
+          <div style="display:flex;gap:var(--s3)"><span style="flex:none;width:20px;height:20px;border-radius:var(--r-full);background:#00ADEE;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">1</span><span style="color:var(--c2);line-height:1.5">Quét mã và chuyển tiền theo cú pháp: <strong>{{buyerName}} - Chuyển khoản đơn hàng {{orderId}}</strong></span></div>
+          <div style="display:flex;gap:var(--s3)"><span style="flex:none;width:20px;height:20px;border-radius:var(--r-full);background:#00ADEE;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">2</span><span style="color:var(--c2);line-height:1.5">Bấm vào ô bên dưới để upload ảnh chuyển khoản</span></div>
+        </div>
+
+        <label style="border:1px dashed rgba(170,170,170,.6);border-radius:var(--r-md);padding:var(--s6);display:flex;flex-direction:column;align-items:center;gap:var(--s2);cursor:pointer;color:var(--c5)" style-hover="border-color:#00ADEE;color:#00ADEE">
+          <span style="font-size:22px">⬆</span>
+          <span style="font-size:13px;font-weight:600">Upload ảnh chuyển khoản</span>
+          <input type="file" accept="image/*" sc-camel-on-change="{{confirmQRPayment}}" style="display:none">
+        </label>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{showPaymentSuccess}}" hint-placeholder-val="{{false}}">
+    <div style="position:fixed;inset:0;background:rgba(31,31,31,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:var(--s7)">
+      <div style="width:100%;max-width:380px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s7);box-shadow:0 8px 30px rgba(0,0,0,.25);text-align:center;align-items:center">
+        <div style="width:64px;height:64px;border-radius:var(--r-full);background:rgba(132,190,82,.15);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--c8)">✓</div>
+        <div><div style="font-size:20px;font-weight:700;color:var(--c1)">Đơn hàng đã được ghi nhận</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Đơn hàng #{{orderId}} · {{cn02PackagePrice}} · Đang chờ xác nhận thanh toán</div></div>
+        <div style="font-size:14px;color:var(--c2);line-height:1.6">Bạn có muốn đăng ký làm seller Homi365 để nhận hoa hồng giới thiệu không?</div>
+        <div style="display:flex;flex-direction:column;gap:var(--s3);width:100%">
+          <button sc-camel-on-click="{{choosRegisterSeller}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:700;box-shadow:var(--sh)" style-hover="background:#0099d1">Đăng ký thành viên</button>
+          <button sc-camel-on-click="{{choosSkipSeller}}" style="height:46px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:15px;font-weight:600" style-hover="background:rgba(170,170,170,.08)">Không, thoát ra</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+  </sc-if>
+
+  <sc-if value="{{showOrderLookup}}" hint-placeholder-val="{{false}}">
+    <div style="position:fixed;inset:0;background:rgba(31,31,31,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:var(--s7)">
+      <div style="width:100%;max-width:380px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="text-align:left"><div style="font-size:18px;font-weight:700;color:var(--c1)">Nhập số điện thoại</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">Hệ thống sẽ đối chiếu với đơn hàng để xác định agent bán hàng · thử SĐT 0901111111 (agent bán là hạng Bạc) hoặc 0902222222 (agent bán là hạng Đồng)</div></div>
+          <button sc-camel-on-click="{{closeOrderLookup}}" style="background:none;border:none;font-size:18px;color:var(--c5)">✕</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--s2)">
+          <label style="font-size:14px;font-weight:600;color:var(--c2)">Số điện thoại khách hàng đã mua đơn</label>
+          <input type="text" placeholder="090xxxxxxx" value="{{orderLookupInput}}" sc-camel-on-change="{{setOrderLookupInput}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+          <sc-if value="{{orderLookupError}}" hint-placeholder-val="{{false}}">
+            <div style="font-size:12px;color:#E20707">Không tìm thấy đơn hàng với số điện thoại này. Vui lòng kiểm tra lại.</div>
+          </sc-if>
+        </div>
+        <button sc-camel-on-click="{{submitOrderLookup}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Xác nhận</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{showUplineBlockedModal}}" hint-placeholder-val="{{false}}">
+    <div style="position:fixed;inset:0;background:rgba(31,31,31,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:var(--s7)">
+      <div style="width:100%;max-width:380px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25);text-align:center;align-items:center">
+        <div style="width:64px;height:64px;border-radius:var(--r-full);background:rgba(226,7,7,.1);display:flex;align-items:center;justify-content:center;font-size:30px;color:#E20707">✕</div>
+        <div><div style="font-size:18px;font-weight:700;color:var(--c1)">Không thể đăng ký thành viên</div><div style="font-size:14px;color:var(--c5);margin-top:var(--s2);line-height:1.6">Vui lòng liên hệ lại với CSKH của Homi365 <br>để được hỗ trợ.</div></div>
+        <button sc-camel-on-click="{{closeUplineBlockedModal}}" style="height:44px;width:100%;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Đã hiểu</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ================= A2 SELLER REGISTRATION ================= -->
+  <sc-if value="{{isA2}}" hint-placeholder-val="{{false}}">
+  <div style="display:flex;justify-content:center;padding:var(--s10) var(--s7) var(--s10)">
+    <div style="width:100%;max-width:390px;display:flex;flex-direction:column;gap:var(--s8)">
+
+      <div style="display:flex;align-items:center;gap:var(--s5)">
+        <sc-for list="{{regSteps}}" as="st" hint-placeholder-count="4">
+          <div style="flex:1;height:4px;border-radius:var(--r-sm);background:{{st.bg}}"></div>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{isRegStep1}}" hint-placeholder-val="{{true}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s7)">
+
+          <div><div style="font-size:24px;font-weight:700">Thông tin đăng ký</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">Bước 1/3 · Thông tin cá nhân &amp; nhận hoa hồng</div></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Họ và tên</label><input type="text" placeholder="Nguyễn Văn A" value="{{buyerName}}" sc-camel-on-change="{{setBuyerName}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số điện thoại</label><input type="text" placeholder="090xxxxxxx" value="{{buyerPhone}}" sc-camel-on-change="{{setBuyerPhone}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Email</label><input type="text" placeholder="email@domain.com" value="{{buyerEmail}}" sc-camel-on-change="{{setBuyerEmail}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số CCCD</label><input type="text" placeholder="Nhập số CCCD" value="{{buyerCccd}}" sc-camel-on-change="{{setBuyerCccd}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Địa chỉ</label><input type="text" placeholder="Nhập địa chỉ" value="{{buyerAddress}}" sc-camel-on-change="{{setBuyerAddress}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--s7)">
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Tỉnh/Thành phố</label>
+              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>TP. Hồ Chí Minh</option></sc-raw-select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Quận/Huyện</label>
+              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Quận 1</option></sc-raw-select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Phường/Xã</label>
+              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Phường Bến Nghé</option></sc-raw-select>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)">
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngày sinh</label><input type="text" placeholder="dd/mm/yyyy" value="{{buyerDob}}" sc-camel-on-change="{{setBuyerDob}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Giới tính</label>
+              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Nam</option><option>Nữ</option><option>Khác</option></sc-raw-select>
+            </div>
+          </div>
+          <div style="height:1px;background:rgba(170,170,170,.25);margin:var(--s2) 0"></div>
+          <div style="font-size:14px;font-weight:700;color:var(--c1)">Thông tin nhận hoa hồng</div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngân hàng</label>
+            <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Vietcombank</option></sc-raw-select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số tài khoản nhận hoa hồng</label><input type="text" placeholder="Số tài khoản ngân hàng" value="{{buyerBankAccount}}" sc-camel-on-change="{{setBuyerBankAccount}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"><div style="font-size:11px;color:var(--c5)">Chỉ hiển thị đầy đủ trong khu vực quản trị nội bộ.</div></div>
+          <button sc-camel-on-click="{{regStep1Submit}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Tiếp tục</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isRegStep2}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s8)">
+          <div><div style="font-size:24px;font-weight:700">Xác thực OTP</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">Bước 2/4 · Mã đã gửi tới 090•••123</div></div>
+          <div style="display:flex;gap:var(--s3);justify-content:space-between">
+            <sc-for list="{{otpBoxes}}" as="box" hint-placeholder-count="6">
+              <input type="text" maxlength="1" style="width:44px;height:52px;text-align:center;font-size:20px;font-weight:700;border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md)" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+            </sc-for>
+          </div>
+          <div style="font-size:13px;color:var(--c5);text-align:center">Không nhận được mã? <a href="#" style="color:var(--c6);font-weight:600;text-decoration:none">Gửi lại (30s)</a></div>
+          <div style="display:flex;gap:var(--s5)">
+            <button sc-camel-on-click="{{regPrev}}" style="flex:1;height:46px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:15px;font-weight:600">Quay lại</button>
+            <button sc-camel-on-click="{{regNext}}" style="flex:2;height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Xác nhận</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isRegStep3}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s8)">
+          <div><div style="font-size:24px;font-weight:700">Tạo mật khẩu</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">Bước 3/4 · Tạo mật khẩu cho tài khoản của bạn</div></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)">
+            <label style="font-size:14px;font-weight:600;color:var(--c2)">Mật khẩu mới</label>
+            <input type="password" placeholder="Nhập mật khẩu mới" value="{{regPassword}}" sc-camel-on-change="{{setRegPassword}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)">
+            <label style="font-size:14px;font-weight:600;color:var(--c2)">Nhập lại mật khẩu</label>
+            <input type="password" placeholder="Nhập lại mật khẩu mới" value="{{regConfirmPassword}}" sc-camel-on-change="{{setRegConfirmPassword}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+            <sc-if value="{{regPasswordError}}" hint-placeholder-val="{{false}}">
+              <div style="font-size:12px;color:var(--err)">{{regPasswordError}}</div>
+            </sc-if>
+          </div>
+          <div style="display:flex;gap:var(--s5)">
+            <button sc-camel-on-click="{{regPrev}}" style="flex:1;height:46px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:15px;font-weight:600">Quay lại</button>
+            <button sc-camel-on-click="{{regStep3Next}}" style="flex:2;height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Tiếp tục</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isRegStep4}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s8)">
+          <div><div style="font-size:24px;font-weight:700">Điều khoản tham gia</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">Bước 4/4 · Vui lòng đọc và xác nhận</div></div>
+          <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);height:180px;overflow:auto;font-size:13px;line-height:1.6;color:var(--c4)">
+            Điều khoản chương trình affiliate Medigo — Homi365. Bằng việc tích chọn xác nhận, bạn đồng ý với chính sách hoa hồng, quy định về tuyến trên/tuyến dưới, và các điều kiện rút tiền được Homi365 quy định. Nội dung đầy đủ do bộ phận Pháp lý cung cấp trước khi go‑live.
+          </div>
+          <label style="display:flex;align-items:flex-start;gap:var(--s4);font-size:14px;color:var(--c2)">
+            <input type="checkbox" checked="{{tncChecked}}" sc-camel-on-change="{{toggleTnc}}" style="width:18px;height:18px;margin-top:2px;accent-color:#00ADEE">
+            Tôi đã đọc và đồng ý với điều khoản tham gia chương trình affiliate Medigo.
+          </label>
+          <div style="display:flex;gap:var(--s5)">
+            <button sc-camel-on-click="{{regPrev}}" style="flex:1;height:46px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:15px;font-weight:600">Quay lại</button>
+            <button sc-camel-on-click="{{regNext}}" disabled="{{tncDisabled}}" style="{{regSubmitStyle}}">Xác nhận &amp; kích hoạt</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isRegStep5}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s8);text-align:center;align-items:center">
+          <div style="width:64px;height:64px;border-radius:var(--r-full);background:rgba(132,190,82,.15);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--c8)">✓</div>
+          <div><div style="font-size:24px;font-weight:700">Kích hoạt thành công</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Bạn đã chính thức là seller Medigo</div></div>
+          <div style="width:100%;border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s5);background:var(--c12);box-shadow:var(--sh)">
+            <div style="font-size:12px;color:var(--c5);text-transform:uppercase;letter-spacing:.04em">Mã giới thiệu (aff_id)</div>
+            <div style="font-size:30px;font-weight:900;color:var(--c1);letter-spacing:.02em">923983</div>
+            <div style="font-size:13px;color:var(--c4);word-break:break-all;background:rgba(170,170,170,.08);border-radius:var(--r-sm);padding:var(--s4)">homi365.vn/san-pham/CN02?aff_id=923983</div>
+            <button sc-camel-on-click="{{copyLink}}" style="height:44px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:600" style-hover="background:#0099d1">{{copyLabel}}</button>
+          </div>
+          <button sc-camel-on-click="{{goToA3}}" style="width:100%;height:46px;background:var(--c12);color:var(--c6);border:1px solid var(--c6);border-radius:var(--r-md);font-size:15px;font-weight:600">Vào dashboard</button>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ================= A3 SELLER DASHBOARD ================= -->
+  <sc-if value="{{isA3}}" hint-placeholder-val="{{false}}">
+  <div style="display:flex;justify-content:center;padding:0 var(--s7) var(--s11);background:var(--c12)">
+    <div style="width:100%;max-width:430px;display:flex;flex-direction:column;gap:var(--s8);padding-top:var(--s8)">
+
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div><div style="font-size:18px;font-weight:700">Chào, Nguyễn Văn A</div><div style="font-size:12px;color:var(--c5)">aff_id: 923983</div></div>
+        <button sc-camel-on-click="{{toggleAgentStage}}" style="font-size:11px;font-weight:600;color:var(--c6);background:rgba(0,173,238,.08);border:1px solid rgba(0,173,238,.3);border-radius:var(--r-xl);padding:var(--s2) var(--s4)">{{agentStageToggleLabel}}</button>
+      </div>
+
+      <sc-if value="{{isNewAgent}}" hint-placeholder-val="{{false}}">
+        <div style="font-size:13px;color:var(--c2);background:rgba(255,165,0,.14);border-radius:var(--r-md);padding:var(--s5)">Chào mừng bạn đến với Medigo! Hoa hồng của bạn sẽ được tính toán sau khi đơn hàng hoàn tất. Theo dõi số liệu tại đây.</div>
+      </sc-if>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s5)">
+        <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Tổng đơn hàng</div><div style="font-size:30px;font-weight:700;color:var(--c1)">{{metricOrders}}</div></div>
+        <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Điểm tích lũy</div><div style="font-size:30px;font-weight:700;color:var(--c1)">{{metricPoints}}</div></div>
+        <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Hạng hiện tại</div><div style="font-size:24px;font-weight:700;color:var(--c1)">{{metricRank}}</div></div>
+        <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Đã rút (tổng)</div><div style="font-size:24px;font-weight:700;color:var(--c1)">{{metricWithdrawn}}</div></div>
+      </div>
+
+      <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s5)">
+        <div style="font-size:12px;color:var(--c5);font-weight:600">{{chartTitle}}</div>
+        <div style="display:flex;gap:var(--s2)">
+          <sc-for list="{{chartRanges}}" as="cr" hint-placeholder-count="3">
+            <button sc-camel-on-click="{{cr.onClick}}" style="{{cr.style}}">{{cr.label}}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:var(--s3);height:120px">
+          <sc-for list="{{chartBars}}" as="bar" hint-placeholder-count="7">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:var(--s2);height:100%;justify-content:flex-end">
+              <div style="width:100%;max-width:22px;border-radius:var(--r-sm) var(--r-sm) 0 0;background:var(--c6);height:{{bar.h}}"></div>
+              <div style="font-size:10px;color:var(--c5)">{{bar.label}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <sc-if value="{{isActiveAgent}}" hint-placeholder-val="{{true}}">
+      <div style="border:1px solid rgba(0,173,238,.35);background:rgba(0,173,238,.06);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s5)">
+        <div style="display:flex;justify-content:space-between;gap:var(--s5)">
+          <div><div style="font-size:12px;color:var(--c6);font-weight:600">Số dư khả dụng</div><div style="font-size:26px;font-weight:900;color:var(--c6)">{{availableBalanceLabel}}</div></div>
+          <div style="text-align:right"><div style="font-size:12px;color:var(--c5)">Đang chờ duyệt (đã khóa)</div><div style="font-size:15px;font-weight:700;color:var(--c2)">{{pendingBalanceLabel}}</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--c5)">Đã ghi nhận: {{earnedBalanceLabel}} · số tiền đang chờ/đã duyệt sẽ tạm khóa khỏi số dư khả dụng.</div>
+        <sc-if value="{{hasActiveThisMonth}}" hint-placeholder-val="{{false}}">
+          <div style="font-size:12px;color:var(--c2);background:rgba(255,165,0,.14);border-radius:var(--r-sm);padding:var(--s4)">Bạn đã gửi yêu cầu rút tiền trong tháng này. Lượt rút tiếp theo khả dụng từ <strong>{{nextWithdrawDate}}</strong>.</div>
+        </sc-if>
+        <button sc-camel-on-click="{{openWithdrawForm}}" disabled="{{withdrawButtonDisabled}}" style="{{withdrawButtonStyle}}">Tạo yêu cầu rút tiền</button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--s5)">
+        <sc-if value="{{noF1}}" hint-placeholder-val="{{true}}">
+          
+        </sc-if>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <sc-if value="{{showWithdrawForm}}" hint-placeholder-val="{{false}}">
+    <div style="position:fixed;inset:0;background:rgba(31,31,31,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:var(--s7)">
+      <div style="width:100%;max-width:380px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="font-size:18px;font-weight:700;color:var(--c1)">Tạo yêu cầu rút tiền</div>
+          <button sc-camel-on-click="{{closeWithdrawForm}}" style="background:none;border:none;font-size:18px;color:var(--c5)">✕</button>
+        </div>
+        <div style="font-size:12px;color:var(--c5)">Số dư khả dụng: <strong style="color:var(--c6)">{{availableBalanceLabel}}</strong></div>
+        <div style="display:flex;flex-direction:column;gap:var(--s2)">
+          <label style="font-size:14px;font-weight:600;color:var(--c2)">Số tiền muốn rút</label>
+          <input type="text" placeholder="Nhập số tiền (đ)" value="{{withdrawAmount}}" sc-camel-on-change="{{setWithdrawAmount}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+          <sc-if value="{{withdrawAmountError}}" hint-placeholder-val="{{false}}">
+            <div style="font-size:12px;color:var(--err)">{{withdrawAmountError}}</div>
+          </sc-if>
+        </div>
+        <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-md);padding:var(--s6);display:flex;flex-direction:column;gap:var(--s2);font-size:13px">
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Nhận vào</span><span style="font-weight:600">Vietcombank</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Số tài khoản</span><span style="font-weight:600;font-family:monospace">{{buyerBankAccount}}</span></div>
+          <div style="font-size:11px;color:var(--c5)">Trường hợp thông tin về tên Ngân hàng, số tài khoản chưa chính xác hoặc cần điều chỉnh. Vui lòng liên hệ với bộ phận CSKH để được hỗ trợ.</div>
+        </div>
+        <button sc-camel-on-click="{{submitWithdrawForm}}" disabled="{{withdrawSubmitDisabled}}" style="{{withdrawSubmitStyle}}">Gửi yêu cầu</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{showWithdrawSuccess}}" hint-placeholder-val="{{false}}">
+    <div style="position:fixed;inset:0;background:rgba(31,31,31,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:var(--s7)">
+      <div style="width:100%;max-width:360px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25);text-align:center;align-items:center">
+        <div style="width:56px;height:56px;border-radius:var(--r-full);background:rgba(255,165,0,.15);display:flex;align-items:center;justify-content:center;font-size:26px;color:#a36400">✓</div>
+        <div><div style="font-size:18px;font-weight:700;color:var(--c1)">Đã gửi yêu cầu rút tiền</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Trạng thái: Chờ duyệt. Bạn sẽ nhận thông báo khi được xử lý.</div></div>
+        <button sc-camel-on-click="{{closeWithdrawSuccess}}" style="width:100%;height:44px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:600" style-hover="background:#0099d1">Đóng</button>
+      </div>
+    </div>
+  </sc-if>
+  </sc-if>
+
+  <!-- ================= C1 AGENT LOGIN ================= -->
+  <sc-if value="{{isC1}}" hint-placeholder-val="{{false}}">
+  <div style="min-height:calc(100vh - 65px);display:flex;justify-content:center;align-items:center;background:rgba(170,170,170,.05);padding:var(--s10) var(--s7)">
+    <div style="width:100%;max-width:380px;background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s10);box-shadow:0 8px 30px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:var(--s8)">
+
+      <sc-if value="{{isAgentLoginStep}}" hint-placeholder-val="{{true}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s8)">
+          <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:var(--c1)">Đăng nhập thành viên</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Đăng nhập để quản lý hoa hồng &amp; đơn hàng của bạn</div></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s7)">
+            <div style="display:flex;flex-direction:column;gap:var(--s2)">
+              <label style="font-size:14px;font-weight:600;color:var(--c2)">Số điện thoại</label>
+              <input type="text" placeholder="090xxxxxxx" value="{{agentPhone}}" sc-camel-on-change="{{setAgentPhone}}" style="height:44px;padding:0 var(--s5);border:1px solid {{agentInputBorder}};border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)">
+              <div style="display:flex;justify-content:space-between;align-items:center"><label style="font-size:14px;font-weight:600;color:var(--c2)">Mật khẩu</label><a href="#" sc-camel-on-click="{{openForgotPassword}}" style="font-size:12px;font-weight:600;color:var(--c6);text-decoration:none">Quên mật khẩu?</a></div>
+              <div style="position:relative;display:flex">
+                <input type="{{pwdInputType}}" placeholder="Nhập mật khẩu" value="{{agentPassword}}" sc-camel-on-change="{{setAgentPassword}}" style="flex:1;height:44px;padding:0 60px 0 var(--s5);border:1px solid {{agentInputBorder}};border-radius:var(--r-md);font-size:16px;width:100%" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+                <button sc-camel-on-click="{{togglePwd}}" style="position:absolute;right:var(--s4);top:0;height:44px;background:none;border:none;font-size:12px;font-weight:600;color:var(--c6)">{{pwdToggleLabel}}</button>
+              </div>
+            </div>
+            <sc-if value="{{agentLoginError}}" hint-placeholder-val="{{false}}">
+              <div style="font-size:12px;color:var(--err);background:rgba(217,52,43,.08);border-radius:var(--r-sm);padding:var(--s4)">Số điện thoại hoặc mật khẩu không đúng. Vui lòng xác thực lại số điện thoại của bạn.</div>
+            </sc-if>
+            <button sc-camel-on-click="{{agentLoginSubmit}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Đăng nhập</button>
+            <div style="font-size:13px;color:var(--c5);text-align:center;line-height:1.6">Chưa có tài khoản? <br><a href="#" sc-camel-on-click="{{openOrderLookup}}" style="color: var(--c6); font-weight: 600; text-decoration: none;">Đăng ký giới thiệu thành viên mới</a></div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isAgentOtpStep}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s8)">
+          <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:var(--c1)">Xác thực số điện thoại</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Đăng nhập không thành công. Nhập mã OTP đã gửi tới {{agentMaskedPhone}} để tiếp tục.</div></div>
+          <div style="display:flex;gap:var(--s3);justify-content:space-between">
+            <sc-for list="{{otpBoxes}}" as="box" hint-placeholder-count="6">
+              <input type="text" maxlength="1" style="width:44px;height:52px;text-align:center;font-size:20px;font-weight:700;border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md)" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+            </sc-for>
+          </div>
+          <div style="font-size:13px;color:var(--c5);text-align:center">Không nhận được mã? <a href="#" style="color:var(--c6);font-weight:600;text-decoration:none">Gửi lại (30s)</a></div>
+          <div style="display:flex;gap:var(--s5)">
+            <button sc-camel-on-click="{{agentBackToLogin}}" style="flex:1;height:46px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:15px;font-weight:600">Quay lại</button>
+            <button sc-camel-on-click="{{agentOtpConfirm}}" style="flex:2;height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Xác nhận</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isForgotPhoneStep}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s8)">
+          <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:var(--c1)">Quên mật khẩu</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Nhập số điện thoại đã đăng ký để nhận mã xác thực</div></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)">
+            <label style="font-size:14px;font-weight:600;color:var(--c2)">Số điện thoại</label>
+            <input type="text" placeholder="090xxxxxxx" value="{{forgotPhone}}" sc-camel-on-change="{{setForgotPhone}}" style="height:44px;padding:0 var(--s5);border:1px solid {{forgotPhoneBorder}};border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+            <sc-if value="{{forgotPhoneError}}" hint-placeholder-val="{{false}}">
+              <div style="font-size:12px;color:var(--err)">Số điện thoại này chưa được đăng ký trong hệ thống.</div>
+            </sc-if>
+          </div>
+          <div style="display:flex;gap:var(--s5)">
+            <button sc-camel-on-click="{{agentBackToLogin}}" style="flex:1;height:46px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:15px;font-weight:600">Quay lại</button>
+            <button sc-camel-on-click="{{submitForgotPhone}}" style="flex:2;height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Gửi mã OTP</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isForgotOtpStep}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s8)">
+          <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:var(--c1)">Xác thực OTP</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Nhập mã OTP đã gửi tới {{forgotMaskedPhone}}</div></div>
+          <div style="display:flex;gap:var(--s3);justify-content:space-between">
+            <sc-for list="{{otpBoxes}}" as="box" hint-placeholder-count="6">
+              <input type="text" maxlength="1" style="width:44px;height:52px;text-align:center;font-size:20px;font-weight:700;border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md)" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+            </sc-for>
+          </div>
+          <div style="font-size:13px;color:var(--c5);text-align:center">Không nhận được mã? <a href="#" style="color:var(--c6);font-weight:600;text-decoration:none">Gửi lại (30s)</a></div>
+          <div style="display:flex;gap:var(--s5)">
+            <button sc-camel-on-click="{{openForgotPassword}}" style="flex:1;height:46px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:15px;font-weight:600">Quay lại</button>
+            <button sc-camel-on-click="{{confirmForgotOtp}}" style="flex:2;height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Xác nhận</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isForgotResetStep}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s8)">
+          <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:var(--c1)">Đặt lại mật khẩu</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Tạo mật khẩu mới cho tài khoản của bạn</div></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)">
+            <label style="font-size:14px;font-weight:600;color:var(--c2)">Mật khẩu mới</label>
+            <input type="password" placeholder="Nhập mật khẩu mới" value="{{forgotNewPassword}}" sc-camel-on-change="{{setForgotNewPassword}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)">
+            <label style="font-size:14px;font-weight:600;color:var(--c2)">Xác nhận mật khẩu</label>
+            <input type="password" placeholder="Nhập lại mật khẩu mới" value="{{forgotConfirmPassword}}" sc-camel-on-change="{{setForgotConfirmPassword}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+            <sc-if value="{{forgotResetError}}" hint-placeholder-val="{{false}}">
+              <div style="font-size:12px;color:var(--err)">{{forgotResetError}}</div>
+            </sc-if>
+          </div>
+          <button sc-camel-on-click="{{submitForgotReset}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Đặt lại mật khẩu</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isForgotSuccessStep}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s8);text-align:center;align-items:center">
+          <div style="width:64px;height:64px;border-radius:var(--r-full);background:rgba(132,190,82,.15);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--c8)">✓</div>
+          <div><div style="font-size:20px;font-weight:700;color:var(--c1)">Đặt lại mật khẩu thành công</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Vui lòng đăng nhập lại với mật khẩu mới</div></div>
+          <button sc-camel-on-click="{{agentBackToLogin}}" style="height:46px;width:100%;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Đăng nhập ngay</button>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{isB1}}" hint-placeholder-val="{{false}}">
+  <div style="min-height:calc(100vh - 65px);display:flex;justify-content:center;align-items:center;background:var(--c3);padding:var(--s10) var(--s7)">
+    <div style="width:100%;max-width:380px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s10);box-shadow:0 8px 30px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:var(--s8)">
+      <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:var(--c1)">Medigo Admin</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Khu vực vận hành nội bộ Homi365</div></div>
+      <div style="display:flex;flex-direction:column;gap:var(--s7)">
+        <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Email/username</label><input type="text" placeholder="admin@homi365.vn" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#344557;box-shadow:0 0 0 3px rgba(52,69,87,.25)"></div>
+        <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Mật khẩu</label><input type="password" placeholder="Nhập mật khẩu" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#344557;box-shadow:0 0 0 3px rgba(52,69,87,.25)"></div>
+        
+        <button sc-camel-on-click="{{adminLoginSubmit}}" style="height:46px;background:var(--c3);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600" style-hover="background:#2a3745">Đăng nhập</button>
+        <div style="font-size:11px;color:var(--c5);text-align:center">Hệ thống thao tác tài chính — tách biệt hoàn toàn với đăng nhập seller.</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ================= ADMIN SHELL (B2/B3/B4) ================= -->
+  <sc-if value="{{isAdminShell}}" hint-placeholder-val="{{false}}">
+  <div style="display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 65px)">
+    <div style="background:var(--c3);padding:var(--s8) var(--s5);display:flex;flex-direction:column;gap:var(--s3)">
+      <div style="color:var(--c12);opacity:.5;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:0 var(--s5);margin-bottom:var(--s3)">Vận hành</div>
+      <sc-for list="{{adminNav}}" as="item" hint-placeholder-count="3">
+        <button sc-camel-on-click="{{item.onClick}}" style="{{item.style}}">{{item.label}}</button>
+      </sc-for>
+      <div style="margin-top:auto;padding-top:var(--s6);border-top:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;gap:var(--s2)">
+        <div style="color:var(--c12);opacity:.5;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:0 var(--s5)">Vai trò (demo)</div>
+        <button sc-camel-on-click="{{toggleAdminRole}}" style="height:36px;border-radius:5px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:12px;font-weight:600">{{adminRoleLabel}}</button>
+      </div>
+    </div>
+
+    <div style="padding:var(--s8);display:flex;flex-direction:column;gap:var(--s8);min-width:0">
+
+      <!-- B2 MEMBERS -->
+      <sc-if value="{{isB2}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s7)">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s5)">
+            <div style="font-size:24px;font-weight:700">Quản lý thành viên</div>
+            <button style="height:38px;padding:0 var(--s6);background:var(--c12);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)" style-hover="background:rgba(170,170,170,.08)">Xuất CSV/Excel</button>
+          </div>
+          <div style="display:flex;gap:var(--s5);flex-wrap:wrap">
+            <input type="text" value="{{memberSearch}}" sc-camel-on-change="{{setMemberSearch}}" placeholder="Tìm theo họ tên, SĐT, Mã thành viên" style="flex:1;min-width:220px;height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+            <sc-raw-select style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Tất cả hạng</option><option>Đồng</option><option>Bạc</option><option>Vàng</option></sc-raw-select>
+            <sc-raw-select style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Tất cả trạng thái</option><option>Đang hoạt động</option><option>Đã khóa</option></sc-raw-select>
+          </div>
+
+          <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);overflow:auto">
+            <div style="display:grid;grid-template-columns:1.3fr 1fr .8fr 1fr 1.1fr .9fr .6fr .8fr .8fr .6fr;min-width:1080px;background:rgba(170,170,170,.08);padding:var(--s5) var(--s6);font-size:11px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap">
+              <div>Tên</div><div>Liên hệ</div><div>Mã TV</div><div>Link form</div><div>Link đăng nhập</div><div>Tuyến trên</div><div>Hạng</div><div>Ngày tham gia</div><div>Trạng thái</div><div></div>
+            </div>
+            <sc-for list="{{members}}" as="m" hint-placeholder-count="5">
+              <div style="display:grid;grid-template-columns:1.3fr 1fr .8fr 1fr 1.1fr .9fr .6fr .8fr .8fr .6fr;min-width:1080px;align-items:center;padding:var(--s5) var(--s6);font-size:13px;color:var(--c1);border-top:1px solid rgba(170,170,170,.2);cursor:pointer" sc-camel-on-click="{{m.onClick}}" style-hover="background:rgba(0,173,238,.05)">
+                <div style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{m.name}}</div>
+                <div style="color:var(--c4);white-space:nowrap">{{m.contact}}</div>
+                <div style="color:var(--c5);font-family:monospace;white-space:nowrap">{{m.affId}}</div>
+                <div title="{{m.formLink}}" style="position:relative;display:flex;align-items:center;gap:4px;color:var(--c6);font-family:monospace;font-size:12px;overflow:hidden" style-hover="background:rgba(0,173,238,.08)">
+                  <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{m.formLinkShort}}</span>
+                  <button sc-camel-on-click="{{m.copyFormLink}}" title="Sao chép link" style="flex:none;width:20px;height:20px;border:none;background:none;color:var(--c6);cursor:pointer;opacity:0;font-size:13px;line-height:1" style-hover="opacity:1">{{m.formLinkCopyIcon}}</button>
+                </div>
+                <div title="{{m.loginLink}}" style="position:relative;display:flex;align-items:center;gap:4px;color:var(--c6);font-family:monospace;font-size:12px;overflow:hidden" style-hover="background:rgba(0,173,238,.08)">
+                  <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{m.loginLinkShort}}</span>
+                  <button sc-camel-on-click="{{m.copyLoginLink}}" title="Sao chép link" style="flex:none;width:20px;height:20px;border:none;background:none;color:var(--c6);cursor:pointer;opacity:0;font-size:13px;line-height:1" style-hover="opacity:1">{{m.loginLinkCopyIcon}}</button>
+                </div>
+                <div style="color:var(--c4);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{m.upline}}</div>
+                <div style="white-space:nowrap">{{m.rank}}</div>
+                <div style="color:var(--c5);white-space:nowrap">{{m.joined}}</div>
+                <div><span style="font-size:11px;font-weight:700;padding:var(--s1) var(--s5);border-radius:var(--r-xl);background:{{m.badgeBg}};color:{{m.badgeColor}};white-space:nowrap">{{m.statusLabel}}</span></div>
+                <div style="text-align:right;color:var(--c6);font-size:12px;font-weight:600;white-space:nowrap">Chi tiết ›</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- B3 WITHDRAWALS -->
+      <sc-if value="{{isB3}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s7)">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s5)">
+            <div style="font-size:24px;font-weight:700">Yêu cầu rút tiền</div>
+            <button style="height:38px;padding:0 var(--s6);background:var(--c12);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)" style-hover="background:rgba(170,170,170,.08)">Xuất file Excel</button>
+          </div>
+          <div style="display:flex;gap:var(--s5);flex-wrap:wrap;align-items:center">
+            <div style="display:flex;gap:var(--s2);flex-wrap:wrap">
+              <sc-for list="{{withdrawalFilters}}" as="f" hint-placeholder-count="5">
+                <button sc-camel-on-click="{{f.onClick}}" style="{{f.style}}">{{f.label}}</button>
+              </sc-for>
+            </div>
+            <input type="text" value="{{withdrawalSearch}}" sc-camel-on-change="{{setWithdrawalSearch}}" placeholder="Tìm theo seller…" style="flex:1;min-width:200px;height:38px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+          </div>
+          <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);overflow:auto">
+            <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr 1fr 1fr .9fr 1fr;min-width:920px;background:rgba(170,170,170,.08);padding:var(--s5) var(--s6);font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em">
+              <div>Seller</div><div>Số tiền</div><div>Ngày yêu cầu</div><div>Số tài khoản nhận</div><div>Tên ngân hàng</div><div>Chi nhánh</div><div>Trạng thái</div><div></div>
+            </div>
+            <sc-for list="{{withdrawals}}" as="w" hint-placeholder-count="5">
+              <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr 1fr 1fr .9fr 1fr;min-width:920px;align-items:center;padding:var(--s5) var(--s6);font-size:13px;color:var(--c1);border-top:1px solid rgba(170,170,170,.2);cursor:pointer" sc-camel-on-click="{{w.onClick}}" style-hover="background:rgba(0,173,238,.05)">
+                <div style="font-weight:600">{{w.seller}}</div>
+                <div style="font-weight:700">{{w.amount}}</div>
+                <div style="color:var(--c5)">{{w.date}}</div>
+                <div style="color:var(--c4);font-family:monospace">{{w.accountNumber}}</div>
+                <div style="color:var(--c4)">{{w.bankName}}</div>
+                <div style="color:var(--c4)">{{w.branch}}</div>
+                <div><span style="font-size:11px;font-weight:700;padding:var(--s1) var(--s5);border-radius:var(--r-xl);background:{{w.badgeBg}};color:{{w.badgeColor}}">{{w.statusLabel}}</span></div>
+                <div style="text-align:right;color:var(--c6);font-size:12px;font-weight:600">Chi tiết ›</div>
+              </div>
+            </sc-for>
+            <sc-if value="{{withdrawalsEmpty}}" hint-placeholder-val="{{false}}">
+              <div style="padding:var(--s9);text-align:center;color:var(--c5);font-size:13px">Không có yêu cầu nào khớp bộ lọc.</div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- B4 WAREHOUSE -->
+      <sc-if value="{{isB4}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s7)">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s5)">
+            <div><div style="font-size:24px;font-weight:700">Quản lý kho hàng</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">{{stockTotal}} sản phẩm · mỗi sản phẩm gắn 1 mã kích hoạt</div></div>
+            <button style="height:38px;padding:0 var(--s6);background:var(--c12);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)" style-hover="background:rgba(170,170,170,.08)">Xuất file Excel</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s5)">
+            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Sẵn hàng</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{stockAvailable}}</div></div>
+            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Đã gán đơn hàng</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{stockAssigned}}</div></div>
+            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Đã kích hoạt</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{stockActivated}}</div></div>
+          </div>
+
+          <div style="display:flex;gap:var(--s5);flex-wrap:wrap;align-items:center">
+            <div style="display:flex;gap:var(--s2);flex-wrap:wrap">
+              <sc-for list="{{stockFilters}}" as="f" hint-placeholder-count="4">
+                <button sc-camel-on-click="{{f.onClick}}" style="{{f.style}}">{{f.label}}</button>
+              </sc-for>
+            </div>
+            <input type="text" value="{{stockSearch}}" sc-camel-on-change="{{setStockSearch}}" placeholder="Tìm theo mã sản phẩm, mã kích hoạt…" style="flex:1;min-width:220px;height:38px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+          </div>
+
+          <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);overflow:auto">
+            <div style="display:grid;grid-template-columns:1fr 1.4fr 1fr 1fr 1fr .9fr 1fr;min-width:900px;background:rgba(170,170,170,.08);padding:var(--s5) var(--s6);font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em">
+              <div>Mã sản phẩm</div><div>Mã kích hoạt</div><div>Đơn hàng gắn</div><div>Seller</div><div>Ngày nhập kho</div><div>Trạng thái</div><div></div>
+            </div>
+            <sc-for list="{{stockItems}}" as="p" hint-placeholder-count="6">
+              <div style="display:grid;grid-template-columns:1fr 1.4fr 1fr 1fr 1fr .9fr 1fr;min-width:900px;align-items:center;padding:var(--s5) var(--s6);font-size:13px;color:var(--c1);border-top:1px solid rgba(170,170,170,.2);cursor:pointer" sc-camel-on-click="{{p.onClick}}" style-hover="background:rgba(0,173,238,.05)">
+                <div style="font-weight:600">{{p.sku}}</div>
+                <div style="color:var(--c4);font-family:monospace">{{p.activationCode}}</div>
+                <div style="color:var(--c4)">{{p.orderId}}</div>
+                <div style="color:var(--c4)">{{p.seller}}</div>
+                <div style="color:var(--c5)">{{p.stockedAt}}</div>
+                <div><span style="font-size:11px;font-weight:700;padding:var(--s1) var(--s5);border-radius:var(--r-xl);background:{{p.badgeBg}};color:{{p.badgeColor}}">{{p.statusLabel}}</span></div>
+                <div style="text-align:right;color:var(--c6);font-size:12px;font-weight:600">Chi tiết ›</div>
+              </div>
+            </sc-for>
+            <sc-if value="{{stockItemsEmpty}}" hint-placeholder-val="{{false}}">
+              <div style="padding:var(--s9);text-align:center;color:var(--c5);font-size:13px">Không có sản phẩm nào khớp bộ lọc.</div>
+            </sc-if>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-size:12px;color:var(--c5)">Hiển thị {{stockRangeStart}}–{{stockRangeEnd}} / {{stockFilteredCount}} sản phẩm</div>
+            <div style="display:flex;gap:var(--s3);align-items:center">
+              <button sc-camel-on-click="{{stockPrevPage}}" disabled="{{stockPrevDisabled}}" style="height:34px;padding:0 var(--s5);background:var(--c12);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)">‹ Trước</button>
+              <div style="font-size:13px;color:var(--c2)">Trang {{stockPage}}/{{stockPageCount}}</div>
+              <button sc-camel-on-click="{{stockNextPage}}" disabled="{{stockNextDisabled}}" style="height:34px;padding:0 var(--s5);background:var(--c12);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)">Sau ›</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+
+  <!-- SLIDE-OVER: member detail -->
+  <sc-if value="{{hasSelectedMember}}" hint-placeholder-val="{{false}}">
+    <div style="position:fixed;inset:0;background:rgba(31,31,31,.4);display:flex;justify-content:flex-end;z-index:100">
+      <div style="width:420px;max-width:92vw;background:var(--c12);height:100%;overflow:auto;padding:var(--s8);display:flex;flex-direction:column;gap:var(--s7);box-shadow:-4px 0 24px rgba(0,0,0,.15)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div><div style="font-size:20px;font-weight:700">{{selectedMember.name}}</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">{{selectedMember.affId}} · tham gia {{selectedMember.joined}}</div></div>
+          <button sc-camel-on-click="{{closeMember}}" style="background:none;border:none;font-size:18px;color:var(--c5)">✕</button>
+        </div>
+        <sc-if value="{{selectedMember.approvalStageNote}}" hint-placeholder-val="{{false}}">
+          <div style="font-size:13px;color:#a36400;background:rgba(255,165,0,.12);border-radius:var(--r-md);padding:var(--s5)">{{selectedMember.approvalStageNote}}</div>
+        </sc-if>
+        <sc-if value="{{selectedMember.needsApproval}}" hint-placeholder-val="{{false}}">
+          <div style="display:flex;gap:var(--s3)">
+            <sc-if value="{{selectedMember.canApproveMember}}" hint-placeholder-val="{{false}}">
+              <button sc-camel-on-click="{{openApproveMemberModal}}" style="flex:1;height:42px;background:var(--c8);color:var(--c12);border:none;border-radius:var(--r-md);font-size:14px;font-weight:600" style-hover="background:#73aa45">{{selectedMember.approveMemberButtonLabel}}</button>
+            </sc-if>
+            <sc-if value="{{selectedMember.canRejectMember}}" hint-placeholder-val="{{false}}">
+              <button sc-camel-on-click="{{openRejectMemberModal}}" style="flex:1;height:42px;background:var(--c12);color:var(--err);border:1px solid var(--err);border-radius:var(--r-md);font-size:14px;font-weight:600" style-hover="background:rgba(217,52,43,.06)">Từ chối</button>
+            </sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{selectedMember.isActiveOrLocked}}" hint-placeholder-val="{{true}}">
+          <div style="display:flex;gap:var(--s3)">
+            <button sc-camel-on-click="{{toggleLockSelected}}" style="{{lockButtonStyle}}">{{lockButtonLabel}}</button>
+          </div>
+        </sc-if>
+        <div style="border-top:1px solid rgba(170,170,170,.25);padding-top:var(--s7)">
+          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Sơ đồ tuyến dưới (2 cấp)</div>
+          <div style="display:flex;flex-direction:column;gap:var(--s3)">
+            <div style="font-size:13px;font-weight:600;padding:var(--s3) var(--s5);background:rgba(0,173,238,.08);border-radius:var(--r-md)">{{selectedMember.name}} (F0)</div>
+            <sc-for list="{{selectedMember.tree}}" as="t" hint-placeholder-count="2">
+              <div style="font-size:13px;padding:var(--s3) var(--s5);margin-left:var(--s8);border-left:2px solid rgba(170,170,170,.35);color:var(--c2)">{{t.name}} — F1 · {{t.orders}} đơn</div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="border-top:1px solid rgba(170,170,170,.25);padding-top:var(--s7)">
+          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử đơn hàng &amp; hoa hồng</div>
+          <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px">
+            <div style="display:flex;justify-content:space-between;color:var(--c2)"><span>Đơn #10234 — CN02</span><span style="font-weight:600">+120.000đ</span></div>
+            <div style="display:flex;justify-content:space-between;color:var(--c2)"><span>Đơn #10198 — CN02</span><span style="font-weight:600">+120.000đ</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- SLIDE-OVER: stock item detail -->
+  <sc-if value="{{hasSelectedStock}}" hint-placeholder-val="{{false}}">
+    <div style="position:fixed;inset:0;background:rgba(31,31,31,.4);display:flex;justify-content:flex-end;z-index:100">
+      <div style="width:420px;max-width:92vw;background:var(--c12);height:100%;overflow:auto;padding:var(--s8);display:flex;flex-direction:column;gap:var(--s7);box-shadow:-4px 0 24px rgba(0,0,0,.15)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div><div style="font-size:20px;font-weight:700">{{selectedStock.sku}}</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">Nhập kho ngày {{selectedStock.stockedAt}}</div></div>
+          <button sc-camel-on-click="{{closeStock}}" style="background:none;border:none;font-size:18px;color:var(--c5)">✕</button>
+        </div>
+        <span style="align-self:flex-start;font-size:11px;font-weight:700;padding:var(--s1) var(--s5);border-radius:var(--r-xl);background:{{selectedStock.badgeBg}};color:{{selectedStock.badgeColor}}">{{selectedStock.statusLabel}}</span>
+        <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s3);font-size:13px">
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Mã kích hoạt</span><span style="font-weight:600;font-family:monospace">{{selectedStock.activationCode}}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Đơn hàng gắn</span><span style="font-weight:600">{{selectedStock.orderId}}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Seller</span><span style="font-weight:600">{{selectedStock.seller}}</span></div>
+        </div>
+        <div style="border-top:1px solid rgba(170,170,170,.25);padding-top:var(--s7)">
+          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử trạng thái</div>
+          <div style="display:flex;flex-direction:column;gap:var(--s4)">
+            <sc-for list="{{selectedStock.log}}" as="log" hint-placeholder-count="2">
+              <div style="font-size:13px;display:flex;flex-direction:column;gap:1px;border-left:2px solid rgba(170,170,170,.35);padding-left:var(--s5)">
+                <div style="color:var(--c1);font-weight:600">{{log.label}}</div>
+                <div style="color:var(--c5);font-size:12px">{{log.time}}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- SLIDE-OVER: withdrawal detail -->
+  <sc-if value="{{hasSelectedWithdrawal}}" hint-placeholder-val="{{false}}">
+    <div style="position:fixed;inset:0;background:rgba(31,31,31,.4);display:flex;justify-content:flex-end;z-index:100">
+      <div style="width:420px;max-width:92vw;background:var(--c12);height:100%;overflow:auto;padding:var(--s8);display:flex;flex-direction:column;gap:var(--s7);box-shadow:-4px 0 24px rgba(0,0,0,.15)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div><div style="font-size:20px;font-weight:700">{{selectedWithdrawal.seller}}</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">Yêu cầu ngày {{selectedWithdrawal.date}}</div></div>
+          <button sc-camel-on-click="{{closeWithdrawal}}" style="background:none;border:none;font-size:18px;color:var(--c5)">✕</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--s5)">
+          <div style="font-size:30px;font-weight:900">{{selectedWithdrawal.amount}}</div>
+          <span style="font-size:11px;font-weight:700;padding:var(--s1) var(--s5);border-radius:var(--r-xl);background:{{selectedWithdrawal.badgeBg}};color:{{selectedWithdrawal.badgeColor}}">{{selectedWithdrawal.statusLabel}}</span>
+        </div>
+
+        <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s3);font-size:13px">
+          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s2)">Thông tin tài khoản nhận tiền</div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Ngân hàng</span><span style="font-weight:600">{{selectedWithdrawal.bankName}}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Chi nhánh</span><span style="font-weight:600">{{selectedWithdrawal.branch}}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Số tài khoản</span><span style="font-weight:600;font-family:monospace">{{selectedWithdrawal.accountNumber}}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Chủ tài khoản</span><span style="font-weight:600">{{selectedWithdrawal.accountHolder}}</span></div>
+        </div>
+
+        <sc-if value="{{selectedWithdrawal.approvalStageNote}}" hint-placeholder-val="{{false}}">
+          <div style="font-size:13px;color:#a36400;background:rgba(255,165,0,.12);border-radius:var(--r-md);padding:var(--s5)">{{selectedWithdrawal.approvalStageNote}}</div>
+        </sc-if>
+        <div style="display:flex;gap:var(--s3)">
+          <sc-if value="{{selectedWithdrawal.canApprove}}" hint-placeholder-val="{{false}}">
+            <button sc-camel-on-click="{{openApproveModal}}" style="flex:1;height:42px;background:var(--c8);color:var(--c12);border:none;border-radius:var(--r-md);font-size:14px;font-weight:600" style-hover="background:#73aa45">{{selectedWithdrawal.approveButtonLabel}}</button>
+          </sc-if>
+          <sc-if value="{{selectedWithdrawal.canReject}}" hint-placeholder-val="{{false}}">
+            <button sc-camel-on-click="{{openRejectModal}}" style="flex:1;height:42px;background:var(--c12);color:var(--err);border:1px solid var(--err);border-radius:var(--r-md);font-size:14px;font-weight:600" style-hover="background:rgba(217,52,43,.06)">Từ chối</button>
+          </sc-if>
+        </div>
+        <sc-if value="{{selectedWithdrawal.canMarkPaid}}" hint-placeholder-val="{{false}}">
+          <button sc-camel-on-click="{{openPaidModal}}" style="height:42px;background:var(--c12);color:var(--c6);border:1px solid var(--c6);border-radius:var(--r-md);font-size:14px;font-weight:600" style-hover="background:rgba(0,173,238,.06)">Đánh dấu đã chi trả</button>
+        </sc-if>
+        <sc-if value="{{selectedWithdrawal.hasReason}}" hint-placeholder-val="{{false}}">
+          <div style="font-size:13px;color:var(--err);background:rgba(217,52,43,.08);border-radius:var(--r-md);padding:var(--s5)"><strong>Lý do từ chối:</strong> {{selectedWithdrawal.reason}}</div>
+        </sc-if>
+        <sc-if value="{{selectedWithdrawal.hasPaidNote}}" hint-placeholder-val="{{false}}">
+          <div style="font-size:13px;color:var(--c4);background:rgba(0,173,238,.08);border-radius:var(--r-md);padding:var(--s5)"><strong>Ghi chú chi trả:</strong> {{selectedWithdrawal.paidNote}}</div>
+        </sc-if>
+
+        <div style="border-top:1px solid rgba(170,170,170,.25);padding-top:var(--s7)">
+          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử thao tác</div>
+          <div style="display:flex;flex-direction:column;gap:var(--s4)">
+            <sc-for list="{{selectedWithdrawal.auditLog}}" as="log" hint-placeholder-count="2">
+              <div style="font-size:13px;display:flex;flex-direction:column;gap:1px;border-left:2px solid rgba(170,170,170,.35);padding-left:var(--s5)">
+                <div style="color:var(--c1);font-weight:600">{{log.label}} · {{log.actor}}</div>
+                <div style="color:var(--c5);font-size:12px">{{log.time}}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- MODAL: approve/reject/paid confirm -->
+  <sc-if value="{{hasActionModal}}" hint-placeholder-val="{{false}}">
+    <div style="position:fixed;inset:0;background:rgba(31,31,31,.5);display:flex;align-items:center;justify-content:center;z-index:250;padding:var(--s7)">
+      <div style="width:100%;max-width:400px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25)">
+
+        <sc-if value="{{isApproveModal}}" hint-placeholder-val="{{false}}">
+          <div style="font-size:11px;font-weight:700;color:#00ADEE;text-transform:uppercase;letter-spacing:.04em">{{actionStageLabel}}</div>
+          <div style="font-size:18px;font-weight:700;color:var(--c1)">Xác nhận duyệt yêu cầu</div>
+          <div style="font-size:14px;color:var(--c2);line-height:1.6">Xác nhận duyệt yêu cầu rút <strong>{{actionWithdrawal.amount}}</strong> cho <strong>{{actionWithdrawal.seller}}</strong>?</div>
+          <sc-if value="{{approveOverBalance}}" hint-placeholder-val="{{false}}">
+            <div style="font-size:13px;color:#a36400;background:rgba(255,165,0,.14);border-radius:var(--r-md);padding:var(--s5)">⚠ Số tiền yêu cầu vượt số dư khả dụng hiện tại của seller ({{actionWithdrawal.sellerBalanceLabel}}). Vui lòng kiểm tra trước khi xác nhận.</div>
+          </sc-if>
+          <div style="display:flex;gap:var(--s3)">
+            <button sc-camel-on-click="{{closeActionModal}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Đóng</button>
+            <button sc-camel-on-click="{{confirmApprove}}" style="flex:1;height:44px;background:var(--c8);color:var(--c12);border:none;border-radius:var(--r-md);font-size:14px;font-weight:600" style-hover="background:#73aa45">{{approveConfirmLabel}}</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{isRejectModal}}" hint-placeholder-val="{{false}}">
+          <div style="font-size:18px;font-weight:700;color:var(--c1)">Từ chối yêu cầu</div>
+          <div style="font-size:13px;color:var(--c5)">Yêu cầu rút {{actionWithdrawal.amount}} của {{actionWithdrawal.seller}}. Vui lòng nhập lý do từ chối:</div>
+          <textarea placeholder="Nhập lý do…" value="{{rejectReason}}" sc-camel-on-change="{{setRejectReason}}" style="min-height:90px;padding:var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;resize:vertical"></textarea>
+          <div style="display:flex;gap:var(--s3)">
+            <button sc-camel-on-click="{{closeActionModal}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Hủy</button>
+            <button sc-camel-on-click="{{confirmReject}}" disabled="{{rejectDisabled}}" style="{{rejectConfirmStyle}}">Từ chối</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{isApproveMemberModal}}" hint-placeholder-val="{{false}}">
+          <div style="font-size:11px;font-weight:700;color:#00ADEE;text-transform:uppercase;letter-spacing:.04em">{{actionStageLabel}}</div>
+          <div style="font-size:18px;font-weight:700;color:var(--c1)">Xác nhận duyệt đăng ký thành viên</div>
+          <div style="font-size:14px;color:var(--c2);line-height:1.6">Xác nhận duyệt hồ sơ đăng ký của <strong>{{actionMember.name}}</strong> ({{actionMember.affId}})?</div>
+          <div style="display:flex;gap:var(--s3)">
+            <button sc-camel-on-click="{{closeActionModal}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Đóng</button>
+            <button sc-camel-on-click="{{confirmApprove}}" style="flex:1;height:44px;background:var(--c8);color:var(--c12);border:none;border-radius:var(--r-md);font-size:14px;font-weight:600" style-hover="background:#73aa45">Xác nhận</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{isRejectMemberModal}}" hint-placeholder-val="{{false}}">
+          <div style="font-size:18px;font-weight:700;color:var(--c1)">Từ chối đăng ký thành viên</div>
+          <div style="font-size:13px;color:var(--c5)">Hồ sơ của {{actionMember.name}} ({{actionMember.affId}}). Vui lòng nhập lý do từ chối:</div>
+          <textarea placeholder="Nhập lý do…" value="{{rejectReason}}" sc-camel-on-change="{{setRejectReason}}" style="min-height:90px;padding:var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;resize:vertical"></textarea>
+          <div style="display:flex;gap:var(--s3)">
+            <button sc-camel-on-click="{{closeActionModal}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Hủy</button>
+            <button sc-camel-on-click="{{confirmReject}}" disabled="{{rejectDisabled}}" style="{{rejectConfirmStyle}}">Từ chối</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{isPaidModal}}" hint-placeholder-val="{{false}}">
+          <div style="font-size:18px;font-weight:700;color:var(--c1)">Đánh dấu đã chi trả</div>
+          <div style="font-size:14px;color:var(--c2);line-height:1.6">Xác nhận đã chuyển khoản <strong>{{actionWithdrawal.amount}}</strong> cho <strong>{{actionWithdrawal.seller}}</strong>? Hành động này không thể hoàn tác.</div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)">
+            <label style="font-size:12px;font-weight:600;color:var(--c5)">Mã giao dịch chuyển khoản (tùy chọn)</label>
+            <input type="text" placeholder="VD: FT26090312345" value="{{paidNote}}" sc-camel-on-change="{{setPaidNote}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+          </div>
+          <div style="display:flex;gap:var(--s3)">
+            <button sc-camel-on-click="{{closeActionModal}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Hủy</button>
+            <button sc-camel-on-click="{{confirmPaid}}" style="flex:1;height:44px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:14px;font-weight:600" style-hover="background:#0099d1">Xác nhận</button>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </sc-if>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="">
+class Component extends DCLogic {
+  state = {
+    screen: 'A1',
+    buyerName: '', buyerPhone: '', buyerEmail: '', buyerCccd: '', buyerAddress: '', buyerDob: '', buyerBankAccount: '',
+    cn02Package: '1y',
+    showQRPayment: false, orderId: 'DH923983',
+    showPaymentSuccess: false,
+    showOrderLookup: false, orderLookupInput: '', orderLookupError: false,
+    showUplineBlockedModal: false, uplineRank: 'silver',
+    regStep: 1, regPassword: '', regConfirmPassword: '', regPasswordErrorMsg: '', tncChecked: false,
+    copyLabel: 'Copy link',
+    agentStage: 'new',
+    chartRange: '7d',
+    showWithdrawForm: false, withdrawAmount: '', showWithdrawSuccess: false,
+    withdrawalsData: null, stockData: null,
+    agentPhone: '', agentPassword: '', agentLoginStep: 'login', agentLoginError: false, pwdVisible: false,
+    forgotPhone: '', forgotPhoneError: false, forgotNewPassword: '', forgotConfirmPassword: '', forgotResetErrorMsg: '',
+    adminRole: 'specialist',
+    memberSearch: '', memberStatusOverrides: {}, memberAuditLog: {},
+    lockedIds: {}, copiedLinkId: null,
+    withdrawalSearch: '', withdrawalStatusFilter: 'all',
+    stockSearch: '', stockStatusFilter: 'all', stockPage: 1,
+    selectedMemberId: null, selectedWithdrawalId: null, selectedStockId: null,
+    actionModal: null, rejectReason: '', paidNote: ''
+  };
+
+  NAV = [
+    ['A1','A1 · Thông tin nhận hàng'],['A2','A2 · Đăng ký Agent'],['A3','A3 · Dashboard'],
+    ['C1','C1 · Đăng nhập Agent'],
+    ['B1','B1 · Đăng nhập admin'],['B2','B2 · Thành viên'],['B3','B3 · Rút tiền'],['B4','B4 · Kho hàng']
+  ];
+
+  ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu rút tiền'],['B4','Quản lý kho hàng']];
+  STOCK_FILTERS = [['all','Tất cả'],['available','Sẵn hàng'],['assigned','Đã gán đơn hàng'],['activated','Đã kích hoạt']];
+  WITHDRAWAL_FILTERS = [['all','Tất cả'],['pending','Chờ duyệt'],['specialist_approved','Chờ Head Admin'],['approved','Đã duyệt'],['rejected','Từ chối'],['paid','Đã chi trả']];
+  STATUS_ORDER = { pending: 0, specialist_approved: 1, approved: 2, rejected: 3, paid: 4 };
+  SELLER_BALANCE = { 'Trần Thị Bích': 4000000 };
+  REGISTERED_PHONES = ['0901234567', '0912345678', '0987654321'];
+  ORDERS_BY_PHONE = {
+    '0901111111': { orderId: 'DH100234', buyerName: 'Nguyễn Văn A', buyerEmail: 'nguyenvana@gmail.com', buyerCccd: '079203001234', buyerAddress: '12 Nguyễn Huệ', buyerDob: '15/03/1992', agentId: 1 },
+    '0902222222': { orderId: 'DH100511', buyerName: 'Lý Thị Hoa', buyerEmail: 'lythihoa@gmail.com', buyerCccd: '079203005678', buyerAddress: '45 Lê Lợi', buyerDob: '02/11/1990', agentId: 2 }
+  };
+
+  CN02_PACKAGES = [
+    { id: '1y', label: 'Gói 1 năm', priceNum: 10000000, price: '10.000.000đ' },
+    { id: '6m', label: 'Gói nửa năm', priceNum: 6000000, price: '6.000.000đ' }
+  ];
+
+  CHART_SETS = {
+    '7d': { title: 'Xu hướng hoa hồng · 7 ngày gần nhất', bars: [
+      { label:'T2', v:.4 },{ label:'T3', v:.65 },{ label:'T4', v:.5 },{ label:'T5', v:.9 },
+      { label:'T6', v:.7 },{ label:'T7', v:.55 },{ label:'CN', v:.35 }
+    ]},
+    'month': { title: 'Xu hướng hoa hồng · Theo tuần trong tháng', bars: [
+      { label:'Tuần 1', v:.5 },{ label:'Tuần 2', v:.75 },{ label:'Tuần 3', v:.6 },{ label:'Tuần 4', v:.85 }
+    ]},
+    'year': { title: 'Xu hướng hoa hồng · Theo tháng trong năm', bars: [
+      { label:'T1', v:.3 },{ label:'T2', v:.45 },{ label:'T3', v:.5 },{ label:'T4', v:.4 },
+      { label:'T5', v:.6 },{ label:'T6', v:.55 },{ label:'T7', v:.7 },{ label:'T8', v:.65 },
+      { label:'T9', v:.5 },{ label:'T10', v:.8 },{ label:'T11', v:.75 },{ label:'T12', v:.9 }
+    ]}
+  };
+  CHART_RANGES = [['7d','7 ngày'],['month','Tháng'],['year','Năm']];
+
+  MEMBERS = [
+    { id:1, name:'Trần Thị Bích', phone:'0901234123', contact:'090•••123', affId:'923983', upline:'—', rank:'Bạc', joined:'12/08/2026', status:'active',
+      tree:[{name:'Lê Văn Cường', orders:4},{name:'Phạm Thị Dung', orders:1}] },
+    { id:2, name:'Lê Văn Cường', phone:'0912345456', contact:'091•••456', affId:'118820', upline:'Trần Thị Bích', rank:'Đồng', joined:'20/08/2026', status:'active',
+      tree:[{name:'Ngô Thị Em', orders:2}] },
+    { id:3, name:'Phạm Thị Dung', phone:'0987654789', contact:'098•••789', affId:'302914', upline:'Trần Thị Bích', rank:'Đồng', joined:'22/08/2026', status:'locked', tree:[] },
+    { id:4, name:'Ngô Thị Em', phone:'0976543112', contact:'097•••112', affId:'440221', upline:'Lê Văn Cường', rank:'Đồng', joined:'25/08/2026', status:'active', tree:[] },
+    { id:5, name:'Vũ Minh Khang', phone:'0934567998', contact:'093•••998', affId:'552017', upline:'—', rank:'Vàng', joined:'01/08/2026', status:'active', tree:[{name:'Đỗ Anh Tuấn', orders:9}] },
+    { id:6, name:'Đặng Văn Phúc', phone:'0945678221', contact:'094•••221', affId:'671205', upline:'Trần Thị Bích', rank:'Đồng', joined:'02/09/2026', status:'pending', tree:[] }
+  ];
+
+  componentDidMount() {
+    if (!this.state.withdrawalsData) this.setState({ withdrawalsData: this.makeWithdrawals() });
+    if (!this.state.stockData) this.setState({ stockData: this.makeStock() });
+  }
+
+  badge(status) {
+    const map = {
+      active: ['rgba(132,190,82,.14)', '#4c7a2e', 'Đang hoạt động'],
+      locked: ['rgba(170,170,170,.18)', '#5c5c5c', 'Đã khóa'],
+      pending: ['rgba(255,165,0,.15)', '#a36400', 'Chờ duyệt'],
+      specialist_approved: ['rgba(255,165,0,.15)', '#a36400', 'Chờ Head Admin duyệt'],
+      approved: ['rgba(0,173,238,.14)', '#00728f', 'Đã duyệt'],
+      rejected: ['rgba(217,52,43,.12)', '#D9342B', 'Từ chối'],
+      paid: ['rgba(132,190,82,.14)', '#4c7a2e', 'Đã chi trả'],
+      available: ['rgba(132,190,82,.14)', '#4c7a2e', 'Sẵn hàng'],
+      assigned: ['rgba(255,165,0,.15)', '#a36400', 'Đã gán đơn hàng'],
+      activated: ['rgba(0,173,238,.14)', '#00728f', 'Đã kích hoạt']
+    };
+    return map[status] || ['rgba(170,170,170,.18)', '#5c5c5c', status];
+  }
+
+  makeWithdrawals() {
+    const raw = [
+      { id:1, seller:'Trần Thị Bích', amountNum:2000000, date:'28/08/2026', accountNumber:'0071001234567', bankName:'Vietcombank', branch:'CN TP.HCM', accountHolder:'TRAN THI BICH', status:'pending', auditLog:[{label:'Tạo yêu cầu', actor:'Trần Thị Bích', time:'28/08/2026 09:12'}] },
+      { id:2, seller:'Lê Văn Cường', amountNum:800000, date:'27/08/2026', accountNumber:'1903123456', bankName:'Techcombank', branch:'CN Hà Nội', accountHolder:'LE VAN CUONG', status:'specialist_approved', auditLog:[{label:'Tạo yêu cầu', actor:'Lê Văn Cường', time:'27/08/2026 10:00'},{label:'Admin Specialist duyệt (chờ Head Admin)', actor:'Admin Specialist', time:'27/08/2026 14:20'}] },
+      { id:3, seller:'Vũ Minh Khang', amountNum:5000000, date:'25/08/2026', accountNumber:'0501234567', bankName:'BIDV', branch:'CN Đà Nẵng', accountHolder:'VU MINH KHANG', status:'approved', auditLog:[{label:'Tạo yêu cầu', actor:'Vũ Minh Khang', time:'25/08/2026 08:30'},{label:'Admin Specialist duyệt (chờ Head Admin)', actor:'Admin Specialist', time:'25/08/2026 09:00'},{label:'Head Admin xác nhận duyệt', actor:'Head Admin', time:'25/08/2026 15:00'}] },
+      { id:4, seller:'Phạm Thị Dung', amountNum:300000, date:'20/08/2026', accountNumber:'0331234567', bankName:'ACB', branch:'CN TP.HCM', accountHolder:'PHAM THI DUNG', status:'rejected', reason:'Thông tin tài khoản không khớp CCCD.', auditLog:[{label:'Tạo yêu cầu', actor:'Phạm Thị Dung', time:'20/08/2026 08:00'},{label:'Từ chối yêu cầu', actor:'Admin Specialist', time:'20/08/2026 11:00'}] },
+      { id:5, seller:'Ngô Thị Em', amountNum:1200000, date:'15/08/2026', accountNumber:'0221234567', bankName:'MB Bank', branch:'CN TP.HCM', accountHolder:'NGO THI EM', status:'paid', paidNote:'FT26081512345', auditLog:[{label:'Tạo yêu cầu', actor:'Ngô Thị Em', time:'15/08/2026 08:00'},{label:'Admin Specialist duyệt (chờ Head Admin)', actor:'Admin Specialist', time:'15/08/2026 09:00'},{label:'Head Admin xác nhận duyệt', actor:'Head Admin', time:'15/08/2026 10:00'},{label:'Đánh dấu đã chi trả', actor:'Head Admin', time:'16/08/2026 09:00'}] }
+    ];
+    return raw.map(w => ({ ...w, amount: w.amountNum.toLocaleString('vi-VN') + 'đ' }));
+  }
+
+  makeStock() {
+    const items = [];
+    const statuses = ['available','available','assigned','activated'];
+    for (let i = 1; i <= 24; i++) {
+      const status = statuses[i % statuses.length];
+      items.push({
+        id: i, sku: 'CN02-' + String(i).padStart(4,'0'), activationCode: 'ACT-' + (100000 + i * 37),
+        orderId: status === 'available' ? '—' : 'DH' + (100000 + i * 13),
+        seller: status === 'available' ? '—' : this.MEMBERS[i % this.MEMBERS.length].name,
+        stockedAt: '0' + (1 + i % 9) + '/08/2026', status,
+        log: [{ label: 'Nhập kho', time: '0' + (1 + i % 9) + '/08/2026 08:00' }]
+      });
+    }
+    return items;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const set = (id) => () => this.setState({ screen: id });
+    const nav = this.NAV.map(([id, label]) => ({
+      id, label, onClick: set(id),
+      style: 'font-size:12px;font-weight:600;padding:8px 12px;border-radius:5px;border:none;background:' +
+        (s.screen === id ? 'rgba(0,173,238,.1)' : 'transparent') + ';color:' + (s.screen === id ? '#00ADEE' : 'var(--c5)')
+    }));
+
+    const adminOn = ['B2','B3','B4'].includes(s.screen);
+    const adminNav = this.ADMIN_NAV.map(([id, label]) => ({
+      id, label, onClick: set(id),
+      style: 'text-align:left;font-size:13px;font-weight:600;padding:10px 12px;border-radius:5px;border:none;background:' +
+        (s.screen === id ? 'rgba(255,255,255,.14)' : 'transparent') + ';color:#FFFFFF;opacity:' + (s.screen === id ? '1' : '.75')
+    }));
+
+    // A1 payment
+    const cn02Packages = this.CN02_PACKAGES.map(pkg => {
+      const checked = s.cn02Package === pkg.id;
+      return { ...pkg, checked, borderColor: checked ? '#00ADEE' : 'rgba(170,170,170,.35)', bg: checked ? 'rgba(0,173,238,.05)' : '#FFFFFF',
+        onSelect: () => this.setState({ cn02Package: pkg.id }) };
+    });
+    const cn02SelectedPackage = this.CN02_PACKAGES.find(p => p.id === s.cn02Package) || this.CN02_PACKAGES[0];
+    const isFinder = (r, c) => (r < 7 && c < 7) || (r < 7 && c > 9) || (r > 9 && c < 7);
+    const inFinderRing = (r, c) => {
+      const local = (rr, cc) => (rr === 0 || rr === 6 || cc === 0 || cc === 6) || (rr >= 2 && rr <= 4 && cc >= 2 && cc <= 4);
+      if (r < 7 && c < 7) return local(r, c);
+      if (r < 7 && c > 9) return local(r, c - 10);
+      if (r > 9 && c < 7) return local(r - 10, c);
+      return false;
+    };
+    const qrModules = Array.from({ length: 289 }, (_, i) => {
+      const r = Math.floor(i / 17), c = i % 17;
+      let dark;
+      if (isFinder(r, c)) dark = inFinderRing(r, c);
+      else dark = ((r * 928371 + c * 137 + r * c * 7919) % 5) < 2;
+      return { color: dark ? '#1F1F1F' : '#FFFFFF' };
+    });
+
+    // A2
+    const regStepBg = (n) => s.regStep >= n ? '#00ADEE' : 'rgba(170,170,170,.3)';
+    const regSteps = [1,2,3,4].map(n => ({ bg: regStepBg(n) }));
+    const otpBoxes = Array.from({ length: 6 }, () => ({}));
+    const tncDisabled = !s.tncChecked;
+    const regSubmitStyle = 'flex:2;height:46px;border:none;border-radius:5px;font-size:16px;font-weight:600;box-shadow:var(--sh);color:#FFFFFF;background:' + (tncDisabled ? 'rgba(170,170,170,.5)' : 'var(--c6)') + ';cursor:' + (tncDisabled ? 'not-allowed' : 'pointer');
+
+    // A3 dashboard metrics
+    const isNewAgent = s.agentStage === 'new', isActiveAgent = s.agentStage === 'active';
+    const chartBars = this.CHART_SETS[s.chartRange || '7d'].bars.map(c => ({ label: c.label, h: Math.round(c.v * 100) + '%' }));
+    const chartTitle = this.CHART_SETS[s.chartRange || '7d'].title;
+    const chartRanges = this.CHART_RANGES.map(([id, label]) => ({
+      id, label, onClick: () => this.setState({ chartRange: id }),
+      style: 'font-size:12px;font-weight:600;padding:6px 14px;border-radius:30px;border:1px solid ' +
+        ((s.chartRange || '7d') === id ? '#00ADEE;background:rgba(0,173,238,.08);color:#00ADEE' : 'rgba(170,170,170,.4);background:transparent;color:var(--c5)')
+    }));
+    const hasActiveThisMonth = false;
+    const withdrawButtonDisabled = hasActiveThisMonth;
+    const withdrawButtonStyle = 'height:44px;border:none;border-radius:5px;font-size:14px;font-weight:600;color:#FFFFFF;background:' + (withdrawButtonDisabled ? 'rgba(170,170,170,.5)' : 'var(--c6)') + ';cursor:' + (withdrawButtonDisabled ? 'not-allowed' : 'pointer');
+
+    // withdraw form
+    const withdrawAmountNum = parseInt((s.withdrawAmount || '').replace(/\D/g, ''), 10) || 0;
+    const availableBalance = 4000000;
+    const withdrawAmountError = s.withdrawAmount && (withdrawAmountNum <= 0 ? 'Vui lòng nhập số tiền hợp lệ.' : (withdrawAmountNum > availableBalance ? 'Số tiền vượt quá số dư khả dụng.' : ''));
+    const withdrawSubmitDisabled = !s.withdrawAmount || !!withdrawAmountError;
+    const withdrawSubmitStyle = 'height:46px;border:none;border-radius:5px;font-size:16px;font-weight:600;color:#FFFFFF;background:' + (withdrawSubmitDisabled ? 'rgba(170,170,170,.5)' : 'var(--c6)') + ';cursor:' + (withdrawSubmitDisabled ? 'not-allowed' : 'pointer');
+
+    // C1 login
+    const agentInputBorder = s.agentLoginError ? '#D9342B' : 'rgba(170,170,170,.6)';
+
+    // Members (B2)
+    const members = this.MEMBERS
+      .filter(m => !s.memberSearch || m.name.toLowerCase().includes(s.memberSearch.toLowerCase()) || m.affId.includes(s.memberSearch))
+      .map(m => {
+        const effStatus = s.memberStatusOverrides[m.id] || m.status;
+        const [bg, color, label] = this.badge(effStatus);
+        const affCode = m.name.split(' ').map(w => w[0]).join('').toUpperCase() + m.phone.slice(-4);
+        return { ...m, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,
+          formLink: 'portal.homi365.com.vn/' + affCode, formLinkShort: '.../' + affCode,
+          loginLink: 'homi365.com.vn/dang-nhap/' + affCode, loginLinkShort: '.../dang-nhap/' + affCode,
+          copyFormLink: (e) => { e.stopPropagation(); navigator.clipboard.writeText('portal.homi365.com.vn/' + affCode); this.setState({ copiedLinkId: 'form-' + m.id }); setTimeout(() => this.setState(st => st.copiedLinkId === 'form-' + m.id ? { copiedLinkId: null } : null), 1500); },
+          copyLoginLink: (e) => { e.stopPropagation(); navigator.clipboard.writeText('homi365.com.vn/dang-nhap/' + affCode); this.setState({ copiedLinkId: 'login-' + m.id }); setTimeout(() => this.setState(st => st.copiedLinkId === 'login-' + m.id ? { copiedLinkId: null } : null), 1500); },
+          formLinkCopyIcon: s.copiedLinkId === 'form-' + m.id ? '✓' : '⧉', loginLinkCopyIcon: s.copiedLinkId === 'login-' + m.id ? '✓' : '⧉',
+          onClick: () => this.setState({ selectedMemberId: m.id }) };
+      });
+
+    // Withdrawals (B3)
+    const withdrawalsData = s.withdrawalsData || [];
+    const withdrawalFilters = this.WITHDRAWAL_FILTERS.map(([id, label]) => ({
+      id, label, onClick: () => this.setState({ withdrawalStatusFilter: id }),
+      style: 'height:34px;padding:0 14px;border-radius:30px;font-size:12px;font-weight:600;border:1px solid ' +
+        ((s.withdrawalStatusFilter || 'all') === id ? '#00ADEE;background:rgba(0,173,238,.08);color:#00ADEE' : 'rgba(170,170,170,.4);background:transparent;color:var(--c5)')
+    }));
+    const withdrawals = withdrawalsData
+      .filter(w => (s.withdrawalStatusFilter === 'all' || !s.withdrawalStatusFilter) || w.status === s.withdrawalStatusFilter)
+      .filter(w => !s.withdrawalSearch || w.seller.toLowerCase().includes(s.withdrawalSearch.toLowerCase()))
+      .map(w => {
+        const [bg, color, label] = this.badge(w.status);
+        return { ...w, badgeBg: bg, badgeColor: color, statusLabel: label, onClick: () => this.setState({ selectedWithdrawalId: w.id }) };
+      });
+    const withdrawalsEmpty = withdrawals.length === 0;
+
+    // Stock (B4)
+    const stockData = s.stockData || [];
+    const stockFilters = this.STOCK_FILTERS.map(([id, label]) => ({
+      id, label, onClick: () => this.setState({ stockStatusFilter: id, stockPage: 1 }),
+      style: 'height:34px;padding:0 14px;border-radius:30px;font-size:12px;font-weight:600;border:1px solid ' +
+        ((s.stockStatusFilter || 'all') === id ? '#00ADEE;background:rgba(0,173,238,.08);color:#00ADEE' : 'rgba(170,170,170,.4);background:transparent;color:var(--c5)')
+    }));
+    const stockFiltered = stockData
+      .filter(p => (s.stockStatusFilter === 'all' || !s.stockStatusFilter) || p.status === s.stockStatusFilter)
+      .filter(p => !s.stockSearch || p.sku.toLowerCase().includes(s.stockSearch.toLowerCase()) || p.activationCode.toLowerCase().includes(s.stockSearch.toLowerCase()));
+    const stockPageSize = 8;
+    const stockPageCount = Math.max(1, Math.ceil(stockFiltered.length / stockPageSize));
+    const stockPage = Math.min(s.stockPage || 1, stockPageCount);
+    const stockRangeStart = stockFiltered.length ? (stockPage - 1) * stockPageSize + 1 : 0;
+    const stockRangeEnd = Math.min(stockPage * stockPageSize, stockFiltered.length);
+    const stockItems = stockFiltered.slice((stockPage - 1) * stockPageSize, stockPage * stockPageSize).map(p => {
+      const [bg, color, label] = this.badge(p.status);
+      return { ...p, badgeBg: bg, badgeColor: color, statusLabel: label, onClick: () => this.setState({ selectedStockId: p.id }) };
+    });
+    const stockItemsEmpty = stockItems.length === 0;
+
+    // Slide-overs
+    const selectedMemberRaw = s.selectedMemberId ? this.MEMBERS.find(m => m.id === s.selectedMemberId) : null;
+    let selectedMember = null;
+    if (selectedMemberRaw) {
+      const effStatus = s.memberStatusOverrides[selectedMemberRaw.id] || selectedMemberRaw.status;
+      const isSpecialist = s.adminRole === 'specialist';
+      selectedMember = {
+        ...selectedMemberRaw, status: effStatus,
+        needsApproval: ['pending', 'specialist_approved'].includes(effStatus),
+        isActiveOrLocked: ['active', 'locked'].includes(effStatus),
+        canApproveMember: (isSpecialist && effStatus === 'pending') || (!isSpecialist && effStatus === 'specialist_approved'),
+        canRejectMember: ['pending', 'specialist_approved'].includes(effStatus),
+        approveMemberButtonLabel: isSpecialist ? 'Duyệt hồ sơ (Specialist)' : 'Duyệt & kích hoạt (Head Admin)',
+        approvalStageNote: effStatus === 'pending' ? 'Đang chờ Admin Specialist duyệt hồ sơ (bước 1/2).' : effStatus === 'specialist_approved' ? 'Đã qua Specialist — chờ Head Admin xác nhận để kích hoạt (bước 2/2).' : (effStatus === 'rejected' ? 'Hồ sơ đã bị từ chối.' : null)
+      };
+    }
+    const isLocked = selectedMember ? selectedMember.status === 'locked' : false;
+    const lockButtonLabel = isLocked ? 'Mở khóa tài khoản' : 'Khóa tài khoản';
+    const lockButtonStyle = 'flex:1;height:42px;border-radius:5px;font-size:14px;font-weight:600;border:1px solid ' + (isLocked ? 'var(--c6);background:var(--c12);color:var(--c6)' : 'var(--err);background:var(--c12);color:var(--err)');
+    const toggleLockSelected = () => selectedMember && this.setState({
+      memberStatusOverrides: { ...s.memberStatusOverrides, [selectedMember.id]: isLocked ? 'active' : 'locked' }
+    });
+
+    const selectedStockRaw = s.selectedStockId ? stockData.find(p => p.id === s.selectedStockId) : null;
+    let selectedStock = null;
+    if (selectedStockRaw) {
+      const [bg, color, label] = this.badge(selectedStockRaw.status);
+      selectedStock = { ...selectedStockRaw, badgeBg: bg, badgeColor: color, statusLabel: label };
+    }
+
+    const selectedWithdrawalRaw = s.selectedWithdrawalId ? withdrawalsData.find(w => w.id === s.selectedWithdrawalId) : null;
+    let selectedWithdrawal = null;
+    if (selectedWithdrawalRaw) {
+      const [bg, color, label] = this.badge(selectedWithdrawalRaw.status);
+      const isSpecialist = s.adminRole === 'specialist';
+      selectedWithdrawal = { ...selectedWithdrawalRaw, badgeBg: bg, badgeColor: color, statusLabel: label,
+        canApprove: (isSpecialist && selectedWithdrawalRaw.status === 'pending') || (!isSpecialist && selectedWithdrawalRaw.status === 'specialist_approved'),
+        canReject: ['pending', 'specialist_approved'].includes(selectedWithdrawalRaw.status),
+        canMarkPaid: selectedWithdrawalRaw.status === 'approved',
+        approveButtonLabel: isSpecialist ? 'Duyệt (Specialist)' : 'Duyệt (Head Admin)',
+        approvalStageNote: selectedWithdrawalRaw.status === 'pending' ? 'Đang chờ Admin Specialist duyệt (bước 1/2).' : selectedWithdrawalRaw.status === 'specialist_approved' ? 'Đã qua Admin Specialist — đang chờ Head Admin xác nhận (bước 2/2).' : selectedWithdrawalRaw.status === 'approved' ? 'Đã duyệt đủ 2 cấp — chờ chi trả.' : null,
+        hasReason: !!selectedWithdrawalRaw.reason, hasPaidNote: !!selectedWithdrawalRaw.paidNote };
+    }
+
+    // Action modal
+    const actionWithdrawalRaw = (s.actionModal && s.actionModal.kind !== 'member') ? withdrawalsData.find(w => w.id === s.actionModal.id) : null;
+    const sellerBalance = actionWithdrawalRaw ? (this.SELLER_BALANCE[actionWithdrawalRaw.seller] ?? Infinity) : 0;
+    const approveOverBalance = !!(actionWithdrawalRaw && actionWithdrawalRaw.amountNum > sellerBalance);
+    const actionWithdrawal = actionWithdrawalRaw ? { ...actionWithdrawalRaw, sellerBalanceLabel: sellerBalance.toLocaleString('vi-VN') + 'đ' } : null;
+    const actionMember = (s.actionModal && s.actionModal.kind === 'member') ? this.MEMBERS.find(m => m.id === s.actionModal.id) : null;
+    const actionStageLabel = s.adminRole === 'specialist' ? 'Bước 1/2 · Admin Specialist duyệt' : 'Bước 2/2 · Head Admin xác nhận';
+    const rejectDisabled = !s.rejectReason || !s.rejectReason.trim();
+    const rejectConfirmStyle = 'flex:1;height:44px;border:none;border-radius:5px;font-size:14px;font-weight:600;color:#FFFFFF;background:' + (rejectDisabled ? 'rgba(170,170,170,.5)' : 'var(--err)') + ';cursor:' + (rejectDisabled ? 'not-allowed' : 'pointer');
+
+    return {
+      nav, adminNav,
+      isA1: s.screen === 'A1', isA2: s.screen === 'A2', isA3: s.screen === 'A3',
+      isC1: s.screen === 'C1', isB1: s.screen === 'B1', isB2: s.screen === 'B2', isB3: s.screen === 'B3', isB4: s.screen === 'B4',
+      isAdminShell: adminOn,
+
+      buyerName: s.buyerName, setBuyerName: (e) => this.setState({ buyerName: e.target.value }),
+      buyerPhone: s.buyerPhone, setBuyerPhone: (e) => this.setState({ buyerPhone: e.target.value }),
+      buyerEmail: s.buyerEmail, setBuyerEmail: (e) => this.setState({ buyerEmail: e.target.value }),
+      buyerCccd: s.buyerCccd, setBuyerCccd: (e) => this.setState({ buyerCccd: e.target.value }),
+      buyerAddress: s.buyerAddress, setBuyerAddress: (e) => this.setState({ buyerAddress: e.target.value }),
+      buyerDob: s.buyerDob, setBuyerDob: (e) => this.setState({ buyerDob: e.target.value }),
+      buyerBankAccount: s.buyerBankAccount, setBuyerBankAccount: (e) => this.setState({ buyerBankAccount: e.target.value }),
+      cn02Packages, cn02PackagePrice: cn02SelectedPackage.price,
+      openQRPayment: () => this.setState({ showQRPayment: true }),
+      closeQRPayment: () => this.setState({ showQRPayment: false }),
+      showQRPayment: s.showQRPayment, orderId: s.orderId, qrModules,
+      confirmQRPayment: () => this.setState({ showQRPayment: false, showPaymentSuccess: true }),
+      showPaymentSuccess: s.showPaymentSuccess,
+      choosRegisterSeller: () => this.setState({ showPaymentSuccess: false, screen: 'A2', regStep: 1 }),
+      choosSkipSeller: () => this.setState({ showPaymentSuccess: false }),
+
+      showOrderLookup: s.showOrderLookup, orderLookupInput: s.orderLookupInput, orderLookupError: s.orderLookupError,
+      openOrderLookup: (e) => { if (e) e.preventDefault(); this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false }); },
+      closeOrderLookup: () => this.setState({ showOrderLookup: false }),
+      setOrderLookupInput: (e) => this.setState({ orderLookupInput: e.target.value, orderLookupError: false }),
+      submitOrderLookup: () => {
+        const phone = s.orderLookupInput.trim();
+        const order = this.ORDERS_BY_PHONE[phone];
+        if (!order) { this.setState({ orderLookupError: true }); return; }
+        const agent = this.MEMBERS.find(m => m.id === order.agentId);
+        const rankMap = { 'Đồng': 'bronze', 'Bạc': 'silver', 'Vàng': 'gold' };
+        const uplineRank = agent ? (rankMap[agent.rank] || 'silver') : 'silver';
+        if (uplineRank === 'bronze') { this.setState({ showOrderLookup: false, showUplineBlockedModal: true }); return; }
+        this.setState({
+          showOrderLookup: false, screen: 'A2', regStep: 1,
+          orderId: order.orderId, uplineRank,
+          buyerName: order.buyerName, buyerPhone: phone, buyerEmail: order.buyerEmail,
+          buyerCccd: order.buyerCccd, buyerAddress: order.buyerAddress, buyerDob: order.buyerDob
+        });
+      },
+      showUplineBlockedModal: s.showUplineBlockedModal,
+      closeUplineBlockedModal: () => this.setState({ showUplineBlockedModal: false }),
+
+      regSteps, isRegStep1: s.regStep === 1, isRegStep2: s.regStep === 2, isRegStep3: s.regStep === 3, isRegStep4: s.regStep === 4, isRegStep5: s.regStep === 5,
+      regNext: () => this.setState({ regStep: Math.min(5, s.regStep + 1) }),
+      regPrev: () => this.setState({ regStep: Math.max(1, s.regStep - 1) }),
+      otpBoxes,
+      regPassword: s.regPassword, setRegPassword: (e) => this.setState({ regPassword: e.target.value, regPasswordErrorMsg: '' }),
+      regConfirmPassword: s.regConfirmPassword, setRegConfirmPassword: (e) => this.setState({ regConfirmPassword: e.target.value, regPasswordErrorMsg: '' }),
+      regPasswordError: s.regPasswordErrorMsg,
+      regStep1Submit: () => {
+        if (s.uplineRank === 'bronze') { this.setState({ showUplineBlockedModal: true }); return; }
+        this.setState({ regStep: 2 });
+      },
+      regStep3Next: () => {
+        if (!s.regPassword || s.regPassword.length < 6) { this.setState({ regPasswordErrorMsg: 'Mật khẩu phải có ít nhất 6 ký tự.' }); return; }
+        if (s.regPassword !== s.regConfirmPassword) { this.setState({ regPasswordErrorMsg: 'Mật khẩu xác nhận không khớp.' }); return; }
+        this.setState({ regStep: 4 });
+      },
+      tncChecked: s.tncChecked, toggleTnc: () => this.setState({ tncChecked: !s.tncChecked }),
+      tncDisabled, regSubmitStyle,
+      copyLabel: s.copyLabel,
+      copyLink: () => { navigator.clipboard.writeText('homi365.vn/san-pham/CN02?aff_id=923983'); this.setState({ copyLabel: 'Đã copy!' }); setTimeout(() => this.setState({ copyLabel: 'Copy link' }), 1500); },
+      goToA3: () => this.setState({ screen: 'A3' }),
+
+      toggleAgentStage: () => this.setState({ agentStage: s.agentStage === 'new' ? 'active' : 'new' }),
+      agentStageToggleLabel: s.agentStage === 'new' ? 'Xem: Đã tính hoa hồng' : 'Xem: Agent mới',
+      isNewAgent, isActiveAgent,
+      metricOrders: s.agentStage === 'active' ? '10' : '1',
+      metricPoints: s.agentStage === 'active' ? '1.240' : '80',
+      metricRank: s.agentStage === 'active' ? 'Bạc' : 'Đồng',
+      metricWithdrawn: s.agentStage === 'active' ? '1.200.000đ' : '0đ',
+      chartTitle, chartRanges, chartBars,
+      availableBalanceLabel: '4.000.000đ', pendingBalanceLabel: '800.000đ', earnedBalanceLabel: '6.000.000đ',
+      hasActiveThisMonth, nextWithdrawDate: '01/10/2026',
+      openWithdrawForm: () => this.setState({ showWithdrawForm: true, withdrawAmount: '' }),
+      withdrawButtonDisabled, withdrawButtonStyle,
+      noF1: true,
+
+      showWithdrawForm: s.showWithdrawForm, closeWithdrawForm: () => this.setState({ showWithdrawForm: false }),
+      withdrawAmount: s.withdrawAmount, setWithdrawAmount: (e) => this.setState({ withdrawAmount: e.target.value }),
+      withdrawAmountError, withdrawSubmitDisabled, withdrawSubmitStyle,
+      submitWithdrawForm: () => this.setState({ showWithdrawForm: false, showWithdrawSuccess: true }),
+      showWithdrawSuccess: s.showWithdrawSuccess, closeWithdrawSuccess: () => this.setState({ showWithdrawSuccess: false }),
+
+      isAgentLoginStep: s.agentLoginStep === 'login', isAgentOtpStep: s.agentLoginStep === 'otp',
+      isForgotPhoneStep: s.agentLoginStep === 'forgot_phone', isForgotOtpStep: s.agentLoginStep === 'forgot_otp',
+      isForgotResetStep: s.agentLoginStep === 'forgot_reset', isForgotSuccessStep: s.agentLoginStep === 'forgot_success',
+      agentPhone: s.agentPhone, setAgentPhone: (e) => this.setState({ agentPhone: e.target.value, agentLoginError: false }),
+      agentPassword: s.agentPassword, setAgentPassword: (e) => this.setState({ agentPassword: e.target.value, agentLoginError: false }),
+      agentInputBorder, agentLoginError: s.agentLoginError,
+      pwdInputType: s.pwdVisible ? 'text' : 'password', togglePwd: () => this.setState({ pwdVisible: !s.pwdVisible }),
+      pwdToggleLabel: s.pwdVisible ? 'Ẩn' : 'Hiện',
+      agentLoginSubmit: () => {
+        if (s.agentPhone.trim() && s.agentPassword === '123456') { this.setState({ screen: 'A3', agentLoginError: false }); }
+        else { this.setState({ agentLoginError: true, agentLoginStep: 'otp' }); }
+      },
+      agentMaskedPhone: s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123',
+      agentBackToLogin: () => this.setState({ agentLoginStep: 'login' }),
+      agentOtpConfirm: () => this.setState({ screen: 'A3', agentLoginStep: 'login', agentLoginError: false }),
+      openForgotPassword: (e) => { if (e) e.preventDefault(); this.setState({ agentLoginStep: 'forgot_phone', forgotPhoneError: false }); },
+      openOrderLookup: (e) => { if (e) e.preventDefault(); this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false }); },
+      forgotPhone: s.forgotPhone, setForgotPhone: (e) => this.setState({ forgotPhone: e.target.value, forgotPhoneError: false }),
+      forgotPhoneError: s.forgotPhoneError, forgotPhoneBorder: s.forgotPhoneError ? '#D9342B' : 'rgba(170,170,170,.6)',
+      submitForgotPhone: () => {
+        if (this.REGISTERED_PHONES.includes(s.forgotPhone.trim())) this.setState({ agentLoginStep: 'forgot_otp' });
+        else this.setState({ forgotPhoneError: true });
+      },
+      forgotMaskedPhone: s.forgotPhone ? s.forgotPhone.slice(0, 3) + '•••' + s.forgotPhone.slice(-3) : '090•••123',
+      confirmForgotOtp: () => this.setState({ agentLoginStep: 'forgot_reset', forgotNewPassword: '', forgotConfirmPassword: '', forgotResetErrorMsg: '' }),
+      forgotNewPassword: s.forgotNewPassword, setForgotNewPassword: (e) => this.setState({ forgotNewPassword: e.target.value, forgotResetErrorMsg: '' }),
+      forgotConfirmPassword: s.forgotConfirmPassword, setForgotConfirmPassword: (e) => this.setState({ forgotConfirmPassword: e.target.value, forgotResetErrorMsg: '' }),
+      forgotResetError: s.forgotResetErrorMsg,
+      submitForgotReset: () => {
+        if (!s.forgotNewPassword || s.forgotNewPassword.length < 6) { this.setState({ forgotResetErrorMsg: 'Mật khẩu phải có ít nhất 6 ký tự.' }); return; }
+        if (s.forgotNewPassword !== s.forgotConfirmPassword) { this.setState({ forgotResetErrorMsg: 'Mật khẩu xác nhận không khớp.' }); return; }
+        this.setState({ agentLoginStep: 'forgot_success' });
+      },
+
+      adminLoginSubmit: () => this.setState({ screen: 'B2' }),
+      adminRole: s.adminRole,
+      adminRoleLabel: s.adminRole === 'specialist' ? '⚙ Admin Specialist · đổi vai trò' : '⚙ Head Admin · đổi vai trò',
+      toggleAdminRole: () => this.setState({ adminRole: s.adminRole === 'specialist' ? 'head' : 'specialist' }),
+
+      memberSearch: s.memberSearch, setMemberSearch: (e) => this.setState({ memberSearch: e.target.value }),
+      members,
+      closeMember: () => this.setState({ selectedMemberId: null }),
+      hasSelectedMember: !!selectedMember, selectedMember,
+      toggleLockSelected, lockButtonLabel, lockButtonStyle,
+      openApproveMemberModal: () => this.setState({ actionModal: { type: 'approve', kind: 'member', id: s.selectedMemberId } }),
+      openRejectMemberModal: () => this.setState({ actionModal: { type: 'reject', kind: 'member', id: s.selectedMemberId }, rejectReason: '' }),
+
+      withdrawalFilters, withdrawalSearch: s.withdrawalSearch, setWithdrawalSearch: (e) => this.setState({ withdrawalSearch: e.target.value }),
+      withdrawals, withdrawalsEmpty,
+      closeWithdrawal: () => this.setState({ selectedWithdrawalId: null }),
+      hasSelectedWithdrawal: !!selectedWithdrawal, selectedWithdrawal,
+      openApproveModal: () => this.setState({ actionModal: { type: 'approve', kind: 'withdrawal', id: s.selectedWithdrawalId } }),
+      openRejectModal: () => this.setState({ actionModal: { type: 'reject', kind: 'withdrawal', id: s.selectedWithdrawalId }, rejectReason: '' }),
+      openPaidModal: () => this.setState({ actionModal: { type: 'paid', kind: 'withdrawal', id: s.selectedWithdrawalId }, paidNote: '' }),
+
+      stockTotal: stockData.length, stockAvailable: stockData.filter(p => p.status === 'available').length,
+      stockAssigned: stockData.filter(p => p.status === 'assigned').length, stockActivated: stockData.filter(p => p.status === 'activated').length,
+      stockFilters, stockSearch: s.stockSearch, setStockSearch: (e) => this.setState({ stockSearch: e.target.value, stockPage: 1 }),
+      stockItems, stockItemsEmpty, stockRangeStart, stockRangeEnd, stockFilteredCount: stockFiltered.length,
+      stockPage, stockPageCount,
+      stockPrevPage: () => this.setState({ stockPage: Math.max(1, stockPage - 1) }), stockPrevDisabled: stockPage <= 1,
+      stockNextPage: () => this.setState({ stockPage: Math.min(stockPageCount, stockPage + 1) }), stockNextDisabled: stockPage >= stockPageCount,
+      closeStock: () => this.setState({ selectedStockId: null }),
+      hasSelectedStock: !!selectedStock, selectedStock,
+
+      hasActionModal: !!s.actionModal,
+      isApproveModal: s.actionModal && s.actionModal.type === 'approve' && s.actionModal.kind !== 'member',
+      isRejectModal: s.actionModal && s.actionModal.type === 'reject' && s.actionModal.kind !== 'member',
+      isPaidModal: s.actionModal && s.actionModal.type === 'paid',
+      isApproveMemberModal: s.actionModal && s.actionModal.type === 'approve' && s.actionModal.kind === 'member',
+      isRejectMemberModal: s.actionModal && s.actionModal.type === 'reject' && s.actionModal.kind === 'member',
+      actionWithdrawal, approveOverBalance, actionMember, actionStageLabel,
+      approveConfirmLabel: approveOverBalance ? 'Vẫn duyệt' : 'Xác nhận',
+      closeActionModal: () => this.setState({ actionModal: null }),
+      confirmApprove: () => {
+        const { id, kind } = s.actionModal, now = '03/09/2026 10:00';
+        const isSpecialist = s.adminRole === 'specialist';
+        if (kind === 'member') {
+          const nextStatus = isSpecialist ? 'specialist_approved' : 'active';
+          const label = isSpecialist ? 'Admin Specialist duyệt hồ sơ (chờ Head Admin)' : 'Head Admin xác nhận & kích hoạt thành viên';
+          const actor = isSpecialist ? 'Admin Specialist' : 'Head Admin';
+          this.setState({
+            memberStatusOverrides: { ...s.memberStatusOverrides, [id]: nextStatus },
+            memberAuditLog: { ...s.memberAuditLog, [id]: [...(s.memberAuditLog[id] || []), { label, actor, time: now }] },
+            actionModal: null
+          });
+          return;
+        }
+        const nextStatus = isSpecialist ? 'specialist_approved' : 'approved';
+        const label = isSpecialist ? 'Admin Specialist duyệt (chờ Head Admin)' : 'Head Admin xác nhận duyệt';
+        const actor = isSpecialist ? 'Admin Specialist' : 'Head Admin';
+        this.setState({ withdrawalsData: withdrawalsData.map(w => w.id === id ? { ...w, status: nextStatus, auditLog: [...w.auditLog, { label, actor, time: now }] } : w), actionModal: null });
+      },
+      rejectReason: s.rejectReason, setRejectReason: (e) => this.setState({ rejectReason: e.target.value }),
+      rejectDisabled, rejectConfirmStyle,
+      confirmReject: () => {
+        if (!s.rejectReason.trim()) return;
+        const { id, kind } = s.actionModal, now = '03/09/2026 10:05';
+        const actor = s.adminRole === 'specialist' ? 'Admin Specialist' : 'Head Admin';
+        if (kind === 'member') {
+          this.setState({
+            memberStatusOverrides: { ...s.memberStatusOverrides, [id]: 'rejected' },
+            memberAuditLog: { ...s.memberAuditLog, [id]: [...(s.memberAuditLog[id] || []), { label: 'Từ chối hồ sơ: ' + s.rejectReason.trim(), actor, time: now }] },
+            actionModal: null, rejectReason: ''
+          });
+          return;
+        }
+        this.setState({ withdrawalsData: withdrawalsData.map(w => w.id === id ? { ...w, status: 'rejected', reason: s.rejectReason.trim(), auditLog: [...w.auditLog, { label: 'Từ chối yêu cầu', actor, time: now }] } : w), actionModal: null, rejectReason: '' });
+      },
+      paidNote: s.paidNote, setPaidNote: (e) => this.setState({ paidNote: e.target.value }),
+      confirmPaid: () => {
+        const id = s.actionModal.id, now = '03/09/2026 10:10';
+        this.setState({ withdrawalsData: withdrawalsData.map(w => w.id === id ? { ...w, status: 'paid', paidNote: s.paidNote, auditLog: [...w.auditLog, { label: 'Đánh dấu đã chi trả', actor: s.adminRole === 'specialist' ? 'Admin Specialist' : 'Head Admin', time: now }] } : w), actionModal: null, paidNote: '' });
+      }
+    };
+  }
+}
+</script>
+
+
+</body></html>
