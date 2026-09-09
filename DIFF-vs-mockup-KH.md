@@ -230,10 +230,16 @@ Rủi ro vận hành cần KH biết trước: **Specialist nghỉ là mọi th�
 
 Nhờ vậy màn duyệt hồ sơ ở B2 vẫn có lý do tồn tại: nó là chỗ mở khoá tiền, không phải chỗ cho phép bán hàng.
 
-Còn phải chốt với dev: khi admin kích hoạt, phần hoa hồng đã giữ được cộng dồn **toàn bộ về quá khứ** hay chỉ tính từ thời điểm kích hoạt trở đi — bản này đang mô tả theo hướng cộng dồn toàn bộ.
+**Chốt 09/09: cộng dồn toàn bộ về quá khứ.** Khi admin kích hoạt, hoa hồng đã tạm giữ và điểm tích luỹ được tính **từ đơn đầu tiên**, không phải từ thời điểm kích hoạt. Hộp xác nhận duyệt ở B2 đã ghi rõ điều này để admin biết mình đang mở khoá cái gì.
+
+Kéo theo cho dev: bản ghi hoa hồng phải tồn tại **ngay khi đơn thanh toán**, mang một cờ *đang giữ*, chứ không phải sinh ra lúc kích hoạt — nếu sinh lúc kích hoạt thì không còn dữ liệu quá khứ để cộng dồn. Điểm tích luỹ cũng vậy.
 
 ## Ghi chú
 
 - Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` nhưng màu hover lại là cyan `#0099d1` — gần như chắc chắn là lỗi sót. Bản này đưa về màu chính. Cần KH xác nhận.
 - Điều hướng giữa các màn đổi từ `setState` sang chuyển file thật, vì mỗi màn giờ là một file `.html` riêng. Dữ liệu mang sang màn sau đi qua `sessionStorage`.
 - Thêm vòng focus bàn phím (WCAG 2.4.7) — không ảnh hưởng layout.
+
+## ⚠ Còn sót màu cũ
+
+- `#00ADEE`

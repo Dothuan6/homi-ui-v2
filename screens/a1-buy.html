@@ -53,27 +53,64 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)">
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Tỉnh/Thành phố (*)</label>
-              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>TP. Hồ Chí Minh</option></sc-raw-select>
+              <div style="position:relative">
+                <input type="text" value="{{provinceQuery}}" sc-camel-on-change="{{setProvinceQuery}}" sc-camel-on-click="{{toggleProvince}}" placeholder="Gõ để tìm tỉnh/thành…" style="width:100%;height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
+                <sc-if value="{{provinceOpen}}" hint-placeholder-val="{{false}}">
+                  <div style="position:absolute;left:0;right:0;top:48px;z-index:60;background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:260px;overflow-y:auto">
+                    <sc-for list="{{provinceOptions}}" as="o" hint-placeholder-count="6">
+                      <div sc-camel-on-click="{{o.onPick}}" style="padding:var(--s4) var(--s5);cursor:pointer;font-size:14px;color:var(--c2);border-bottom:1px solid rgba(154,163,176,.15)" style-hover="background:rgba(30,58,102,.06)">{{o.label}}</div>
+                    </sc-for>
+                    <sc-if value="{{provinceEmpty}}" hint-placeholder-val="{{false}}">
+                      <div style="padding:var(--s5);font-size:13px;color:var(--c5)">Không tìm thấy kết quả phù hợp</div>
+                    </sc-if>
+                  </div>
+                </sc-if>
+              </div>
             </div>
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Phường/Xã (*)</label>
-              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Phường Bến Nghé</option></sc-raw-select>
+              <div style="position:relative">
+                <input type="text" value="{{wardQuery}}" sc-camel-on-change="{{setWardQuery}}" sc-camel-on-click="{{toggleWard}}" placeholder="Gõ để tìm phường/xã…" style="width:100%;height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
+                <sc-if value="{{wardOpen}}" hint-placeholder-val="{{false}}">
+                  <div style="position:absolute;left:0;right:0;top:48px;z-index:60;background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:260px;overflow-y:auto">
+                    <sc-for list="{{wardOptions}}" as="o" hint-placeholder-count="6">
+                      <div sc-camel-on-click="{{o.onPick}}" style="padding:var(--s4) var(--s5);cursor:pointer;font-size:14px;color:var(--c2);border-bottom:1px solid rgba(154,163,176,.15)" style-hover="background:rgba(30,58,102,.06)">{{o.label}}</div>
+                    </sc-for>
+                    <sc-if value="{{wardEmpty}}" hint-placeholder-val="{{false}}">
+                      <div style="padding:var(--s5);font-size:13px;color:var(--c5)">Không tìm thấy kết quả phù hợp</div>
+                    </sc-if>
+                  </div>
+                </sc-if>
+              </div>
             </div>
           </div>
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)">
-            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngày sinh</label><input type="text" placeholder="dd/mm/yyyy" value="{{buyerDob}}" sc-camel-on-change="{{setBuyerDob}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngày sinh</label><input type="text" placeholder="22/01/1991" inputmode="numeric" maxlength="10" value="{{buyerDob}}" sc-camel-on-change="{{setBuyerDob}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Giới tính</label>
               <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Nam</option><option>Nữ</option><option>Khác</option></sc-raw-select>
             </div>
           </div>
 
           <div style="height:1px;background:rgba(154,163,176,.25);margin:var(--s2) 0"></div>
-          <div style="font-size:14px;font-weight:700;color:var(--c1)">Thông tin nhận hoa hồng</div>
+          <div style="font-size:14px;font-weight:700;color:var(--c1)">Thông tin nhận ưu đãi (khi đạt điều kiện)</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)">
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngân hàng (*)</label>
-              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Vietcombank</option></sc-raw-select>
+              <div style="position:relative">
+                <input type="text" value="{{bankQuery}}" sc-camel-on-change="{{setBankQuery}}" sc-camel-on-click="{{toggleBank}}" placeholder="Gõ để tìm ngân hàng…" style="width:100%;height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
+                <sc-if value="{{bankOpen}}" hint-placeholder-val="{{false}}">
+                  <div style="position:absolute;left:0;right:0;top:48px;z-index:60;background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:260px;overflow-y:auto">
+                    <sc-for list="{{bankOptions}}" as="o" hint-placeholder-count="6">
+                      <div sc-camel-on-click="{{o.onPick}}" style="padding:var(--s4) var(--s5);cursor:pointer;font-size:14px;color:var(--c2);border-bottom:1px solid rgba(154,163,176,.15)" style-hover="background:rgba(30,58,102,.06)">{{o.label}}</div>
+                    </sc-for>
+                    <sc-if value="{{bankEmpty}}" hint-placeholder-val="{{false}}">
+                      <div style="padding:var(--s5);font-size:13px;color:var(--c5)">Không tìm thấy kết quả phù hợp</div>
+                    </sc-if>
+                  </div>
+                </sc-if>
+              </div>
             </div>
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số tài khoản (*)</label><input type="text" placeholder="Nhập số tài khoản" value="{{buyerBankAccount}}" sc-camel-on-change="{{setBuyerBankAccount}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Tên chủ tài khoản (*)</label><input type="text" placeholder="NGUYEN VAN AN" value="{{accountHolder}}" sc-camel-on-change="{{setAccountHolder}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;text-transform:uppercase" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"><div style="font-size:11px;color:var(--c5);line-height:1.5">Viết hoa, không dấu — hệ thống tự chuẩn hoá khi bạn gõ.</div></div>
           </div>
 
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Mã giới thiệu</label><input type="text" value="923983" readonly="{{true}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;background:rgba(154,163,176,.08);color:var(--c4)" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
@@ -108,7 +145,8 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           
           <div style="height:1px;background:rgba(154,163,176,.25)"></div>
           <div style="display:flex;justify-content:space-between;font-size:16px;color:var(--c1);font-weight:700"><span>Thành tiền</span><span style="color:var(--c6)">{{cn02PackagePrice}}</span></div>
-          <button sc-camel-on-click="{{openQRPayment}}" style="height: 48px; color: var(--c12); border: none; border-radius: var(--r-md); font-size: 16px; font-weight: 700; box-shadow: var(--sh); background-color: #1E3A66" style-hover="background:#1B3358" style-active="background:#122544" style-focus="box-shadow:0 0 0 3px rgba(30,58,102,.4)">Thanh toán</button>
+          <button sc-camel-on-click="{{openQRPayment}}" disabled="{{payDisabled}}" style="{{payStyle}}">Thanh toán</button>
+          <label style="display:flex;gap:var(--s3);align-items:flex-start;cursor:pointer;font-size:12px;color:var(--c2);line-height:1.6"><input type="checkbox" checked="{{buyTcChecked}}" sc-camel-on-change="{{toggleBuyTc}}" style="margin-top:3px;flex:none;width:16px;height:16px;accent-color:#1E3A66"><span>Bằng cách đăng ký mua hàng và thanh toán, bạn đã đồng ý với <a href="policy.html?s=quy-che-website" style="color:#1E3A66;font-weight:600">Điều khoản sử dụng</a> và <a href="policy.html?s=bao-mat-thong-tin" style="color:#1E3A66;font-weight:600">Chính sách bảo mật</a> của HOMI365.</span></label>
         </div>
       </div>
 
@@ -138,6 +176,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             <span style="font-size:12px;font-weight:700;color:#00A19A">napas<span style="color:#003DA5">247</span></span>
           </div>
         </div>
+        <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s5);display:flex;flex-direction:column;gap:var(--s2);text-align:center;background:rgba(154,163,176,.05)"><div style="font-size:11px;color:var(--c5);text-transform:uppercase;letter-spacing:.04em">Đơn vị thụ hưởng</div><div style="font-size:12px;font-weight:700;color:var(--c1);line-height:1.5">CONG TY CO PHAN GIAI PHAP VA DICH VU HOMI365</div><div style="font-size:13px;font-weight:700;color:var(--c6);font-family:monospace;letter-spacing:.02em">TECHCOMBANK - 0009383764899</div></div>
         <div style="text-align:center;font-size:11px;color:var(--c5);font-family:monospace">Đơn hàng #{{orderId}} · {{cn02PackagePrice}}</div>
 
         <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s6);display:flex;flex-direction:column;gap:var(--s4);text-align:left;font-size:13px">
@@ -159,7 +198,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
       <div style="width:100%;max-width:380px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s7);box-shadow:0 8px 30px rgba(0,0,0,.25);text-align:center;align-items:center">
         <div style="width:64px;height:64px;border-radius:var(--r-full);background:rgba(47,122,72,.15);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--c8)">✓</div>
         <div><div style="font-size:20px;font-weight:700;color:var(--c1)">Đơn hàng đã được ghi nhận</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Đơn hàng #{{orderId}} · {{cn02PackagePrice}} · Đang chờ xác nhận thanh toán</div></div>
-        <div style="font-size:14px;color:var(--c2);line-height:1.6">Bạn có muốn đăng ký làm seller Homi365 để nhận hoa hồng giới thiệu không?</div>
+        <div style="font-size:14px;color:var(--c2);line-height:1.6">Bạn có muốn đăng ký làm Thành viên HOMI365 để nhận các ưu đãi không?</div>
         <div style="display:flex;flex-direction:column;gap:var(--s3);width:100%">
           <button sc-camel-on-click="{{choosRegisterSeller}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:700;box-shadow:var(--sh)" style-hover="background:#1B3358">Đăng ký thành viên</button>
           <button sc-camel-on-click="{{choosSkipSeller}}" style="height:46px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:15px;font-weight:600" style-hover="background:rgba(154,163,176,.08)">Không, thoát ra</button>
@@ -183,7 +222,24 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             <div style="font-size:12px;color:#C0392B">Không tìm thấy đơn hàng với số điện thoại này. Vui lòng kiểm tra lại.</div>
           </sc-if>
         </div>
-        <button sc-camel-on-click="{{submitOrderLookup}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#1B3358">Xác nhận</button>
+        <sc-if value="{{hasLookupResult}}" hint-placeholder-val="{{false}}">
+          <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s6);display:flex;flex-direction:column;gap:var(--s4);font-size:13px;background:rgba(154,163,176,.05)">
+            <div style="font-size:12px;color:var(--c5);text-transform:uppercase;letter-spacing:.04em">Đơn hàng tìm thấy</div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5)">Mã đơn</span><span style="font-family:monospace;font-weight:700;color:var(--c1)">{{lookupResult.orderId}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5)">Khách hàng</span><span style="font-weight:600;color:var(--c1);text-align:right">{{lookupResult.buyerName}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5)">Gói</span><span style="color:var(--c2);text-align:right">{{lookupResult.pkg}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5)">Số tiền</span><span style="font-weight:700;color:var(--c6)">{{lookupResult.amount}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5)">Ngày đặt</span><span style="color:var(--c2)">{{lookupResult.date}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5)">Người giới thiệu</span><span style="color:var(--c2);text-align:right">{{lookupResult.referrer}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5);align-items:center"><span style="color:var(--c5)">Trạng thái</span><span style="display:inline-block;padding:4px 10px;border-radius:var(--r-xl);font-size:11px;font-weight:600;background:{{lookupResult.badgeBg}};color:{{lookupResult.badgeColor}}">{{lookupResult.statusLabel}}</span></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{hasLookupResult}}" hint-placeholder-val="{{false}}">
+          <button sc-camel-on-click="{{lookupContinue}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#1B3358">Đăng ký thành viên với đơn này</button>
+        </sc-if>
+        <sc-if value="{{noLookupResult}}" hint-placeholder-val="{{true}}">
+          <button sc-camel-on-click="{{submitOrderLookup}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#1B3358">Tra cứu đơn hàng</button>
+        </sc-if>
       </div>
     </div>
   </sc-if>
@@ -197,6 +253,23 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
       </div>
     </div>
   </sc-if>
+
+  <footer style="background:var(--c12);border-top:1px solid rgba(170,170,170,.35);padding:var(--s10) var(--s7) var(--s8);margin-top:var(--s10)">
+    <div style="max-width:1160px;margin:0 auto;display:flex;flex-direction:column;gap:var(--s7)">
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:var(--s9)" class="footer-grid">
+        <div style="display:flex;flex-direction:column;gap:var(--s3)">
+          <img src="../assets/logo homi-01.png" alt="HOMI365" style="height:34px;width:auto;align-self:flex-start;margin-bottom:var(--s2)">
+          <div style="font-size:13px;font-weight:700;color:var(--c1);text-transform:uppercase;line-height:1.6">Công ty Cổ phần Giải pháp và Dịch vụ HOMI365</div>
+          <div style="font-size:13px;color:var(--c2);line-height:1.8">Mã số thuế: …………<br>Địa chỉ: Số 36 đường 27A, Phường Bình Trưng, Thành phố Hồ Chí Minh, Việt Nam<br>Hotline: <a href="tel:1900633570" style="color:#00ADEE;font-weight:600;text-decoration:none">1900 633 570</a><br>Email: …………</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--s3)">
+          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.05em">Chính sách</div>
+          <a href="../policy.html?s=quy-che-website" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Quy chế hoạt động</a><a href="../policy.html?s=bao-mat-thong-tin" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Chính sách bảo mật thông tin</a><a href="../policy.html?s=thanh-toan" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Chính sách thanh toán</a><a href="../policy.html?s=van-chuyen-giao-nhan" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Vận chuyển & giao nhận</a><a href="../policy.html?s=doi-tra-hoan-tien" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Đổi trả & hoàn tiền</a><a href="../policy.html?s=bao-hanh" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Chính sách bảo hành</a><a href="../policy.html?s=kiem-hang" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Chính sách kiểm hàng</a>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(170,170,170,.25);padding-top:var(--s6);font-size:12px;color:var(--c5);line-height:1.8">………… All rights reserved. Giấy phép đăng ký kinh doanh số ………………… do Sở ………………… cấp lần đầu ngày ………… Người chịu trách nhiệm nội dung: Bà Phùng Thị Thúy Linh. Chức vụ: Giám đốc</div>
+    </div>
+  </footer>
 
 </div>
 </x-dc>
@@ -230,6 +303,12 @@ class Component extends DCLogic {
     showImportStock: false, importText: '', importResult: null,
     orderActivationCode: '', orderCodeError: '',
     copyPersonalLabel: 'Copy link',
+    banks: null, provinceData: null,
+    bankQuery: 'Vietcombank', bankOpen: false,
+    provinceQuery: 'Thành phố Hồ Chí Minh', provinceOpen: false,
+    wardQuery: 'Phường Bến Thành', wardOpen: false,
+    accountHolder: '', buyTcChecked: false,
+    cccdIssueDate: '', cccdIssuePlace: '', lookupResult: null,
     showAdminUserForm: false, editingAdminUserId: null, adminUserLocks: {},
     orderRange: 'month',
     ordersData: null, orderSearch: '', orderStatusFilter: 'all',
@@ -327,6 +406,36 @@ class Component extends DCLogic {
     return raw.map(o => ({ ...o, amount: o.amountNum.toLocaleString('vi-VN') + 'đ' }));
   }
 
+  // --- Danh sách ngân hàng & địa giới hành chính -------------------------
+  // Nạp từ API công khai lúc khởi động; hỏng mạng thì rơi về danh sách rút gọn
+  // bên dưới để prototype vẫn mở được bằng file://.
+  BANKS_FALLBACK = ['Vietcombank — NH TMCP Ngoại thương Việt Nam','Techcombank — NH TMCP Kỹ thương Việt Nam','BIDV — NH Đầu tư và Phát triển Việt Nam','VietinBank — NH TMCP Công thương Việt Nam','Agribank — NH NN&PTNT Việt Nam','MB Bank — NH TMCP Quân đội','ACB — NH TMCP Á Châu','VPBank — NH TMCP Việt Nam Thịnh Vượng','Sacombank — NH TMCP Sài Gòn Thương Tín','TPBank — NH TMCP Tiên Phong','HDBank — NH TMCP Phát triển TP.HCM','SHB — NH TMCP Sài Gòn – Hà Nội','VIB — NH TMCP Quốc tế Việt Nam','MSB — NH TMCP Hàng Hải','OCB — NH TMCP Phương Đông','SeABank — NH TMCP Đông Nam Á','Eximbank — NH TMCP Xuất Nhập khẩu','LPBank — NH TMCP Lộc Phát Việt Nam','Nam A Bank — NH TMCP Nam Á','BVBank — NH TMCP Bản Việt'];
+
+  PROVINCES_FALLBACK = [
+    { name: 'Thành phố Hồ Chí Minh', wards: ['Phường Bến Thành','Phường Sài Gòn','Phường Cầu Ông Lãnh','Phường Bàn Cờ','Phường Chợ Lớn','Phường Bình Trưng','Phường An Khánh','Phường Thủ Đức','Phường Hoà Hưng','Phường Tân Sơn Nhất'] },
+    { name: 'Thành phố Hà Nội', wards: ['Phường Hoàn Kiếm','Phường Ba Đình','Phường Cửa Nam','Phường Đống Đa','Phường Hai Bà Trưng','Phường Cầu Giấy','Phường Thanh Xuân','Phường Tây Hồ'] },
+    { name: 'Thành phố Đà Nẵng', wards: ['Phường Hải Châu','Phường Thanh Khê','Phường Sơn Trà','Phường Ngũ Hành Sơn','Phường Liên Chiểu'] },
+    { name: 'Thành phố Cần Thơ', wards: ['Phường Ninh Kiều','Phường Bình Thuỷ','Phường Cái Răng'] },
+    { name: 'Thành phố Hải Phòng', wards: ['Phường Hồng Bàng','Phường Ngô Quyền','Phường Lê Chân'] },
+    { name: 'Tỉnh Đồng Nai', wards: ['Phường Trấn Biên','Phường Biên Hoà','Phường Long Bình'] },
+    { name: 'Tỉnh Tây Ninh', wards: ['Phường Tân Ninh','Phường Long Hoa'] },
+    { name: 'Tỉnh Khánh Hoà', wards: ['Phường Nha Trang','Phường Bắc Nha Trang','Phường Cam Ranh'] }
+  ];
+
+  // Bỏ dấu tiếng Việt + viết hoa — dùng cho tên chủ tài khoản ngân hàng.
+  vnUpper(s) {
+    return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd').replace(/Đ/g, 'D').toUpperCase();
+  }
+
+  // Nhập 22011991 -> hiển thị 22/01/1991
+  dateMask(s) {
+    const d = (s || '').replace(/\D/g, '').slice(0, 8);
+    if (d.length > 4) return d.slice(0, 2) + '/' + d.slice(2, 4) + '/' + d.slice(4);
+    if (d.length > 2) return d.slice(0, 2) + '/' + d.slice(2);
+    return d;
+  }
+
   ADMIN_USERS = [
     { id:1, name:'Trần Quốc Head', email:'head@homi365.com.vn', role:'head', status:'active' },
     { id:2, name:'Hoàng Thị Mỹ Trinh', email:'trinh@homi365.com.vn', role:'head', status:'active' },
@@ -364,6 +473,21 @@ class Component extends DCLogic {
     if (!this.state.withdrawalsData) this.setState({ withdrawalsData: this.makeWithdrawals() });
     if (!this.state.stockData) this.setState({ stockData: this.makeStock() });
     if (!this.state.ordersData) this.setState({ ordersData: this.makeOrders() });
+    // Nạp danh sách ngân hàng và địa giới hành chính từ API công khai.
+    // Lỗi mạng thì giữ nguyên danh sách rút gọn, prototype vẫn dùng được.
+    try {
+      fetch('https://api.vietqr.io/v2/banks')
+        .then(r => r.json())
+        .then(j => { const b = (j && j.data || []).map(x => x.shortName + ' — ' + x.name);
+                     if (b.length) this.setState({ banks: b }); })
+        .catch(() => {});
+      fetch('https://provinces.open-api.vn/api/v2/?depth=2')
+        .then(r => r.json())
+        .then(j => { const p = (j || []).map(x => ({ name: x.name,
+                       wards: (x.wards || []).map(w => w.name) }));
+                     if (p.length) this.setState({ provinceData: p }); })
+        .catch(() => {});
+    } catch (e) {}
   }
 
   badge(status) {
@@ -498,6 +622,7 @@ class Component extends DCLogic {
         const [bg, color, label] = this.badge(effStatus);
         const affCode = m.name.split(' ').map(w => w[0]).join('').toUpperCase() + m.phone.slice(-4);
         return { ...m, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,
+          uplineCode: (this.MEMBERS.find(u => u.name === m.upline) || {}).affId || '',
           formLink: 'portal.homi365.com.vn/' + affCode, formLinkShort: '.../' + affCode,
           loginLink: 'homi365.com.vn/dang-nhap/' + affCode, loginLinkShort: '.../dang-nhap/' + affCode,
           copyFormLink: (e) => { e.stopPropagation(); navigator.clipboard.writeText('portal.homi365.com.vn/' + affCode); this.setState({ copiedLinkId: 'form-' + m.id }); setTimeout(() => this.setState(st => st.copiedLinkId === 'form-' + m.id ? { copiedLinkId: null } : null), 1500); },
@@ -537,9 +662,17 @@ class Component extends DCLogic {
     const stockPage = Math.min(s.stockPage || 1, stockPageCount);
     const stockRangeStart = stockFiltered.length ? (stockPage - 1) * stockPageSize + 1 : 0;
     const stockRangeEnd = Math.min(stockPage * stockPageSize, stockFiltered.length);
+    const plusYear = (d) => {
+      const q = (d || '').split('/');
+      return q.length === 3 ? q[0] + '/' + q[1] + '/' + (parseInt(q[2], 10) + 1) : '—';
+    };
     const stockItems = stockFiltered.slice((stockPage - 1) * stockPageSize, stockPage * stockPageSize).map(p => {
       const [bg, color, label] = this.badge(p.status);
-      return { ...p, badgeBg: bg, badgeColor: color, statusLabel: label, onClick: () => this.setState({ selectedStockId: p.id }) };
+      const live = p.status !== 'available';
+      return { ...p, badgeBg: bg, badgeColor: color, statusLabel: label,
+        activeFrom: live ? p.stockedAt : '—',
+        activeTo: live ? plusYear(p.stockedAt) : '—',
+        onClick: () => this.setState({ selectedStockId: p.id }) };
     });
     const stockItemsEmpty = stockItems.length === 0;
 
@@ -599,6 +732,15 @@ class Component extends DCLogic {
     const rejectDisabled = !s.rejectReason || !s.rejectReason.trim();
     const rejectConfirmStyle = 'flex:1;height:44px;border:none;border-radius:5px;font-size:14px;font-weight:600;color:#FFFFFF;background:' + (rejectDisabled ? 'rgba(154,163,176,.5)' : 'var(--err)') + ';cursor:' + (rejectDisabled ? 'not-allowed' : 'pointer');
 
+    // Dữ liệu cho 3 dropdown có tìm kiếm. norm() bỏ dấu để gõ "ho chi minh"
+    // vẫn ra "Hồ Chí Minh".
+    const norm = (x) => (x || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase().trim();
+    const bankList = s.banks || this.BANKS_FALLBACK;
+    const provList = s.provinceData || this.PROVINCES_FALLBACK;
+    const curProv = provList.find(p => p.name === s.provinceQuery);
+    const wardList = (curProv && curProv.wards) || [];
+
     // Đơn hàng (B6) — bổ sung, không có trong mockup KH
     const ordersRaw = s.ordersData || [];
     const orderRows = ordersRaw
@@ -655,7 +797,7 @@ class Component extends DCLogic {
       buyerEmail: s.buyerEmail, setBuyerEmail: (e) => this.setState({ buyerEmail: e.target.value }),
       buyerCccd: s.buyerCccd, setBuyerCccd: (e) => this.setState({ buyerCccd: e.target.value }),
       buyerAddress: s.buyerAddress, setBuyerAddress: (e) => this.setState({ buyerAddress: e.target.value }),
-      buyerDob: s.buyerDob, setBuyerDob: (e) => this.setState({ buyerDob: e.target.value }),
+      buyerDob: s.buyerDob, setBuyerDob: (e) => this.setState({ buyerDob: this.dateMask(e.target.value) }),
       buyerBankAccount: s.buyerBankAccount, setBuyerBankAccount: (e) => this.setState({ buyerBankAccount: e.target.value }),
       cn02Packages, cn02PackagePrice: cn02SelectedPackage.price,
       openQRPayment: () => this.setState({ showQRPayment: true }),
@@ -672,8 +814,8 @@ class Component extends DCLogic {
       choosSkipSeller: () => this.setState({ showPaymentSuccess: false }),
 
       showOrderLookup: s.showOrderLookup, orderLookupInput: s.orderLookupInput, orderLookupError: s.orderLookupError,
-      openOrderLookup: (e) => { if (e) e.preventDefault(); this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false }); },
-      closeOrderLookup: () => this.setState({ showOrderLookup: false }),
+      openOrderLookup: (e) => { if (e) e.preventDefault(); this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false, lookupResult: null }); },
+      closeOrderLookup: () => this.setState({ showOrderLookup: false, lookupResult: null }),
       setOrderLookupInput: (e) => this.setState({ orderLookupInput: e.target.value, orderLookupError: false }),
       submitOrderLookup: () => {
         const phone = s.orderLookupInput.trim();
@@ -683,11 +825,17 @@ class Component extends DCLogic {
         const rankMap = { 'Đồng': 'bronze', 'Bạc': 'silver', 'Vàng': 'gold' };
         const uplineRank = agent ? (rankMap[agent.rank] || 'silver') : 'silver';
         if (uplineRank === 'bronze') { this.setState({ showOrderLookup: false, showUplineBlockedModal: true }); return; }
-        GO('A2', {
-          regStep: 1,
-          orderId: order.orderId, uplineRank,
-          buyerName: order.buyerName, buyerPhone: phone, buyerEmail: order.buyerEmail,
-          buyerCccd: order.buyerCccd, buyerAddress: order.buyerAddress, buyerDob: order.buyerDob
+        this.setState({
+          orderLookupError: false, uplineRank,
+          lookupResult: {
+            orderId: order.orderId, buyerName: order.buyerName, phone,
+            email: order.buyerEmail, cccd: order.buyerCccd,
+            address: order.buyerAddress, dob: order.buyerDob,
+            pkg: 'Gói 1 năm · CN02', amount: '10.000.000đ', date: '03/09/2026',
+            referrer: (agent && agent.name) || '—',
+            statusLabel: 'Đã thanh toán',
+            badgeBg: 'rgba(47,122,72,.14)', badgeColor: '#2F7A48'
+          }
         });
       },
       showUplineBlockedModal: s.showUplineBlockedModal,
@@ -764,7 +912,7 @@ class Component extends DCLogic {
       agentBackToLogin: () => this.setState({ agentLoginStep: 'login' }),
       agentOtpConfirm: () => GO('A3'),
       openForgotPassword: (e) => { if (e) e.preventDefault(); this.setState({ agentLoginStep: 'forgot_phone', forgotPhoneError: false }); },
-      openOrderLookup: (e) => { if (e) e.preventDefault(); this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false }); },
+      openOrderLookup: (e) => { if (e) e.preventDefault(); this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false, lookupResult: null }); },
       forgotPhone: s.forgotPhone, setForgotPhone: (e) => this.setState({ forgotPhone: e.target.value, forgotPhoneError: false }),
       forgotPhoneError: s.forgotPhoneError, forgotPhoneBorder: s.forgotPhoneError ? '#C0392B' : 'rgba(154,163,176,.6)',
       submitForgotPhone: () => {
@@ -836,6 +984,68 @@ class Component extends DCLogic {
       adminUserFormEmail: (this.ADMIN_USERS.find(u => u.id === s.editingAdminUserId) || {}).email || '',
       openAdminUserForm: () => this.setState({ showAdminUserForm: true, editingAdminUserId: null }),
       closeAdminUserForm: () => this.setState({ showAdminUserForm: false, editingAdminUserId: null }),
+
+      // (10) Kết quả tra cứu đơn hàng
+      lookupResult: s.lookupResult,
+      hasLookupResult: !!s.lookupResult,
+      noLookupResult: !s.lookupResult,
+      lookupContinue: () => {
+        const r = s.lookupResult;
+        if (!r) return;
+        if (s.uplineRank === 'bronze') {
+          this.setState({ showOrderLookup: false, showUplineBlockedModal: true });
+          return;
+        }
+        GO('A2', { regStep: 1, orderId: r.orderId, uplineRank: s.uplineRank,
+          buyerName: r.buyerName, buyerPhone: r.phone, buyerEmail: r.email,
+          buyerCccd: r.cccd, buyerAddress: r.address, buyerDob: r.dob });
+      },
+
+      // --- Dropdown có tìm kiếm: ngân hàng / tỉnh thành / phường xã --------
+      bankQuery: s.bankQuery, bankOpen: s.bankOpen,
+      toggleBank: () => this.setState({ bankOpen: !s.bankOpen }),
+      setBankQuery: (e) => this.setState({ bankQuery: e.target.value, bankOpen: true }),
+      bankOptions: bankList.filter(b => norm(b).includes(norm(s.bankQuery)) || s.bankQuery === b)
+        .slice(0, 60).map(b => ({ label: b,
+          onPick: () => this.setState({ bankQuery: b, bankOpen: false }) })),
+      bankEmpty: bankList.filter(b => norm(b).includes(norm(s.bankQuery))).length === 0,
+      bankCount: bankList.length,
+
+      provinceQuery: s.provinceQuery, provinceOpen: s.provinceOpen,
+      toggleProvince: () => this.setState({ provinceOpen: !s.provinceOpen }),
+      setProvinceQuery: (e) => this.setState({ provinceQuery: e.target.value, provinceOpen: true }),
+      provinceOptions: provList.filter(p => norm(p.name).includes(norm(s.provinceQuery)) || s.provinceQuery === p.name)
+        .slice(0, 80).map(p => ({ label: p.name,
+          onPick: () => this.setState({ provinceQuery: p.name, provinceOpen: false,
+            wardQuery: (p.wards && p.wards[0]) || '' }) })),
+      provinceEmpty: provList.filter(p => norm(p.name).includes(norm(s.provinceQuery))).length === 0,
+
+      wardQuery: s.wardQuery, wardOpen: s.wardOpen,
+      toggleWard: () => this.setState({ wardOpen: !s.wardOpen }),
+      setWardQuery: (e) => this.setState({ wardQuery: e.target.value, wardOpen: true }),
+      wardOptions: wardList.filter(w => norm(w).includes(norm(s.wardQuery)) || s.wardQuery === w)
+        .slice(0, 120).map(w => ({ label: w,
+          onPick: () => this.setState({ wardQuery: w, wardOpen: false }) })),
+      wardEmpty: wardList.filter(w => norm(w).includes(norm(s.wardQuery))).length === 0,
+
+      // Tên chủ tài khoản — tự viết hoa, bỏ dấu.
+      accountHolder: s.accountHolder,
+      setAccountHolder: (e) => this.setState({ accountHolder: this.vnUpper(e.target.value) }),
+
+      // Điều khoản mua hàng — chưa tích thì không bấm thanh toán được.
+      buyTcChecked: s.buyTcChecked,
+      toggleBuyTc: () => this.setState({ buyTcChecked: !s.buyTcChecked }),
+      payDisabled: !s.buyTcChecked,
+      payStyle: 'height:48px;color:var(--c12);border:none;border-radius:var(--r-md);'
+        + 'font-size:16px;font-weight:700;box-shadow:var(--sh);background:'
+        + (s.buyTcChecked ? 'var(--c6)' : 'rgba(154,163,176,.5)')
+        + ';cursor:' + (s.buyTcChecked ? 'pointer' : 'not-allowed'),
+
+      // CCCD — ngày cấp / nơi cấp (màn đăng ký agent)
+      cccdIssueDate: s.cccdIssueDate,
+      setCccdIssueDate: (e) => this.setState({ cccdIssueDate: this.dateMask(e.target.value) }),
+      cccdIssuePlace: s.cccdIssuePlace,
+      setCccdIssuePlace: (e) => this.setState({ cccdIssuePlace: e.target.value }),
 
       // 7.3.3 — còn thiếu bao nhiêu đơn để lên hạng kế tiếp
       rankProgress: this.RANK_PROGRESS[s.agentStage === 'active' ? 'active' : 'new'],

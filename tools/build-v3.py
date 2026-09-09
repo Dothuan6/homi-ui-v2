@@ -26,6 +26,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent          # prototype-v3/tools
 V3 = HERE.parent                                 # prototype-v3
+ROOT = V3.parent                                 # Medigo/ — để lấy lại nội dung v2
 RAW = HERE / "_raw"
 SRC = RAW / "template.html"
 
@@ -291,6 +292,181 @@ _BTN_PRIMARY = ('height:38px;padding:0 var(--s6);background:var(--c6);border:non
 _BTN_GHOST = ('height:38px;padding:0 var(--s6);background:var(--c12);'
               'border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);'
               'font-size:13px;font-weight:600;color:var(--c2)')
+
+
+# (6) (7) Footer công ty + link sang trang chính sách.
+# Chỗ nào KH chưa cung cấp thì để dấu chấm lửng đúng như bản gốc, không bịa.
+POLICY_LINKS = [
+    ("quy-che-website", "Quy chế hoạt động"),
+    ("bao-mat-thong-tin", "Chính sách bảo mật thông tin"),
+    ("thanh-toan", "Chính sách thanh toán"),
+    ("van-chuyen-giao-nhan", "Vận chuyển & giao nhận"),
+    ("doi-tra-hoan-tien", "Đổi trả & hoàn tiền"),
+    ("bao-hanh", "Chính sách bảo hành"),
+    ("kiem-hang", "Chính sách kiểm hàng"),
+]
+
+
+def footer_html(prefix=""):
+    links = "".join(
+        '<a href="%spolicy.html?s=%s" style="color:var(--c2);text-decoration:none;'
+        'font-size:13px" style-hover="color:#00ADEE">%s</a>' % (prefix, pid, label)
+        for pid, label in POLICY_LINKS)
+    return (
+        '\n  <footer style="background:var(--c12);border-top:1px solid rgba(170,170,170,.35);'
+        'padding:var(--s10) var(--s7) var(--s8);margin-top:var(--s10)">\n'
+        '    <div style="max-width:1160px;margin:0 auto;display:flex;flex-direction:column;'
+        'gap:var(--s7)">\n'
+        '      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:var(--s9)" '
+        'class="footer-grid">\n'
+        '        <div style="display:flex;flex-direction:column;gap:var(--s3)">\n'
+        '          <img src="%sassets/logo homi-01.png" alt="HOMI365" '
+        'style="height:34px;width:auto;align-self:flex-start;margin-bottom:var(--s2)">\n'
+        '          <div style="font-size:13px;font-weight:700;color:var(--c1);'
+        'text-transform:uppercase;line-height:1.6">Công ty Cổ phần Giải pháp và '
+        'Dịch vụ HOMI365</div>\n'
+        '          <div style="font-size:13px;color:var(--c2);line-height:1.8">'
+        'Mã số thuế: …………<br>'
+        'Địa chỉ: Số 36 đường 27A, Phường Bình Trưng, Thành phố Hồ Chí Minh, Việt Nam<br>'
+        'Hotline: <a href="tel:1900633570" style="color:#00ADEE;font-weight:600;'
+        'text-decoration:none">1900 633 570</a><br>'
+        'Email: …………</div>\n'
+        '        </div>\n'
+        '        <div style="display:flex;flex-direction:column;gap:var(--s3)">\n'
+        '          <div style="font-size:12px;font-weight:700;color:var(--c5);'
+        'text-transform:uppercase;letter-spacing:.05em">Chính sách</div>\n'
+        '          %s\n'
+        '        </div>\n'
+        '      </div>\n'
+        '      <div style="border-top:1px solid rgba(170,170,170,.25);padding-top:var(--s6);'
+        'font-size:12px;color:var(--c5);line-height:1.8">………… All rights reserved. '
+        'Giấy phép đăng ký kinh doanh số ………………… do Sở ………………… cấp lần đầu ngày ………… '
+        'Người chịu trách nhiệm nội dung: Bà Phùng Thị Thúy Linh. Chức vụ: Giám đốc</div>\n'
+        '    </div>\n'
+        '  </footer>\n' % (prefix, links)
+    )
+
+
+POLICY_PAGE = """<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chính sách · HOMI365</title>
+<link rel="icon" href="../assets/Icon_viewweb_final.jpg">
+<meta name="theme-color" content="#1E3A66">
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<style>
+  body{font-family:var(--ff);background:var(--warm-50);color:var(--c1);margin:0}
+  a{color:var(--c6)}
+  .bar{position:sticky;top:0;z-index:50;background:var(--c12);
+       border-bottom:1px solid rgba(154,163,176,.35);padding:16px var(--s7)}
+  .bar .in{max-width:1160px;margin:0 auto;display:flex;align-items:center}
+  .bar img{height:40px;display:block}
+  main{max-width:1160px;margin:0 auto;padding:var(--s9) var(--s7) var(--s11);
+       display:grid;grid-template-columns:1fr 300px;gap:var(--s9);align-items:start}
+  article{background:var(--c12);border:1px solid rgba(154,163,176,.35);
+          border-radius:var(--r-lg);padding:var(--s9)}
+  article h1{font-size:26px;margin:0 0 var(--s6)}
+  article h2{font-size:17px;margin:var(--s8) 0 var(--s4);color:var(--c3)}
+  article p{font-size:14px;line-height:1.85;color:var(--c2);margin:0 0 var(--s4)}
+  article ul,article ol{margin:0 0 var(--s5);padding-left:var(--s8)}
+  article li{font-size:14px;line-height:1.85;color:var(--c2);margin-bottom:var(--s2)}
+  .intro{font-size:15px;color:var(--c2);background:rgba(30,58,102,.05);
+         border-radius:var(--r-md);padding:var(--s6);line-height:1.8}
+  .side{background:var(--c12);border:1px solid rgba(154,163,176,.35);
+        border-radius:var(--r-lg);padding:var(--s6);position:sticky;top:96px}
+  .side .t{font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;
+           letter-spacing:.05em;margin-bottom:var(--s4)}
+  .side a{display:block;font-size:13px;color:var(--c2);text-decoration:none;
+          padding:var(--s3) var(--s4);border-radius:var(--r-sm);line-height:1.5}
+  .side a:hover{background:rgba(30,58,102,.06)}
+  .side a.on{background:rgba(30,58,102,.1);color:var(--c6);font-weight:700}
+  .crumb{font-size:13px;color:var(--c5);margin-bottom:var(--s5)}
+  .crumb a{text-decoration:none}
+  @media(max-width:860px){main{grid-template-columns:1fr}.side{position:static}}
+</style>
+</head>
+<body>
+<div class="bar"><div class="in">
+  <a href="../index.html"><img src="../assets/logo homi-01.png" alt="HOMI365"></a>
+</div></div>
+<main>
+  <article id="doc"></article>
+  <aside class="side"><div class="t">Danh mục chính sách</div><nav id="menu"></nav></aside>
+</main>
+<div id="foot"></div>
+<script src="../js/policies.js"></script>
+<script>
+(function () {
+  var id = new URLSearchParams(location.search).get('s') || POLICIES[0].id;
+  var p = POLICIES.find(function (x) { return x.id === id; }) || POLICIES[0];
+
+  document.getElementById('menu').innerHTML = POLICIES.map(function (x) {
+    return '<a class="' + (x.id === p.id ? 'on' : '') + '" href="?s=' + x.id + '">'
+      + x.title + '</a>';
+  }).join('');
+
+  function block(it) {
+    if (typeof it === 'string') return '<p>' + it + '</p>';
+    if (it.list) return '<ul>' + it.list.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>';
+    if (it.steps) return '<ol>' + it.steps.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ol>';
+    return '';
+  }
+
+  document.getElementById('doc').innerHTML =
+    '<div class="crumb"><a href="../index.html">Trang chủ</a> / ' + p.title + '</div>'
+    + '<h1>' + p.title + '</h1>'
+    + (p.intro ? '<p class="intro">' + p.intro + '</p>' : '')
+    + p.sections.map(function (sec) {
+        return '<h2>' + sec.h + '</h2>' + sec.items.map(block).join('');
+      }).join('')
+    + '<p style="font-size:12px;color:var(--c5);margin-top:var(--s8)">'
+    + 'Nội dung mẫu dựng giao diện — bản chính thức cần bộ phận Pháp lý rà soát '
+    + 'và cập nhật pháp nhân, hotline, email theo thông tin HOMI365.</p>';
+
+  document.title = p.title + ' · HOMI365';
+})();
+</script>
+</body>
+</html>
+"""
+
+
+def combo(key, placeholder):
+    """Ô chọn có tìm kiếm: gõ để lọc, bấm để mở/đóng danh sách.
+
+    Dùng chung cho Ngân hàng / Tỉnh thành / Phường xã. Viết bằng đúng cú pháp
+    runtime của mockup (sc-if / sc-for / sc-camel-on-*) nên không cần thư viện.
+    """
+    return (
+        '<div style="position:relative">\n'
+        '                <input type="text" value="{{%sQuery}}" '
+        'sc-camel-on-change="{{set%sQuery}}" sc-camel-on-click="{{toggle%s}}" '
+        'placeholder="%s" style="width:100%%;%s" style-focus="%s">\n'
+        '                <sc-if value="{{%sOpen}}" hint-placeholder-val="{{false}}">\n'
+        '                  <div style="position:absolute;left:0;right:0;top:48px;z-index:60;'
+        'background:var(--c12);border:1px solid rgba(170,170,170,.6);'
+        'border-radius:var(--r-md);box-shadow:0 8px 24px rgba(0,0,0,.12);'
+        'max-height:260px;overflow-y:auto">\n'
+        '                    <sc-for list="{{%sOptions}}" as="o" hint-placeholder-count="6">\n'
+        '                      <div sc-camel-on-click="{{o.onPick}}" '
+        'style="padding:var(--s4) var(--s5);cursor:pointer;font-size:14px;color:var(--c2);'
+        'border-bottom:1px solid rgba(170,170,170,.15)" '
+        'style-hover="background:rgba(0,173,238,.06)">{{o.label}}</div>\n'
+        '                    </sc-for>\n'
+        '                    <sc-if value="{{%sEmpty}}" hint-placeholder-val="{{false}}">\n'
+        '                      <div style="padding:var(--s5);font-size:13px;color:var(--c5)">'
+        'Không tìm thấy kết quả phù hợp</div>\n'
+        '                    </sc-if>\n'
+        '                  </div>\n'
+        '                </sc-if>\n'
+        '              </div>'
+        % (key, key[0].upper() + key[1:], key[0].upper() + key[1:], placeholder,
+           _INP, _FOCUS, key, key, key)
+    )
 
 B5_PRODUCTS = """      <!-- B5 PRODUCTS (bổ sung, không có trong mockup KH) -->
       <sc-if value="{{isB5}}" hint-placeholder-val="{{false}}">
@@ -576,8 +752,281 @@ B6_ORDERS = """      <!-- B6 ORDERS (bổ sung, không có trong mockup KH) -->
 
 """ % {"ghost": _BTN_GHOST, "focus": _FOCUS}
 
+_SEL = ('height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);'
+        'border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)')
+
 # Nối 2 mục này SAU khi B5_PRODUCTS / B6_ORDERS đã khai báo ở trên.
 BG_PATCHES += [
+    # (4) (5) Ngân hàng · Tỉnh/Thành · Phường/Xã -> dropdown có ô tìm kiếm,
+    # dữ liệu nạp từ API công khai (VietQR banks, provinces.open-api.vn).
+    ('<sc-raw-select style="%s"><option>TP. Hồ Chí Minh</option></sc-raw-select>' % _SEL,
+     combo('province', 'Gõ để tìm tỉnh/thành…')),
+    ('<sc-raw-select style="%s"><option>Phường Bến Nghé</option></sc-raw-select>' % _SEL,
+     combo('ward', 'Gõ để tìm phường/xã…')),
+    ('<sc-raw-select style="%s"><option>Vietcombank</option></sc-raw-select>' % _SEL,
+     combo('bank', 'Gõ để tìm ngân hàng…')),
+
+    # (1) Đổi tên khối + thêm Tên chủ tài khoản (viết hoa, không dấu).
+    ('<div style="font-size:14px;font-weight:700;color:var(--c1)">'
+     'Thông tin nhận hoa hồng</div>',
+     '<div style="font-size:14px;font-weight:700;color:var(--c1)">'
+     'Thông tin nhận ưu đãi (khi đạt điều kiện)</div>'),
+
+    ('<div style="display:flex;flex-direction:column;gap:var(--s2)">'
+     '<label style="font-size:14px;font-weight:600;color:var(--c2)">Số tài khoản (*)</label>'
+     '<input type="text" placeholder="Nhập số tài khoản" value="{{buyerBankAccount}}" '
+     'sc-camel-on-change="{{setBuyerBankAccount}}" style="%s" style-focus="%s"></div>'
+     % (_INP, _FOCUS),
+     '<div style="display:flex;flex-direction:column;gap:var(--s2)">'
+     '<label style="font-size:14px;font-weight:600;color:var(--c2)">Số tài khoản (*)</label>'
+     '<input type="text" placeholder="Nhập số tài khoản" value="{{buyerBankAccount}}" '
+     'sc-camel-on-change="{{setBuyerBankAccount}}" style="%s" style-focus="%s"></div>\n'
+     '            <div style="display:flex;flex-direction:column;gap:var(--s2)">'
+     '<label style="font-size:14px;font-weight:600;color:var(--c2)">Tên chủ tài khoản (*)</label>'
+     '<input type="text" placeholder="NGUYEN VAN AN" value="{{accountHolder}}" '
+     'sc-camel-on-change="{{setAccountHolder}}" style="%s;text-transform:uppercase" '
+     'style-focus="%s">'
+     '<div style="font-size:11px;color:var(--c5);line-height:1.5">Viết hoa, không dấu '
+     '— hệ thống tự chuẩn hoá khi bạn gõ.</div></div>' % (_INP, _FOCUS, _INP, _FOCUS)),
+
+    # (3) Checkbox điều khoản; chưa tích thì nút Thanh toán khoá.
+    ('<button sc-camel-on-click="{{openQRPayment}}" style="height: 48px; '
+     'color: var(--c12); border: none; border-radius: var(--r-md); font-size: 16px; '
+     'font-weight: 700; box-shadow: var(--sh); background-color: #EE0000" '
+     'style-hover="background:#0099d1" style-active="background:#0088ba" '
+     'style-focus="box-shadow:0 0 0 3px rgba(0,173,238,.4)">Thanh toán</button>',
+     '<button sc-camel-on-click="{{openQRPayment}}" disabled="{{payDisabled}}" '
+     'style="{{payStyle}}">Thanh toán</button>\n'
+     '          <label style="display:flex;gap:var(--s3);align-items:flex-start;'
+     'cursor:pointer;font-size:12px;color:var(--c2);line-height:1.6">'
+     '<input type="checkbox" checked="{{buyTcChecked}}" '
+     'sc-camel-on-change="{{toggleBuyTc}}" style="margin-top:3px;flex:none;'
+     'width:16px;height:16px;accent-color:#00ADEE">'
+     '<span>Bằng cách đăng ký mua hàng và thanh toán, bạn đã đồng ý với '
+     '<a href="policy.html?s=quy-che-website" style="color:#00ADEE;font-weight:600">'
+     'Điều khoản sử dụng</a> và '
+     '<a href="policy.html?s=bao-mat-thong-tin" style="color:#00ADEE;font-weight:600">'
+     'Chính sách bảo mật</a> của HOMI365.</span></label>'),
+
+    # (8) Modal QR: thêm tên đơn vị thụ hưởng và số tài khoản nhận.
+    ('<div style="text-align:center;font-size:11px;color:var(--c5);'
+     'font-family:monospace">Đơn hàng #{{orderId}} · {{cn02PackagePrice}}</div>',
+     '<div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-md);'
+     'padding:var(--s5);display:flex;flex-direction:column;gap:var(--s2);'
+     'text-align:center;background:rgba(170,170,170,.05)">'
+     '<div style="font-size:11px;color:var(--c5);text-transform:uppercase;'
+     'letter-spacing:.04em">Đơn vị thụ hưởng</div>'
+     '<div style="font-size:12px;font-weight:700;color:var(--c1);line-height:1.5">'
+     'CONG TY CO PHAN GIAI PHAP VA DICH VU HOMI365</div>'
+     '<div style="font-size:13px;font-weight:700;color:var(--c6);'
+     'font-family:monospace;letter-spacing:.02em">TECHCOMBANK - 0009383764899</div>'
+     '</div>\n'
+     '        <div style="text-align:center;font-size:11px;color:var(--c5);'
+     'font-family:monospace">Đơn hàng #{{orderId}} · {{cn02PackagePrice}}</div>'),
+
+    # (10) Tra cứu đơn: hiện kết quả đơn hàng ngay trong modal thay vì nhảy
+    # thẳng sang màn đăng ký.
+    ('<button sc-camel-on-click="{{submitOrderLookup}}" style="height:46px;'
+     'background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);'
+     'font-size:16px;font-weight:600;box-shadow:var(--sh)" '
+     'style-hover="background:#0099d1">Xác nhận</button>',
+     '<sc-if value="{{hasLookupResult}}" hint-placeholder-val="{{false}}">\n'
+     '          <div style="border:1px solid rgba(170,170,170,.35);'
+     'border-radius:var(--r-md);padding:var(--s6);display:flex;'
+     'flex-direction:column;gap:var(--s4);font-size:13px;'
+     'background:rgba(170,170,170,.05)">\n'
+     '            <div style="font-size:12px;color:var(--c5);text-transform:uppercase;'
+     'letter-spacing:.04em">Đơn hàng tìm thấy</div>\n'
+     '            <div style="display:flex;justify-content:space-between;gap:var(--s5)">'
+     '<span style="color:var(--c5)">Mã đơn</span>'
+     '<span style="font-family:monospace;font-weight:700;color:var(--c1)">'
+     '{{lookupResult.orderId}}</span></div>\n'
+     '            <div style="display:flex;justify-content:space-between;gap:var(--s5)">'
+     '<span style="color:var(--c5)">Khách hàng</span>'
+     '<span style="font-weight:600;color:var(--c1);text-align:right">'
+     '{{lookupResult.buyerName}}</span></div>\n'
+     '            <div style="display:flex;justify-content:space-between;gap:var(--s5)">'
+     '<span style="color:var(--c5)">Gói</span>'
+     '<span style="color:var(--c2);text-align:right">{{lookupResult.pkg}}</span></div>\n'
+     '            <div style="display:flex;justify-content:space-between;gap:var(--s5)">'
+     '<span style="color:var(--c5)">Số tiền</span>'
+     '<span style="font-weight:700;color:var(--c6)">{{lookupResult.amount}}</span></div>\n'
+     '            <div style="display:flex;justify-content:space-between;gap:var(--s5)">'
+     '<span style="color:var(--c5)">Ngày đặt</span>'
+     '<span style="color:var(--c2)">{{lookupResult.date}}</span></div>\n'
+     '            <div style="display:flex;justify-content:space-between;gap:var(--s5)">'
+     '<span style="color:var(--c5)">Người giới thiệu</span>'
+     '<span style="color:var(--c2);text-align:right">{{lookupResult.referrer}}</span></div>\n'
+     '            <div style="display:flex;justify-content:space-between;gap:var(--s5);'
+     'align-items:center"><span style="color:var(--c5)">Trạng thái</span>'
+     '<span style="display:inline-block;padding:4px 10px;border-radius:var(--r-xl);'
+     'font-size:11px;font-weight:600;background:{{lookupResult.badgeBg}};'
+     'color:{{lookupResult.badgeColor}}">{{lookupResult.statusLabel}}</span></div>\n'
+     '          </div>\n'
+     '        </sc-if>\n'
+     '        <sc-if value="{{hasLookupResult}}" hint-placeholder-val="{{false}}">\n'
+     '          <button sc-camel-on-click="{{lookupContinue}}" style="height:46px;'
+     'background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);'
+     'font-size:16px;font-weight:600;box-shadow:var(--sh)" '
+     'style-hover="background:#0099d1">Đăng ký thành viên với đơn này</button>\n'
+     '        </sc-if>\n'
+     '        <sc-if value="{{noLookupResult}}" hint-placeholder-val="{{true}}">\n'
+     '          <button sc-camel-on-click="{{submitOrderLookup}}" style="height:46px;'
+     'background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);'
+     'font-size:16px;font-weight:600;box-shadow:var(--sh)" '
+     'style-hover="background:#0099d1">Tra cứu đơn hàng</button>\n'
+     '        </sc-if>'),
+
+    # (9) Đổi tiêu đề modal thanh toán thành công.
+    ('Bạn có muốn đăng ký làm seller Homi365 để nhận hoa hồng giới thiệu không?',
+     'Bạn có muốn đăng ký làm Thành viên HOMI365 để nhận các ưu đãi không?'),
+
+    # (2) Ngày sinh: nhập số, tự chèn dấu /.
+    ('placeholder="dd/mm/yyyy" value="{{buyerDob}}" sc-camel-on-change="{{setBuyerDob}}"',
+     'placeholder="22/01/1991" inputmode="numeric" maxlength="10" '
+     'value="{{buyerDob}}" sc-camel-on-change="{{setBuyerDob}}"'),
+
+    # ----- (11) A2: mọi trường gắn dấu (*), khoá email và SĐT --------------
+    # Các nhãn không dấu sao chỉ tồn tại ở A2 (A1 đã có sẵn dấu sao).
+    (">Họ và tên</label>", ">Họ và tên (*)</label>"),
+    (">Số điện thoại</label>", ">Số điện thoại (*)</label>"),
+    (">Email</label>", ">Email (*)</label>"),
+    (">Số CCCD</label>", ">Số CCCD (*)</label>"),
+    (">Địa chỉ</label>", ">Địa chỉ (*)</label>"),
+    (">Tỉnh/Thành phố</label>", ">Tỉnh/Thành phố (*)</label>"),
+    (">Phường/Xã</label>", ">Phường/Xã (*)</label>"),
+    (">Ngân hàng</label>", ">Ngân hàng (*)</label>"),
+    (">Số tài khoản nhận hoa hồng</label>", ">Số tài khoản nhận hoa hồng (*)</label>"),
+    # Ngày sinh / Giới tính không có dấu sao ở CẢ A1 lẫn A2 -> neo kèm
+    # font-size:16px để chỉ trúng A2.
+    ('>Ngày sinh</label><input type="text" placeholder="22/01/1991" '
+     'inputmode="numeric" maxlength="10" value="{{buyerDob}}" '
+     'sc-camel-on-change="{{setBuyerDob}}" style="height:44px;padding:0 var(--s5);'
+     'border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px"',
+     '>Ngày sinh (*)</label><input type="text" placeholder="22/01/1991" '
+     'inputmode="numeric" maxlength="10" value="{{buyerDob}}" '
+     'sc-camel-on-change="{{setBuyerDob}}" style="height:44px;padding:0 var(--s5);'
+     'border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px"'),
+
+    # Email và SĐT lấy từ đơn hàng, không cho sửa.
+    ('<input type="text" placeholder="090xxxxxxx" value="{{buyerPhone}}" '
+     'sc-camel-on-change="{{setBuyerPhone}}" style="height:44px;padding:0 var(--s5);'
+     'border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px"',
+     '<input type="text" value="{{buyerPhone}}" readonly="{{true}}" '
+     'style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);'
+     'border-radius:var(--r-md);font-size:16px;background:rgba(170,170,170,.08);'
+     'color:var(--c4);cursor:not-allowed"'),
+    ('<input type="text" placeholder="email@domain.com" value="{{buyerEmail}}" '
+     'sc-camel-on-change="{{setBuyerEmail}}" style="height:44px;padding:0 var(--s5);'
+     'border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px"',
+     '<input type="text" value="{{buyerEmail}}" readonly="{{true}}" '
+     'style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);'
+     'border-radius:var(--r-md);font-size:16px;background:rgba(170,170,170,.08);'
+     'color:var(--c4);cursor:not-allowed"'),
+
+    # Ghi chú đầu form: thông tin lấy sẵn từ đơn, sửa được trừ email/SĐT.
+    ('<div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">'
+     'Bước 1/5 · Thông tin cá nhân &amp; nhận hoa hồng</div></div>',
+     '<div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">'
+     'Bước 1/5 · Thông tin cá nhân &amp; nhận ưu đãi</div></div>\n'
+     '          <div style="font-size:12px;color:var(--c2);background:rgba(0,173,238,.06);'
+     'border-radius:var(--r-md);padding:var(--s5);line-height:1.7">Thông tin đã được '
+     'điền sẵn từ đơn hàng của bạn. Bạn có thể chỉnh sửa nếu cần, '
+     '<strong>trừ email và số điện thoại</strong> — hai trường này gắn với đơn đã '
+     'thanh toán nên không đổi được.</div>'),
+
+    # ----- (12) Ngày cấp / Nơi cấp ngay dưới số CCCD ----------------------
+    ('<div style="display:flex;flex-direction:column;gap:var(--s2)">'
+     '<label style="font-size:14px;font-weight:600;color:var(--c2)">Địa chỉ (*)</label>'
+     '<input type="text" placeholder="Nhập địa chỉ" value="{{buyerAddress}}" '
+     'sc-camel-on-change="{{setBuyerAddress}}" style="height:44px;padding:0 var(--s5);'
+     'border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px"',
+     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)">'
+     '<div style="display:flex;flex-direction:column;gap:var(--s2)">'
+     '<label style="font-size:14px;font-weight:600;color:var(--c2)">Ngày cấp (*)</label>'
+     '<input type="text" placeholder="22/01/2021" inputmode="numeric" maxlength="10" '
+     'value="{{cccdIssueDate}}" sc-camel-on-change="{{setCccdIssueDate}}" '
+     'style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);'
+     'border-radius:var(--r-md);font-size:16px" style-focus="%s"></div>'
+     '<div style="display:flex;flex-direction:column;gap:var(--s2)">'
+     '<label style="font-size:14px;font-weight:600;color:var(--c2)">Nơi cấp (*)</label>'
+     '<input type="text" placeholder="Cục Cảnh sát QLHC về TTXH" '
+     'value="{{cccdIssuePlace}}" sc-camel-on-change="{{setCccdIssuePlace}}" '
+     'style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);'
+     'border-radius:var(--r-md);font-size:16px" style-focus="%s"></div></div>\n'
+     '          <div style="display:flex;flex-direction:column;gap:var(--s2)">'
+     '<label style="font-size:14px;font-weight:600;color:var(--c2)">Địa chỉ (*)</label>'
+     '<input type="text" placeholder="Nhập địa chỉ" value="{{buyerAddress}}" '
+     'sc-camel-on-change="{{setBuyerAddress}}" style="height:44px;padding:0 var(--s5);'
+     'border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:16px"'
+     % (_FOCUS, _FOCUS)),
+
+    # ----- (13) Đính kèm ảnh CCCD mặt trước / mặt sau ---------------------
+    ('<button sc-camel-on-click="{{regStep1Submit}}" style="height:46px;'
+     'background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);'
+     'font-size:16px;font-weight:600;box-shadow:var(--sh)" '
+     'style-hover="background:#0099d1">Tiếp tục</button>',
+     '<div style="height:1px;background:rgba(170,170,170,.25);margin:var(--s2) 0"></div>\n'
+     '          <div style="font-size:14px;font-weight:700;color:var(--c1)">'
+     'Đính kèm tệp</div>\n'
+     '          <div style="font-size:12px;color:var(--c2);line-height:1.7">'
+     'Chụp ảnh CCCD từ <strong>bản gốc</strong>, đủ mặt trước và mặt sau: không mất '
+     'góc, không chói loá, không che khuất thông tin.</div>\n'
+     '          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)">\n'
+     '            <label style="border:1px dashed rgba(170,170,170,.6);'
+     'border-radius:var(--r-md);padding:var(--s7);display:flex;flex-direction:column;'
+     'align-items:center;gap:var(--s2);cursor:pointer;color:var(--c5);text-align:center" '
+     'style-hover="border-color:#00ADEE;color:#00ADEE">'
+     '<span style="font-size:22px">&#11014;</span>'
+     '<span style="font-size:13px;font-weight:600">Ảnh CCCD mặt trước (*)</span>'
+     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span></label>\n'
+     '            <label style="border:1px dashed rgba(170,170,170,.6);'
+     'border-radius:var(--r-md);padding:var(--s7);display:flex;flex-direction:column;'
+     'align-items:center;gap:var(--s2);cursor:pointer;color:var(--c5);text-align:center" '
+     'style-hover="border-color:#00ADEE;color:#00ADEE">'
+     '<span style="font-size:22px">&#11014;</span>'
+     '<span style="font-size:13px;font-weight:600">Ảnh CCCD mặt sau (*)</span>'
+     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span></label>\n'
+     '          </div>\n'
+     '          <button sc-camel-on-click="{{regStep1Submit}}" style="height:46px;'
+     'background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);'
+     'font-size:16px;font-weight:600;box-shadow:var(--sh)" '
+     'style-hover="background:#0099d1">Tiếp tục</button>'),
+
+    # ----- (14) Nội dung điều khoản tham gia ------------------------------
+    # Lưu ý: bản vá "Medigo -> HOMI365" chạy trước nên neo phải dùng chữ mới.
+    ('Điều khoản chương trình affiliate HOMI365 — Homi365. Bằng việc tích chọn xác '
+     'nhận, bạn đồng ý với chính sách hoa hồng, quy định về tuyến trên/tuyến dưới, '
+     'và các điều kiện rút tiền được Homi365 quy định. Nội dung đầy đủ do bộ phận '
+     'Pháp lý cung cấp trước khi go‑live.',
+     'Điều khoản hợp đồng hợp tác HOMI365. Bằng việc tích chọn xác nhận, bạn đồng ý '
+     'xác nhận HOMI365 sử dụng dữ liệu cá nhân cho mục đích thực hiện các chính sách '
+     'và điều khoản theo Hợp đồng hợp tác với HOMI365.'),
+    ('Tôi đã đọc và đồng ý với điều khoản tham gia chương trình affiliate HOMI365.',
+     'Tôi đã đọc và đồng ý với điều khoản tham gia hợp tác với HOMI365'),
+
+    # ----- (15) B2: hiện mã tuyến trên cạnh tên tuyến trên ----------------
+    ('<div style="color:var(--c4);overflow:hidden;text-overflow:ellipsis;'
+     'white-space:nowrap">{{m.upline}}</div>',
+     '<div style="color:var(--c4);overflow:hidden;text-overflow:ellipsis;'
+     'white-space:nowrap">{{m.upline}}'
+     '<span style="display:block;font-size:11px;color:var(--c5);font-family:monospace">'
+     '{{m.uplineCode}}</span></div>'),
+
+    # ----- (16) B4: thêm cột Ngày hiệu lực / Ngày hết hiệu lực ------------
+    ('<div>Mã sản phẩm</div><div>Mã kích hoạt</div><div>Đơn hàng gắn</div>'
+     '<div>Seller</div><div>Ngày nhập kho</div><div>Trạng thái</div><div></div>',
+     '<div>Mã sản phẩm</div><div>Mã kích hoạt</div><div>Đơn hàng gắn</div>'
+     '<div>Seller</div><div>Ngày nhập kho</div><div>Ngày hiệu lực</div>'
+     '<div>Ngày hết hiệu lực</div><div>Trạng thái</div><div></div>'),
+    ('<div style="color:var(--c5)">{{p.stockedAt}}</div>',
+     '<div style="color:var(--c5)">{{p.stockedAt}}</div>\n'
+     '                <div style="color:var(--c4)">{{p.activeFrom}}</div>\n'
+     '                <div style="color:var(--c4)">{{p.activeTo}}</div>'),
+    # Lưới bảng kho: 7 cột -> 9 cột.
+    ('grid-template-columns:1fr 1.4fr 1fr 1fr 1fr .9fr 1fr;min-width:900px',
+     'grid-template-columns:1fr 1.3fr .9fr 1fr .9fr .9fr 1fr .9fr .8fr;min-width:1180px'),
+
     # Chèn màn Đơn hàng (B6) và Quản lý sản phẩm (B5) ngay trước khối B4.
     ("      <!-- B4 WAREHOUSE -->",
      B6_ORDERS + B5_PRODUCTS + "      <!-- B4 WAREHOUSE -->"),
@@ -902,19 +1351,39 @@ JS_PATCHES = [
     ("adminLoginSubmit: () => this.setState({ screen: 'B2' })",
      "adminLoginSubmit: () => GO('B2')"),
 
-    # Tra cứu đơn thành công -> sang màn đăng ký, mang theo dữ liệu đơn
+    # (10) Mở / đóng modal tra cứu thì xoá kết quả cũ.
+    # openOrderLookup được khai báo 2 lần trong renderVals (bản gốc của KH),
+    # và bản sau đè bản trước — nên phải vá cả hai.
+    ("this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false });",
+     "this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false, lookupResult: null });"),
+    ("this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false });",
+     "this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false, lookupResult: null });"),
+    ("      closeOrderLookup: () => this.setState({ showOrderLookup: false }),",
+     "      closeOrderLookup: () => this.setState({ showOrderLookup: false, lookupResult: null }),"),
+
+    # (10) Tra cứu đơn: hiện kết quả trong modal, chưa chuyển màn ngay.
     ("""        this.setState({
           showOrderLookup: false, screen: 'A2', regStep: 1,
           orderId: order.orderId, uplineRank,
           buyerName: order.buyerName, buyerPhone: phone, buyerEmail: order.buyerEmail,
           buyerCccd: order.buyerCccd, buyerAddress: order.buyerAddress, buyerDob: order.buyerDob
         });""",
-     """        GO('A2', {
-          regStep: 1,
-          orderId: order.orderId, uplineRank,
-          buyerName: order.buyerName, buyerPhone: phone, buyerEmail: order.buyerEmail,
-          buyerCccd: order.buyerCccd, buyerAddress: order.buyerAddress, buyerDob: order.buyerDob
+     """        this.setState({
+          orderLookupError: false, uplineRank,
+          lookupResult: {
+            orderId: order.orderId, buyerName: order.buyerName, phone,
+            email: order.buyerEmail, cccd: order.buyerCccd,
+            address: order.buyerAddress, dob: order.buyerDob,
+            pkg: 'Gói 1 năm · CN02', amount: '10.000.000đ', date: '03/09/2026',
+            referrer: (agent && agent.name) || '—',
+            statusLabel: 'Đã thanh toán',
+            badgeBg: 'rgba(132,190,82,.14)', badgeColor: '#4c7a2e'
+          }
         });"""),
+
+    # (2) Ngày sinh nhập số, tự chèn dấu / — dùng chung dateMask().
+    ("buyerDob: s.buyerDob, setBuyerDob: (e) => this.setState({ buyerDob: e.target.value }),",
+     "buyerDob: s.buyerDob, setBuyerDob: (e) => this.setState({ buyerDob: this.dateMask(e.target.value) }),"),
 
     # 7.3.2 — số đơn đổi theo khoảng thời gian đang chọn.
     ("      metricOrders: s.agentStage === 'active' ? '10' : '1',",
@@ -926,6 +1395,30 @@ JS_PATCHES = [
     # Chưa kích hoạt -> điểm tích luỹ = 0 (chốt 09/09).
     ("      metricPoints: s.agentStage === 'active' ? '1.240' : '80',",
      "      metricPoints: s.agentStage === 'active' ? '1.240' : '0',"),
+
+    # (15) Mã tuyến trên hiển thị cạnh tên tuyến trên.
+    ("        return { ...m, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,",
+     "        return { ...m, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,\n"
+     "          uplineCode: (this.MEMBERS.find(u => u.name === m.upline) || {}).affId || '',"),
+
+    # (16) Ngày hiệu lực = lúc admin xác nhận thanh toán và gửi mã cho khách.
+    # Ngày hết hiệu lực = cộng thời hạn gói (bản mẫu dùng gói 1 năm).
+    ("""    const stockItems = stockFiltered.slice((stockPage - 1) * stockPageSize, stockPage * stockPageSize).map(p => {
+      const [bg, color, label] = this.badge(p.status);
+      return { ...p, badgeBg: bg, badgeColor: color, statusLabel: label, onClick: () => this.setState({ selectedStockId: p.id }) };
+    });""",
+     """    const plusYear = (d) => {
+      const q = (d || '').split('/');
+      return q.length === 3 ? q[0] + '/' + q[1] + '/' + (parseInt(q[2], 10) + 1) : '—';
+    };
+    const stockItems = stockFiltered.slice((stockPage - 1) * stockPageSize, stockPage * stockPageSize).map(p => {
+      const [bg, color, label] = this.badge(p.status);
+      const live = p.status !== 'available';
+      return { ...p, badgeBg: bg, badgeColor: color, statusLabel: label,
+        activeFrom: live ? p.stockedAt : '—',
+        activeTo: live ? plusYear(p.stockedAt) : '—',
+        onClick: () => this.setState({ selectedStockId: p.id }) };
+    });"""),
 
     # 7.5.2 — dữ liệu cây tuyến thêm cấp F2 (markup đã có vòng lặp con).
     ("      tree:[{name:'Lê Văn Cường', orders:4},{name:'Phạm Thị Dung', orders:1}] },",
@@ -954,7 +1447,7 @@ JS_PATCHES = [
      "    provinceQuery: 'Thành phố Hồ Chí Minh', provinceOpen: false,\n"
      "    wardQuery: 'Phường Bến Thành', wardOpen: false,\n"
      "    accountHolder: '', buyTcChecked: false,\n"
-     "    cccdIssueDate: '', cccdIssuePlace: '',\n"
+     "    cccdIssueDate: '', cccdIssuePlace: '', lookupResult: null,\n"
      "    showAdminUserForm: false, editingAdminUserId: null, adminUserLocks: {},\n"
      "    orderRange: 'month',\n"
      "    ordersData: null, orderSearch: '', orderStatusFilter: 'all',\n"
@@ -1231,6 +1724,22 @@ JS_PATCHES = [
       adminUserFormEmail: (this.ADMIN_USERS.find(u => u.id === s.editingAdminUserId) || {}).email || '',
       openAdminUserForm: () => this.setState({ showAdminUserForm: true, editingAdminUserId: null }),
       closeAdminUserForm: () => this.setState({ showAdminUserForm: false, editingAdminUserId: null }),
+
+      // (10) Kết quả tra cứu đơn hàng
+      lookupResult: s.lookupResult,
+      hasLookupResult: !!s.lookupResult,
+      noLookupResult: !s.lookupResult,
+      lookupContinue: () => {
+        const r = s.lookupResult;
+        if (!r) return;
+        if (s.uplineRank === 'bronze') {
+          this.setState({ showOrderLookup: false, showUplineBlockedModal: true });
+          return;
+        }
+        GO('A2', { regStep: 1, orderId: r.orderId, uplineRank: s.uplineRank,
+          buyerName: r.buyerName, buyerPhone: r.phone, buyerEmail: r.email,
+          buyerCccd: r.cccd, buyerAddress: r.address, buyerDob: r.dob });
+      },
 
       // --- Dropdown có tìm kiếm: ngân hàng / tỉnh thành / phường xã --------
       bankQuery: s.bankQuery, bankOpen: s.bankOpen,
@@ -1687,6 +2196,9 @@ def main():
                json.dumps(hash_map, ensure_ascii=False))
         )
 
+        # Footer chỉ gắn ở màn công khai / thành viên; khung quản trị không có.
+        foot = footer_html("../") if sc["code"] in ("A1", "A2", "A3", "C1") else ""
+
         page = (
             "<!DOCTYPE html>\n<html lang=\"vi\">\n<head>\n"
             "<meta charset=\"utf-8\">\n"
@@ -1700,14 +2212,26 @@ def main():
             "<script>\n%s</script>\n"
             "<script src=\"../js/dc-runtime.js\"></script>\n"
             "</head>\n<body>\n<x-dc>\n<helmet data-dc-atomics=\"\"></helmet>\n"
-            "%s\n\n%s\n\n%s\n\n</div>\n</x-dc>\n%s\n</body>\n</html>\n"
+            "%s\n\n%s\n\n%s\n%s\n</div>\n</x-dc>\n%s\n</body>\n</html>\n"
             % (sc["title"], head_js, root_open,
                TOPBAR_ADMIN if sc["code"] in ADMIN_CODES
                else TOPBAR_PUBLIC if sc["code"] in ("A1", "A2")
                else TOPBAR_WEB,
-               body, script)
+               body, foot, script)
         )
         (V3 / "screens" / FILES[sc["code"]]).write_text(page, encoding="utf-8")
+
+    # --- trang chính sách (lấy nội dung từ prototype-v2) --------------------
+    pol_src = ROOT / "prototype-v2" / "config" / "policies.js"
+    n_pol = 0
+    if pol_src.exists():
+        shutil.copy(pol_src, V3 / "js" / "policies.js")
+        n_pol = len(re.findall(r"^\s{4}id:\s*'", pol_src.read_text(encoding="utf-8"), re.M))
+        (V3 / "screens" / "policy.html").write_text(
+            POLICY_PAGE.replace('<div id="foot"></div>', footer_html("../")),
+            encoding="utf-8")
+    else:
+        print("  ! không thấy %s — bỏ qua trang chính sách" % pol_src)
 
     # --- index -------------------------------------------------------------
     groups = {}
@@ -2098,6 +2622,7 @@ __CARDS__
     print("  runtime       : js/dc-runtime.js (%.1f KB)"
           % (runtime.stat().st_size / 1024))
     print("  bỏ ô Quận/Huyện: %d chỗ" % n_district)
+    print("  trang chính sách: %s" % ("%d mục" % n_pol if n_pol else "KHÔNG dựng"))
     print("  khối lồng sẵn, không nối thêm: %s"
           % (", ".join(n_nested) if n_nested else "không"))
     print("  còn sót màu cũ: %s" % (", ".join(left) if left else "không"))
