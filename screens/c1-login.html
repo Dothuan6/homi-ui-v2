@@ -205,7 +205,7 @@ class Component extends DCLogic {
     ['B1','B1 · Đăng nhập admin'],['B2','B2 · Thành viên'],['B3','B3 · Rút tiền'],['B4','B4 · Kho hàng']
   ];
 
-  ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu rút tiền'],['B6','Đơn hàng'],['B4','Quản lý kho hàng'],['B5','Quản lý sản phẩm'],['B7','Tài khoản admin']];
+  ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu rút tiền'],['B6','Đơn hàng'],['B4','Kho hàng'],['B5','Sản phẩm'],['B7','Tài khoản admin']];
   STOCK_FILTERS = [['all','Tất cả'],['available','Sẵn hàng'],['assigned','Đã gán đơn hàng'],['activated','Đã kích hoạt']];
   WITHDRAWAL_FILTERS = [['all','Tất cả'],['pending','Chờ duyệt'],['specialist_approved','Chờ Head Admin'],['approved','Đã duyệt'],['rejected','Từ chối'],['paid','Đã chi trả']];
   STATUS_ORDER = { pending: 0, specialist_approved: 1, approved: 2, rejected: 3, paid: 4 };
@@ -312,12 +312,9 @@ class Component extends DCLogic {
   };
 
   PRODUCTS = [
-    { id: 'CN02', sku: 'CN02', name: 'Gói Bác sĩ 24/7 · License 12 tháng · kèm đồng hồ HW01',
-      imageLabel: 'cn02-12m.png',
-      desc: 'Gói dịch vụ cao cấp gồm 01 đồng hồ thông minh HW01 theo dõi nhịp tim / SOS giao tận nơi và 01 năm phần mềm Bác sĩ 24/7 (mã kích hoạt gửi qua SMS).' },
-    { id: 'CN02-6M', sku: 'CN02-6M', name: 'Gói Bác sĩ 24/7 · License 6 tháng · kèm đồng hồ HW01',
-      imageLabel: 'cn02-6m.png',
-      desc: 'Phiên bản nửa năm của gói CN02, cùng đồng hồ HW01 và đầy đủ tính năng theo dõi sức khoẻ.' }
+    { id: 'CN02', sku: 'CN02', name: 'Gói Bác sĩ 24/7 · kèm đồng hồ HW01',
+      imageLabel: 'cn02.png',
+      desc: 'Gói chăm sóc sức khoẻ từ xa: 01 đồng hồ thông minh HW01 theo dõi nhịp tim / SOS giao tận nơi, kèm phần mềm Bác sĩ 24/7 (mã kích hoạt gửi qua SMS).' }
   ];
 
   componentDidMount() {

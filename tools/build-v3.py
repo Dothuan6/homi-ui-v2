@@ -369,29 +369,33 @@ B6_ORDERS = """      <!-- B6 ORDERS (bổ sung, không có trong mockup KH) -->
             <input type="text" value="{{orderSearch}}" sc-camel-on-change="{{setOrderSearch}}" placeholder="Tìm theo mã đơn, tên hoặc SĐT khách…" style="flex:1;min-width:220px;height:38px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px" style-focus="%(focus)s">
           </div>
 
-          <div style="background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);overflow:hidden">
-            <table style="width:100%%;border-collapse:collapse;font-size:13px">
+          <div style="background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);overflow-x:auto">
+            <table style="width:100%%;border-collapse:collapse;font-size:13px;min-width:1180px">
               <thead>
                 <tr style="background:rgba(170,170,170,.08);text-align:left">
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Mã đơn</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Khách hàng</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Gói</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Số tiền</th>
+                  <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Nội dung chuyển khoản</th>
+                  <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Minh chứng</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Người giới thiệu</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Ngày đặt</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Trạng thái</th>
                 </tr>
               </thead>
               <tbody>
-                <sc-for list="{{orders}}" as="o" hint-placeholder-count="5">
+                <sc-for list="{{orders}}" as="o" hint-placeholder-count="8">
                   <tr sc-camel-on-click="{{o.onClick}}" style="border-top:1px solid rgba(170,170,170,.2);cursor:pointer" style-hover="background:rgba(0,173,238,.05)">
-                    <td style="padding:var(--s5);font-family:monospace;font-weight:600;color:var(--c1)">{{o.id}}</td>
-                    <td style="padding:var(--s5)"><div style="font-weight:600;color:var(--c1)">{{o.buyer}}</div><div style="font-size:12px;color:var(--c5)">{{o.phone}}</div></td>
-                    <td style="padding:var(--s5);color:var(--c2)">{{o.pkg}}</td>
-                    <td style="padding:var(--s5);font-weight:600;color:var(--c1)">{{o.amount}}</td>
-                    <td style="padding:var(--s5);color:var(--c2)">{{o.referrer}}</td>
-                    <td style="padding:var(--s5);color:var(--c5)">{{o.date}}</td>
-                    <td style="padding:var(--s5)"><span style="display:inline-block;padding:4px 10px;border-radius:var(--r-xl);font-size:11px;font-weight:600;background:{{o.badgeBg}};color:{{o.badgeColor}}">{{o.statusLabel}}</span></td>
+                    <td style="padding:var(--s5);font-family:monospace;font-weight:600;color:var(--c1);white-space:nowrap">{{o.id}}</td>
+                    <td style="padding:var(--s5)"><div style="font-weight:600;color:var(--c1);white-space:nowrap">{{o.buyer}}</div><div style="font-size:12px;color:var(--c5)">{{o.phone}}</div></td>
+                    <td style="padding:var(--s5);color:var(--c2);white-space:nowrap">{{o.pkg}}</td>
+                    <td style="padding:var(--s5);font-weight:600;color:var(--c1);white-space:nowrap">{{o.amount}}</td>
+                    <td style="padding:var(--s5);color:var(--c2);font-family:monospace;font-size:12px">{{o.transferNote}}</td>
+                    <td style="padding:var(--s5)"><span style="display:inline-block;padding:4px 10px;border-radius:var(--r-xl);font-size:11px;font-weight:600;background:{{o.proofBg}};color:{{o.proofColor}};white-space:nowrap">{{o.proofLabel}}</span></td>
+                    <td style="padding:var(--s5);color:var(--c2);white-space:nowrap">{{o.referrer}}</td>
+                    <td style="padding:var(--s5);color:var(--c5);white-space:nowrap">{{o.date}}</td>
+                    <td style="padding:var(--s5)"><span style="display:inline-block;padding:4px 10px;border-radius:var(--r-xl);font-size:11px;font-weight:600;background:{{o.badgeBg}};color:{{o.badgeColor}};white-space:nowrap">{{o.statusLabel}}</span></td>
                   </tr>
                 </sc-for>
               </tbody>
@@ -496,10 +500,18 @@ BG_PATCHES += [
     # Chèn màn Đơn hàng (B6) và Quản lý sản phẩm (B5) ngay trước khối B4.
     ("      <!-- B4 WAREHOUSE -->",
      B6_ORDERS + B5_PRODUCTS + "      <!-- B4 WAREHOUSE -->"),
-    # B4: thêm nút "Thêm hàng vào kho" cạnh nút xuất Excel.
-    ('<button style="%s" style-hover="background:rgba(170,170,170,.08)">'
+    # B4: thêm nút Import / Thêm hàng cạnh nút xuất Excel.
+    # Neo phải gồm CẢ tiêu đề "Quản lý kho hàng" — nút "Xuất file Excel" xuất
+    # hiện y hệt ở B3 (và ở B6 mới thêm), thay theo chuỗi ngắn sẽ dính cả ba.
+    ('<div><div style="font-size:24px;font-weight:700">Quản lý kho hàng</div>'
+     '<div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">'
+     '{{stockTotal}} sản phẩm · mỗi sản phẩm gắn 1 mã kích hoạt</div></div>\n'
+     '            <button style="%s" style-hover="background:rgba(170,170,170,.08)">'
      'Xuất file Excel</button>' % _BTN_GHOST,
-     '<div style="display:flex;gap:var(--s3);flex-wrap:wrap">'
+     '<div><div style="font-size:24px;font-weight:700">Quản lý kho hàng</div>'
+     '<div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">'
+     '{{stockTotal}} sản phẩm · mỗi sản phẩm gắn 1 mã kích hoạt</div></div>\n'
+     '            <div style="display:flex;gap:var(--s3);flex-wrap:wrap">'
      '<button style="%s" style-hover="background:rgba(170,170,170,.08)">'
      'Xuất file Excel</button>'
      '<button sc-camel-on-click="{{openImportStock}}" style="%s" '
@@ -831,7 +843,7 @@ JS_PATCHES = [
     ("  ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu rút tiền'],"
      "['B4','Quản lý kho hàng']];",
      "  ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu rút tiền'],"
-     "['B6','Đơn hàng'],['B4','Quản lý kho hàng'],['B5','Quản lý sản phẩm'],"
+     "['B6','Đơn hàng'],['B4','Kho hàng'],['B5','Sản phẩm'],"
      "['B7','Tài khoản admin']];"),
 
     # B5 cũng nằm trong khung quản trị.
@@ -949,13 +961,12 @@ JS_PATCHES = [
         { label:'Tham gia · hạng Đồng', time:'22/08/2026' }]
   };
 
+  // 1 sản phẩm pilot duy nhất theo 6.1.C-3. Gói license (1 năm / nửa năm) và
+  // giá KHÔNG quản ở màn này — chốt 09/09.
   PRODUCTS = [
-    { id: 'CN02', sku: 'CN02', name: 'Gói Bác sĩ 24/7 · License 12 tháng · kèm đồng hồ HW01',
-      imageLabel: 'cn02-12m.png',
-      desc: 'Gói dịch vụ cao cấp gồm 01 đồng hồ thông minh HW01 theo dõi nhịp tim / SOS giao tận nơi và 01 năm phần mềm Bác sĩ 24/7 (mã kích hoạt gửi qua SMS).' },
-    { id: 'CN02-6M', sku: 'CN02-6M', name: 'Gói Bác sĩ 24/7 · License 6 tháng · kèm đồng hồ HW01',
-      imageLabel: 'cn02-6m.png',
-      desc: 'Phiên bản nửa năm của gói CN02, cùng đồng hồ HW01 và đầy đủ tính năng theo dõi sức khoẻ.' }
+    { id: 'CN02', sku: 'CN02', name: 'Gói Bác sĩ 24/7 · kèm đồng hồ HW01',
+      imageLabel: 'cn02.png',
+      desc: 'Gói chăm sóc sức khoẻ từ xa: 01 đồng hồ thông minh HW01 theo dõi nhịp tim / SOS giao tận nơi, kèm phần mềm Bác sĩ 24/7 (mã kích hoạt gửi qua SMS).' }
   ];
 
   componentDidMount() {"""),
@@ -973,6 +984,11 @@ JS_PATCHES = [
       .map(o => {
         const [bg, color, label] = this.badge(o.status);
         return { ...o, badgeBg: bg, badgeColor: color, statusLabel: label,
+          // Nội dung chuyển khoản đúng cú pháp hướng dẫn ở màn QR (A1).
+          transferNote: o.buyer + ' - Chuyen khoan don hang ' + o.id,
+          proofLabel: o.proof ? 'Đã tải lên' : 'Chưa có',
+          proofBg: o.proof ? 'rgba(132,190,82,.14)' : 'rgba(170,170,170,.18)',
+          proofColor: o.proof ? '#4c7a2e' : '#5c5c5c',
           onClick: () => this.setState({ selectedOrderId: o.id }) };
       });
     const selOrderRaw = s.selectedOrderId ? ordersRaw.find(o => o.id === s.selectedOrderId) : null;
@@ -1662,9 +1678,14 @@ __CARDS__
              "Nội dung: bảng sản phẩm với 3 cột theo đúng yêu cầu — **Tên · Hình "
              "ảnh · Mô tả** — cùng nút *Thêm sản phẩm* và nút *Sửa* trên từng "
              "dòng, cả hai mở cùng một hộp thoại 3 trường.", "",
-             "**Đã chốt 08/09** — phạm vi màn này đúng bằng 3 trường trên, không "
-             "hơn: không quản lý giá và bảng hoa hồng ở đây (giữ nguyên ở màn "
-             "Hạng), không có công tắc bật/tắt bán, mỗi sản phẩm **chỉ 1 ảnh**.",
+             "**Đã chốt 08–09/09** — phạm vi màn này đúng bằng 3 trường trên, "
+             "không hơn: không quản lý giá, không quản lý gói, không có công tắc "
+             "bật/tắt bán, mỗi sản phẩm **chỉ 1 ảnh**.", "",
+             "Danh sách chỉ có **1 sản phẩm CN02**, đúng theo **6.1.C-3** "
+             "(*\"cho 1 sản phẩm pilot (CN02)\"*). Hai lựa chọn *Gói 1 năm "
+             "10.000.000đ* và *Gói nửa năm 6.000.000đ* ở màn mua hàng là **gói "
+             "license của cùng sản phẩm đó**, không phải 2 sản phẩm — khớp với "
+             "kho B4, nơi cả 1.200 thiết bị đều mang một dòng SKU `CN02-xxxx`.",
              "",
 
              "## 9. Bổ sung Thêm hàng vào kho (B4)", "",
