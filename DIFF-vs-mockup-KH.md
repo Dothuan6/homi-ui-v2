@@ -194,7 +194,27 @@ Nguồn: `docs/AUDIT-deploy-vs-requirement.md`.
 | — | Thay hết **Medigo** còn sót thành **HOMI365** (điều khoản T&C, câu chúc mừng ở A2, lời chào ở A3, tiêu đề đăng nhập quản trị). |
 | — | Sửa nhãn **Bước 1/3 → Bước 1/5** ở màn đăng ký cho khớp số bước thật. |
 
-Chưa làm, chờ KH chốt — xem mục F của file rà soát: (1) duyệt 2 lớp tách theo **người** hay theo **vai trò**; (2) tuyến trên hạng Đồng thì **giấu lời mời** hay **hiện rồi báo lỗi** (requirement đang nói cả hai); (3) agent sau đăng ký ở trạng thái *Chờ duyệt (0/2)* hay vào thẳng dashboard.
+### Ba điểm đã chốt 09/09 — requirement phải sửa theo
+
+Cả ba quyết định đều **giữ nguyên hành vi prototype**, nhưng **trái với Acceptance Criteria trong sheet**. Không sửa sheet thì dev đọc spec sẽ code ra thứ khác với bản KH đã duyệt.
+
+**1. Duyệt 2 lớp tách theo VAI TRÒ** (Specialist bước 1 · Head Admin bước 2). Cần sửa 3 dòng:
+
+- `7.9.2 AC` đang ghi *"lượt 1: bất kỳ Admin Specialist hoặc Head Admin nào"* và *"lượt 2 phải do người KHÁC"* → viết lại thành tách theo vai trò.
+- `7.9.3 AC` đang ghi *"2 người khác nhau, hoặc Head Admin tự chốt"* → bỏ vế Head Admin tự chốt.
+- `7.9.4 AC` đang ghi *"nút Xác nhận của chính người đó bị vô hiệu hoá"* → đổi thành khoá theo vai trò.
+
+Rủi ro vận hành cần KH biết trước: **Specialist nghỉ là mọi thứ nghẽn ở bước 1**, kể cả khi Head Admin đang trực. Requirement bản cũ thiết kế để tránh đúng chuyện này. Nếu KH muốn chặn rủi ro mà vẫn giữ tách vai trò, cách gọn nhất là thêm một câu: *Head Admin được phép làm thay bước 1 khi cần*.
+
+**2. Tuyến trên hạng Đồng → báo lỗi** (không giấu lời mời). `7.2.1 AC` đang ghi ngược lại (*"không hiển thị thông báo cho đăng ký thành viên, mà chỉ báo đơn hàng thành công"*) → phải viết lại cho khớp dòng *Logic điều kiện đăng ký thành viên mới*.
+
+Đã chỉnh prototype: báo lỗi **ngay khi bấm** nút Đăng ký thành viên, thay vì để khách điền hết 5 bước rồi mới chặn ở bước cuối.
+
+**3. Agent sau đăng ký vào thẳng dashboard**, không qua *Chờ duyệt (0/2)*. `7.9.2` đang bắt hồ sơ đăng ký phải đủ 2 lượt xác nhận mới kích hoạt → phải bỏ phần đăng ký ra khỏi phạm vi duyệt 2 lớp, chỉ giữ cho rút tiền và đơn hàng.
+
+⚠ Kéo theo một mâu thuẫn **bên trong chính sản phẩm**, cần chốt nốt: màn A2 báo *"đã chính thức là seller"* trong khi màn B2 vẫn có thành viên ở trạng thái *Chờ duyệt (0/2)* với nút Duyệt / Từ chối. Nếu ai đăng ký cũng active ngay thì luồng duyệt hồ sơ ở B2 để làm gì?
+
+Cách dung hoà thường dùng (và là cách prototype-v2 đã làm): agent **hoạt động được ngay** — có link, bán được hàng — nhưng **hoa hồng bị tạm giữ** cho tới khi đủ 2 lượt duyệt. Vừa đúng "vào thẳng dashboard", vừa giữ được lý do tồn tại của màn duyệt.
 
 ## Ghi chú
 

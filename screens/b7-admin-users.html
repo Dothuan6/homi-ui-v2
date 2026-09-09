@@ -1219,10 +1219,12 @@ class Component extends DCLogic {
       showQRPayment: s.showQRPayment, orderId: s.orderId, qrModules,
       confirmQRPayment: () => this.setState({ showQRPayment: false, showPaymentSuccess: true }),
       showPaymentSuccess: s.showPaymentSuccess,
-      choosRegisterSeller: () => GO('A2', { regStep: 1, orderId: s.orderId, uplineRank: s.uplineRank,
-        buyerName: s.buyerName, buyerPhone: s.buyerPhone, buyerEmail: s.buyerEmail,
-        buyerCccd: s.buyerCccd, buyerAddress: s.buyerAddress, buyerDob: s.buyerDob,
-        buyerBankAccount: s.buyerBankAccount }),
+      choosRegisterSeller: () => (s.uplineRank === 'bronze'
+        ? this.setState({ showPaymentSuccess: false, showUplineBlockedModal: true })
+        : GO('A2', { regStep: 1, orderId: s.orderId, uplineRank: s.uplineRank,
+            buyerName: s.buyerName, buyerPhone: s.buyerPhone, buyerEmail: s.buyerEmail,
+            buyerCccd: s.buyerCccd, buyerAddress: s.buyerAddress, buyerDob: s.buyerDob,
+            buyerBankAccount: s.buyerBankAccount })),
       choosSkipSeller: () => this.setState({ showPaymentSuccess: false }),
 
       showOrderLookup: s.showOrderLookup, orderLookupInput: s.orderLookupInput, orderLookupError: s.orderLookupError,

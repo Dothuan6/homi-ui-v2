@@ -136,11 +136,15 @@ Nhãn `0/2 · 1/2 · 2/2` của 7.9.4 đã hiển thị đúng trên cả B2 và
 
 ## F. Thứ tự xử lý đề xuất
 
-**Chặn — hỏi KH trước khi code:**
+**Đã chốt 09/09 — cả ba giữ nguyên hành vi prototype, nhưng requirement phải sửa:**
 
-1. **A5** — duyệt 2 lớp: theo người hay theo vai trò? Ảnh hưởng B2, B3, B6 và bảng phân quyền.
-2. **A2** — hạng Đồng: giấu lời mời hay hiện rồi báo lỗi? Requirement đang nói cả hai.
-3. **7.9.2** *(đã nêu ở lần rà trước, vẫn treo)* — agent sau đăng ký là *Chờ duyệt (0/2)* hay vào thẳng dashboard? Deploy đang cho vào thẳng và báo "đã chính thức là seller".
+1. **A5 → tách theo VAI TRÒ.** Specialist bước 1, Head Admin bước 2. Sửa `7.9.2 AC`, `7.9.3 AC`, `7.9.4 AC` — cả ba đang mô tả tách theo *người*. Rủi ro cần KH biết: Specialist nghỉ là nghẽn bước 1 dù Head Admin đang trực; muốn chặn rủi ro mà vẫn giữ tách vai trò thì thêm câu *"Head Admin được làm thay bước 1 khi cần"*.
+2. **A2 → hạng Đồng thì BÁO LỖI.** Sửa `7.2.1 AC` (đang ghi ngược: không hiện lời mời). Prototype đã chỉnh để báo lỗi **ngay khi bấm** nút Đăng ký thành viên, thay vì bắt khách điền hết 5 bước rồi mới chặn.
+3. **7.9.2 → agent vào thẳng dashboard.** Bỏ phần đăng ký thành viên ra khỏi phạm vi duyệt 2 lớp, chỉ giữ cho rút tiền và đơn hàng.
+
+⚠ **Mâu thuẫn còn lại bên trong sản phẩm, cần chốt nốt.** A2 báo *"đã chính thức là seller"*, nhưng B2 vẫn có thành viên ở trạng thái *Chờ duyệt (0/2)* kèm nút Duyệt / Từ chối. Nếu ai đăng ký cũng active ngay thì màn duyệt hồ sơ ở B2 không còn lý do tồn tại.
+
+Cách dung hoà (prototype-v2 đã làm): agent **hoạt động ngay** — có link, bán được hàng — nhưng **hoa hồng tạm giữ** tới khi đủ 2 lượt duyệt. Giữ được cả "vào thẳng dashboard" lẫn màn duyệt.
 
 **Sửa được ngay, không cần hỏi:**
 
