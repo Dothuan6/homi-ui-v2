@@ -99,27 +99,54 @@ BG_PATCHES = [
                 <div style="font-size:13px;padding:var(--s3) var(--s5);margin-left:var(--s10);border-left:2px solid rgba(170,170,170,.25);color:var(--c5)">{{g.name}} — F2 · {{g.orders}} đơn</div>
               </sc-for>"""),
     ("""          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử đơn hàng &amp; hoa hồng</div>""",
-     """          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Thông tin đăng ký</div>
-          <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px;margin-bottom:var(--s7)">
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Họ và tên</span><span style="font-weight:600;text-align:right">{{selectedMember.name}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số điện thoại</span><span style="font-weight:600;font-family:monospace">{{selectedMember.phone}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Email</span><span style="color:var(--c2);text-align:right">{{selectedMember.email}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số CCCD</span><span style="color:var(--c2);font-family:monospace">{{selectedMember.cccd}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngày cấp · Nơi cấp</span><span style="color:var(--c2);text-align:right">{{selectedMember.cccdIssue}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngày sinh · Giới tính</span><span style="color:var(--c2);text-align:right">{{selectedMember.dobGender}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Địa chỉ</span><span style="color:var(--c2);text-align:right;max-width:60%">{{selectedMember.address}}</span></div>
+     """          <div style="display:flex;justify-content:space-between;gap:var(--s5);font-size:13px;margin-bottom:var(--s6)">
+            <span style="color:var(--c5)">Hạng · Cấp tuyến</span>
+            <span style="font-weight:700;color:var(--c1)">{{selectedMember.rank}} · {{selectedMember.tierLabel}}</span>
           </div>
-          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Thông tin nhận ưu đãi</div>
-          <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px;margin-bottom:var(--s7)">
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngân hàng</span><span style="color:var(--c2);text-align:right">{{selectedMember.bank}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số tài khoản</span><span style="font-weight:600;font-family:monospace">{{selectedMember.bankAccount}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Tên chủ tài khoản</span><span style="font-weight:600;text-align:right">{{selectedMember.bankHolder}}</span></div>
+
+          <button sc-camel-on-click="{{toggleProfile}}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--s5);background:rgba(170,170,170,.08);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-md);padding:var(--s5) var(--s6);cursor:pointer;font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)" style-hover="background:rgba(170,170,170,.15)"><span>Thông tin hồ sơ</span><span style="font-size:14px;color:var(--c6)">{{profileCaret}}</span></button>
+
+          <sc-if value="{{profileOpen}}" hint-placeholder-val="{{true}}">
+          <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-md);padding:var(--s6);margin-bottom:var(--s7);display:flex;flex-direction:column;gap:var(--s4)">
+            <sc-if value="{{profileRead}}" hint-placeholder-val="{{true}}">
+              <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px">
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Họ và tên</span><span style="font-weight:600;text-align:right">{{selectedMember.name}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số điện thoại</span><span style="font-weight:600;font-family:monospace">{{selectedMember.phone}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Email</span><span style="color:var(--c2);text-align:right">{{selectedMember.email}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số CCCD</span><span style="color:var(--c2);font-family:monospace">{{selectedMember.cccd}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngày cấp · Nơi cấp</span><span style="color:var(--c2);text-align:right">{{selectedMember.cccdIssue}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngày sinh · Giới tính</span><span style="color:var(--c2);text-align:right">{{selectedMember.dobGender}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Địa chỉ</span><span style="color:var(--c2);text-align:right;max-width:60%">{{selectedMember.address}}</span></div>
+                <div style="height:1px;background:rgba(170,170,170,.25);margin:var(--s2) 0"></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngân hàng</span><span style="color:var(--c2);text-align:right">{{selectedMember.bank}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số tài khoản</span><span style="font-weight:600;font-family:monospace">{{selectedMember.bankAccount}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Tên chủ tài khoản</span><span style="font-weight:600;text-align:right">{{selectedMember.bankHolder}}</span></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s5)">
+                <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-md);padding:var(--s6);text-align:center;background:rgba(170,170,170,.05)"><div style="font-size:22px;color:var(--c5)">&#128196;</div><div style="font-size:11px;color:var(--c2);font-family:monospace;margin-top:var(--s2)">{{selectedMember.cccdFront}}</div><div style="font-size:10px;color:var(--c5)">Mặt trước</div></div>
+                <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-md);padding:var(--s6);text-align:center;background:rgba(170,170,170,.05)"><div style="font-size:22px;color:var(--c5)">&#128196;</div><div style="font-size:11px;color:var(--c2);font-family:monospace;margin-top:var(--s2)">{{selectedMember.cccdBack}}</div><div style="font-size:10px;color:var(--c5)">Mặt sau</div></div>
+              </div>
+              <button sc-camel-on-click="{{startProfileEdit}}" style="height:38px;background:var(--c12);border:1px solid var(--c6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c6)" style-hover="background:rgba(0,173,238,.06)">Sửa hồ sơ</button>
+            </sc-if>
+
+            <sc-if value="{{profileEdit}}" hint-placeholder-val="{{false}}">
+              <div style="font-size:12px;color:var(--c2);background:rgba(255,165,0,.12);border-radius:var(--r-sm);padding:var(--s4);line-height:1.6">Admin sửa hộ khi thành viên khai sai — ví dụ sai số tài khoản. Mọi thay đổi được ghi vào lịch sử hồ sơ.</div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Họ và tên</label><input type="text" value="{{pfName}}" sc-camel-on-change="{{setPfName}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Số điện thoại</label><input type="text" value="{{pfPhone}}" sc-camel-on-change="{{setPfPhone}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;font-family:monospace"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Email</label><input type="text" value="{{pfEmail}}" sc-camel-on-change="{{setPfEmail}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Số CCCD</label><input type="text" value="{{pfCccd}}" sc-camel-on-change="{{setPfCccd}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;font-family:monospace"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Ngày sinh</label><input type="text" value="{{pfDob}}" sc-camel-on-change="{{setPfDob}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Địa chỉ</label><input type="text" value="{{pfAddress}}" sc-camel-on-change="{{setPfAddress}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Số tài khoản</label><input type="text" value="{{pfBankAccount}}" sc-camel-on-change="{{setPfBankAccount}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;font-family:monospace"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Tên chủ tài khoản</label><input type="text" value="{{pfBankHolder}}" sc-camel-on-change="{{setPfBankHolder}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;text-transform:uppercase"></div>
+              <div style="display:flex;gap:var(--s4)">
+                <button sc-camel-on-click="{{cancelProfileEdit}}" style="flex:1;height:40px;background:var(--c12);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)">Huỷ</button>
+                <button sc-camel-on-click="{{saveProfileEdit}}" style="flex:1;height:40px;background:var(--c6);border:none;border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c12)" style-hover="background:#0099d1">Lưu hồ sơ</button>
+              </div>
+            </sc-if>
           </div>
-          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Ảnh CCCD</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);margin-bottom:var(--s7)">
-            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-md);padding:var(--s6);text-align:center;background:rgba(170,170,170,.05)"><div style="font-size:22px;color:var(--c5)">&#128196;</div><div style="font-size:11px;color:var(--c2);font-family:monospace;margin-top:var(--s2)">{{selectedMember.cccdFront}}</div><div style="font-size:10px;color:var(--c5)">Mặt trước</div></div>
-            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-md);padding:var(--s6);text-align:center;background:rgba(170,170,170,.05)"><div style="font-size:22px;color:var(--c5)">&#128196;</div><div style="font-size:11px;color:var(--c2);font-family:monospace;margin-top:var(--s2)">{{selectedMember.cccdBack}}</div><div style="font-size:10px;color:var(--c5)">Mặt sau</div></div>
-          </div>
+          </sc-if>
+
           <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử thăng/giáng hạng</div>
           <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px;margin-bottom:var(--s7)">
             <sc-for list="{{selectedMember.rankHistory}}" as="rh" hint-placeholder-count="2">
@@ -399,6 +426,53 @@ def footer_html(prefix="", pol_prefix=""):
         '  </footer>\n' % (prefix, links)
     )
 
+
+OTP_JS = """// Ô nhập OTP: gõ một số là nhảy sang ô kế, Backspace ở ô trống thì lùi lại,
+// dán cả mã 6 số thì tự rải ra các ô. Gắn bằng event uỷ quyền trên document
+// nên không phụ thuộc thời điểm runtime dựng xong DOM.
+(function () {
+  function boxes(el) {
+    return Array.prototype.slice.call(
+      el.parentNode.querySelectorAll('input.otp-box'));
+  }
+
+  document.addEventListener('input', function (e) {
+    var el = e.target;
+    if (!el.classList || !el.classList.contains('otp-box')) return;
+    el.value = (el.value || '').replace(/\\D/g, '').slice(0, 1);
+    if (!el.value) return;
+    var list = boxes(el), i = list.indexOf(el);
+    if (i > -1 && i < list.length - 1) list[i + 1].focus();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    var el = e.target;
+    if (!el.classList || !el.classList.contains('otp-box')) return;
+    var list = boxes(el), i = list.indexOf(el);
+    if (e.key === 'Backspace' && !el.value && i > 0) {
+      e.preventDefault();
+      list[i - 1].focus();
+      list[i - 1].value = '';
+    }
+    if (e.key === 'ArrowLeft' && i > 0) { e.preventDefault(); list[i - 1].focus(); }
+    if (e.key === 'ArrowRight' && i < list.length - 1) { e.preventDefault(); list[i + 1].focus(); }
+  });
+
+  document.addEventListener('paste', function (e) {
+    var el = e.target;
+    if (!el.classList || !el.classList.contains('otp-box')) return;
+    var txt = (e.clipboardData || window.clipboardData).getData('text') || '';
+    var digits = txt.replace(/\\D/g, '');
+    if (!digits) return;
+    e.preventDefault();
+    var list = boxes(el), i = list.indexOf(el);
+    for (var k = 0; k < digits.length && i + k < list.length; k++) {
+      list[i + k].value = digits[k];
+    }
+    list[Math.min(i + digits.length, list.length - 1)].focus();
+  });
+})();
+"""
 
 POLICY_PAGE = """<!DOCTYPE html>
 <html lang="vi">
@@ -793,6 +867,11 @@ B6_ORDERS = """      <!-- B6 ORDERS (bổ sung, không có trong mockup KH) -->
                     </sc-raw-select>
                     <div style="font-size:11px;color:var(--c5)">Còn {{availableStockCount}} mã Sẵn hàng trong kho. Mã đã chọn sẽ chuyển sang <strong>Đã gán đơn hàng</strong>.</div>
                   </div>
+                  <div style="display:flex;flex-direction:column;gap:var(--s2)">
+                    <label style="font-size:14px;font-weight:600;color:var(--c2)">Mã giao dịch ngân hàng (*)</label>
+                    <input type="text" value="{{bankTxnCode}}" sc-camel-on-change="{{setBankTxnCode}}" placeholder="FT26090312345" style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;font-family:monospace" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+                    <div style="font-size:11px;color:var(--c5);line-height:1.5">Số tham chiếu trên sao kê ngân hàng, dùng để đối soát về sau.</div>
+                  </div>
                   <sc-if value="{{orderCodeError}}" hint-placeholder-val="{{false}}">
                     <div style="font-size:12px;color:#D9342B;background:rgba(217,52,43,.08);border-radius:var(--r-sm);padding:var(--s4)">{{orderCodeError}}</div>
                   </sc-if>
@@ -1003,6 +1082,47 @@ BG_PATCHES += [
     ('>LINK BÁN HÀNG CỦA BẠN<', '>LINK GIỚI THIỆU CỦA BẠN<'),
     ('>Link bán hàng của bạn<', '>Link giới thiệu của bạn<'),
 
+    # (8) Ô OTP tự nhảy sang ô kế tiếp khi gõ, Backspace lùi lại.
+    ('<input type="text" maxlength="1" style="width:44px;height:52px;'
+     'text-align:center;font-size:20px;font-weight:700;'
+     'border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md)"',
+     '<input type="text" maxlength="1" inputmode="numeric" class="otp-box" '
+     'style="width:44px;height:52px;text-align:center;font-size:20px;'
+     'font-weight:700;border:1px solid rgba(170,170,170,.6);'
+     'border-radius:var(--r-md)"'),
+
+    # (9) Ô tải ảnh CCCD mở hộp chọn ảnh của máy.
+    ('<span style="font-size:13px;font-weight:600">Ảnh CCCD mặt trước (*)</span>'
+     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span></label>',
+     '<span style="font-size:13px;font-weight:600">Ảnh CCCD mặt trước (*)</span>'
+     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span>'
+     '<input type="file" accept="image/*" style="display:none"></label>'),
+    ('<span style="font-size:13px;font-weight:600">Ảnh CCCD mặt sau (*)</span>'
+     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span></label>',
+     '<span style="font-size:13px;font-weight:600">Ảnh CCCD mặt sau (*)</span>'
+     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span>'
+     '<input type="file" accept="image/*" style="display:none"></label>'),
+    ('<span style="font-size:13px;font-weight:600">Tải ảnh sản phẩm</span>'
+     '<span style="font-size:11px">PNG hoặc JPG, tối đa 2MB</span>',
+     '<span style="font-size:13px;font-weight:600">Tải ảnh sản phẩm</span>'
+     '<span style="font-size:11px">PNG hoặc JPG, tối đa 2MB</span>'
+     '<input type="file" accept="image/*" style="display:none">'),
+    ('<span style="font-size:18px">&#11014;</span> Chọn file Excel / CSV',
+     '<span style="font-size:18px">&#11014;</span> Chọn file Excel / CSV'
+     '<input type="file" accept=".xlsx,.xls,.csv" style="display:none">'),
+
+    # (1) Tiêu đề màn đăng nhập.
+    ('Đăng nhập để quản lý hoa hồng &amp; đơn hàng của bạn',
+     'Đăng nhập để xem điểm thưởng và ưu đãi của bạn'),
+
+    # (4) (5) Đổi nhãn ở dashboard.
+    ('>Tổng đơn hàng<', '>Tổng đơn bán<'),
+    ('>Hoa hồng đang tạm giữ<', '>Khoản ưu đãi đang tạm giữ<'),
+
+    # (7) Mã giới thiệu ở form mua hàng kèm tên người giới thiệu.
+    ('<input type="text" value="TTB4123" readonly="{{true}}"',
+     '<input type="text" value="HTMT0083 — HOÀNG THỊ MỸ TRINH" readonly="{{true}}"'),
+
     # (2) Ngày sinh: nhập số, tự chèn dấu /.
     ('placeholder="dd/mm/yyyy" value="{{buyerDob}}" sc-camel-on-change="{{setBuyerDob}}"',
      'placeholder="22/01/1991" inputmode="numeric" maxlength="10" '
@@ -1050,7 +1170,18 @@ BG_PATCHES += [
     ('<div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">'
      'Bước 1/5 · Thông tin cá nhân &amp; nhận hoa hồng</div></div>',
      '<div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">'
-     'Bước 1/5 · Thông tin cá nhân &amp; nhận ưu đãi</div></div>'),
+     'Bước 1/5 · Thông tin cá nhân &amp; nhận ưu đãi</div></div>\n'
+     '          <div style="border:1px solid rgba(0,173,238,.3);'
+     'background:rgba(0,173,238,.06);border-radius:var(--r-md);padding:var(--s6);'
+     'display:flex;flex-direction:column;gap:var(--s3);font-size:13px">'
+     '<div style="display:flex;justify-content:space-between;gap:var(--s5)">'
+     '<span style="color:var(--c5)">Người giới thiệu</span>'
+     '<span style="font-weight:700;color:var(--c1);text-align:right">'
+     'HOÀNG THỊ MỸ TRINH</span></div>'
+     '<div style="display:flex;justify-content:space-between;gap:var(--s5)">'
+     '<span style="color:var(--c5)">Mã giới thiệu</span>'
+     '<span style="font-weight:700;color:var(--c6);font-family:monospace">'
+     'HTMT0083</span></div></div>'),
 
     # A2 cũng cần Tên chủ tài khoản như form mua hàng.
     ('<div style="font-size:11px;color:var(--c5)">Chỉ hiển thị đầy đủ trong '
@@ -1206,6 +1337,48 @@ BG_PATCHES += [
      'Mã vận đơn</span><span style="font-weight:600;font-family:monospace">'
      '{{selectedStock.tracking}}</span></div>'),
 
+    # (16) B3: thêm 3 cột tiền và một hàng tổng ngay dưới tiêu đề.
+    ('<div>Seller</div><div>Số tiền</div><div>Ngày yêu cầu</div>'
+     '<div>Số tài khoản nhận</div><div>Tên ngân hàng</div><div>Chi nhánh</div>'
+     '<div>Trạng thái</div><div></div>\n            </div>',
+     '<div>Thành viên</div><div>Khoản thưởng hiện tại</div><div>Yêu cầu rút tiền</div>'
+     '<div>Số dư còn lại</div><div>Ngày yêu cầu</div><div>Số tài khoản nhận</div>'
+     '<div>Tên ngân hàng</div><div>Chi nhánh</div><div>Trạng thái</div><div></div>\n'
+     '            </div>\n'
+     '            <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr .9fr 1.1fr 1fr .9fr .9fr .6fr;'
+     'min-width:1320px;padding:var(--s5) var(--s6);font-size:13px;font-weight:700;'
+     'color:var(--c1);background:rgba(0,173,238,.06);'
+     'border-top:1px solid rgba(170,170,170,.2)">'
+     '<div>TỔNG</div><div>{{sumRewardLabel}}</div><div>{{sumRequestLabel}}</div>'
+     '<div>{{sumRemainLabel}}</div><div></div><div></div><div></div><div></div>'
+     '<div></div><div></div></div>'),
+    ('<div style="font-weight:600">{{w.seller}}</div>\n'
+     '                <div style="font-weight:700">{{w.amount}}</div>\n'
+     '                <div style="color:var(--c5)">{{w.date}}</div>',
+     '<div style="font-weight:600">{{w.seller}}</div>\n'
+     '                <div style="color:var(--c4)">{{w.rewardLabel}}</div>\n'
+     '                <div style="font-weight:700">{{w.amount}}</div>\n'
+     '                <div style="color:var(--c4)">{{w.remainLabel}}</div>\n'
+     '                <div style="color:var(--c5)">{{w.date}}</div>'),
+    ('grid-template-columns:1.2fr 1fr 1fr 1fr 1fr 1fr .9fr 1fr;min-width:920px',
+     'grid-template-columns:1.2fr 1fr 1fr 1fr .9fr 1.1fr 1fr .9fr .9fr .6fr;'
+     'min-width:1320px'),
+
+    # (15) Nội dung chuyển khoản mặc định ở ngăn chi tiết rút tiền.
+    ('<div style="display:flex;justify-content:space-between">'
+     '<span style="color:var(--c5)">Chủ tài khoản</span>'
+     '<span style="font-weight:600">{{selectedWithdrawal.accountHolder}}</span></div>',
+     '<div style="display:flex;justify-content:space-between">'
+     '<span style="color:var(--c5)">Chủ tài khoản</span>'
+     '<span style="font-weight:600">{{selectedWithdrawal.accountHolder}}</span></div>'
+     '<div style="border-top:1px solid rgba(170,170,170,.25);margin-top:var(--s3);'
+     'padding-top:var(--s4);display:flex;flex-direction:column;gap:var(--s2)">'
+     '<span style="color:var(--c5);font-size:12px">Nội dung chuyển khoản</span>'
+     '<span style="font-weight:600;font-family:monospace;font-size:12px;'
+     'word-break:break-all;background:rgba(170,170,170,.08);'
+     'border-radius:var(--r-sm);padding:var(--s4)">'
+     'Rut khoan thuong tich diem ct uu dai khach hang</span></div>'),
+
     # (3) (7) Cột "Seller" -> "Thành viên" ở màn rút tiền và màn kho.
     ('<div>Seller</div>', '<div>Thành viên</div>'),
     ('>Seller<', '>Thành viên<'),
@@ -1359,6 +1532,23 @@ KEEP = {
 
 def recolor(s):
     for old, new in COLORS:
+        s = s.replace(old, new)
+    return s
+
+
+# (13) Đổi tên hai vai quản trị. Thay ở CẢ markup lẫn JS, thay toàn bộ chứ
+# không chỉ lần đầu — nên tách riêng khỏi hai bảng vá theo neo.
+# Thứ tự quan trọng: "Head Admin" phải đi trước vì nó chứa chữ "Admin".
+RENAMES = [
+    ("Head Admin", "Head"),
+    ("Admin Specialist", "Admin"),
+    ("Chờ Manager duyệt", "Chờ Head duyệt"),
+    ("Manager duyệt thành viên", "Head duyệt thành viên"),
+]
+
+
+def rename_roles(s):
+    for old, new in RENAMES:
         s = s.replace(old, new)
     return s
 
@@ -1612,6 +1802,14 @@ JS_PATCHES = [
     # Tên hạng dùng đúng 6 hạng chính thức, không dịch.
     ("      metricRank: s.agentStage === 'active' ? 'Bạc' : 'Đồng',",
      "      metricRank: s.agentStage === 'active' ? 'Silver' : 'Copper',"),
+
+    # (6) Tiêu đề biểu đồ: "Xu hướng hoa hồng" -> "Khoản ưu đãi".
+    ("title: 'Xu hướng hoa hồng · 7 ngày gần nhất'",
+     "title: 'Khoản ưu đãi · 7 ngày gần nhất'"),
+    ("title: 'Xu hướng hoa hồng · Theo tuần trong tháng'",
+     "title: 'Khoản ưu đãi · Theo tuần trong tháng'"),
+    ("title: 'Xu hướng hoa hồng · Theo tháng trong năm'",
+     "title: 'Khoản ưu đãi · Theo tháng trong năm'"),
     # (Hạng của từng dòng trong bảng thành viên được đổi ngay trong bản vá
     #  "(15) Mã tuyến trên" bên dưới — cùng một dòng return nên gộp lại.)
     # (8) Bỏ duyệt 2 lượt ở màn thành viên. Đơn hàng được admin xác nhận
@@ -1623,7 +1821,7 @@ JS_PATCHES = [
      "        approvalStageNote: effStatus === 'pending' ? 'Đang chờ Admin Specialist duyệt hồ sơ (bước 1/2).' : effStatus === 'specialist_approved' ? 'Đã qua Specialist — chờ Head Admin xác nhận để kích hoạt (bước 2/2).' : (effStatus === 'rejected' ? 'Hồ sơ đã bị từ chối.' : null)",
      "        canApproveMember: !isSpecialist && effStatus === 'specialist_approved',\n"
      "        canRejectMember: !isSpecialist && effStatus === 'specialist_approved',\n"
-     "        approveMemberButtonLabel: 'Duyệt thành viên · mở khoá điểm và ưu đãi',\n"
+     "        approveMemberButtonLabel: 'Xác nhận, kích hoạt Thành viên hoạt động (Head)',\n"
      "        approvalStageNote: effStatus === 'pending'\n"
      "          ? 'Chưa xác nhận thanh toán. Vào màn Đơn hàng xác nhận tiền về trước, hồ sơ này mới duyệt được.'\n"
      "          : effStatus === 'specialist_approved'\n"
@@ -1718,6 +1916,27 @@ JS_PATCHES = [
      "        orderId: ord,\n"
      "        seller: ord === '—' ? '—' : this.MEMBERS[i % this.MEMBERS.length].name,"),
 
+    # (16) Cột Khoản thưởng · Yêu cầu rút · Số dư còn lại, và hàng tổng.
+    ("        return { ...w, badgeBg: bg, badgeColor: color, statusLabel: label, onClick: () => this.setState({ selectedWithdrawalId: w.id }) };\n"
+     "      });\n"
+     "    const withdrawalsEmpty = withdrawals.length === 0;",
+     "        const reward = this.SELLER_BALANCE[w.seller] || 5000000;\n"
+     "        return { ...w, badgeBg: bg, badgeColor: color, statusLabel: label,\n"
+     "          rewardNum: reward, remainNum: reward - w.amountNum,\n"
+     "          rewardLabel: reward.toLocaleString('vi-VN') + 'đ',\n"
+     "          remainLabel: (reward - w.amountNum).toLocaleString('vi-VN') + 'đ',\n"
+     "          onClick: () => this.setState({ selectedWithdrawalId: w.id }) };\n"
+     "      });\n"
+     "    const withdrawalsEmpty = withdrawals.length === 0;\n"
+     "    const sumReward = withdrawals.reduce((t, w) => t + w.rewardNum, 0);\n"
+     "    const sumRequest = withdrawals.reduce((t, w) => t + w.amountNum, 0);"),
+
+    ("      withdrawals, withdrawalsEmpty,",
+     "      withdrawals, withdrawalsEmpty,\n"
+     "      sumRewardLabel: sumReward.toLocaleString('vi-VN') + 'đ',\n"
+     "      sumRequestLabel: sumRequest.toLocaleString('vi-VN') + 'đ',\n"
+     "      sumRemainLabel: (sumReward - sumRequest).toLocaleString('vi-VN') + 'đ',"),
+
     # (16) Ngày hiệu lực = lúc admin xác nhận thanh toán và gửi mã cho khách.
     # Ngày hết hiệu lực = cộng thời hạn gói (bản mẫu dùng gói 1 năm).
     ("""    const stockItems = stockFiltered.slice((stockPage - 1) * stockPageSize, stockPage * stockPageSize).map(p => {
@@ -1761,6 +1980,17 @@ JS_PATCHES = [
      "        bankHolder: this.vnUpper(selectedMemberRaw.name),\n"
      "        cccdFront: 'cccd-truoc-' + ALIAS[selectedMemberRaw.id] + '.jpg',\n"
      "        cccdBack: 'cccd-sau-' + ALIAS[selectedMemberRaw.id] + '.jpg',\n"
+     "        // (10) Cấp tuyến: F0 nếu không có tuyến trên, F1 nếu tuyến trên là\n"
+     "        // gốc, F2 nếu tuyến trên lại có tuyến trên nữa.\n"
+     "        tierLabel: (function (m, all) {\n"
+     "          let lv = 0, cur = m;\n"
+     "          while (cur && cur.upline && cur.upline !== '—' && lv < 6) {\n"
+     "            cur = all.find(x => x.name === cur.upline); lv++;\n"
+     "          }\n"
+     "          return 'F' + lv;\n"
+     "        })(selectedMemberRaw, this.MEMBERS),\n"
+     "        // Ghi đè bằng phần admin đã sửa (nếu có).\n"
+     "        ...(s.memberEdits[selectedMemberRaw.id] || {}),\n"
      "        rankHistory: this.RANK_HISTORY[selectedMemberRaw.id]\n"
      "          || [{ label: 'Tham gia · hạng '\n"
      "                 + (this.RANK_LABEL[selectedMemberRaw.rank] || selectedMemberRaw.rank),\n"
@@ -1782,6 +2012,8 @@ JS_PATCHES = [
      "    accountHolder: '', buyTcChecked: false,\n"
      "    cccdIssueDate: '', cccdIssuePlace: '', lookupResult: null,\n"
      "    loginPhoneChecked: false, loginPhoneEmpty: false, loginNotEligible: false,\n"
+     "    profileOpen: false, profileEdit: false, profileDraft: {}, memberEdits: {},\n"
+     "    bankTxnCode: '',\n"
      "    showAdminUserForm: false, editingAdminUserId: null, adminUserLocks: {},\n"
      "    orderRange: 'month',\n"
      "    ordersData: null, orderSearch: '', orderStatusFilter: 'all',\n"
@@ -2037,7 +2269,8 @@ JS_PATCHES = [
                  'Kim cương': 'Diamond', 'Titan': 'Titanium', 'Lithium': 'Lithium' };
 
   // 7.3.3 AC: hiển thị số đơn còn thiếu để lên hạng kế tiếp.
-  RANK_PROGRESS = { new: 'Còn 5 đơn để lên hạng Silver',
+  // Ngưỡng Silver = 10 đơn. Copper vừa bán 1 đơn -> còn 9 đơn.
+  RANK_PROGRESS = { new: 'Còn 9 đơn để lên hạng Silver',
                     active: 'Còn 8 đơn để lên hạng Gold' };
 
   RANK_HISTORY = {
@@ -2109,7 +2342,7 @@ JS_PATCHES = [
         canConfirm: canConfirmO, canReject: canRejectO, canAct: canConfirmO || canRejectO,
         needsCodePick: canConfirmO,
         isRejected: selOrderRaw.status === 'order_rejected',
-        confirmLabel: 'Xác nhận tiền về & cấp mã kích hoạt',
+        confirmLabel: 'Xác nhận tiền về và kích hoạt mã đơn hàng (Admin)',
         stageNote: selOrderRaw.status === 'order_pending'
           ? 'Đang chờ admin đối soát tiền về. Xác nhận xong hệ thống gửi email kèm mã kích hoạt cho khách ngay.'
           : (selOrderRaw.status === 'order_rejected' ? 'Đơn đã bị từ chối.' : null),
@@ -2144,6 +2377,34 @@ JS_PATCHES = [
       adminUserFormEmail: (this.ADMIN_USERS.find(u => u.id === s.editingAdminUserId) || {}).email || '',
       openAdminUserForm: () => this.setState({ showAdminUserForm: true, editingAdminUserId: null }),
       closeAdminUserForm: () => this.setState({ showAdminUserForm: false, editingAdminUserId: null }),
+
+      // (12) Khối "Thông tin hồ sơ" — mở/đóng và sửa được.
+      profileOpen: s.profileOpen, profileCaret: s.profileOpen ? '▴' : '▾',
+      toggleProfile: () => this.setState({ profileOpen: !s.profileOpen, profileEdit: false }),
+      profileRead: s.profileOpen && !s.profileEdit,
+      profileEdit: s.profileOpen && s.profileEdit,
+      startProfileEdit: () => this.setState({ profileEdit: true,
+        profileDraft: { ...(selectedMember || {}) } }),
+      cancelProfileEdit: () => this.setState({ profileEdit: false, profileDraft: {} }),
+      saveProfileEdit: () => this.setState({
+        memberEdits: { ...s.memberEdits, [s.selectedMemberId]: { ...s.profileDraft } },
+        profileEdit: false, profileDraft: {} }),
+      pfName: (s.profileDraft || {}).name || '',
+      setPfName: (e) => this.setState({ profileDraft: { ...s.profileDraft, name: e.target.value } }),
+      pfPhone: (s.profileDraft || {}).phone || '',
+      setPfPhone: (e) => this.setState({ profileDraft: { ...s.profileDraft, phone: e.target.value } }),
+      pfEmail: (s.profileDraft || {}).email || '',
+      setPfEmail: (e) => this.setState({ profileDraft: { ...s.profileDraft, email: e.target.value } }),
+      pfCccd: (s.profileDraft || {}).cccd || '',
+      setPfCccd: (e) => this.setState({ profileDraft: { ...s.profileDraft, cccd: e.target.value } }),
+      pfDob: (s.profileDraft || {}).dobGender || '',
+      setPfDob: (e) => this.setState({ profileDraft: { ...s.profileDraft, dobGender: e.target.value } }),
+      pfAddress: (s.profileDraft || {}).address || '',
+      setPfAddress: (e) => this.setState({ profileDraft: { ...s.profileDraft, address: e.target.value } }),
+      pfBankAccount: (s.profileDraft || {}).bankAccount || '',
+      setPfBankAccount: (e) => this.setState({ profileDraft: { ...s.profileDraft, bankAccount: e.target.value } }),
+      pfBankHolder: (s.profileDraft || {}).bankHolder || '',
+      setPfBankHolder: (e) => this.setState({ profileDraft: { ...s.profileDraft, bankHolder: this.vnUpper(e.target.value) } }),
 
       // (10) Kết quả tra cứu đơn hàng
       lookupResult: s.lookupResult,
@@ -2254,6 +2515,8 @@ JS_PATCHES = [
       orderActivationCode: s.orderActivationCode,
       setOrderActivationCode: (e) => this.setState({ orderActivationCode: e.target.value, orderCodeError: '' }),
       orderCodeError: s.orderCodeError,
+      bankTxnCode: s.bankTxnCode,
+      setBankTxnCode: (e) => this.setState({ bankTxnCode: e.target.value, orderCodeError: '' }),
       confirmOrder: () => {
         const o = (s.ordersData || []).find(x => x.id === s.selectedOrderId);
         if (!o) return;
@@ -2261,6 +2524,7 @@ JS_PATCHES = [
         const who = s.adminRole === 'specialist' ? 'Admin Specialist' : 'Head Admin';
         const code = s.orderActivationCode;
         if (!code) { this.setState({ orderCodeError: 'Chọn mã kích hoạt từ kho trước khi xác nhận.' }); return; }
+        if (!(s.bankTxnCode || '').trim()) { this.setState({ orderCodeError: 'Nhập mã giao dịch ngân hàng để đối soát.' }); return; }
         const item = stockData.find(p => p.activationCode === code && p.status === 'available');
         if (!item) { this.setState({ orderCodeError: 'Mã ' + code + ' không còn ở trạng thái Sẵn hàng.' }); return; }
         this.setState({
@@ -2268,14 +2532,14 @@ JS_PATCHES = [
             ? { ...x, status: 'order_paid', activationCode: code,
                 activatedAt: now.slice(0, 10),
                 auditLog: [...x.auditLog,
-                  { label: 'Xác nhận tiền về và cấp mã kích hoạt ' + code, actor: who, time: now },
+                  { label: 'Xác nhận tiền về (GD ' + s.bankTxnCode.trim() + ') và kích hoạt mã ' + code, actor: who, time: now },
                   { label: 'Gửi email báo thanh toán thành công kèm mã kích hoạt cho khách', actor: 'Hệ thống', time: now }] }
             : x),
           stockData: stockData.map(p => p.activationCode === code
             ? { ...p, status: 'assigned', orderId: o.id, seller: o.referrer,
                 log: [...p.log, { label: 'Gán cho đơn ' + o.id, time: now }] }
             : p),
-          orderActivationCode: '', orderCodeError: ''
+          orderActivationCode: '', orderCodeError: '', bankTxnCode: ''
         });
       },
       rejectOrder: () => {
@@ -2507,6 +2771,9 @@ def main():
     if not runtime.exists():
         die("thiếu runtime %s" % runtime.name)
     shutil.copy(runtime, V3 / "js" / "dc-runtime.js")
+
+    # (8) Ô OTP tự nhảy — viết ngoài runtime của KH để khỏi đụng vào nó.
+    (V3 / "js" / "otp.js").write_text(OTP_JS, encoding="utf-8")
     n_font = 0
     for f in (RAW / "res").glob("*.woff2"):
         shutil.copy(f, V3 / "css" / "fonts" / f.name)
@@ -2552,6 +2819,9 @@ def main():
             die("không khớp đoạn JS cần sửa:\n---\n%s\n---" % old[:120])
         script = script.replace(old, new, 1)
 
+    # (13) Đổi tên vai — chạy sau mọi bản vá theo neo để khỏi phá neo.
+    script = rename_roles(script)
+
     # --- đổi màu toàn bộ ---------------------------------------------------
     TOPBAR_WEB = recolor(TOPBAR_WEB)
     TOPBAR_PUBLIC = recolor(TOPBAR_PUBLIC)
@@ -2562,7 +2832,8 @@ def main():
             s = s.replace(old, new)
         return s
 
-    blocks_html = {k: recolor(bg_patch(block(v))) for k, v in BLOCKS.items()}
+    blocks_html = {k: rename_roles(recolor(bg_patch(block(v))))
+                   for k, v in BLOCKS.items()}
 
     # Bỏ ô Quận/Huyện theo yêu cầu ngày 08/09.
     n_district = 0
@@ -2629,6 +2900,7 @@ def main():
             "<link rel=\"stylesheet\" href=\"../css/tokens.css\">\n"
             "<script>\n%s</script>\n"
             "<script src=\"../js/dc-runtime.js\"></script>\n"
+            "<script src=\"../js/otp.js\" defer></script>\n"
             "</head>\n<body>\n<x-dc>\n<helmet data-dc-atomics=\"\"></helmet>\n"
             "%s\n\n%s\n\n%s\n%s\n</div>\n</x-dc>\n%s\n</body>\n</html>\n"
             % (sc["title"], head_js, root_open,

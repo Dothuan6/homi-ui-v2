@@ -20,6 +20,7 @@ var H = {"chi-tiet": {"selectedWithdrawalId": 1}, "duyet": {"selectedWithdrawalI
 if (H[h]) Object.assign(window.__STATE__, H[h]);
 </script>
 <script src="../js/dc-runtime.js"></script>
+<script src="../js/otp.js" defer></script>
 </head>
 <body>
 <x-dc>
@@ -99,13 +100,16 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             <input type="text" value="{{withdrawalSearch}}" sc-camel-on-change="{{setWithdrawalSearch}}" placeholder="Tìm theo seller…" style="flex:1;min-width:200px;height:38px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
           </div>
           <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);overflow:auto">
-            <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr 1fr 1fr .9fr 1fr;min-width:920px;background:rgba(154,163,176,.08);padding:var(--s5) var(--s6);font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em">
-              <div>Thành viên</div><div>Số tiền</div><div>Ngày yêu cầu</div><div>Số tài khoản nhận</div><div>Tên ngân hàng</div><div>Chi nhánh</div><div>Trạng thái</div><div></div>
+            <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr .9fr 1.1fr 1fr .9fr .9fr .6fr;min-width:1320px;background:rgba(154,163,176,.08);padding:var(--s5) var(--s6);font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em">
+              <div>Thành viên</div><div>Khoản thưởng hiện tại</div><div>Yêu cầu rút tiền</div><div>Số dư còn lại</div><div>Ngày yêu cầu</div><div>Số tài khoản nhận</div><div>Tên ngân hàng</div><div>Chi nhánh</div><div>Trạng thái</div><div></div>
             </div>
+            <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr .9fr 1.1fr 1fr .9fr .9fr .6fr;min-width:1320px;padding:var(--s5) var(--s6);font-size:13px;font-weight:700;color:var(--c1);background:rgba(30,58,102,.06);border-top:1px solid rgba(154,163,176,.2)"><div>TỔNG</div><div>{{sumRewardLabel}}</div><div>{{sumRequestLabel}}</div><div>{{sumRemainLabel}}</div><div></div><div></div><div></div><div></div><div></div><div></div></div>
             <sc-for list="{{withdrawals}}" as="w" hint-placeholder-count="5">
-              <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr 1fr 1fr .9fr 1fr;min-width:920px;align-items:center;padding:var(--s5) var(--s6);font-size:13px;color:var(--c1);border-top:1px solid rgba(154,163,176,.2);cursor:pointer" sc-camel-on-click="{{w.onClick}}" style-hover="background:rgba(30,58,102,.05)">
+              <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr .9fr 1.1fr 1fr .9fr .9fr .6fr;min-width:1320px;align-items:center;padding:var(--s5) var(--s6);font-size:13px;color:var(--c1);border-top:1px solid rgba(154,163,176,.2);cursor:pointer" sc-camel-on-click="{{w.onClick}}" style-hover="background:rgba(30,58,102,.05)">
                 <div style="font-weight:600">{{w.seller}}</div>
+                <div style="color:var(--c4)">{{w.rewardLabel}}</div>
                 <div style="font-weight:700">{{w.amount}}</div>
+                <div style="color:var(--c4)">{{w.remainLabel}}</div>
                 <div style="color:var(--c5)">{{w.date}}</div>
                 <div style="color:var(--c4);font-family:monospace">{{w.accountNumber}}</div>
                 <div style="color:var(--c4)">{{w.bankName}}</div>
@@ -255,6 +259,11 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
                       </sc-for>
                     </sc-raw-select>
                     <div style="font-size:11px;color:var(--c5)">Còn {{availableStockCount}} mã Sẵn hàng trong kho. Mã đã chọn sẽ chuyển sang <strong>Đã gán đơn hàng</strong>.</div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:var(--s2)">
+                    <label style="font-size:14px;font-weight:600;color:var(--c2)">Mã giao dịch ngân hàng (*)</label>
+                    <input type="text" value="{{bankTxnCode}}" sc-camel-on-change="{{setBankTxnCode}}" placeholder="FT26090312345" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;font-family:monospace" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
+                    <div style="font-size:11px;color:var(--c5);line-height:1.5">Số tham chiếu trên sao kê ngân hàng, dùng để đối soát về sau.</div>
                   </div>
                   <sc-if value="{{orderCodeError}}" hint-placeholder-val="{{false}}">
                     <div style="font-size:12px;color:#C0392B;background:rgba(192,57,43,.08);border-radius:var(--r-sm);padding:var(--s4)">{{orderCodeError}}</div>
@@ -406,14 +415,14 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
       </sc-if>
 
       <!-- B7 ADMIN USERS (bổ sung 7.9.1, không có trong mockup KH) -->
-      <!-- 7.9.1 AC: Admin Specialist KHÔNG được truy cập màn này -->
+      <!-- 7.9.1 AC: Admin KHÔNG được truy cập màn này -->
       <sc-if value="{{isB7Denied}}" hint-placeholder-val="{{false}}">
         <div style="display:flex;justify-content:center;padding:var(--s11) var(--s7)">
           <div style="width:100%;max-width:460px;background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);padding:var(--s10);display:flex;flex-direction:column;gap:var(--s5);text-align:center">
             <div style="font-size:40px;font-weight:900;color:var(--c7);letter-spacing:.04em">403</div>
             <div style="font-size:18px;font-weight:700;color:var(--c1)">Không có quyền truy cập</div>
-            <div style="font-size:13px;color:var(--c2);line-height:1.7">Màn <strong>Tài khoản admin</strong> chỉ dành cho <strong>Head Admin</strong>. Tài khoản của bạn đang ở vai <strong>Admin Specialist</strong>.</div>
-            <div style="font-size:12px;color:var(--c5);line-height:1.6">Cần tạo hoặc đổi vai trò một tài khoản admin? Liên hệ Head Admin.</div>
+            <div style="font-size:13px;color:var(--c2);line-height:1.7">Màn <strong>Tài khoản admin</strong> chỉ dành cho <strong>Head</strong>. Tài khoản của bạn đang ở vai <strong>Admin</strong>.</div>
+            <div style="font-size:12px;color:var(--c5);line-height:1.6">Cần tạo hoặc đổi vai trò một tài khoản admin? Liên hệ Head.</div>
           </div>
         </div>
       </sc-if>
@@ -456,8 +465,8 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           </div>
 
           <div style="font-size:12px;color:var(--c5);line-height:1.7;background:rgba(154,163,176,.05);border-radius:var(--r-md);padding:var(--s6)">
-            <strong style="color:var(--c2)">Admin Specialist</strong> làm bước 1 của mọi quy trình duyệt 2 lớp: xác nhận tiền về của đơn hàng, duyệt hồ sơ thành viên, duyệt yêu cầu rút tiền.<br>
-            <strong style="color:var(--c2)">Head Admin</strong> làm bước 2 và là người duy nhất được kích hoạt tài khoản, cấp mã kích hoạt, đánh dấu đã chi trả, và quản lý chính màn này.
+            <strong style="color:var(--c2)">Admin</strong> làm bước 1 của mọi quy trình duyệt 2 lớp: xác nhận tiền về của đơn hàng, duyệt hồ sơ thành viên, duyệt yêu cầu rút tiền.<br>
+            <strong style="color:var(--c2)">Head</strong> làm bước 2 và là người duy nhất được kích hoạt tài khoản, cấp mã kích hoạt, đánh dấu đã chi trả, và quản lý chính màn này.
           </div>
         </div>
       </sc-if>
@@ -477,8 +486,8 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             </div>
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Vai trò (*)</label>
               <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)">
-                <option>Admin Specialist</option>
-                <option>Head Admin</option>
+                <option>Admin</option>
+                <option>Head</option>
               </sc-raw-select>
               <div style="font-size:11px;color:var(--c5);line-height:1.6">Mỗi tài khoản chỉ được gán đúng một vai trò. Đổi vai trò có hiệu lực ở lần đăng nhập kế tiếp.</div>
             </div>
@@ -589,27 +598,54 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           </div>
         </div>
         <div style="border-top:1px solid rgba(154,163,176,.25);padding-top:var(--s7)">
-          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Thông tin đăng ký</div>
-          <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px;margin-bottom:var(--s7)">
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Họ và tên</span><span style="font-weight:600;text-align:right">{{selectedMember.name}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số điện thoại</span><span style="font-weight:600;font-family:monospace">{{selectedMember.phone}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Email</span><span style="color:var(--c2);text-align:right">{{selectedMember.email}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số CCCD</span><span style="color:var(--c2);font-family:monospace">{{selectedMember.cccd}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngày cấp · Nơi cấp</span><span style="color:var(--c2);text-align:right">{{selectedMember.cccdIssue}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngày sinh · Giới tính</span><span style="color:var(--c2);text-align:right">{{selectedMember.dobGender}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Địa chỉ</span><span style="color:var(--c2);text-align:right;max-width:60%">{{selectedMember.address}}</span></div>
+          <div style="display:flex;justify-content:space-between;gap:var(--s5);font-size:13px;margin-bottom:var(--s6)">
+            <span style="color:var(--c5)">Hạng · Cấp tuyến</span>
+            <span style="font-weight:700;color:var(--c1)">{{selectedMember.rank}} · {{selectedMember.tierLabel}}</span>
           </div>
-          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Thông tin nhận ưu đãi</div>
-          <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px;margin-bottom:var(--s7)">
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngân hàng</span><span style="color:var(--c2);text-align:right">{{selectedMember.bank}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số tài khoản</span><span style="font-weight:600;font-family:monospace">{{selectedMember.bankAccount}}</span></div>
-            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Tên chủ tài khoản</span><span style="font-weight:600;text-align:right">{{selectedMember.bankHolder}}</span></div>
+
+          <button sc-camel-on-click="{{toggleProfile}}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--s5);background:rgba(154,163,176,.08);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s5) var(--s6);cursor:pointer;font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)" style-hover="background:rgba(154,163,176,.15)"><span>Thông tin hồ sơ</span><span style="font-size:14px;color:var(--c6)">{{profileCaret}}</span></button>
+
+          <sc-if value="{{profileOpen}}" hint-placeholder-val="{{true}}">
+          <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s6);margin-bottom:var(--s7);display:flex;flex-direction:column;gap:var(--s4)">
+            <sc-if value="{{profileRead}}" hint-placeholder-val="{{true}}">
+              <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px">
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Họ và tên</span><span style="font-weight:600;text-align:right">{{selectedMember.name}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số điện thoại</span><span style="font-weight:600;font-family:monospace">{{selectedMember.phone}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Email</span><span style="color:var(--c2);text-align:right">{{selectedMember.email}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số CCCD</span><span style="color:var(--c2);font-family:monospace">{{selectedMember.cccd}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngày cấp · Nơi cấp</span><span style="color:var(--c2);text-align:right">{{selectedMember.cccdIssue}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngày sinh · Giới tính</span><span style="color:var(--c2);text-align:right">{{selectedMember.dobGender}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Địa chỉ</span><span style="color:var(--c2);text-align:right;max-width:60%">{{selectedMember.address}}</span></div>
+                <div style="height:1px;background:rgba(154,163,176,.25);margin:var(--s2) 0"></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Ngân hàng</span><span style="color:var(--c2);text-align:right">{{selectedMember.bank}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Số tài khoản</span><span style="font-weight:600;font-family:monospace">{{selectedMember.bankAccount}}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Tên chủ tài khoản</span><span style="font-weight:600;text-align:right">{{selectedMember.bankHolder}}</span></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s5)">
+                <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s6);text-align:center;background:var(--warm-50)"><div style="font-size:22px;color:var(--c5)">&#128196;</div><div style="font-size:11px;color:var(--c2);font-family:monospace;margin-top:var(--s2)">{{selectedMember.cccdFront}}</div><div style="font-size:10px;color:var(--c5)">Mặt trước</div></div>
+                <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s6);text-align:center;background:var(--warm-50)"><div style="font-size:22px;color:var(--c5)">&#128196;</div><div style="font-size:11px;color:var(--c2);font-family:monospace;margin-top:var(--s2)">{{selectedMember.cccdBack}}</div><div style="font-size:10px;color:var(--c5)">Mặt sau</div></div>
+              </div>
+              <button sc-camel-on-click="{{startProfileEdit}}" style="height:38px;background:var(--c12);border:1px solid var(--c6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c6)" style-hover="background:rgba(30,58,102,.06)">Sửa hồ sơ</button>
+            </sc-if>
+
+            <sc-if value="{{profileEdit}}" hint-placeholder-val="{{false}}">
+              <div style="font-size:12px;color:var(--c2);background:rgba(150,92,10,.12);border-radius:var(--r-sm);padding:var(--s4);line-height:1.6">Admin sửa hộ khi thành viên khai sai — ví dụ sai số tài khoản. Mọi thay đổi được ghi vào lịch sử hồ sơ.</div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Họ và tên (*)</label><input type="text" value="{{pfName}}" sc-camel-on-change="{{setPfName}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Số điện thoại (*)</label><input type="text" value="{{pfPhone}}" sc-camel-on-change="{{setPfPhone}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;font-family:monospace"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Email (*)</label><input type="text" value="{{pfEmail}}" sc-camel-on-change="{{setPfEmail}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Số CCCD (*)</label><input type="text" value="{{pfCccd}}" sc-camel-on-change="{{setPfCccd}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;font-family:monospace"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Ngày sinh</label><input type="text" value="{{pfDob}}" sc-camel-on-change="{{setPfDob}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Địa chỉ (*)</label><input type="text" value="{{pfAddress}}" sc-camel-on-change="{{setPfAddress}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Số tài khoản</label><input type="text" value="{{pfBankAccount}}" sc-camel-on-change="{{setPfBankAccount}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;font-family:monospace"></div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;font-weight:600;color:var(--c2)">Tên chủ tài khoản</label><input type="text" value="{{pfBankHolder}}" sc-camel-on-change="{{setPfBankHolder}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;text-transform:uppercase"></div>
+              <div style="display:flex;gap:var(--s4)">
+                <button sc-camel-on-click="{{cancelProfileEdit}}" style="flex:1;height:40px;background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)">Huỷ</button>
+                <button sc-camel-on-click="{{saveProfileEdit}}" style="flex:1;height:40px;background:var(--c6);border:none;border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c12)" style-hover="background:#1B3358">Lưu hồ sơ</button>
+              </div>
+            </sc-if>
           </div>
-          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Ảnh CCCD</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);margin-bottom:var(--s7)">
-            <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s6);text-align:center;background:var(--warm-50)"><div style="font-size:22px;color:var(--c5)">&#128196;</div><div style="font-size:11px;color:var(--c2);font-family:monospace;margin-top:var(--s2)">{{selectedMember.cccdFront}}</div><div style="font-size:10px;color:var(--c5)">Mặt trước</div></div>
-            <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s6);text-align:center;background:var(--warm-50)"><div style="font-size:22px;color:var(--c5)">&#128196;</div><div style="font-size:11px;color:var(--c2);font-family:monospace;margin-top:var(--s2)">{{selectedMember.cccdBack}}</div><div style="font-size:10px;color:var(--c5)">Mặt sau</div></div>
-          </div>
+          </sc-if>
+
           <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử thăng/giáng hạng</div>
           <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px;margin-bottom:var(--s7)">
             <sc-for list="{{selectedMember.rankHistory}}" as="rh" hint-placeholder-count="2">
@@ -673,7 +709,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Ngân hàng</span><span style="font-weight:600">{{selectedWithdrawal.bankName}}</span></div>
           <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Chi nhánh</span><span style="font-weight:600">{{selectedWithdrawal.branch}}</span></div>
           <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Số tài khoản</span><span style="font-weight:600;font-family:monospace">{{selectedWithdrawal.accountNumber}}</span></div>
-          <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Chủ tài khoản</span><span style="font-weight:600">{{selectedWithdrawal.accountHolder}}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">Chủ tài khoản</span><span style="font-weight:600">{{selectedWithdrawal.accountHolder}}</span></div><div style="border-top:1px solid rgba(154,163,176,.25);margin-top:var(--s3);padding-top:var(--s4);display:flex;flex-direction:column;gap:var(--s2)"><span style="color:var(--c5);font-size:12px">Nội dung chuyển khoản</span><span style="font-weight:600;font-family:monospace;font-size:12px;word-break:break-all;background:rgba(154,163,176,.08);border-radius:var(--r-sm);padding:var(--s4)">Rut khoan thuong tich diem ct uu dai khach hang</span></div>
         </div>
 
         <sc-if value="{{selectedWithdrawal.approvalStageNote}}" hint-placeholder-val="{{false}}">
@@ -818,6 +854,8 @@ class Component extends DCLogic {
     accountHolder: '', buyTcChecked: false,
     cccdIssueDate: '', cccdIssuePlace: '', lookupResult: null,
     loginPhoneChecked: false, loginPhoneEmpty: false, loginNotEligible: false,
+    profileOpen: false, profileEdit: false, profileDraft: {}, memberEdits: {},
+    bankTxnCode: '',
     showAdminUserForm: false, editingAdminUserId: null, adminUserLocks: {},
     orderRange: 'month',
     ordersData: null, orderSearch: '', orderStatusFilter: 'all',
@@ -833,7 +871,7 @@ class Component extends DCLogic {
 
   ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu rút tiền'],['B6','Đơn hàng'],['B4','Kho hàng'],['B5','Sản phẩm'],['B7','Tài khoản admin']];
   STOCK_FILTERS = [['all','Tất cả'],['received','Nhập kho'],['available','Sẵn hàng'],['assigned','Đã gán đơn hàng'],['shipped','Xuất kho'],['delivered','Giao hàng thành công']];
-  WITHDRAWAL_FILTERS = [['all','Tất cả'],['pending','Chờ duyệt'],['specialist_approved','Chờ Head Admin'],['approved','Đã duyệt'],['rejected','Từ chối'],['paid','Đã chi trả']];
+  WITHDRAWAL_FILTERS = [['all','Tất cả'],['pending','Chờ duyệt'],['specialist_approved','Chờ Head'],['approved','Đã duyệt'],['rejected','Từ chối'],['paid','Đã chi trả']];
   STATUS_ORDER = { pending: 0, specialist_approved: 1, approved: 2, rejected: 3, paid: 4 };
   SELLER_BALANCE = { 'Trần Thị Bích': 4000000 };
   REGISTERED_PHONES = ['0901234567', '0912345678', '0987654321'];
@@ -848,14 +886,14 @@ class Component extends DCLogic {
   ];
 
   CHART_SETS = {
-    '7d': { title: 'Xu hướng hoa hồng · 7 ngày gần nhất', bars: [
+    '7d': { title: 'Khoản ưu đãi · 7 ngày gần nhất', bars: [
       { label:'T2', v:.4 },{ label:'T3', v:.65 },{ label:'T4', v:.5 },{ label:'T5', v:.9 },
       { label:'T6', v:.7 },{ label:'T7', v:.55 },{ label:'CN', v:.35 }
     ]},
-    'month': { title: 'Xu hướng hoa hồng · Theo tuần trong tháng', bars: [
+    'month': { title: 'Khoản ưu đãi · Theo tuần trong tháng', bars: [
       { label:'Tuần 1', v:.5 },{ label:'Tuần 2', v:.75 },{ label:'Tuần 3', v:.6 },{ label:'Tuần 4', v:.85 }
     ]},
-    'year': { title: 'Xu hướng hoa hồng · Theo tháng trong năm', bars: [
+    'year': { title: 'Khoản ưu đãi · Theo tháng trong năm', bars: [
       { label:'T1', v:.3 },{ label:'T2', v:.45 },{ label:'T3', v:.5 },{ label:'T4', v:.4 },
       { label:'T5', v:.6 },{ label:'T6', v:.55 },{ label:'T7', v:.7 },{ label:'T8', v:.65 },
       { label:'T9', v:.5 },{ label:'T10', v:.8 },{ label:'T11', v:.75 },{ label:'T12', v:.9 }
@@ -899,20 +937,20 @@ class Component extends DCLogic {
         date:'30/08/2026 08:05', status:'order_paid', proof:'bill-DH100234.jpg', activationCode:'ACT-100481', activatedAt:'30/08/2026',
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'30/08/2026 08:05'},
                   {label:'Khách tải ảnh chuyển khoản', actor:'Đỗ Anh Tuấn', time:'30/08/2026 08:19'},
-                  {label:'Admin Specialist xác nhận tiền về (chờ Head Admin)', actor:'Admin Specialist', time:'30/08/2026 09:10'},
-                  {label:'Head Admin xác nhận & cấp mã kích hoạt ACT-100481', actor:'Head Admin', time:'30/08/2026 10:02'}] },
+                  {label:'Admin xác nhận tiền về (chờ Head)', actor:'Admin', time:'30/08/2026 09:10'},
+                  {label:'Head xác nhận & cấp mã kích hoạt ACT-100481', actor:'Head', time:'30/08/2026 10:02'}] },
       { id:'DH100088', buyer:'Ngô Thị Em', phone:'0904444444', email:'ngothiem@gmail.com',
         address:'7 Nguyễn Trãi, Phường Bến Thành, TP. Hồ Chí Minh',
         pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Lê Văn Cường', refCode:'LVC5456',
         date:'28/08/2026 11:30', status:'order_paid', proof:'bill-DH100088.jpg', activationCode:'ACT-100337', activatedAt:'28/08/2026',
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'28/08/2026 11:30'},
-                  {label:'Head Admin xác nhận & cấp mã kích hoạt ACT-100337', actor:'Head Admin', time:'28/08/2026 14:00'}] },
+                  {label:'Head xác nhận & cấp mã kích hoạt ACT-100337', actor:'Head', time:'28/08/2026 14:00'}] },
       { id:'DH100012', buyer:'Phạm Quốc Bảo', phone:'0905555555', email:'pqbao@gmail.com',
         address:'201 Cách Mạng Tháng 8, Phường Hoà Hưng, TP. Hồ Chí Minh',
         pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Trần Thị Bích', refCode:'TTB4123',
         date:'26/08/2026 19:12', status:'order_rejected', proof:'bill-DH100012.jpg', activationCode:null,
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'26/08/2026 19:12'},
-                  {label:'Từ chối: số tiền chuyển khoản không khớp', actor:'Admin Specialist', time:'27/08/2026 09:00'}] }
+                  {label:'Từ chối: số tiền chuyển khoản không khớp', actor:'Admin', time:'27/08/2026 09:00'}] }
     ];
     return raw.map(o => ({ ...o, amount: o.amountNum.toLocaleString('vi-VN') + 'đ' }));
   }
@@ -962,7 +1000,7 @@ class Component extends DCLogic {
   // Trạng thái hồ sơ thành viên (khác vòng duyệt 2 lượt của rút tiền).
   MEMBER_STATUS_LABEL = {
     pending: 'Chờ xác nhận thanh toán',
-    specialist_approved: 'Chờ Manager duyệt',
+    specialist_approved: 'Chờ Head duyệt',
     active: 'Đang hoạt động',
     locked: 'Đã khoá',
     rejected: 'Từ chối'
@@ -974,7 +1012,8 @@ class Component extends DCLogic {
                  'Kim cương': 'Diamond', 'Titan': 'Titanium', 'Lithium': 'Lithium' };
 
   // 7.3.3 AC: hiển thị số đơn còn thiếu để lên hạng kế tiếp.
-  RANK_PROGRESS = { new: 'Còn 5 đơn để lên hạng Silver',
+  // Ngưỡng Silver = 10 đơn. Copper vừa bán 1 đơn -> còn 9 đơn.
+  RANK_PROGRESS = { new: 'Còn 9 đơn để lên hạng Silver',
                     active: 'Còn 8 đơn để lên hạng Gold' };
 
   RANK_HISTORY = {
@@ -1021,7 +1060,7 @@ class Component extends DCLogic {
       active: ['rgba(47,122,72,.14)', '#2F7A48', 'Đang hoạt động'],
       locked: ['rgba(154,163,176,.18)', '#5B6472', 'Đã khóa'],
       pending: ['rgba(150,92,10,.15)', '#965C0A', 'Chờ duyệt (0/2)'],
-      specialist_approved: ['rgba(150,92,10,.15)', '#965C0A', 'Chờ Head Admin (1/2)'],
+      specialist_approved: ['rgba(150,92,10,.15)', '#965C0A', 'Chờ Head (1/2)'],
       approved: ['rgba(15,127,150,.14)', '#0F7F96', 'Đã duyệt (2/2)'],
       rejected: ['rgba(192,57,43,.12)', '#C0392B', 'Từ chối'],
       paid: ['rgba(47,122,72,.14)', '#2F7A48', 'Đã chi trả'],
@@ -1058,10 +1097,10 @@ class Component extends DCLogic {
   makeWithdrawals() {
     const raw = [
       { id:1, seller:'Trần Thị Bích', amountNum:2000000, date:'28/08/2026', accountNumber:'0071001234567', bankName:'Vietcombank', branch:'CN TP.HCM', accountHolder:'TRAN THI BICH', status:'pending', auditLog:[{label:'Tạo yêu cầu', actor:'Trần Thị Bích', time:'28/08/2026 09:12'}] },
-      { id:2, seller:'Lê Văn Cường', amountNum:800000, date:'27/08/2026', accountNumber:'1903123456', bankName:'Techcombank', branch:'CN Hà Nội', accountHolder:'LE VAN CUONG', status:'specialist_approved', auditLog:[{label:'Tạo yêu cầu', actor:'Lê Văn Cường', time:'27/08/2026 10:00'},{label:'Admin Specialist duyệt (chờ Head Admin)', actor:'Admin Specialist', time:'27/08/2026 14:20'}] },
-      { id:3, seller:'Vũ Minh Khang', amountNum:5000000, date:'25/08/2026', accountNumber:'0501234567', bankName:'BIDV', branch:'CN Đà Nẵng', accountHolder:'VU MINH KHANG', status:'approved', auditLog:[{label:'Tạo yêu cầu', actor:'Vũ Minh Khang', time:'25/08/2026 08:30'},{label:'Admin Specialist duyệt (chờ Head Admin)', actor:'Admin Specialist', time:'25/08/2026 09:00'},{label:'Head Admin xác nhận duyệt', actor:'Head Admin', time:'25/08/2026 15:00'}] },
-      { id:4, seller:'Phạm Thị Dung', amountNum:300000, date:'20/08/2026', accountNumber:'0331234567', bankName:'ACB', branch:'CN TP.HCM', accountHolder:'PHAM THI DUNG', status:'rejected', reason:'Thông tin tài khoản không khớp CCCD.', auditLog:[{label:'Tạo yêu cầu', actor:'Phạm Thị Dung', time:'20/08/2026 08:00'},{label:'Từ chối yêu cầu', actor:'Admin Specialist', time:'20/08/2026 11:00'}] },
-      { id:5, seller:'Ngô Thị Em', amountNum:1200000, date:'15/08/2026', accountNumber:'0221234567', bankName:'MB Bank', branch:'CN TP.HCM', accountHolder:'NGO THI EM', status:'paid', paidNote:'FT26081512345', auditLog:[{label:'Tạo yêu cầu', actor:'Ngô Thị Em', time:'15/08/2026 08:00'},{label:'Admin Specialist duyệt (chờ Head Admin)', actor:'Admin Specialist', time:'15/08/2026 09:00'},{label:'Head Admin xác nhận duyệt', actor:'Head Admin', time:'15/08/2026 10:00'},{label:'Đánh dấu đã chi trả', actor:'Head Admin', time:'16/08/2026 09:00'}] }
+      { id:2, seller:'Lê Văn Cường', amountNum:800000, date:'27/08/2026', accountNumber:'1903123456', bankName:'Techcombank', branch:'CN Hà Nội', accountHolder:'LE VAN CUONG', status:'specialist_approved', auditLog:[{label:'Tạo yêu cầu', actor:'Lê Văn Cường', time:'27/08/2026 10:00'},{label:'Admin duyệt (chờ Head)', actor:'Admin', time:'27/08/2026 14:20'}] },
+      { id:3, seller:'Vũ Minh Khang', amountNum:5000000, date:'25/08/2026', accountNumber:'0501234567', bankName:'BIDV', branch:'CN Đà Nẵng', accountHolder:'VU MINH KHANG', status:'approved', auditLog:[{label:'Tạo yêu cầu', actor:'Vũ Minh Khang', time:'25/08/2026 08:30'},{label:'Admin duyệt (chờ Head)', actor:'Admin', time:'25/08/2026 09:00'},{label:'Head xác nhận duyệt', actor:'Head', time:'25/08/2026 15:00'}] },
+      { id:4, seller:'Phạm Thị Dung', amountNum:300000, date:'20/08/2026', accountNumber:'0331234567', bankName:'ACB', branch:'CN TP.HCM', accountHolder:'PHAM THI DUNG', status:'rejected', reason:'Thông tin tài khoản không khớp CCCD.', auditLog:[{label:'Tạo yêu cầu', actor:'Phạm Thị Dung', time:'20/08/2026 08:00'},{label:'Từ chối yêu cầu', actor:'Admin', time:'20/08/2026 11:00'}] },
+      { id:5, seller:'Ngô Thị Em', amountNum:1200000, date:'15/08/2026', accountNumber:'0221234567', bankName:'MB Bank', branch:'CN TP.HCM', accountHolder:'NGO THI EM', status:'paid', paidNote:'FT26081512345', auditLog:[{label:'Tạo yêu cầu', actor:'Ngô Thị Em', time:'15/08/2026 08:00'},{label:'Admin duyệt (chờ Head)', actor:'Admin', time:'15/08/2026 09:00'},{label:'Head xác nhận duyệt', actor:'Head', time:'15/08/2026 10:00'},{label:'Đánh dấu đã chi trả', actor:'Head', time:'16/08/2026 09:00'}] }
     ];
     return raw.map(w => ({ ...w, amount: w.amountNum.toLocaleString('vi-VN') + 'đ' }));
   }
@@ -1209,9 +1248,16 @@ class Component extends DCLogic {
       .filter(w => !s.withdrawalSearch || w.seller.toLowerCase().includes(s.withdrawalSearch.toLowerCase()))
       .map(w => {
         const [bg, color, label] = this.badge(w.status);
-        return { ...w, badgeBg: bg, badgeColor: color, statusLabel: label, onClick: () => this.setState({ selectedWithdrawalId: w.id }) };
+        const reward = this.SELLER_BALANCE[w.seller] || 5000000;
+        return { ...w, badgeBg: bg, badgeColor: color, statusLabel: label,
+          rewardNum: reward, remainNum: reward - w.amountNum,
+          rewardLabel: reward.toLocaleString('vi-VN') + 'đ',
+          remainLabel: (reward - w.amountNum).toLocaleString('vi-VN') + 'đ',
+          onClick: () => this.setState({ selectedWithdrawalId: w.id }) };
       });
     const withdrawalsEmpty = withdrawals.length === 0;
+    const sumReward = withdrawals.reduce((t, w) => t + w.rewardNum, 0);
+    const sumRequest = withdrawals.reduce((t, w) => t + w.amountNum, 0);
 
     // Stock (B4)
     const stockData = s.stockData || [];
@@ -1264,6 +1310,17 @@ class Component extends DCLogic {
         bankHolder: this.vnUpper(selectedMemberRaw.name),
         cccdFront: 'cccd-truoc-' + ALIAS[selectedMemberRaw.id] + '.jpg',
         cccdBack: 'cccd-sau-' + ALIAS[selectedMemberRaw.id] + '.jpg',
+        // (10) Cấp tuyến: F0 nếu không có tuyến trên, F1 nếu tuyến trên là
+        // gốc, F2 nếu tuyến trên lại có tuyến trên nữa.
+        tierLabel: (function (m, all) {
+          let lv = 0, cur = m;
+          while (cur && cur.upline && cur.upline !== '—' && lv < 6) {
+            cur = all.find(x => x.name === cur.upline); lv++;
+          }
+          return 'F' + lv;
+        })(selectedMemberRaw, this.MEMBERS),
+        // Ghi đè bằng phần admin đã sửa (nếu có).
+        ...(s.memberEdits[selectedMemberRaw.id] || {}),
         rankHistory: this.RANK_HISTORY[selectedMemberRaw.id]
           || [{ label: 'Tham gia · hạng '
                  + (this.RANK_LABEL[selectedMemberRaw.rank] || selectedMemberRaw.rank),
@@ -1272,7 +1329,7 @@ class Component extends DCLogic {
         isActiveOrLocked: ['active', 'locked'].includes(effStatus),
         canApproveMember: !isSpecialist && effStatus === 'specialist_approved',
         canRejectMember: !isSpecialist && effStatus === 'specialist_approved',
-        approveMemberButtonLabel: 'Duyệt thành viên · mở khoá điểm và ưu đãi',
+        approveMemberButtonLabel: 'Xác nhận, kích hoạt Thành viên hoạt động (Head)',
         approvalStageNote: effStatus === 'pending'
           ? 'Chưa xác nhận thanh toán. Vào màn Đơn hàng xác nhận tiền về trước, hồ sơ này mới duyệt được.'
           : effStatus === 'specialist_approved'
@@ -1303,8 +1360,8 @@ class Component extends DCLogic {
         canApprove: (isSpecialist && selectedWithdrawalRaw.status === 'pending') || (!isSpecialist && selectedWithdrawalRaw.status === 'specialist_approved'),
         canReject: ['pending', 'specialist_approved'].includes(selectedWithdrawalRaw.status),
         canMarkPaid: selectedWithdrawalRaw.status === 'approved',
-        approveButtonLabel: isSpecialist ? 'Duyệt (Specialist)' : 'Duyệt (Head Admin)',
-        approvalStageNote: selectedWithdrawalRaw.status === 'pending' ? 'Đang chờ Admin Specialist duyệt (bước 1/2).' : selectedWithdrawalRaw.status === 'specialist_approved' ? 'Đã qua Admin Specialist — đang chờ Head Admin xác nhận (bước 2/2).' : selectedWithdrawalRaw.status === 'approved' ? 'Đã duyệt đủ 2 cấp — chờ chi trả.' : null,
+        approveButtonLabel: isSpecialist ? 'Duyệt (Specialist)' : 'Duyệt (Head)',
+        approvalStageNote: selectedWithdrawalRaw.status === 'pending' ? 'Đang chờ Admin duyệt (bước 1/2).' : selectedWithdrawalRaw.status === 'specialist_approved' ? 'Đã qua Admin — đang chờ Head xác nhận (bước 2/2).' : selectedWithdrawalRaw.status === 'approved' ? 'Đã duyệt đủ 2 cấp — chờ chi trả.' : null,
         hasReason: !!selectedWithdrawalRaw.reason, hasPaidNote: !!selectedWithdrawalRaw.paidNote };
     }
 
@@ -1314,7 +1371,7 @@ class Component extends DCLogic {
     const approveOverBalance = !!(actionWithdrawalRaw && actionWithdrawalRaw.amountNum > sellerBalance);
     const actionWithdrawal = actionWithdrawalRaw ? { ...actionWithdrawalRaw, sellerBalanceLabel: sellerBalance.toLocaleString('vi-VN') + 'đ' } : null;
     const actionMember = (s.actionModal && s.actionModal.kind === 'member') ? this.MEMBERS.find(m => m.id === s.actionModal.id) : null;
-    const actionStageLabel = s.adminRole === 'specialist' ? 'Bước 1/2 · Admin Specialist duyệt' : 'Bước 2/2 · Head Admin xác nhận';
+    const actionStageLabel = s.adminRole === 'specialist' ? 'Bước 1/2 · Admin duyệt' : 'Bước 2/2 · Head xác nhận';
     const rejectDisabled = !s.rejectReason || !s.rejectReason.trim();
     const rejectConfirmStyle = 'flex:1;height:44px;border:none;border-radius:5px;font-size:14px;font-weight:600;color:#FFFFFF;background:' + (rejectDisabled ? 'rgba(154,163,176,.5)' : 'var(--err)') + ';cursor:' + (rejectDisabled ? 'not-allowed' : 'pointer');
 
@@ -1365,7 +1422,7 @@ class Component extends DCLogic {
         canConfirm: canConfirmO, canReject: canRejectO, canAct: canConfirmO || canRejectO,
         needsCodePick: canConfirmO,
         isRejected: selOrderRaw.status === 'order_rejected',
-        confirmLabel: 'Xác nhận tiền về & cấp mã kích hoạt',
+        confirmLabel: 'Xác nhận tiền về và kích hoạt mã đơn hàng (Admin)',
         stageNote: selOrderRaw.status === 'order_pending'
           ? 'Đang chờ admin đối soát tiền về. Xác nhận xong hệ thống gửi email kèm mã kích hoạt cho khách ngay.'
           : (selOrderRaw.status === 'order_rejected' ? 'Đơn đã bị từ chối.' : null),
@@ -1562,7 +1619,7 @@ class Component extends DCLogic {
 
       adminLoginSubmit: () => GO('B2'),
       adminRole: s.adminRole,
-      adminRoleLabel: s.adminRole === 'specialist' ? '⚙ Admin Specialist · đổi vai trò' : '⚙ Head Admin · đổi vai trò',
+      adminRoleLabel: s.adminRole === 'specialist' ? '⚙ Admin · đổi vai trò' : '⚙ Head · đổi vai trò',
       toggleAdminRole: () => this.setState({ adminRole: s.adminRole === 'specialist' ? 'head' : 'specialist' }),
 
       memberSearch: s.memberSearch, setMemberSearch: (e) => this.setState({ memberSearch: e.target.value }),
@@ -1575,6 +1632,9 @@ class Component extends DCLogic {
 
       withdrawalFilters, withdrawalSearch: s.withdrawalSearch, setWithdrawalSearch: (e) => this.setState({ withdrawalSearch: e.target.value }),
       withdrawals, withdrawalsEmpty,
+      sumRewardLabel: sumReward.toLocaleString('vi-VN') + 'đ',
+      sumRequestLabel: sumRequest.toLocaleString('vi-VN') + 'đ',
+      sumRemainLabel: (sumReward - sumRequest).toLocaleString('vi-VN') + 'đ',
       closeWithdrawal: () => this.setState({ selectedWithdrawalId: null }),
       hasSelectedWithdrawal: !!selectedWithdrawal, selectedWithdrawal,
       openApproveModal: () => this.setState({ actionModal: { type: 'approve', kind: 'withdrawal', id: s.selectedWithdrawalId } }),
@@ -1599,7 +1659,7 @@ class Component extends DCLogic {
       adminUsers: this.ADMIN_USERS.map(u => {
         const locked = (s.adminUserLocks[u.id] || u.status) === 'locked';
         return { ...u,
-          roleLabel: u.role === 'head' ? 'Head Admin' : 'Admin Specialist',
+          roleLabel: u.role === 'head' ? 'Head' : 'Admin',
           roleBg: u.role === 'head' ? 'rgba(15,127,150,.14)' : 'rgba(154,163,176,.18)',
           roleColor: u.role === 'head' ? '#0F7F96' : '#5B6472',
           statusLabel: locked ? 'Đã khoá' : 'Đang hoạt động',
@@ -1618,6 +1678,34 @@ class Component extends DCLogic {
       adminUserFormEmail: (this.ADMIN_USERS.find(u => u.id === s.editingAdminUserId) || {}).email || '',
       openAdminUserForm: () => this.setState({ showAdminUserForm: true, editingAdminUserId: null }),
       closeAdminUserForm: () => this.setState({ showAdminUserForm: false, editingAdminUserId: null }),
+
+      // (12) Khối "Thông tin hồ sơ" — mở/đóng và sửa được.
+      profileOpen: s.profileOpen, profileCaret: s.profileOpen ? '▴' : '▾',
+      toggleProfile: () => this.setState({ profileOpen: !s.profileOpen, profileEdit: false }),
+      profileRead: s.profileOpen && !s.profileEdit,
+      profileEdit: s.profileOpen && s.profileEdit,
+      startProfileEdit: () => this.setState({ profileEdit: true,
+        profileDraft: { ...(selectedMember || {}) } }),
+      cancelProfileEdit: () => this.setState({ profileEdit: false, profileDraft: {} }),
+      saveProfileEdit: () => this.setState({
+        memberEdits: { ...s.memberEdits, [s.selectedMemberId]: { ...s.profileDraft } },
+        profileEdit: false, profileDraft: {} }),
+      pfName: (s.profileDraft || {}).name || '',
+      setPfName: (e) => this.setState({ profileDraft: { ...s.profileDraft, name: e.target.value } }),
+      pfPhone: (s.profileDraft || {}).phone || '',
+      setPfPhone: (e) => this.setState({ profileDraft: { ...s.profileDraft, phone: e.target.value } }),
+      pfEmail: (s.profileDraft || {}).email || '',
+      setPfEmail: (e) => this.setState({ profileDraft: { ...s.profileDraft, email: e.target.value } }),
+      pfCccd: (s.profileDraft || {}).cccd || '',
+      setPfCccd: (e) => this.setState({ profileDraft: { ...s.profileDraft, cccd: e.target.value } }),
+      pfDob: (s.profileDraft || {}).dobGender || '',
+      setPfDob: (e) => this.setState({ profileDraft: { ...s.profileDraft, dobGender: e.target.value } }),
+      pfAddress: (s.profileDraft || {}).address || '',
+      setPfAddress: (e) => this.setState({ profileDraft: { ...s.profileDraft, address: e.target.value } }),
+      pfBankAccount: (s.profileDraft || {}).bankAccount || '',
+      setPfBankAccount: (e) => this.setState({ profileDraft: { ...s.profileDraft, bankAccount: e.target.value } }),
+      pfBankHolder: (s.profileDraft || {}).bankHolder || '',
+      setPfBankHolder: (e) => this.setState({ profileDraft: { ...s.profileDraft, bankHolder: this.vnUpper(e.target.value) } }),
 
       // (10) Kết quả tra cứu đơn hàng
       lookupResult: s.lookupResult,
@@ -1728,13 +1816,16 @@ class Component extends DCLogic {
       orderActivationCode: s.orderActivationCode,
       setOrderActivationCode: (e) => this.setState({ orderActivationCode: e.target.value, orderCodeError: '' }),
       orderCodeError: s.orderCodeError,
+      bankTxnCode: s.bankTxnCode,
+      setBankTxnCode: (e) => this.setState({ bankTxnCode: e.target.value, orderCodeError: '' }),
       confirmOrder: () => {
         const o = (s.ordersData || []).find(x => x.id === s.selectedOrderId);
         if (!o) return;
         const now = '08/09/2026 10:00';
-        const who = s.adminRole === 'specialist' ? 'Admin Specialist' : 'Head Admin';
+        const who = s.adminRole === 'specialist' ? 'Admin' : 'Head';
         const code = s.orderActivationCode;
         if (!code) { this.setState({ orderCodeError: 'Chọn mã kích hoạt từ kho trước khi xác nhận.' }); return; }
+        if (!(s.bankTxnCode || '').trim()) { this.setState({ orderCodeError: 'Nhập mã giao dịch ngân hàng để đối soát.' }); return; }
         const item = stockData.find(p => p.activationCode === code && p.status === 'available');
         if (!item) { this.setState({ orderCodeError: 'Mã ' + code + ' không còn ở trạng thái Sẵn hàng.' }); return; }
         this.setState({
@@ -1742,19 +1833,19 @@ class Component extends DCLogic {
             ? { ...x, status: 'order_paid', activationCode: code,
                 activatedAt: now.slice(0, 10),
                 auditLog: [...x.auditLog,
-                  { label: 'Xác nhận tiền về và cấp mã kích hoạt ' + code, actor: who, time: now },
+                  { label: 'Xác nhận tiền về (GD ' + s.bankTxnCode.trim() + ') và kích hoạt mã ' + code, actor: who, time: now },
                   { label: 'Gửi email báo thanh toán thành công kèm mã kích hoạt cho khách', actor: 'Hệ thống', time: now }] }
             : x),
           stockData: stockData.map(p => p.activationCode === code
             ? { ...p, status: 'assigned', orderId: o.id, seller: o.referrer,
                 log: [...p.log, { label: 'Gán cho đơn ' + o.id, time: now }] }
             : p),
-          orderActivationCode: '', orderCodeError: ''
+          orderActivationCode: '', orderCodeError: '', bankTxnCode: ''
         });
       },
       rejectOrder: () => {
         const now = '08/09/2026 10:05';
-        const actor = s.adminRole === 'specialist' ? 'Admin Specialist' : 'Head Admin';
+        const actor = s.adminRole === 'specialist' ? 'Admin' : 'Head';
         this.setState({ ordersData: s.ordersData.map(x => x.id === s.selectedOrderId
           ? { ...x, status: 'order_rejected',
               auditLog: [...x.auditLog, { label: 'Từ chối đơn', actor, time: now }] }
@@ -1837,8 +1928,8 @@ class Component extends DCLogic {
         const isSpecialist = s.adminRole === 'specialist';
         if (kind === 'member') {
           const nextStatus = 'active';
-          const label = 'Manager duyệt thành viên — mở khoá điểm và ưu đãi đang tạm giữ';
-          const actor = 'Head Admin';
+          const label = 'Head duyệt thành viên — mở khoá điểm và ưu đãi đang tạm giữ';
+          const actor = 'Head';
           this.setState({
             memberStatusOverrides: { ...s.memberStatusOverrides, [id]: nextStatus },
             memberAuditLog: { ...s.memberAuditLog, [id]: [...(s.memberAuditLog[id] || []), { label, actor, time: now }] },
@@ -1847,8 +1938,8 @@ class Component extends DCLogic {
           return;
         }
         const nextStatus = isSpecialist ? 'specialist_approved' : 'approved';
-        const label = isSpecialist ? 'Admin Specialist duyệt (chờ Head Admin)' : 'Head Admin xác nhận duyệt';
-        const actor = isSpecialist ? 'Admin Specialist' : 'Head Admin';
+        const label = isSpecialist ? 'Admin duyệt (chờ Head)' : 'Head xác nhận duyệt';
+        const actor = isSpecialist ? 'Admin' : 'Head';
         this.setState({ withdrawalsData: withdrawalsData.map(w => w.id === id ? { ...w, status: nextStatus, auditLog: [...w.auditLog, { label, actor, time: now }] } : w), actionModal: null });
       },
       rejectReason: s.rejectReason, setRejectReason: (e) => this.setState({ rejectReason: e.target.value }),
@@ -1856,7 +1947,7 @@ class Component extends DCLogic {
       confirmReject: () => {
         if (!s.rejectReason.trim()) return;
         const { id, kind } = s.actionModal, now = '03/09/2026 10:05';
-        const actor = s.adminRole === 'specialist' ? 'Admin Specialist' : 'Head Admin';
+        const actor = s.adminRole === 'specialist' ? 'Admin' : 'Head';
         if (kind === 'member') {
           this.setState({
             memberStatusOverrides: { ...s.memberStatusOverrides, [id]: 'rejected' },
@@ -1870,7 +1961,7 @@ class Component extends DCLogic {
       paidNote: s.paidNote, setPaidNote: (e) => this.setState({ paidNote: e.target.value }),
       confirmPaid: () => {
         const id = s.actionModal.id, now = '03/09/2026 10:10';
-        this.setState({ withdrawalsData: withdrawalsData.map(w => w.id === id ? { ...w, status: 'paid', paidNote: s.paidNote, auditLog: [...w.auditLog, { label: 'Đánh dấu đã chi trả', actor: s.adminRole === 'specialist' ? 'Admin Specialist' : 'Head Admin', time: now }] } : w), actionModal: null, paidNote: '' });
+        this.setState({ withdrawalsData: withdrawalsData.map(w => w.id === id ? { ...w, status: 'paid', paidNote: s.paidNote, auditLog: [...w.auditLog, { label: 'Đánh dấu đã chi trả', actor: s.adminRole === 'specialist' ? 'Admin' : 'Head', time: now }] } : w), actionModal: null, paidNote: '' });
       }
     };
   }
