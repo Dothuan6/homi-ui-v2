@@ -949,6 +949,12 @@ JS_PATCHES = [
      "    showImportStock: false, importText: '', importResult: null,\n"
      "    orderActivationCode: '', orderCodeError: '',\n"
      "    copyPersonalLabel: 'Copy link',\n"
+     "    banks: null, provinceData: null,\n"
+     "    bankQuery: 'Vietcombank', bankOpen: false,\n"
+     "    provinceQuery: 'Thành phố Hồ Chí Minh', provinceOpen: false,\n"
+     "    wardQuery: 'Phường Bến Thành', wardOpen: false,\n"
+     "    accountHolder: '', buyTcChecked: false,\n"
+     "    cccdIssueDate: '', cccdIssuePlace: '',\n"
      "    showAdminUserForm: false, editingAdminUserId: null, adminUserLocks: {},\n"
      "    orderRange: 'month',\n"
      "    ordersData: null, orderSearch: '', orderStatusFilter: 'all',\n"
@@ -1018,7 +1024,22 @@ JS_PATCHES = [
     # Khởi tạo dữ liệu đơn hàng.
     ("    if (!this.state.stockData) this.setState({ stockData: this.makeStock() });",
      "    if (!this.state.stockData) this.setState({ stockData: this.makeStock() });\n"
-     "    if (!this.state.ordersData) this.setState({ ordersData: this.makeOrders() });"),
+     "    if (!this.state.ordersData) this.setState({ ordersData: this.makeOrders() });\n"
+     "    // Nạp danh sách ngân hàng và địa giới hành chính từ API công khai.\n"
+     "    // Lỗi mạng thì giữ nguyên danh sách rút gọn, prototype vẫn dùng được.\n"
+     "    try {\n"
+     "      fetch('https://api.vietqr.io/v2/banks')\n"
+     "        .then(r => r.json())\n"
+     "        .then(j => { const b = (j && j.data || []).map(x => x.shortName + ' — ' + x.name);\n"
+     "                     if (b.length) this.setState({ banks: b }); })\n"
+     "        .catch(() => {});\n"
+     "      fetch('https://provinces.open-api.vn/api/v2/?depth=2')\n"
+     "        .then(r => r.json())\n"
+     "        .then(j => { const p = (j || []).map(x => ({ name: x.name,\n"
+     "                       wards: (x.wards || []).map(w => w.name) }));\n"
+     "                     if (p.length) this.setState({ provinceData: p }); })\n"
+     "        .catch(() => {});\n"
+     "    } catch (e) {}"),
 
     # Dữ liệu sản phẩm + đơn hàng (mockup KH không có 2 màn này).
     ("  componentDidMount() {",
@@ -1063,6 +1084,36 @@ JS_PATCHES = [
     return raw.map(o => ({ ...o, amount: o.amountNum.toLocaleString('vi-VN') + 'đ' }));
   }
 
+  // --- Danh sách ngân hàng & địa giới hành chính -------------------------
+  // Nạp từ API công khai lúc khởi động; hỏng mạng thì rơi về danh sách rút gọn
+  // bên dưới để prototype vẫn mở được bằng file://.
+  BANKS_FALLBACK = ['Vietcombank — NH TMCP Ngoại thương Việt Nam','Techcombank — NH TMCP Kỹ thương Việt Nam','BIDV — NH Đầu tư và Phát triển Việt Nam','VietinBank — NH TMCP Công thương Việt Nam','Agribank — NH NN&PTNT Việt Nam','MB Bank — NH TMCP Quân đội','ACB — NH TMCP Á Châu','VPBank — NH TMCP Việt Nam Thịnh Vượng','Sacombank — NH TMCP Sài Gòn Thương Tín','TPBank — NH TMCP Tiên Phong','HDBank — NH TMCP Phát triển TP.HCM','SHB — NH TMCP Sài Gòn – Hà Nội','VIB — NH TMCP Quốc tế Việt Nam','MSB — NH TMCP Hàng Hải','OCB — NH TMCP Phương Đông','SeABank — NH TMCP Đông Nam Á','Eximbank — NH TMCP Xuất Nhập khẩu','LPBank — NH TMCP Lộc Phát Việt Nam','Nam A Bank — NH TMCP Nam Á','BVBank — NH TMCP Bản Việt'];
+
+  PROVINCES_FALLBACK = [
+    { name: 'Thành phố Hồ Chí Minh', wards: ['Phường Bến Thành','Phường Sài Gòn','Phường Cầu Ông Lãnh','Phường Bàn Cờ','Phường Chợ Lớn','Phường Bình Trưng','Phường An Khánh','Phường Thủ Đức','Phường Hoà Hưng','Phường Tân Sơn Nhất'] },
+    { name: 'Thành phố Hà Nội', wards: ['Phường Hoàn Kiếm','Phường Ba Đình','Phường Cửa Nam','Phường Đống Đa','Phường Hai Bà Trưng','Phường Cầu Giấy','Phường Thanh Xuân','Phường Tây Hồ'] },
+    { name: 'Thành phố Đà Nẵng', wards: ['Phường Hải Châu','Phường Thanh Khê','Phường Sơn Trà','Phường Ngũ Hành Sơn','Phường Liên Chiểu'] },
+    { name: 'Thành phố Cần Thơ', wards: ['Phường Ninh Kiều','Phường Bình Thuỷ','Phường Cái Răng'] },
+    { name: 'Thành phố Hải Phòng', wards: ['Phường Hồng Bàng','Phường Ngô Quyền','Phường Lê Chân'] },
+    { name: 'Tỉnh Đồng Nai', wards: ['Phường Trấn Biên','Phường Biên Hoà','Phường Long Bình'] },
+    { name: 'Tỉnh Tây Ninh', wards: ['Phường Tân Ninh','Phường Long Hoa'] },
+    { name: 'Tỉnh Khánh Hoà', wards: ['Phường Nha Trang','Phường Bắc Nha Trang','Phường Cam Ranh'] }
+  ];
+
+  // Bỏ dấu tiếng Việt + viết hoa — dùng cho tên chủ tài khoản ngân hàng.
+  vnUpper(s) {
+    return (s || '').normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
+      .replace(/đ/g, 'd').replace(/Đ/g, 'D').toUpperCase();
+  }
+
+  // Nhập 22011991 -> hiển thị 22/01/1991
+  dateMask(s) {
+    const d = (s || '').replace(/\\D/g, '').slice(0, 8);
+    if (d.length > 4) return d.slice(0, 2) + '/' + d.slice(2, 4) + '/' + d.slice(4);
+    if (d.length > 2) return d.slice(0, 2) + '/' + d.slice(2);
+    return d;
+  }
+
   ADMIN_USERS = [
     { id:1, name:'Trần Quốc Head', email:'head@homi365.com.vn', role:'head', status:'active' },
     { id:2, name:'Hoàng Thị Mỹ Trinh', email:'trinh@homi365.com.vn', role:'head', status:'active' },
@@ -1100,7 +1151,16 @@ JS_PATCHES = [
 
     # Tính toán cho màn Đơn hàng, đặt ngay trước khối return của renderVals.
     ("    return {\n      nav, adminNav,",
-     """    // Đơn hàng (B6) — bổ sung, không có trong mockup KH
+     """    // Dữ liệu cho 3 dropdown có tìm kiếm. norm() bỏ dấu để gõ "ho chi minh"
+    // vẫn ra "Hồ Chí Minh".
+    const norm = (x) => (x || '').normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
+      .replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase().trim();
+    const bankList = s.banks || this.BANKS_FALLBACK;
+    const provList = s.provinceData || this.PROVINCES_FALLBACK;
+    const curProv = provList.find(p => p.name === s.provinceQuery);
+    const wardList = (curProv && curProv.wards) || [];
+
+    // Đơn hàng (B6) — bổ sung, không có trong mockup KH
     const ordersRaw = s.ordersData || [];
     const orderRows = ordersRaw
       .filter(o => (s.orderStatusFilter === 'all' || !s.orderStatusFilter) || o.status === s.orderStatusFilter)
@@ -1171,6 +1231,52 @@ JS_PATCHES = [
       adminUserFormEmail: (this.ADMIN_USERS.find(u => u.id === s.editingAdminUserId) || {}).email || '',
       openAdminUserForm: () => this.setState({ showAdminUserForm: true, editingAdminUserId: null }),
       closeAdminUserForm: () => this.setState({ showAdminUserForm: false, editingAdminUserId: null }),
+
+      // --- Dropdown có tìm kiếm: ngân hàng / tỉnh thành / phường xã --------
+      bankQuery: s.bankQuery, bankOpen: s.bankOpen,
+      toggleBank: () => this.setState({ bankOpen: !s.bankOpen }),
+      setBankQuery: (e) => this.setState({ bankQuery: e.target.value, bankOpen: true }),
+      bankOptions: bankList.filter(b => norm(b).includes(norm(s.bankQuery)) || s.bankQuery === b)
+        .slice(0, 60).map(b => ({ label: b,
+          onPick: () => this.setState({ bankQuery: b, bankOpen: false }) })),
+      bankEmpty: bankList.filter(b => norm(b).includes(norm(s.bankQuery))).length === 0,
+      bankCount: bankList.length,
+
+      provinceQuery: s.provinceQuery, provinceOpen: s.provinceOpen,
+      toggleProvince: () => this.setState({ provinceOpen: !s.provinceOpen }),
+      setProvinceQuery: (e) => this.setState({ provinceQuery: e.target.value, provinceOpen: true }),
+      provinceOptions: provList.filter(p => norm(p.name).includes(norm(s.provinceQuery)) || s.provinceQuery === p.name)
+        .slice(0, 80).map(p => ({ label: p.name,
+          onPick: () => this.setState({ provinceQuery: p.name, provinceOpen: false,
+            wardQuery: (p.wards && p.wards[0]) || '' }) })),
+      provinceEmpty: provList.filter(p => norm(p.name).includes(norm(s.provinceQuery))).length === 0,
+
+      wardQuery: s.wardQuery, wardOpen: s.wardOpen,
+      toggleWard: () => this.setState({ wardOpen: !s.wardOpen }),
+      setWardQuery: (e) => this.setState({ wardQuery: e.target.value, wardOpen: true }),
+      wardOptions: wardList.filter(w => norm(w).includes(norm(s.wardQuery)) || s.wardQuery === w)
+        .slice(0, 120).map(w => ({ label: w,
+          onPick: () => this.setState({ wardQuery: w, wardOpen: false }) })),
+      wardEmpty: wardList.filter(w => norm(w).includes(norm(s.wardQuery))).length === 0,
+
+      // Tên chủ tài khoản — tự viết hoa, bỏ dấu.
+      accountHolder: s.accountHolder,
+      setAccountHolder: (e) => this.setState({ accountHolder: this.vnUpper(e.target.value) }),
+
+      // Điều khoản mua hàng — chưa tích thì không bấm thanh toán được.
+      buyTcChecked: s.buyTcChecked,
+      toggleBuyTc: () => this.setState({ buyTcChecked: !s.buyTcChecked }),
+      payDisabled: !s.buyTcChecked,
+      payStyle: 'height:48px;color:var(--c12);border:none;border-radius:var(--r-md);'
+        + 'font-size:16px;font-weight:700;box-shadow:var(--sh);background:'
+        + (s.buyTcChecked ? 'var(--c6)' : 'rgba(170,170,170,.5)')
+        + ';cursor:' + (s.buyTcChecked ? 'pointer' : 'not-allowed'),
+
+      // CCCD — ngày cấp / nơi cấp (màn đăng ký agent)
+      cccdIssueDate: s.cccdIssueDate,
+      setCccdIssueDate: (e) => this.setState({ cccdIssueDate: this.dateMask(e.target.value) }),
+      cccdIssuePlace: s.cccdIssuePlace,
+      setCccdIssuePlace: (e) => this.setState({ cccdIssuePlace: e.target.value }),
 
       // 7.3.3 — còn thiếu bao nhiêu đơn để lên hạng kế tiếp
       rankProgress: this.RANK_PROGRESS[s.agentStage === 'active' ? 'active' : 'new'],
