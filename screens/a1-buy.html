@@ -565,14 +565,27 @@ class Component extends DCLogic {
     const statuses = ['received','available','available','assigned','shipped','delivered'];
     for (let i = 1; i <= 24; i++) {
       const status = statuses[i % statuses.length];
+      const d = '0' + (1 + i % 9) + '/08/2026';
+      const ord = ['received', 'available'].includes(status) ? '—' : 'DH' + (100000 + i * 13);
+      const track = ['shipped', 'delivered'].includes(status)
+        ? 'VN' + (830000000 + i * 137) : '—';
+      const STEPS = ['received', 'available', 'assigned', 'shipped', 'delivered'];
+      const STEP_TXT = {
+        received: 'Nhập kho',
+        available: 'Kiểm hàng xong · chuyển sang Sẵn hàng',
+        assigned: 'Gán đơn hàng ' + ord + ' · cấp mã kích hoạt cho khách',
+        shipped: 'Xuất kho, bàn giao đơn vị vận chuyển',
+        delivered: 'Giao hàng thành công · mã vận đơn ' + track
+      };
+      const chain = STEPS.slice(0, STEPS.indexOf(status) + 1).map((st, k) => ({
+        label: STEP_TXT[st],
+        time: d + ' ' + String(8 + k * 2).padStart(2, '0') + ':00'
+      }));
       items.push({
         id: i, sku: 'CN02-' + String(i).padStart(4,'0'), activationCode: 'ACT-' + (100000 + i * 37),
-        orderId: status === 'available' ? '—' : 'DH' + (100000 + i * 13),
-        seller: status === 'available' ? '—' : this.MEMBERS[i % this.MEMBERS.length].name,
-        stockedAt: '0' + (1 + i % 9) + '/08/2026', status,
-        tracking: (status === 'shipped' || status === 'delivered')
-          ? 'VN' + (830000000 + i * 137) : '—',
-        log: [{ label: 'Nhập kho', time: '0' + (1 + i % 9) + '/08/2026 08:00' }]
+        orderId: ord,
+        seller: ord === '—' ? '—' : this.MEMBERS[i % this.MEMBERS.length].name,
+        stockedAt: d, status, tracking: track, log: chain
       });
     }
     return items;

@@ -1197,6 +1197,15 @@ BG_PATCHES += [
      '            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Xuất kho</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{stockShipped}}</div></div>\n'
      '            <div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s2)"><div style="font-size:12px;color:var(--c5)">Giao thành công</div><div style="font-size:26px;font-weight:700;color:var(--c1)">{{stockDelivered}}</div></div>'),
 
+    # Ngăn chi tiết thiết bị: bổ sung mã vận đơn.
+    ('<div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">'
+     'Seller</span><span style="font-weight:600">{{selectedStock.seller}}</span></div>',
+     '<div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">'
+     'Thành viên</span><span style="font-weight:600">{{selectedStock.seller}}</span></div>'
+     '<div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">'
+     'Mã vận đơn</span><span style="font-weight:600;font-family:monospace">'
+     '{{selectedStock.tracking}}</span></div>'),
+
     # (3) (7) Cột "Seller" -> "Thành viên" ở màn rút tiền và màn kho.
     ('<div>Seller</div>', '<div>Thành viên</div>'),
     ('>Seller<', '>Thành viên<'),
@@ -1681,10 +1690,33 @@ JS_PATCHES = [
 
     ("""        stockedAt: '0' + (1 + i % 9) + '/08/2026', status,
         log: [{ label: 'Nhập kho', time: '0' + (1 + i % 9) + '/08/2026 08:00' }]""",
-     """        stockedAt: '0' + (1 + i % 9) + '/08/2026', status,
-        tracking: (status === 'shipped' || status === 'delivered')
-          ? 'VN' + (830000000 + i * 137) : '—',
-        log: [{ label: 'Nhập kho', time: '0' + (1 + i % 9) + '/08/2026 08:00' }]"""),
+     """        stockedAt: d, status, tracking: track, log: chain"""),
+
+    # Lịch sử trạng thái phải dựng đủ các bước đã đi qua, không chỉ "Nhập kho".
+    ("      const status = statuses[i % statuses.length];",
+     """      const status = statuses[i % statuses.length];
+      const d = '0' + (1 + i % 9) + '/08/2026';
+      const ord = ['received', 'available'].includes(status) ? '—' : 'DH' + (100000 + i * 13);
+      const track = ['shipped', 'delivered'].includes(status)
+        ? 'VN' + (830000000 + i * 137) : '—';
+      const STEPS = ['received', 'available', 'assigned', 'shipped', 'delivered'];
+      const STEP_TXT = {
+        received: 'Nhập kho',
+        available: 'Kiểm hàng xong · chuyển sang Sẵn hàng',
+        assigned: 'Gán đơn hàng ' + ord + ' · cấp mã kích hoạt cho khách',
+        shipped: 'Xuất kho, bàn giao đơn vị vận chuyển',
+        delivered: 'Giao hàng thành công · mã vận đơn ' + track
+      };
+      const chain = STEPS.slice(0, STEPS.indexOf(status) + 1).map((st, k) => ({
+        label: STEP_TXT[st],
+        time: d + ' ' + String(8 + k * 2).padStart(2, '0') + ':00'
+      }));"""),
+
+    # Đơn hàng gắn / thành viên chỉ trống khi hàng chưa được gán.
+    ("        orderId: status === 'available' ? '—' : 'DH' + (100000 + i * 13),\n"
+     "        seller: status === 'available' ? '—' : this.MEMBERS[i % this.MEMBERS.length].name,",
+     "        orderId: ord,\n"
+     "        seller: ord === '—' ? '—' : this.MEMBERS[i % this.MEMBERS.length].name,"),
 
     # (16) Ngày hiệu lực = lúc admin xác nhận thanh toán và gửi mã cho khách.
     # Ngày hết hiệu lực = cộng thời hạn gói (bản mẫu dùng gói 1 năm).
