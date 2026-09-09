@@ -307,10 +307,13 @@ POLICY_LINKS = [
 ]
 
 
-def footer_html(prefix=""):
+def footer_html(prefix="", pol_prefix=""):
+    """prefix: đường tới thư mục gốc (cho ảnh logo).
+    pol_prefix: đường tới policy.html — file này nằm trong screens/ nên khi
+    footer được nhúng vào chính screens/*.html thì để rỗng."""
     links = "".join(
         '<a href="%spolicy.html?s=%s" style="color:var(--c2);text-decoration:none;'
-        'font-size:13px" style-hover="color:#00ADEE">%s</a>' % (prefix, pid, label)
+        'font-size:13px" style-hover="color:#00ADEE">%s</a>' % (pol_prefix, pid, label)
         for pid, label in POLICY_LINKS)
     return (
         '\n  <footer style="background:var(--c12);border-top:1px solid rgba(170,170,170,.35);'
@@ -878,6 +881,12 @@ BG_PATCHES += [
      'font-size:16px;font-weight:600;box-shadow:var(--sh)" '
      'style-hover="background:#0099d1">Tra cứu đơn hàng</button>\n'
      '        </sc-if>'),
+
+    # (9b) Tiêu đề modal thanh toán thành công kèm lời mời gia nhập.
+    ('<div style="font-size:20px;font-weight:700;color:var(--c1)">'
+     'Đơn hàng đã được ghi nhận</div>',
+     '<div style="font-size:20px;font-weight:700;color:var(--c1);line-height:1.4">'
+     'Đơn hàng đã được ghi nhận, mời gia nhập HOMI365</div>'),
 
     # (9) Đổi tiêu đề modal thanh toán thành công.
     ('Bạn có muốn đăng ký làm seller Homi365 để nhận hoa hồng giới thiệu không?',
