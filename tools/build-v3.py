@@ -340,8 +340,9 @@ def footer_html(prefix=""):
         '      </div>\n'
         '      <div style="border-top:1px solid rgba(170,170,170,.25);padding-top:var(--s6);'
         'font-size:12px;color:var(--c5);line-height:1.8">………… All rights reserved. '
-        'Giấy phép đăng ký kinh doanh số ………………… do Sở ………………… cấp lần đầu ngày ………… '
-        'Người chịu trách nhiệm nội dung: Bà Phùng Thị Thúy Linh. Chức vụ: Giám đốc</div>\n'
+        'Giấy phép đăng ký kinh doanh số ………………… do Sở ………………… cấp lần đầu ngày …………'
+        '<br>Người chịu trách nhiệm nội dung: Bà Phùng Thị Thúy Linh. '
+        'Chức vụ: Giám đốc</div>\n'
         '    </div>\n'
         '  </footer>\n' % (prefix, links)
     )
