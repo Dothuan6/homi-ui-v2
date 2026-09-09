@@ -1486,7 +1486,7 @@ JS_PATCHES = [
     ("{ this.setState({ screen: 'A3', agentLoginError: false }); }",
      "{ GO('A3'); }"),
     ("agentOtpConfirm: () => this.setState({ screen: 'A3', agentLoginStep: 'login', agentLoginError: false })",
-     "agentOtpConfirm: () => GO('A3')"),
+     "agentOtpConfirm: () => GO('A3', { agentStage: 'active' })"),
 
     # Đăng nhập admin -> màn Thành viên
     ("adminLoginSubmit: () => this.setState({ screen: 'B2' })",
@@ -1676,7 +1676,10 @@ JS_PATCHES = [
             buyerDob: boughtOrder.buyerDob });
           return;
         }
-        if (ph && s.agentPassword === '123456') { GO('A3'); }
+        // Ba SĐT trong REGISTERED_PHONES là agent ĐÃ được kích hoạt, nên đăng
+        // nhập xong phải vào dashboard trạng thái hoạt động (rút tiền được),
+        // không phải trạng thái chờ kích hoạt của người vừa đăng ký.
+        if (ph && s.agentPassword === '123456') { GO('A3', { agentStage: 'active' }); }
         else { this.setState({ agentLoginError: true, agentLoginStep: 'otp' }); }
       },
 

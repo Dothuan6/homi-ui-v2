@@ -940,7 +940,10 @@ class Component extends DCLogic {
             buyerDob: boughtOrder.buyerDob });
           return;
         }
-        if (ph && s.agentPassword === '123456') { GO('A3'); }
+        // Ba SĐT trong REGISTERED_PHONES là agent ĐÃ được kích hoạt, nên đăng
+        // nhập xong phải vào dashboard trạng thái hoạt động (rút tiền được),
+        // không phải trạng thái chờ kích hoạt của người vừa đăng ký.
+        if (ph && s.agentPassword === '123456') { GO('A3', { agentStage: 'active' }); }
         else { this.setState({ agentLoginError: true, agentLoginStep: 'otp' }); }
       },
 
@@ -984,7 +987,7 @@ class Component extends DCLogic {
       },
       agentMaskedPhone: s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123',
       agentBackToLogin: () => this.setState({ agentLoginStep: 'login' }),
-      agentOtpConfirm: () => GO('A3'),
+      agentOtpConfirm: () => GO('A3', { agentStage: 'active' }),
       openForgotPassword: (e) => { if (e) e.preventDefault(); this.setState({ agentLoginStep: 'forgot_phone', forgotPhoneError: false }); },
       openOrderLookup: (e) => { if (e) e.preventDefault(); this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false, lookupResult: null }); },
       forgotPhone: s.forgotPhone, setForgotPhone: (e) => this.setState({ forgotPhone: e.target.value, forgotPhoneError: false }),
