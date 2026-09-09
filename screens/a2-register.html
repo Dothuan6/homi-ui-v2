@@ -47,7 +47,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
       <sc-if value="{{isRegStep1}}" hint-placeholder-val="{{true}}">
         <div style="display:flex;flex-direction:column;gap:var(--s7)">
 
-          <div><div style="font-size:24px;font-weight:700">Thông tin đăng ký</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">Bước 1/3 · Thông tin cá nhân &amp; nhận hoa hồng</div></div>
+          <div><div style="font-size:24px;font-weight:700">Thông tin đăng ký</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">Bước 1/5 · Thông tin cá nhân &amp; nhận hoa hồng</div></div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Họ và tên</label><input type="text" placeholder="Nguyễn Văn A" value="{{buyerName}}" sc-camel-on-change="{{setBuyerName}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số điện thoại</label><input type="text" placeholder="090xxxxxxx" value="{{buyerPhone}}" sc-camel-on-change="{{setBuyerPhone}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Email</label><input type="text" placeholder="email@domain.com" value="{{buyerEmail}}" sc-camel-on-change="{{setBuyerEmail}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
@@ -118,11 +118,11 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
         <div style="display:flex;flex-direction:column;gap:var(--s8)">
           <div><div style="font-size:24px;font-weight:700">Điều khoản tham gia</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">Bước 4/4 · Vui lòng đọc và xác nhận</div></div>
           <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);padding:var(--s7);height:180px;overflow:auto;font-size:13px;line-height:1.6;color:var(--c4)">
-            Điều khoản chương trình affiliate Medigo — Homi365. Bằng việc tích chọn xác nhận, bạn đồng ý với chính sách hoa hồng, quy định về tuyến trên/tuyến dưới, và các điều kiện rút tiền được Homi365 quy định. Nội dung đầy đủ do bộ phận Pháp lý cung cấp trước khi go‑live.
+            Điều khoản chương trình affiliate HOMI365 — Homi365. Bằng việc tích chọn xác nhận, bạn đồng ý với chính sách hoa hồng, quy định về tuyến trên/tuyến dưới, và các điều kiện rút tiền được Homi365 quy định. Nội dung đầy đủ do bộ phận Pháp lý cung cấp trước khi go‑live.
           </div>
           <label style="display:flex;align-items:flex-start;gap:var(--s4);font-size:14px;color:var(--c2)">
             <input type="checkbox" checked="{{tncChecked}}" sc-camel-on-change="{{toggleTnc}}" style="width:18px;height:18px;margin-top:2px;accent-color:#1E3A66">
-            Tôi đã đọc và đồng ý với điều khoản tham gia chương trình affiliate Medigo.
+            Tôi đã đọc và đồng ý với điều khoản tham gia chương trình affiliate HOMI365.
           </label>
           <div style="display:flex;gap:var(--s5)">
             <button sc-camel-on-click="{{regPrev}}" style="flex:1;height:46px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:15px;font-weight:600">Quay lại</button>
@@ -134,7 +134,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
       <sc-if value="{{isRegStep5}}" hint-placeholder-val="{{false}}">
         <div style="display:flex;flex-direction:column;gap:var(--s8);text-align:center;align-items:center">
           <div style="width:64px;height:64px;border-radius:var(--r-full);background:rgba(47,122,72,.15);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--c8)">✓</div>
-          <div><div style="font-size:24px;font-weight:700">Kích hoạt thành công</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Bạn đã chính thức là seller Medigo</div></div>
+          <div><div style="font-size:24px;font-weight:700">Kích hoạt thành công</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Bạn đã chính thức là seller HOMI365</div></div>
           <div style="width:100%;border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s5);background:var(--c12);box-shadow:var(--sh)">
             <div style="font-size:12px;color:var(--c5);text-transform:uppercase;letter-spacing:.04em">Mã giới thiệu (aff_id)</div>
             <div style="font-size:30px;font-weight:900;color:var(--c1);letter-spacing:.02em">923983</div>
@@ -241,9 +241,9 @@ class Component extends DCLogic {
 
   MEMBERS = [
     { id:1, name:'Trần Thị Bích', phone:'0901234123', contact:'090•••123', affId:'923983', upline:'—', rank:'Bạc', joined:'12/08/2026', status:'active',
-      tree:[{name:'Lê Văn Cường', orders:4},{name:'Phạm Thị Dung', orders:1}] },
+      tree:[{name:'Lê Văn Cường', orders:4, children:[{name:'Ngô Thị Em', orders:2},{name:'Đỗ Anh Tuấn', orders:9}]},{name:'Phạm Thị Dung', orders:1, children:[]}] },
     { id:2, name:'Lê Văn Cường', phone:'0912345456', contact:'091•••456', affId:'118820', upline:'Trần Thị Bích', rank:'Đồng', joined:'20/08/2026', status:'active',
-      tree:[{name:'Ngô Thị Em', orders:2}] },
+      tree:[{name:'Ngô Thị Em', orders:2, children:[{name:'Vũ Minh Khang', orders:5}]}] },
     { id:3, name:'Phạm Thị Dung', phone:'0987654789', contact:'098•••789', affId:'302914', upline:'Trần Thị Bích', rank:'Đồng', joined:'22/08/2026', status:'locked', tree:[] },
     { id:4, name:'Ngô Thị Em', phone:'0976543112', contact:'097•••112', affId:'440221', upline:'Lê Văn Cường', rank:'Đồng', joined:'25/08/2026', status:'active', tree:[] },
     { id:5, name:'Vũ Minh Khang', phone:'0934567998', contact:'093•••998', affId:'552017', upline:'—', rank:'Vàng', joined:'01/08/2026', status:'active', tree:[{name:'Đỗ Anh Tuấn', orders:9}] },
@@ -299,9 +299,12 @@ class Component extends DCLogic {
     { id:5, name:'Phạm Bảo Ngọc', email:'ngoc.pb@homi365.com.vn', role:'specialist', status:'locked' }
   ];
 
-  ORDER_RANGES = [['today','Hôm nay'],['week','Tuần này'],['month','Tháng này'],['all','Tất cả']];
-  ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27' };
-  ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1' };
+  ORDER_RANGES = [['today','Hôm nay'],['week','Tuần này'],['month','Tháng này'],['all','Tất cả'],['custom','Khoảng ngày…']];
+  ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27', custom:'6' };
+  ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1', custom:'1' };
+
+  // 7.3.3 AC: hiển thị số đơn còn thiếu để lên hạng kế tiếp.
+  RANK_PROGRESS = { new: 'Còn 5 đơn để lên hạng Bạc', active: 'Còn 8 đơn để lên hạng Vàng' };
 
   RANK_HISTORY = {
     1: [{ label:'Thăng hạng Đồng → Bạc', time:'01/09/2026' },
@@ -390,7 +393,9 @@ class Component extends DCLogic {
     }));
 
     const adminOn = ['B2','B3','B4','B5','B6','B7'].includes(s.screen);
-    const adminNav = this.ADMIN_NAV.map(([id, label]) => ({
+    const adminNav = this.ADMIN_NAV
+      .filter(([id]) => id !== 'B7' || s.adminRole !== 'specialist')
+      .map(([id, label]) => ({
       id, label, onClick: set(id),
       style: 'text-align:left;font-size:13px;font-weight:600;padding:10px 12px;border-radius:5px;border:none;background:' +
         (s.screen === id ? 'rgba(255,255,255,.14)' : 'transparent') + ';color:#FFFFFF;opacity:' + (s.screen === id ? '1' : '.75')
@@ -605,6 +610,8 @@ class Component extends DCLogic {
       nav, adminNav,
       isA1: s.screen === 'A1', isA2: s.screen === 'A2', isA3: s.screen === 'A3',
       isC1: s.screen === 'C1', isB1: s.screen === 'B1', isB2: s.screen === 'B2', isB3: s.screen === 'B3', isB4: s.screen === 'B4', isB5: s.screen === 'B5', isB6: s.screen === 'B6', isB7: s.screen === 'B7',
+      isB7Allowed: s.screen === 'B7' && s.adminRole !== 'specialist',
+      isB7Denied: s.screen === 'B7' && s.adminRole === 'specialist',
       isAdminShell: adminOn,
 
       buyerName: s.buyerName, setBuyerName: (e) => this.setState({ buyerName: e.target.value }),
@@ -620,7 +627,10 @@ class Component extends DCLogic {
       showQRPayment: s.showQRPayment, orderId: s.orderId, qrModules,
       confirmQRPayment: () => this.setState({ showQRPayment: false, showPaymentSuccess: true }),
       showPaymentSuccess: s.showPaymentSuccess,
-      choosRegisterSeller: () => GO('A2', { regStep: 1 }),
+      choosRegisterSeller: () => GO('A2', { regStep: 1, orderId: s.orderId, uplineRank: s.uplineRank,
+        buyerName: s.buyerName, buyerPhone: s.buyerPhone, buyerEmail: s.buyerEmail,
+        buyerCccd: s.buyerCccd, buyerAddress: s.buyerAddress, buyerDob: s.buyerDob,
+        buyerBankAccount: s.buyerBankAccount }),
       choosSkipSeller: () => this.setState({ showPaymentSuccess: false }),
 
       showOrderLookup: s.showOrderLookup, orderLookupInput: s.orderLookupInput, orderLookupError: s.orderLookupError,
@@ -787,7 +797,11 @@ class Component extends DCLogic {
       openAdminUserForm: () => this.setState({ showAdminUserForm: true, editingAdminUserId: null }),
       closeAdminUserForm: () => this.setState({ showAdminUserForm: false, editingAdminUserId: null }),
 
-      // 7.3.2 — lọc số đơn theo khoảng thời gian
+      // 7.3.3 — còn thiếu bao nhiêu đơn để lên hạng kế tiếp
+      rankProgress: this.RANK_PROGRESS[s.agentStage === 'active' ? 'active' : 'new'],
+
+      // 7.3.2 — lọc số đơn theo khoảng thời gian, có cả khoảng ngày tuỳ chỉnh
+      isCustomRange: s.orderRange === 'custom',
       orderRanges: this.ORDER_RANGES.map(([id, label]) => ({
         id, label, onClick: () => this.setState({ orderRange: id }),
         style: 'font-size:12px;font-weight:600;padding:6px 14px;border-radius:30px;border:1px solid '

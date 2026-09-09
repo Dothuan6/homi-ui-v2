@@ -1,6 +1,6 @@
 # DIFF — prototype-v3 so với mockup của khách hàng
 
-Sinh tự động bởi `tools/build-v3.py`. Ngoài 11 mục dưới đây, **không có thay đổi nào khác**: layout, khoảng cách, bo góc, font giữ nguyên 100%.
+Sinh tự động bởi `tools/build-v3.py`. Ngoài 12 mục dưới đây, **không có thay đổi nào khác**: layout, khoảng cách, bo góc, font giữ nguyên 100%.
 
 ## 1. Đổi giá trị màu
 
@@ -179,6 +179,22 @@ Nguồn: `docs/GAP-Requirement-vs-prototype-v3.md`. Sáu mục nhóm B đã làm
 | **7.9.4** | Nhãn trạng thái duyệt hiện rõ số lượt: **Chờ duyệt (0/2)** · **Chờ Head Admin (1/2)** · **Đã duyệt (2/2)**. |
 
 Chưa làm, chờ KH quyết — xem mục A3 của file rà soát: theo **7.9.2** agent đăng ký xong phải ở trạng thái *Chờ duyệt* chứ không vào thẳng dashboard như mockup KH. Sửa chỗ này kéo theo cả màn A2, luồng duyệt và cách tính hoa hồng lúc chờ, nên chưa đụng vào.
+
+## 12. Sửa theo rà soát bản deploy 09/09
+
+Nguồn: `docs/AUDIT-deploy-vs-requirement.md`.
+
+| Mã YC | Đã sửa |
+|---|---|
+| **7.2.2** | **Autofill khi đăng ký ngay sau khi mua.** Nút *Đăng ký thành viên* ở modal thanh toán thành công giờ mang toàn bộ thông tin người mua sang màn A2 (họ tên, SĐT, email, CCCD, địa chỉ, ngày sinh, số tài khoản, mã đơn, hạng tuyến trên). Trước đó form mở ra trống trơn — lỗi phát sinh do tách mỗi màn một file. |
+| **7.9.1** | **Chặn Admin Specialist khỏi màn Tài khoản admin.** Mục *Tài khoản admin* biến mất khỏi sidebar khi đang ở vai Specialist; vào thẳng URL thì ra màn **403**. |
+| **7.3.3** | Thêm dòng **còn thiếu bao nhiêu đơn để lên hạng kế tiếp** ngay dưới ô *Hạng hiện tại*. |
+| **7.3.2** | Thêm mốc **Khoảng ngày…** mở ra 2 ô chọn ngày và nút Áp dụng, cạnh 4 mốc có sẵn. |
+| **7.5.2** | Cây tuyến **3 cấp** F0 → F1 → F2 giờ mới thật sự chạy — bản vá dữ liệu trước đó đặt nhầm vào nhóm xử lý markup nên chưa từng có hiệu lực. Tiêu đề đổi thành *Sơ đồ tuyến dưới (3 cấp)*. |
+| — | Thay hết **Medigo** còn sót thành **HOMI365** (điều khoản T&C, câu chúc mừng ở A2, lời chào ở A3, tiêu đề đăng nhập quản trị). |
+| — | Sửa nhãn **Bước 1/3 → Bước 1/5** ở màn đăng ký cho khớp số bước thật. |
+
+Chưa làm, chờ KH chốt — xem mục F của file rà soát: (1) duyệt 2 lớp tách theo **người** hay theo **vai trò**; (2) tuyến trên hạng Đồng thì **giấu lời mời** hay **hiện rồi báo lỗi** (requirement đang nói cả hai); (3) agent sau đăng ký ở trạng thái *Chờ duyệt (0/2)* hay vào thẳng dashboard.
 
 ## Ghi chú
 

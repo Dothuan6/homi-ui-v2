@@ -157,7 +157,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Khách hàng</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Gói</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Số tiền</th>
-                  <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Nội dung chuyển khoản</th>
+                  <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Nội dung</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Minh chứng</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Người giới thiệu</th>
                   <th style="padding:var(--s5);font-weight:600;color:var(--c5)">Ngày đặt</th>
@@ -406,7 +406,19 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
       </sc-if>
 
       <!-- B7 ADMIN USERS (bổ sung 7.9.1, không có trong mockup KH) -->
-      <sc-if value="{{isB7}}" hint-placeholder-val="{{false}}">
+      <!-- 7.9.1 AC: Admin Specialist KHÔNG được truy cập màn này -->
+      <sc-if value="{{isB7Denied}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;justify-content:center;padding:var(--s11) var(--s7)">
+          <div style="width:100%;max-width:460px;background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);padding:var(--s10);display:flex;flex-direction:column;gap:var(--s5);text-align:center">
+            <div style="font-size:40px;font-weight:900;color:var(--c7);letter-spacing:.04em">403</div>
+            <div style="font-size:18px;font-weight:700;color:var(--c1)">Không có quyền truy cập</div>
+            <div style="font-size:13px;color:var(--c2);line-height:1.7">Màn <strong>Tài khoản admin</strong> chỉ dành cho <strong>Head Admin</strong>. Tài khoản của bạn đang ở vai <strong>Admin Specialist</strong>.</div>
+            <div style="font-size:12px;color:var(--c5);line-height:1.6">Cần tạo hoặc đổi vai trò một tài khoản admin? Liên hệ Head Admin.</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isB7Allowed}}" hint-placeholder-val="{{false}}">
         <div style="display:flex;flex-direction:column;gap:var(--s7)">
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s5)">
             <div><div style="font-size:24px;font-weight:700">Tài khoản admin</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">{{adminUserCount}} tài khoản · mỗi tài khoản gán đúng 1 vai trò</div></div>
@@ -562,7 +574,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           </div>
         </sc-if>
         <div style="border-top:1px solid rgba(154,163,176,.25);padding-top:var(--s7)">
-          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Sơ đồ tuyến dưới (2 cấp)</div>
+          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Sơ đồ tuyến dưới (3 cấp)</div>
           <div style="display:flex;flex-direction:column;gap:var(--s3)">
             <div style="font-size:13px;font-weight:600;padding:var(--s3) var(--s5);background:rgba(30,58,102,.08);border-radius:var(--r-md)">{{selectedMember.name}} (F0)</div>
             <sc-for list="{{selectedMember.tree}}" as="t" hint-placeholder-count="2">
@@ -821,9 +833,9 @@ class Component extends DCLogic {
 
   MEMBERS = [
     { id:1, name:'Trần Thị Bích', phone:'0901234123', contact:'090•••123', affId:'923983', upline:'—', rank:'Bạc', joined:'12/08/2026', status:'active',
-      tree:[{name:'Lê Văn Cường', orders:4},{name:'Phạm Thị Dung', orders:1}] },
+      tree:[{name:'Lê Văn Cường', orders:4, children:[{name:'Ngô Thị Em', orders:2},{name:'Đỗ Anh Tuấn', orders:9}]},{name:'Phạm Thị Dung', orders:1, children:[]}] },
     { id:2, name:'Lê Văn Cường', phone:'0912345456', contact:'091•••456', affId:'118820', upline:'Trần Thị Bích', rank:'Đồng', joined:'20/08/2026', status:'active',
-      tree:[{name:'Ngô Thị Em', orders:2}] },
+      tree:[{name:'Ngô Thị Em', orders:2, children:[{name:'Vũ Minh Khang', orders:5}]}] },
     { id:3, name:'Phạm Thị Dung', phone:'0987654789', contact:'098•••789', affId:'302914', upline:'Trần Thị Bích', rank:'Đồng', joined:'22/08/2026', status:'locked', tree:[] },
     { id:4, name:'Ngô Thị Em', phone:'0976543112', contact:'097•••112', affId:'440221', upline:'Lê Văn Cường', rank:'Đồng', joined:'25/08/2026', status:'active', tree:[] },
     { id:5, name:'Vũ Minh Khang', phone:'0934567998', contact:'093•••998', affId:'552017', upline:'—', rank:'Vàng', joined:'01/08/2026', status:'active', tree:[{name:'Đỗ Anh Tuấn', orders:9}] },
@@ -879,9 +891,12 @@ class Component extends DCLogic {
     { id:5, name:'Phạm Bảo Ngọc', email:'ngoc.pb@homi365.com.vn', role:'specialist', status:'locked' }
   ];
 
-  ORDER_RANGES = [['today','Hôm nay'],['week','Tuần này'],['month','Tháng này'],['all','Tất cả']];
-  ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27' };
-  ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1' };
+  ORDER_RANGES = [['today','Hôm nay'],['week','Tuần này'],['month','Tháng này'],['all','Tất cả'],['custom','Khoảng ngày…']];
+  ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27', custom:'6' };
+  ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1', custom:'1' };
+
+  // 7.3.3 AC: hiển thị số đơn còn thiếu để lên hạng kế tiếp.
+  RANK_PROGRESS = { new: 'Còn 5 đơn để lên hạng Bạc', active: 'Còn 8 đơn để lên hạng Vàng' };
 
   RANK_HISTORY = {
     1: [{ label:'Thăng hạng Đồng → Bạc', time:'01/09/2026' },
@@ -970,7 +985,9 @@ class Component extends DCLogic {
     }));
 
     const adminOn = ['B2','B3','B4','B5','B6','B7'].includes(s.screen);
-    const adminNav = this.ADMIN_NAV.map(([id, label]) => ({
+    const adminNav = this.ADMIN_NAV
+      .filter(([id]) => id !== 'B7' || s.adminRole !== 'specialist')
+      .map(([id, label]) => ({
       id, label, onClick: set(id),
       style: 'text-align:left;font-size:13px;font-weight:600;padding:10px 12px;border-radius:5px;border:none;background:' +
         (s.screen === id ? 'rgba(255,255,255,.14)' : 'transparent') + ';color:#FFFFFF;opacity:' + (s.screen === id ? '1' : '.75')
@@ -1185,6 +1202,8 @@ class Component extends DCLogic {
       nav, adminNav,
       isA1: s.screen === 'A1', isA2: s.screen === 'A2', isA3: s.screen === 'A3',
       isC1: s.screen === 'C1', isB1: s.screen === 'B1', isB2: s.screen === 'B2', isB3: s.screen === 'B3', isB4: s.screen === 'B4', isB5: s.screen === 'B5', isB6: s.screen === 'B6', isB7: s.screen === 'B7',
+      isB7Allowed: s.screen === 'B7' && s.adminRole !== 'specialist',
+      isB7Denied: s.screen === 'B7' && s.adminRole === 'specialist',
       isAdminShell: adminOn,
 
       buyerName: s.buyerName, setBuyerName: (e) => this.setState({ buyerName: e.target.value }),
@@ -1200,7 +1219,10 @@ class Component extends DCLogic {
       showQRPayment: s.showQRPayment, orderId: s.orderId, qrModules,
       confirmQRPayment: () => this.setState({ showQRPayment: false, showPaymentSuccess: true }),
       showPaymentSuccess: s.showPaymentSuccess,
-      choosRegisterSeller: () => GO('A2', { regStep: 1 }),
+      choosRegisterSeller: () => GO('A2', { regStep: 1, orderId: s.orderId, uplineRank: s.uplineRank,
+        buyerName: s.buyerName, buyerPhone: s.buyerPhone, buyerEmail: s.buyerEmail,
+        buyerCccd: s.buyerCccd, buyerAddress: s.buyerAddress, buyerDob: s.buyerDob,
+        buyerBankAccount: s.buyerBankAccount }),
       choosSkipSeller: () => this.setState({ showPaymentSuccess: false }),
 
       showOrderLookup: s.showOrderLookup, orderLookupInput: s.orderLookupInput, orderLookupError: s.orderLookupError,
@@ -1367,7 +1389,11 @@ class Component extends DCLogic {
       openAdminUserForm: () => this.setState({ showAdminUserForm: true, editingAdminUserId: null }),
       closeAdminUserForm: () => this.setState({ showAdminUserForm: false, editingAdminUserId: null }),
 
-      // 7.3.2 — lọc số đơn theo khoảng thời gian
+      // 7.3.3 — còn thiếu bao nhiêu đơn để lên hạng kế tiếp
+      rankProgress: this.RANK_PROGRESS[s.agentStage === 'active' ? 'active' : 'new'],
+
+      // 7.3.2 — lọc số đơn theo khoảng thời gian, có cả khoảng ngày tuỳ chỉnh
+      isCustomRange: s.orderRange === 'custom',
       orderRanges: this.ORDER_RANGES.map(([id, label]) => ({
         id, label, onClick: () => this.setState({ orderRange: id }),
         style: 'font-size:12px;font-weight:600;padding:6px 14px;border-radius:30px;border:1px solid '

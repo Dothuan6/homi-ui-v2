@@ -35,7 +35,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
   <sc-if value="{{isB1}}" hint-placeholder-val="{{false}}">
   <div style="min-height:calc(100vh - 73px);display:flex;justify-content:center;align-items:center;background:var(--c3);padding:var(--s10) var(--s7)">
     <div style="width:100%;max-width:380px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s10);box-shadow:0 8px 30px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:var(--s8)">
-      <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:var(--c1)">Medigo Admin</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Khu vực vận hành nội bộ Homi365</div></div>
+      <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:var(--c1)">HOMI365 Admin</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Khu vực vận hành nội bộ Homi365</div></div>
       <div style="display:flex;flex-direction:column;gap:var(--s7)">
         <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Email/username</label><input type="text" placeholder="admin@homi365.vn" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1B3358;box-shadow:0 0 0 3px rgba(27,51,88,.25)"></div>
         <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Mật khẩu</label><input type="password" placeholder="Nhập mật khẩu" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1B3358;box-shadow:0 0 0 3px rgba(27,51,88,.25)"></div>
@@ -126,9 +126,9 @@ class Component extends DCLogic {
 
   MEMBERS = [
     { id:1, name:'Trần Thị Bích', phone:'0901234123', contact:'090•••123', affId:'923983', upline:'—', rank:'Bạc', joined:'12/08/2026', status:'active',
-      tree:[{name:'Lê Văn Cường', orders:4},{name:'Phạm Thị Dung', orders:1}] },
+      tree:[{name:'Lê Văn Cường', orders:4, children:[{name:'Ngô Thị Em', orders:2},{name:'Đỗ Anh Tuấn', orders:9}]},{name:'Phạm Thị Dung', orders:1, children:[]}] },
     { id:2, name:'Lê Văn Cường', phone:'0912345456', contact:'091•••456', affId:'118820', upline:'Trần Thị Bích', rank:'Đồng', joined:'20/08/2026', status:'active',
-      tree:[{name:'Ngô Thị Em', orders:2}] },
+      tree:[{name:'Ngô Thị Em', orders:2, children:[{name:'Vũ Minh Khang', orders:5}]}] },
     { id:3, name:'Phạm Thị Dung', phone:'0987654789', contact:'098•••789', affId:'302914', upline:'Trần Thị Bích', rank:'Đồng', joined:'22/08/2026', status:'locked', tree:[] },
     { id:4, name:'Ngô Thị Em', phone:'0976543112', contact:'097•••112', affId:'440221', upline:'Lê Văn Cường', rank:'Đồng', joined:'25/08/2026', status:'active', tree:[] },
     { id:5, name:'Vũ Minh Khang', phone:'0934567998', contact:'093•••998', affId:'552017', upline:'—', rank:'Vàng', joined:'01/08/2026', status:'active', tree:[{name:'Đỗ Anh Tuấn', orders:9}] },
@@ -184,9 +184,12 @@ class Component extends DCLogic {
     { id:5, name:'Phạm Bảo Ngọc', email:'ngoc.pb@homi365.com.vn', role:'specialist', status:'locked' }
   ];
 
-  ORDER_RANGES = [['today','Hôm nay'],['week','Tuần này'],['month','Tháng này'],['all','Tất cả']];
-  ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27' };
-  ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1' };
+  ORDER_RANGES = [['today','Hôm nay'],['week','Tuần này'],['month','Tháng này'],['all','Tất cả'],['custom','Khoảng ngày…']];
+  ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27', custom:'6' };
+  ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1', custom:'1' };
+
+  // 7.3.3 AC: hiển thị số đơn còn thiếu để lên hạng kế tiếp.
+  RANK_PROGRESS = { new: 'Còn 5 đơn để lên hạng Bạc', active: 'Còn 8 đơn để lên hạng Vàng' };
 
   RANK_HISTORY = {
     1: [{ label:'Thăng hạng Đồng → Bạc', time:'01/09/2026' },
@@ -275,7 +278,9 @@ class Component extends DCLogic {
     }));
 
     const adminOn = ['B2','B3','B4','B5','B6','B7'].includes(s.screen);
-    const adminNav = this.ADMIN_NAV.map(([id, label]) => ({
+    const adminNav = this.ADMIN_NAV
+      .filter(([id]) => id !== 'B7' || s.adminRole !== 'specialist')
+      .map(([id, label]) => ({
       id, label, onClick: set(id),
       style: 'text-align:left;font-size:13px;font-weight:600;padding:10px 12px;border-radius:5px;border:none;background:' +
         (s.screen === id ? 'rgba(255,255,255,.14)' : 'transparent') + ';color:#FFFFFF;opacity:' + (s.screen === id ? '1' : '.75')
@@ -490,6 +495,8 @@ class Component extends DCLogic {
       nav, adminNav,
       isA1: s.screen === 'A1', isA2: s.screen === 'A2', isA3: s.screen === 'A3',
       isC1: s.screen === 'C1', isB1: s.screen === 'B1', isB2: s.screen === 'B2', isB3: s.screen === 'B3', isB4: s.screen === 'B4', isB5: s.screen === 'B5', isB6: s.screen === 'B6', isB7: s.screen === 'B7',
+      isB7Allowed: s.screen === 'B7' && s.adminRole !== 'specialist',
+      isB7Denied: s.screen === 'B7' && s.adminRole === 'specialist',
       isAdminShell: adminOn,
 
       buyerName: s.buyerName, setBuyerName: (e) => this.setState({ buyerName: e.target.value }),
@@ -505,7 +512,10 @@ class Component extends DCLogic {
       showQRPayment: s.showQRPayment, orderId: s.orderId, qrModules,
       confirmQRPayment: () => this.setState({ showQRPayment: false, showPaymentSuccess: true }),
       showPaymentSuccess: s.showPaymentSuccess,
-      choosRegisterSeller: () => GO('A2', { regStep: 1 }),
+      choosRegisterSeller: () => GO('A2', { regStep: 1, orderId: s.orderId, uplineRank: s.uplineRank,
+        buyerName: s.buyerName, buyerPhone: s.buyerPhone, buyerEmail: s.buyerEmail,
+        buyerCccd: s.buyerCccd, buyerAddress: s.buyerAddress, buyerDob: s.buyerDob,
+        buyerBankAccount: s.buyerBankAccount }),
       choosSkipSeller: () => this.setState({ showPaymentSuccess: false }),
 
       showOrderLookup: s.showOrderLookup, orderLookupInput: s.orderLookupInput, orderLookupError: s.orderLookupError,
@@ -672,7 +682,11 @@ class Component extends DCLogic {
       openAdminUserForm: () => this.setState({ showAdminUserForm: true, editingAdminUserId: null }),
       closeAdminUserForm: () => this.setState({ showAdminUserForm: false, editingAdminUserId: null }),
 
-      // 7.3.2 — lọc số đơn theo khoảng thời gian
+      // 7.3.3 — còn thiếu bao nhiêu đơn để lên hạng kế tiếp
+      rankProgress: this.RANK_PROGRESS[s.agentStage === 'active' ? 'active' : 'new'],
+
+      // 7.3.2 — lọc số đơn theo khoảng thời gian, có cả khoảng ngày tuỳ chỉnh
+      isCustomRange: s.orderRange === 'custom',
       orderRanges: this.ORDER_RANGES.map(([id, label]) => ({
         id, label, onClick: () => this.setState({ orderRange: id }),
         style: 'font-size:12px;font-weight:600;padding:6px 14px;border-radius:30px;border:1px solid '

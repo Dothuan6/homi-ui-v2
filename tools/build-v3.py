@@ -89,11 +89,9 @@ BG_PATCHES = [
     # (2 mục chèn màn B5/B6 được nối thêm ở cuối file, sau khi markup của
     #  chúng đã được khai báo — xem "BG_PATCHES += [...]" bên dưới.)
     # 7.5.2 — cây tuyến 3 cấp (mockup chỉ vẽ F0 → F1) + khối lịch sử hạng.
-    ("      tree:[{name:'Lê Văn Cường', orders:4},{name:'Phạm Thị Dung', orders:1}] },",
-     "      tree:[{name:'Lê Văn Cường', orders:4, children:[{name:'Ngô Thị Em', orders:2},"
-     "{name:'Đỗ Anh Tuấn', orders:9}]},{name:'Phạm Thị Dung', orders:1, children:[]}] },"),
-    ("      tree:[{name:'Ngô Thị Em', orders:2}] },",
-     "      tree:[{name:'Ngô Thị Em', orders:2, children:[{name:'Vũ Minh Khang', orders:5}]}] },"),
+    # Lưu ý: dữ liệu `tree` nằm trong JS nên phải vá ở JS_PATCHES, không phải ở
+    # đây — BG_PATCHES chỉ chạy trên markup.
+    ("Sơ đồ tuyến dưới (2 cấp)", "Sơ đồ tuyến dưới (3 cấp)"),
     ("""              <div style="font-size:13px;padding:var(--s3) var(--s5);margin-left:var(--s8);border-left:2px solid rgba(170,170,170,.35);color:var(--c2)">{{t.name}} — F1 · {{t.orders}} đơn</div>""",
      """              <div style="font-size:13px;padding:var(--s3) var(--s5);margin-left:var(--s8);border-left:2px solid rgba(170,170,170,.35);color:var(--c2)">{{t.name}} — F1 · {{t.orders}} đơn</div>
               <sc-for list="{{t.children}}" as="g" hint-placeholder-count="2">
@@ -160,11 +158,21 @@ BG_PATCHES = [
         </div>
       </div>
 
-      <div style="display:flex;gap:var(--s2);flex-wrap:wrap;align-items:center">
-        <span style="font-size:12px;color:var(--c5);margin-right:var(--s2)">Số đơn theo</span>
-        <sc-for list="{{orderRanges}}" as="r" hint-placeholder-count="4">
-          <button sc-camel-on-click="{{r.onClick}}" style="{{r.style}}">{{r.label}}</button>
-        </sc-for>
+      <div style="display:flex;flex-direction:column;gap:var(--s4)">
+        <div style="display:flex;gap:var(--s2);flex-wrap:wrap;align-items:center">
+          <span style="font-size:12px;color:var(--c5);margin-right:var(--s2)">Số đơn theo</span>
+          <sc-for list="{{orderRanges}}" as="r" hint-placeholder-count="5">
+            <button sc-camel-on-click="{{r.onClick}}" style="{{r.style}}">{{r.label}}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{isCustomRange}}" hint-placeholder-val="{{false}}">
+          <div style="display:flex;gap:var(--s3);align-items:center;flex-wrap:wrap">
+            <input type="date" style="height:38px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;color:var(--c2);background:var(--c12)">
+            <span style="font-size:13px;color:var(--c5)">đến</span>
+            <input type="date" style="height:38px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;color:var(--c2);background:var(--c12)">
+            <button style="height:38px;padding:0 var(--s6);background:var(--c6);border:none;border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c12)" style-hover="background:#0099d1">Áp dụng</button>
+          </div>
+        </sc-if>
       </div>
 """),
     # A3: tách hoa hồng thành 4 trạng thái (đã ghi nhận / chờ duyệt · tạm giữ /
@@ -184,6 +192,21 @@ BG_PATCHES = [
     # Cột biểu đồ hoa hồng (A3): dùng teal thay màu chính.
     ("border-radius:var(--r-sm) var(--r-sm) 0 0;background:var(--c6)",
      "border-radius:var(--r-sm) var(--r-sm) 0 0;background:var(--c-chart)"),
+    # Còn sót tên "Medigo" trong sản phẩm đã re-skin sang HOMI365 (T&C, câu
+    # chúc mừng ở A2, lời chào ở A3, tiêu đề đăng nhập quản trị).
+    ("Medigo", "HOMI365"),
+
+    # Nhãn bước sai: luồng đăng ký có 5 bước chứ không phải 3.
+    ("Bước 1/3 · Thông tin cá nhân", "Bước 1/5 · Thông tin cá nhân"),
+
+    # 7.3.3 AC — thêm dòng "còn thiếu N đơn để lên hạng" dưới ô Hạng hiện tại.
+    ('<div style="font-size:12px;color:var(--c5)">Hạng hiện tại</div>'
+     '<div style="font-size:24px;font-weight:700;color:var(--c1)">{{metricRank}}</div>',
+     '<div style="font-size:12px;color:var(--c5)">Hạng hiện tại</div>'
+     '<div style="font-size:24px;font-weight:700;color:var(--c1)">{{metricRank}}</div>'
+     '<div style="font-size:11px;font-weight:600;color:var(--c6);line-height:1.5">'
+     '{{rankProgress}}</div>'),
+
     # A1 + C1: nền xám nhạt -> nền ấm
     ("background:rgba(170,170,170,.05)", "background:var(--warm-50)"),
     # Thẻ chỉ có viền, không khai báo nền: trên nền trắng của mockup thì không
@@ -522,7 +545,19 @@ BG_PATCHES += [
 ]
 
 B7_ADMIN_USERS = """      <!-- B7 ADMIN USERS (bổ sung 7.9.1, không có trong mockup KH) -->
-      <sc-if value="{{isB7}}" hint-placeholder-val="{{false}}">
+      <!-- 7.9.1 AC: Admin Specialist KHÔNG được truy cập màn này -->
+      <sc-if value="{{isB7Denied}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;justify-content:center;padding:var(--s11) var(--s7)">
+          <div style="width:100%%;max-width:460px;background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s10);display:flex;flex-direction:column;gap:var(--s5);text-align:center">
+            <div style="font-size:40px;font-weight:900;color:var(--c7);letter-spacing:.04em">403</div>
+            <div style="font-size:18px;font-weight:700;color:var(--c1)">Không có quyền truy cập</div>
+            <div style="font-size:13px;color:var(--c2);line-height:1.7">Màn <strong>Tài khoản admin</strong> chỉ dành cho <strong>Head Admin</strong>. Tài khoản của bạn đang ở vai <strong>Admin Specialist</strong>.</div>
+            <div style="font-size:12px;color:var(--c5);line-height:1.6">Cần tạo hoặc đổi vai trò một tài khoản admin? Liên hệ Head Admin.</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isB7Allowed}}" hint-placeholder-val="{{false}}">
         <div style="display:flex;flex-direction:column;gap:var(--s7)">
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s5)">
             <div><div style="font-size:24px;font-weight:700">Tài khoản admin</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">{{adminUserCount}} tài khoản · mỗi tài khoản gán đúng 1 vai trò</div></div>
@@ -781,9 +816,15 @@ JS_PATCHES = [
      "    };\n"
      "    const set = (id) => () => GO(id);"),
 
-    # Mua xong -> chọn đăng ký seller
+    # Mua xong -> chọn đăng ký seller.
+    # 7.2.2 AC: form đăng ký phải autofill từ dữ liệu đơn, "không hiển thị
+    # trống". Mockup gốc để chung một trang nên state còn nguyên; tách file rồi
+    # thì phải mang tay toàn bộ thông tin người mua sang.
     ("this.setState({ showPaymentSuccess: false, screen: 'A2', regStep: 1 })",
-     "GO('A2', { regStep: 1 })"),
+     "GO('A2', { regStep: 1, orderId: s.orderId, uplineRank: s.uplineRank,\n"
+     "        buyerName: s.buyerName, buyerPhone: s.buyerPhone, buyerEmail: s.buyerEmail,\n"
+     "        buyerCccd: s.buyerCccd, buyerAddress: s.buyerAddress, buyerDob: s.buyerDob,\n"
+     "        buyerBankAccount: s.buyerBankAccount })"),
 
     # Đăng ký xong -> dashboard
     ("goToA3: () => this.setState({ screen: 'A3' })",
@@ -817,6 +858,13 @@ JS_PATCHES = [
     ("      metricOrders: s.agentStage === 'active' ? '10' : '1',",
      "      metricOrders: (s.agentStage === 'active' ? this.ORDER_RANGE_VALUES\n"
      "        : this.ORDER_RANGE_VALUES_NEW)[s.orderRange || 'month'],"),
+
+    # 7.5.2 — dữ liệu cây tuyến thêm cấp F2 (markup đã có vòng lặp con).
+    ("      tree:[{name:'Lê Văn Cường', orders:4},{name:'Phạm Thị Dung', orders:1}] },",
+     "      tree:[{name:'Lê Văn Cường', orders:4, children:[{name:'Ngô Thị Em', orders:2},"
+     "{name:'Đỗ Anh Tuấn', orders:9}]},{name:'Phạm Thị Dung', orders:1, children:[]}] },"),
+    ("      tree:[{name:'Ngô Thị Em', orders:2}] },",
+     "      tree:[{name:'Ngô Thị Em', orders:2, children:[{name:'Vũ Minh Khang', orders:5}]}] },"),
 
     # 7.5.2 — lịch sử thăng/giáng hạng trong ngăn chi tiết thành viên.
     ("      selectedMember = {\n        ...selectedMemberRaw, status: effStatus,",
@@ -852,7 +900,15 @@ JS_PATCHES = [
 
     ("isB3: s.screen === 'B3', isB4: s.screen === 'B4',",
      "isB3: s.screen === 'B3', isB4: s.screen === 'B4', "
-     "isB5: s.screen === 'B5', isB6: s.screen === 'B6', isB7: s.screen === 'B7',"),
+     "isB5: s.screen === 'B5', isB6: s.screen === 'B6', isB7: s.screen === 'B7',\n"
+     "      isB7Allowed: s.screen === 'B7' && s.adminRole !== 'specialist',\n"
+     "      isB7Denied: s.screen === 'B7' && s.adminRole === 'specialist',"),
+
+    # 7.9.1 AC: Specialist không thấy cả mục Tài khoản admin trên sidebar.
+    ("    const adminNav = this.ADMIN_NAV.map(([id, label]) => ({",
+     "    const adminNav = this.ADMIN_NAV\n"
+     "      .filter(([id]) => id !== 'B7' || s.adminRole !== 'specialist')\n"
+     "      .map(([id, label]) => ({"),
 
     # 7.9.4 — nhãn trạng thái duyệt hiện rõ số lượt: 0/2 · 1/2 · 2/2.
     ("      pending: ['rgba(255,165,0,.15)', '#a36400', 'Chờ duyệt'],",
@@ -947,9 +1003,12 @@ JS_PATCHES = [
     { id:5, name:'Phạm Bảo Ngọc', email:'ngoc.pb@homi365.com.vn', role:'specialist', status:'locked' }
   ];
 
-  ORDER_RANGES = [['today','Hôm nay'],['week','Tuần này'],['month','Tháng này'],['all','Tất cả']];
-  ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27' };
-  ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1' };
+  ORDER_RANGES = [['today','Hôm nay'],['week','Tuần này'],['month','Tháng này'],['all','Tất cả'],['custom','Khoảng ngày…']];
+  ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27', custom:'6' };
+  ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1', custom:'1' };
+
+  // 7.3.3 AC: hiển thị số đơn còn thiếu để lên hạng kế tiếp.
+  RANK_PROGRESS = { new: 'Còn 5 đơn để lên hạng Bạc', active: 'Còn 8 đơn để lên hạng Vàng' };
 
   RANK_HISTORY = {
     1: [{ label:'Thăng hạng Đồng → Bạc', time:'01/09/2026' },
@@ -1045,7 +1104,11 @@ JS_PATCHES = [
       openAdminUserForm: () => this.setState({ showAdminUserForm: true, editingAdminUserId: null }),
       closeAdminUserForm: () => this.setState({ showAdminUserForm: false, editingAdminUserId: null }),
 
-      // 7.3.2 — lọc số đơn theo khoảng thời gian
+      // 7.3.3 — còn thiếu bao nhiêu đơn để lên hạng kế tiếp
+      rankProgress: this.RANK_PROGRESS[s.agentStage === 'active' ? 'active' : 'new'],
+
+      // 7.3.2 — lọc số đơn theo khoảng thời gian, có cả khoảng ngày tuỳ chỉnh
+      isCustomRange: s.orderRange === 'custom',
       orderRanges: this.ORDER_RANGES.map(([id, label]) => ({
         id, label, onClick: () => this.setState({ orderRange: id }),
         style: 'font-size:12px;font-weight:600;padding:6px 14px;border-radius:30px;border:1px solid '
@@ -1566,7 +1629,7 @@ __CARDS__
                 dup.append("%s: %s xuất hiện %d lần" % (f, name, t.count(tag)))
 
     diff = ["# DIFF — prototype-v3 so với mockup của khách hàng", "",
-            "Sinh tự động bởi `tools/build-v3.py`. Ngoài 11 mục dưới đây, "
+            "Sinh tự động bởi `tools/build-v3.py`. Ngoài 12 mục dưới đây, "
             "**không có thay đổi nào khác**: layout, khoảng cách, bo góc, font "
             "giữ nguyên 100%.", "",
             "## 1. Đổi giá trị màu", "",
@@ -1762,6 +1825,34 @@ __CARDS__
              "agent đăng ký xong phải ở trạng thái *Chờ duyệt* chứ không vào thẳng "
              "dashboard như mockup KH. Sửa chỗ này kéo theo cả màn A2, luồng duyệt "
              "và cách tính hoa hồng lúc chờ, nên chưa đụng vào.", "",
+
+             "## 12. Sửa theo rà soát bản deploy 09/09", "",
+             "Nguồn: `docs/AUDIT-deploy-vs-requirement.md`.", "",
+             "| Mã YC | Đã sửa |", "|---|---|",
+             "| **7.2.2** | **Autofill khi đăng ký ngay sau khi mua.** Nút *Đăng "
+             "ký thành viên* ở modal thanh toán thành công giờ mang toàn bộ thông "
+             "tin người mua sang màn A2 (họ tên, SĐT, email, CCCD, địa chỉ, ngày "
+             "sinh, số tài khoản, mã đơn, hạng tuyến trên). Trước đó form mở ra "
+             "trống trơn — lỗi phát sinh do tách mỗi màn một file. |",
+             "| **7.9.1** | **Chặn Admin Specialist khỏi màn Tài khoản admin.** "
+             "Mục *Tài khoản admin* biến mất khỏi sidebar khi đang ở vai "
+             "Specialist; vào thẳng URL thì ra màn **403**. |",
+             "| **7.3.3** | Thêm dòng **còn thiếu bao nhiêu đơn để lên hạng kế "
+             "tiếp** ngay dưới ô *Hạng hiện tại*. |",
+             "| **7.3.2** | Thêm mốc **Khoảng ngày…** mở ra 2 ô chọn ngày và nút "
+             "Áp dụng, cạnh 4 mốc có sẵn. |",
+             "| **7.5.2** | Cây tuyến **3 cấp** F0 → F1 → F2 giờ mới thật sự "
+             "chạy — bản vá dữ liệu trước đó đặt nhầm vào nhóm xử lý markup nên "
+             "chưa từng có hiệu lực. Tiêu đề đổi thành *Sơ đồ tuyến dưới (3 cấp)*. |",
+             "| — | Thay hết **Medigo** còn sót thành **HOMI365** (điều khoản "
+             "T&C, câu chúc mừng ở A2, lời chào ở A3, tiêu đề đăng nhập quản trị). |",
+             "| — | Sửa nhãn **Bước 1/3 → Bước 1/5** ở màn đăng ký cho khớp số "
+             "bước thật. |", "",
+             "Chưa làm, chờ KH chốt — xem mục F của file rà soát: (1) duyệt 2 lớp "
+             "tách theo **người** hay theo **vai trò**; (2) tuyến trên hạng Đồng "
+             "thì **giấu lời mời** hay **hiện rồi báo lỗi** (requirement đang nói "
+             "cả hai); (3) agent sau đăng ký ở trạng thái *Chờ duyệt (0/2)* hay "
+             "vào thẳng dashboard.", "",
 
              "## Ghi chú", "",
              "- Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` "
