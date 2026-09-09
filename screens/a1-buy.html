@@ -309,7 +309,7 @@ class Component extends DCLogic {
     wardQuery: 'Phường Bến Thành', wardOpen: false,
     accountHolder: '', buyTcChecked: false,
     cccdIssueDate: '', cccdIssuePlace: '', lookupResult: null,
-    loginPhoneChecked: false, loginPhoneEmpty: false,
+    loginPhoneChecked: false, loginPhoneEmpty: false, loginNotEligible: false,
     showAdminUserForm: false, editingAdminUserId: null, adminUserLocks: {},
     orderRange: 'month',
     ordersData: null, orderSearch: '', orderStatusFilter: 'all',
@@ -452,17 +452,23 @@ class Component extends DCLogic {
   ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27', custom:'6' };
   ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1', custom:'1' };
 
+  // 6 hạng chính thức — không dịch sang tiếng Việt.
+  RANKS = ['Copper', 'Silver', 'Gold', 'Diamond', 'Titanium', 'Lithium'];
+  RANK_LABEL = { 'Đồng': 'Copper', 'Bạc': 'Silver', 'Vàng': 'Gold',
+                 'Kim cương': 'Diamond', 'Titan': 'Titanium', 'Lithium': 'Lithium' };
+
   // 7.3.3 AC: hiển thị số đơn còn thiếu để lên hạng kế tiếp.
-  RANK_PROGRESS = { new: 'Còn 5 đơn để lên hạng Bạc', active: 'Còn 8 đơn để lên hạng Vàng' };
+  RANK_PROGRESS = { new: 'Còn 5 đơn để lên hạng Silver',
+                    active: 'Còn 8 đơn để lên hạng Gold' };
 
   RANK_HISTORY = {
-    1: [{ label:'Thăng hạng Đồng → Bạc', time:'01/09/2026' },
-        { label:'Tham gia · hạng Đồng', time:'12/08/2026' }],
-    5: [{ label:'Thăng hạng Bạc → Vàng', time:'01/09/2026' },
-        { label:'Thăng hạng Đồng → Bạc', time:'20/08/2026' },
-        { label:'Tham gia · hạng Đồng', time:'01/08/2026' }],
-    3: [{ label:'Giáng hạng Bạc → Đồng · 0 đơn trong tháng', time:'01/09/2026' },
-        { label:'Tham gia · hạng Đồng', time:'22/08/2026' }]
+    1: [{ label:'Thăng hạng Copper → Silver', time:'01/09/2026' },
+        { label:'Tham gia · hạng Copper', time:'12/08/2026' }],
+    5: [{ label:'Thăng hạng Silver → Gold', time:'01/09/2026' },
+        { label:'Thăng hạng Copper → Silver', time:'20/08/2026' },
+        { label:'Tham gia · hạng Copper', time:'01/08/2026' }],
+    3: [{ label:'Giáng hạng Silver → Copper · 0 đơn trong tháng', time:'01/09/2026' },
+        { label:'Tham gia · hạng Copper', time:'22/08/2026' }]
   };
 
   // 1 sản phẩm pilot duy nhất theo 6.1.C-3. Gói license (1 năm / nửa năm) và
@@ -644,7 +650,8 @@ class Component extends DCLogic {
         const [bg, color, label] = this.badge(effStatus);
         const affCode = ALIAS[m.id];
         const up = this.MEMBERS.find(u => u.name === m.upline);
-        return { ...m, affId: affCode, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,
+        return { ...m, affId: affCode, rank: this.RANK_LABEL[m.rank] || m.rank,
+          status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,
           uplineCode: up ? ALIAS[up.id] : '',
           formLink: 'homi365.com.vn/' + affCode, formLinkShort: '.../' + affCode,
           loginLink: 'homi365.com.vn/dang-nhap/' + affCode, loginLinkShort: '.../dang-nhap/' + affCode,
@@ -707,8 +714,11 @@ class Component extends DCLogic {
       const isSpecialist = s.adminRole === 'specialist';
       selectedMember = {
         ...selectedMemberRaw, status: effStatus,
+        rank: this.RANK_LABEL[selectedMemberRaw.rank] || selectedMemberRaw.rank,
         rankHistory: this.RANK_HISTORY[selectedMemberRaw.id]
-          || [{ label: 'Tham gia · hạng ' + selectedMemberRaw.rank, time: selectedMemberRaw.joined }],
+          || [{ label: 'Tham gia · hạng '
+                 + (this.RANK_LABEL[selectedMemberRaw.rank] || selectedMemberRaw.rank),
+               time: selectedMemberRaw.joined }],
         needsApproval: ['pending', 'specialist_approved'].includes(effStatus),
         isActiveOrLocked: ['active', 'locked'].includes(effStatus),
         canApproveMember: (isSpecialist && effStatus === 'pending') || (!isSpecialist && effStatus === 'specialist_approved'),
@@ -883,7 +893,7 @@ class Component extends DCLogic {
       tncChecked: s.tncChecked, toggleTnc: () => this.setState({ tncChecked: !s.tncChecked }),
       tncDisabled, regSubmitStyle,
       copyLabel: s.copyLabel,
-      copyLink: () => { navigator.clipboard.writeText('homi365.com.vn/NVA1111'); this.setState({ copyLabel: 'Đã copy!' }); setTimeout(() => this.setState({ copyLabel: 'Copy link' }), 1500); },
+      copyLink: () => { navigator.clipboard.writeText('homi365.com.vn/htmt0083'); this.setState({ copyLabel: 'Đã copy!' }); setTimeout(() => this.setState({ copyLabel: 'Copy link' }), 1500); },
       goToA3: () => GO('A3'),
 
       toggleAgentStage: () => this.setState({ agentStage: s.agentStage === 'new' ? 'active' : 'new' }),
@@ -894,7 +904,7 @@ class Component extends DCLogic {
       // Chưa kích hoạt thì hoa hồng bị giữ, chưa được tính điểm.
       heldCommissionLabel: '1.200.000đ',
       metricPoints: s.agentStage === 'active' ? '1.240' : '0',
-      metricRank: s.agentStage === 'active' ? 'Bạc' : 'Đồng',
+      metricRank: s.agentStage === 'active' ? 'Silver' : 'Copper',
       metricWithdrawn: s.agentStage === 'active' ? '1.200.000đ' : '0đ',
       chartTitle, chartRanges, chartBars,
       availableBalanceLabel: '4.000.000đ', pendingBalanceLabel: '800.000đ', earnedBalanceLabel: '6.000.000đ',
@@ -935,19 +945,26 @@ class Component extends DCLogic {
       loginPhoneChecked: s.loginPhoneChecked,
       loginPhoneUnchecked: !s.loginPhoneChecked,
       loginPhoneEmpty: s.loginPhoneEmpty,
+      loginNotEligible: s.loginNotEligible,
       checkLoginPhone: () => {
         const ph = s.agentPhone.trim();
-        if (!ph) { this.setState({ loginPhoneEmpty: true }); return; }
+        if (!ph) { this.setState({ loginPhoneEmpty: true, loginNotEligible: false }); return; }
+        // Đã có tài khoản -> mở ô mật khẩu.
         if (this.REGISTERED_PHONES.includes(ph)) {
-          this.setState({ loginPhoneChecked: true, loginPhoneEmpty: false, agentLoginError: false });
+          this.setState({ loginPhoneChecked: true, loginPhoneEmpty: false,
+            loginNotEligible: false, agentLoginError: false });
           return;
         }
+        // Đã mua hàng nhưng chưa đăng ký -> sang màn đăng ký, điền sẵn đơn cũ.
         const o = this.ORDERS_BY_PHONE[ph];
-        GO('A2', o
-          ? { regStep: 1, orderId: o.orderId, buyerName: o.buyerName, buyerPhone: ph,
-              buyerEmail: o.buyerEmail, buyerCccd: o.buyerCccd,
-              buyerAddress: o.buyerAddress, buyerDob: o.buyerDob }
-          : { regStep: 1, buyerPhone: ph });
+        if (o) {
+          GO('A2', { regStep: 1, orderId: o.orderId, buyerName: o.buyerName, buyerPhone: ph,
+            buyerEmail: o.buyerEmail, buyerCccd: o.buyerCccd,
+            buyerAddress: o.buyerAddress, buyerDob: o.buyerDob });
+          return;
+        }
+        // Chưa mua đơn nào -> chưa đủ điều kiện.
+        this.setState({ loginNotEligible: true, loginPhoneEmpty: false, agentLoginError: false });
       },
       agentMaskedPhone: s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123',
       agentBackToLogin: () => this.setState({ agentLoginStep: 'login' }),
@@ -1088,6 +1105,12 @@ class Component extends DCLogic {
       cccdIssuePlace: s.cccdIssuePlace,
       setCccdIssuePlace: (e) => this.setState({ cccdIssuePlace: e.target.value }),
 
+      // Tài khoản nhận tiền hiển thị ở modal rút tiền — lấy từ hồ sơ agent,
+      // agent không sửa được ở đây (muốn đổi phải qua CSKH).
+      withdrawHolder: this.vnUpper(s.accountHolder) || 'HOANG THI MY TRINH',
+      withdrawBank: 'Vietcombank — NH TMCP Ngoại thương Việt Nam',
+      withdrawAccount: s.buyerBankAccount || '0071001234567',
+
       // 7.3.3 — còn thiếu bao nhiêu đơn để lên hạng kế tiếp
       rankProgress: this.RANK_PROGRESS[s.agentStage === 'active' ? 'active' : 'new'],
 
@@ -1102,8 +1125,8 @@ class Component extends DCLogic {
 
       // Chốt 09/09: agent chỉ có MỘT link. Mã giới thiệu = alias theo
       // 8.1.C-4 (viết tắt họ tên + 4 số cuối SĐT), trùng thì thêm -2, -3…
-      refCode: 'NVA1111',
-      refLink: 'homi365.com.vn/NVA1111',
+      refCode: 'HTMT0083',
+      refLink: 'homi365.com.vn/htmt0083',
 
       orderTotal: (s.ordersData || []).length,
       orderPendingCount: (s.ordersData || []).filter(o => o.status === 'order_pending').length,

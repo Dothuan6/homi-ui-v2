@@ -139,6 +139,9 @@ BG_PATCHES = [
             <sc-if value="{{loginPhoneEmpty}}" hint-placeholder-val="{{false}}">
               <div style="font-size:12px;color:var(--err);background:rgba(217,52,43,.08);border-radius:var(--r-sm);padding:var(--s4)">Vui lòng nhập số điện thoại.</div>
             </sc-if>
+            <sc-if value="{{loginNotEligible}}" hint-placeholder-val="{{false}}">
+              <div style="display:flex;gap:var(--s3);align-items:flex-start;font-size:13px;color:var(--err);background:rgba(217,52,43,.08);border-radius:var(--r-sm);padding:var(--s5);line-height:1.6"><span style="flex:none;font-weight:700">&#10005;</span><span>Bạn chưa đạt điều kiện đăng nhập thành viên. Số điện thoại này chưa gắn với đơn hàng nào — vui lòng mua sản phẩm qua link giới thiệu trước.</span></div>
+            </sc-if>
             <sc-if value="{{loginPhoneUnchecked}}" hint-placeholder-val="{{false}}">
               <button sc-camel-on-click="{{checkLoginPhone}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#0099d1">Tiếp tục</button>
             </sc-if>
@@ -151,7 +154,7 @@ BG_PATCHES = [
     ('<div style="font-size:12px;color:var(--c5);text-transform:uppercase;'
      'letter-spacing:.04em">Mã giới thiệu (aff_id)</div>',
      '<div style="font-size:12px;color:var(--c5);text-transform:uppercase;'
-     'letter-spacing:.04em">Mã giới thiệu</div>'),
+     'letter-spacing:.04em">Mã thành viên của bạn</div>'),
     ('<div style="font-size:30px;font-weight:900;color:var(--c1);'
      'letter-spacing:.02em">923983</div>',
      '<div style="font-size:30px;font-weight:900;color:var(--c1);'
@@ -223,9 +226,11 @@ BG_PATCHES = [
      '<div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">'
      'Bạn đã chính thức là seller Medigo</div>',
      '<div style="font-size:24px;font-weight:700">Đăng ký thành công</div>'
-     '<div style="font-size:13px;color:var(--c5);margin-top:var(--s2);line-height:1.6">'
-     'Bạn bán hàng được ngay qua 2 link bên dưới. Hoa hồng sẽ được tạm giữ '
-     'cho tới khi quản trị viên kích hoạt tài khoản.</div>'),
+     '<div style="font-size:13px;color:var(--c5);margin-top:var(--s2);line-height:1.8">'
+     'HOMI365 đã nhận được đăng ký từ bạn.<br>'
+     'Ngay lập tức, bạn có thể giới thiệu khách hàng tham gia sản phẩm.<br>'
+     'Điểm thưởng và ưu đãi sẽ tạm giữ cho tới khi Quản trị viên kích hoạt '
+     'thành công.</div>'),
 
     ('<div style="font-size:13px;color:var(--c2);background:rgba(255,165,0,.14);'
      'border-radius:var(--r-md);padding:var(--s5)">Chào mừng bạn đến với Medigo! '
@@ -241,10 +246,9 @@ BG_PATCHES = [
      '<span style="font-size:13px;font-weight:600;color:var(--c1)">'
      'Tài khoản đang chờ quản trị viên kích hoạt</span></div>\n'
      '        <div style="font-size:13px;color:var(--c2);line-height:1.7">'
-     'Bạn <strong>bán hàng được ngay</strong> qua hai link bên trên — đơn hàng và '
-     'tuyến dưới vẫn ghi nhận đầy đủ. Nhưng tới khi được kích hoạt: hoa hồng bị '
-     '<strong>tạm giữ</strong>, <strong>chưa tính điểm</strong> và '
-     '<strong>chưa rút được</strong>.</div>\n'
+     'Bạn <strong>giới thiệu khách hàng được ngay</strong> qua link trên, tuy nhiên '
+     '<strong>Điểm thưởng và ưu đãi sẽ tạm giữ</strong> cho tới khi Quản trị viên '
+     'kích hoạt thành công.</div>\n'
      '        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);'
      'border-top:1px solid rgba(255,165,0,.3);padding-top:var(--s5)">'
      '<div><div style="font-size:12px;color:var(--c5)">Hoa hồng đang tạm giữ</div>'
@@ -924,9 +928,13 @@ BG_PATCHES += [
      '<label style="font-size:14px;font-weight:600;color:var(--c2)">Mã giới thiệu</label>'
      '<input type="text" value="TTB4123" readonly="{{true}}"'),
 
-    # A3: dòng chào hiện mã giới thiệu dạng alias.
+    # A3: dòng chào hiện ID thành viên; tên khớp với alias HTMT0083.
     ('<div style="font-size:12px;color:var(--c5)">aff_id: 923983</div>',
-     '<div style="font-size:12px;color:var(--c5)">Mã giới thiệu: {{refCode}}</div>'),
+     '<div style="font-size:12px;color:var(--c5)">ID: {{refCode}}</div>'),
+    ('<div style="font-size:18px;font-weight:700">Chào, Nguyễn Văn A</div>',
+     '<div style="font-size:18px;font-weight:700">Chào, Hoàng Thị Mỹ Trinh</div>'),
+    ('>LINK BÁN HÀNG CỦA BẠN<', '>LINK GIỚI THIỆU CỦA BẠN<'),
+    ('>Link bán hàng của bạn<', '>Link giới thiệu của bạn<'),
 
     # (2) Ngày sinh: nhập số, tự chèn dấu /.
     ('placeholder="dd/mm/yyyy" value="{{buyerDob}}" sc-camel-on-change="{{setBuyerDob}}"',
@@ -1061,6 +1069,34 @@ BG_PATCHES += [
      'và điều khoản theo Hợp đồng hợp tác với HOMI365.'),
     ('Tôi đã đọc và đồng ý với điều khoản tham gia chương trình affiliate HOMI365.',
      'Tôi đã đọc và đồng ý với điều khoản tham gia hợp tác với HOMI365'),
+
+    # Bộ lọc hạng ở B2 dùng đủ 6 hạng chính thức, không dịch sang tiếng Việt.
+    ('<option>Tất cả hạng</option><option>Đồng</option><option>Bạc</option>'
+     '<option>Vàng</option>',
+     '<option>Tất cả hạng</option><option>Copper</option><option>Silver</option>'
+     '<option>Gold</option><option>Diamond</option><option>Titanium</option>'
+     '<option>Lithium</option>'),
+
+    # A3: bỏ nút "Xem: Agent mới / Đã tính hoa hồng" — đó là công tắc để trình
+    # diễn, agent thật không được thấy. Hai trạng thái vẫn mở được từ index.
+    ('<button sc-camel-on-click="{{toggleAgentStage}}" style="font-size:11px;'
+     'font-weight:600;color:var(--c6);background:rgba(0,173,238,.08);'
+     'border:1px solid rgba(0,173,238,.3);border-radius:var(--r-xl);'
+     'padding:var(--s2) var(--s4)">{{agentStageToggleLabel}}</button>', ''),
+
+    # Modal rút tiền: hiện đủ tên chủ tài khoản / ngân hàng / số tài khoản.
+    ('<div style="display:flex;justify-content:space-between"><span style="color:var(--c5)">'
+     'Nhận vào</span><span style="font-weight:600">Vietcombank</span></div>',
+     '<div style="font-size:12px;color:var(--c5);text-transform:uppercase;'
+     'letter-spacing:.04em;margin-bottom:var(--s1)">Tài khoản nhận tiền</div>'
+     '<div style="display:flex;justify-content:space-between;gap:var(--s5)">'
+     '<span style="color:var(--c5)">Tên chủ tài khoản</span>'
+     '<span style="font-weight:600;text-align:right">{{withdrawHolder}}</span></div>'
+     '<div style="display:flex;justify-content:space-between;gap:var(--s5)">'
+     '<span style="color:var(--c5)">Ngân hàng</span>'
+     '<span style="font-weight:600;text-align:right">{{withdrawBank}}</span></div>'),
+    ('<span style="font-weight:600;font-family:monospace">{{buyerBankAccount}}</span>',
+     '<span style="font-weight:600;font-family:monospace">{{withdrawAccount}}</span>'),
 
     # ----- (15) B2: hiện mã tuyến trên cạnh tên tuyến trên ----------------
     ('<div style="color:var(--c4);overflow:hidden;text-overflow:ellipsis;'
@@ -1456,6 +1492,14 @@ JS_PATCHES = [
     ("      metricPoints: s.agentStage === 'active' ? '1.240' : '80',",
      "      metricPoints: s.agentStage === 'active' ? '1.240' : '0',"),
 
+    # Tên hạng dùng đúng 6 hạng chính thức, không dịch.
+    ("      metricRank: s.agentStage === 'active' ? 'Bạc' : 'Đồng',",
+     "      metricRank: s.agentStage === 'active' ? 'Silver' : 'Copper',"),
+    # (Hạng của từng dòng trong bảng thành viên được đổi ngay trong bản vá
+    #  "(15) Mã tuyến trên" bên dưới — cùng một dòng return nên gộp lại.)
+    # (Hạng trong ngăn chi tiết cũng gộp vào bản vá lịch sử hạng bên dưới —
+    #  cùng một dòng nên không tách được.)
+
     # Mã thành viên = alias (8.1.C-4), trùng thì -2, -3…
     ("        const affCode = m.name.split(' ').map(w => w[0]).join('').toUpperCase() + m.phone.slice(-4);",
      "        const affCode = ALIAS[m.id];"),
@@ -1472,7 +1516,8 @@ JS_PATCHES = [
     # (15) Mã tuyến trên hiển thị cạnh tên tuyến trên — cũng dùng alias.
     ("        return { ...m, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,",
      "        const up = this.MEMBERS.find(u => u.name === m.upline);\n"
-     "        return { ...m, affId: affCode, status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,\n"
+     "        return { ...m, affId: affCode, rank: this.RANK_LABEL[m.rank] || m.rank,\n"
+     "          status: effStatus, badgeBg: bg, badgeColor: color, statusLabel: label,\n"
      "          uplineCode: up ? ALIAS[up.id] : '',"),
 
     # Link form của agent cũng về đúng một dạng homi365.com.vn/<alias>.
@@ -1510,8 +1555,11 @@ JS_PATCHES = [
     # 7.5.2 — lịch sử thăng/giáng hạng trong ngăn chi tiết thành viên.
     ("      selectedMember = {\n        ...selectedMemberRaw, status: effStatus,",
      "      selectedMember = {\n        ...selectedMemberRaw, status: effStatus,\n"
+     "        rank: this.RANK_LABEL[selectedMemberRaw.rank] || selectedMemberRaw.rank,\n"
      "        rankHistory: this.RANK_HISTORY[selectedMemberRaw.id]\n"
-     "          || [{ label: 'Tham gia · hạng ' + selectedMemberRaw.rank, time: selectedMemberRaw.joined }],"),
+     "          || [{ label: 'Tham gia · hạng '\n"
+     "                 + (this.RANK_LABEL[selectedMemberRaw.rank] || selectedMemberRaw.rank),\n"
+     "               time: selectedMemberRaw.joined }],"),
 
     # Cho phép trang bơm state ban đầu (chọn màn, chọn bước, mở modal)
     # + state cho màn Quản lý sản phẩm và modal Thêm hàng vào kho.
@@ -1528,7 +1576,7 @@ JS_PATCHES = [
      "    wardQuery: 'Phường Bến Thành', wardOpen: false,\n"
      "    accountHolder: '', buyTcChecked: false,\n"
      "    cccdIssueDate: '', cccdIssuePlace: '', lookupResult: null,\n"
-     "    loginPhoneChecked: false, loginPhoneEmpty: false,\n"
+     "    loginPhoneChecked: false, loginPhoneEmpty: false, loginNotEligible: false,\n"
      "    showAdminUserForm: false, editingAdminUserId: null, adminUserLocks: {},\n"
      "    orderRange: 'month',\n"
      "    ordersData: null, orderSearch: '', orderStatusFilter: 'all',\n"
@@ -1590,24 +1638,31 @@ JS_PATCHES = [
       loginPhoneChecked: s.loginPhoneChecked,
       loginPhoneUnchecked: !s.loginPhoneChecked,
       loginPhoneEmpty: s.loginPhoneEmpty,
+      loginNotEligible: s.loginNotEligible,
       checkLoginPhone: () => {
         const ph = s.agentPhone.trim();
-        if (!ph) { this.setState({ loginPhoneEmpty: true }); return; }
+        if (!ph) { this.setState({ loginPhoneEmpty: true, loginNotEligible: false }); return; }
+        // Đã có tài khoản -> mở ô mật khẩu.
         if (this.REGISTERED_PHONES.includes(ph)) {
-          this.setState({ loginPhoneChecked: true, loginPhoneEmpty: false, agentLoginError: false });
+          this.setState({ loginPhoneChecked: true, loginPhoneEmpty: false,
+            loginNotEligible: false, agentLoginError: false });
           return;
         }
+        // Đã mua hàng nhưng chưa đăng ký -> sang màn đăng ký, điền sẵn đơn cũ.
         const o = this.ORDERS_BY_PHONE[ph];
-        GO('A2', o
-          ? { regStep: 1, orderId: o.orderId, buyerName: o.buyerName, buyerPhone: ph,
-              buyerEmail: o.buyerEmail, buyerCccd: o.buyerCccd,
-              buyerAddress: o.buyerAddress, buyerDob: o.buyerDob }
-          : { regStep: 1, buyerPhone: ph });
+        if (o) {
+          GO('A2', { regStep: 1, orderId: o.orderId, buyerName: o.buyerName, buyerPhone: ph,
+            buyerEmail: o.buyerEmail, buyerCccd: o.buyerCccd,
+            buyerAddress: o.buyerAddress, buyerDob: o.buyerDob });
+          return;
+        }
+        // Chưa mua đơn nào -> chưa đủ điều kiện.
+        this.setState({ loginNotEligible: true, loginPhoneEmpty: false, agentLoginError: false });
       },"""),
 
     # Nút copy phải chép đúng link alias duy nhất.
     ("navigator.clipboard.writeText('homi365.vn/san-pham/CN02?aff_id=923983')",
-     "navigator.clipboard.writeText('homi365.com.vn/NVA1111')"),
+     "navigator.clipboard.writeText('homi365.com.vn/htmt0083')"),
 
     # 8.1.C-4 / 8.1.C-5 — sinh alias từ họ tên + 4 số cuối SĐT, trùng thì
     # thêm hậu tố -2, -3… theo thứ tự đăng ký.
@@ -1744,17 +1799,23 @@ JS_PATCHES = [
   ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27', custom:'6' };
   ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1', custom:'1' };
 
+  // 6 hạng chính thức — không dịch sang tiếng Việt.
+  RANKS = ['Copper', 'Silver', 'Gold', 'Diamond', 'Titanium', 'Lithium'];
+  RANK_LABEL = { 'Đồng': 'Copper', 'Bạc': 'Silver', 'Vàng': 'Gold',
+                 'Kim cương': 'Diamond', 'Titan': 'Titanium', 'Lithium': 'Lithium' };
+
   // 7.3.3 AC: hiển thị số đơn còn thiếu để lên hạng kế tiếp.
-  RANK_PROGRESS = { new: 'Còn 5 đơn để lên hạng Bạc', active: 'Còn 8 đơn để lên hạng Vàng' };
+  RANK_PROGRESS = { new: 'Còn 5 đơn để lên hạng Silver',
+                    active: 'Còn 8 đơn để lên hạng Gold' };
 
   RANK_HISTORY = {
-    1: [{ label:'Thăng hạng Đồng → Bạc', time:'01/09/2026' },
-        { label:'Tham gia · hạng Đồng', time:'12/08/2026' }],
-    5: [{ label:'Thăng hạng Bạc → Vàng', time:'01/09/2026' },
-        { label:'Thăng hạng Đồng → Bạc', time:'20/08/2026' },
-        { label:'Tham gia · hạng Đồng', time:'01/08/2026' }],
-    3: [{ label:'Giáng hạng Bạc → Đồng · 0 đơn trong tháng', time:'01/09/2026' },
-        { label:'Tham gia · hạng Đồng', time:'22/08/2026' }]
+    1: [{ label:'Thăng hạng Copper → Silver', time:'01/09/2026' },
+        { label:'Tham gia · hạng Copper', time:'12/08/2026' }],
+    5: [{ label:'Thăng hạng Silver → Gold', time:'01/09/2026' },
+        { label:'Thăng hạng Copper → Silver', time:'20/08/2026' },
+        { label:'Tham gia · hạng Copper', time:'01/08/2026' }],
+    3: [{ label:'Giáng hạng Silver → Copper · 0 đơn trong tháng', time:'01/09/2026' },
+        { label:'Tham gia · hạng Copper', time:'22/08/2026' }]
   };
 
   // 1 sản phẩm pilot duy nhất theo 6.1.C-3. Gói license (1 năm / nửa năm) và
@@ -1912,6 +1973,12 @@ JS_PATCHES = [
       cccdIssuePlace: s.cccdIssuePlace,
       setCccdIssuePlace: (e) => this.setState({ cccdIssuePlace: e.target.value }),
 
+      // Tài khoản nhận tiền hiển thị ở modal rút tiền — lấy từ hồ sơ agent,
+      // agent không sửa được ở đây (muốn đổi phải qua CSKH).
+      withdrawHolder: this.vnUpper(s.accountHolder) || 'HOANG THI MY TRINH',
+      withdrawBank: 'Vietcombank — NH TMCP Ngoại thương Việt Nam',
+      withdrawAccount: s.buyerBankAccount || '0071001234567',
+
       // 7.3.3 — còn thiếu bao nhiêu đơn để lên hạng kế tiếp
       rankProgress: this.RANK_PROGRESS[s.agentStage === 'active' ? 'active' : 'new'],
 
@@ -1926,8 +1993,8 @@ JS_PATCHES = [
 
       // Chốt 09/09: agent chỉ có MỘT link. Mã giới thiệu = alias theo
       // 8.1.C-4 (viết tắt họ tên + 4 số cuối SĐT), trùng thì thêm -2, -3…
-      refCode: 'NVA1111',
-      refLink: 'homi365.com.vn/NVA1111',
+      refCode: 'HTMT0083',
+      refLink: 'homi365.com.vn/htmt0083',
 
       orderTotal: (s.ordersData || []).length,
       orderPendingCount: (s.ordersData || []).filter(o => o.status === 'order_pending').length,
