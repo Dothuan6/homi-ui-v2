@@ -107,7 +107,9 @@ class Component extends DCLogic {
   WITHDRAWAL_FILTERS = [['all','Tất cả'],['pending','Chờ duyệt'],['specialist_approved','Chờ Head'],['approved','Đã duyệt'],['rejected','Từ chối'],['paid','Đã chi trả']];
   STATUS_ORDER = { pending: 0, specialist_approved: 1, approved: 2, rejected: 3, paid: 4 };
   SELLER_BALANCE = { 'Trần Thị Bích': 4000000 };
-  REGISTERED_PHONES = ['0901234567', '0912345678', '0987654321'];
+  REGISTERED_PHONES = ['0901234567', '0912345678', '0987654321', '0938884123'];
+  // Đăng nhập được nhưng hồ sơ chưa qua bước Head duyệt.
+  PENDING_PHONES = ['0938884123'];
   ORDERS_BY_PHONE = {
     '0901111111': { orderId: 'DH100234', buyerName: 'Nguyễn Văn A', buyerEmail: 'nguyenvana@gmail.com', buyerCccd: '079203001234', buyerAddress: '12 Nguyễn Huệ', buyerDob: '15/03/1992', agentId: 1 },
     '0902222222': { orderId: 'DH100511', buyerName: 'Lý Thị Hoa', buyerEmail: 'lythihoa@gmail.com', buyerCccd: '079203005678', buyerAddress: '45 Lê Lợi', buyerDob: '02/11/1990', agentId: 2 }
@@ -783,10 +785,11 @@ class Component extends DCLogic {
             buyerDob: boughtOrder.buyerDob });
           return;
         }
-        // Ba SĐT trong REGISTERED_PHONES là agent ĐÃ được kích hoạt, nên đăng
-        // nhập xong phải vào dashboard trạng thái hoạt động (rút tiền được),
-        // không phải trạng thái chờ kích hoạt của người vừa đăng ký.
-        if (ph && s.agentPassword === '123456') { GO('A3', { agentStage: 'active' }); }
+        // Agent đã được Head duyệt -> dashboard hoạt động (rút tiền được).
+        // Agent chưa duyệt -> dashboard chờ kích hoạt (ưu đãi tạm giữ).
+        if (ph && s.agentPassword === '123456') {
+          GO('A3', { agentStage: this.PENDING_PHONES.includes(ph) ? 'new' : 'active' });
+        }
         else { this.setState({ agentLoginError: true, agentLoginStep: 'otp' }); }
       },
 

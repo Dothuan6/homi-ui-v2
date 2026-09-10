@@ -2051,6 +2051,14 @@ JS_PATCHES = [
     ("      approved: ['rgba(0,173,238,.14)', '#00728f', 'Đã duyệt'],",
      "      approved: ['rgba(0,173,238,.14)', '#00728f', 'Đã duyệt (2/2)'],"),
 
+    # Thêm một SĐT đăng nhập được nhưng CHƯA qua bước Head duyệt — để demo
+    # trạng thái "bán hàng ngay, ưu đãi tạm giữ". Ứng với Trương Thanh Bình
+    # trong bảng thành viên (đang Chờ Head duyệt).
+    ("  REGISTERED_PHONES = ['0901234567', '0912345678', '0987654321'];",
+     "  REGISTERED_PHONES = ['0901234567', '0912345678', '0987654321', '0938884123'];\n"
+     "  // Đăng nhập được nhưng hồ sơ chưa qua bước Head duyệt.\n"
+     "  PENDING_PHONES = ['0938884123'];"),
+
     # 7.1.3 — đã mua hàng nhưng chưa là agent thì đưa sang màn đăng ký,
     # mang theo dữ liệu đơn cũ để autofill (khớp luôn 7.2.8).
     ("""      agentLoginSubmit: () => {
@@ -2068,10 +2076,11 @@ JS_PATCHES = [
             buyerDob: boughtOrder.buyerDob });
           return;
         }
-        // Ba SĐT trong REGISTERED_PHONES là agent ĐÃ được kích hoạt, nên đăng
-        // nhập xong phải vào dashboard trạng thái hoạt động (rút tiền được),
-        // không phải trạng thái chờ kích hoạt của người vừa đăng ký.
-        if (ph && s.agentPassword === '123456') { GO('A3', { agentStage: 'active' }); }
+        // Agent đã được Head duyệt -> dashboard hoạt động (rút tiền được).
+        // Agent chưa duyệt -> dashboard chờ kích hoạt (ưu đãi tạm giữ).
+        if (ph && s.agentPassword === '123456') {
+          GO('A3', { agentStage: this.PENDING_PHONES.includes(ph) ? 'new' : 'active' });
+        }
         else { this.setState({ agentLoginError: true, agentLoginStep: 'otp' }); }
       },
 
