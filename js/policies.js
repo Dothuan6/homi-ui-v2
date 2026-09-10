@@ -176,3 +176,66 @@ const POLICIES = [
     ]
   }
 ];
+
+
+/* --- Bổ sung 10/09: Điều khoản & Điều kiện chương trình thành viên --------
+   Đặt lên đầu danh mục vì đây là văn bản thành viên phải đồng ý khi đăng ký.
+   Các con số bỏ trống chờ bộ phận Pháp lý và khách hàng chốt.            */
+POLICIES.unshift({
+  id: 'dieu-khoan-thanh-vien',
+  title: 'Điều khoản & Điều kiện chương trình thành viên',
+  intro: 'Phiên bản 1.0 · hiệu lực từ …/…/2026. Văn bản này điều chỉnh quan hệ giữa Công ty Cổ phần Giải pháp và Dịch vụ HOMI365 và Thành viên tham gia chương trình giới thiệu khách hàng. Thành viên xác nhận đồng ý với toàn bộ nội dung dưới đây trước khi tài khoản được kích hoạt.',
+  sections: [
+    { h: '1. Điểm thưởng là gì', items: [
+      'Điểm thưởng (sau đây gọi là Điểm HOMI) là đơn vị quy ước nội bộ do HOMI365 phát hành, ghi nhận đóng góp của Thành viên trong việc giới thiệu khách hàng.',
+      { list: [
+        'Điểm HOMI không phải là tiền tệ và không có giá trị thanh toán ngoài hệ thống HOMI365.',
+        'Điểm HOMI không được mua bán, tặng cho hay chuyển nhượng giữa các Thành viên.',
+        'Điểm HOMI không được quy đổi thành tiền mặt ngoài cơ chế đổi thưởng quy định tại Mục 3.'
+      ] }
+    ] },
+    { h: '2. Quy chế tích điểm', items: [
+      'Điểm được ghi nhận khi đơn hàng phát sinh qua link giới thiệu của Thành viên và được HOMI365 xác nhận thanh toán thành công.',
+      { list: [
+        'Tỷ lệ quy đổi: ………… VNĐ giá trị đơn hàng tương ứng 1 Điểm HOMI.',
+        'Điểm chỉ được cộng vào tài khoản sau khi Thành viên đã được kích hoạt.',
+        'Các đơn hàng phát sinh trước thời điểm kích hoạt vẫn được ghi nhận và cộng bù đầy đủ, tính từ đơn đầu tiên.',
+        'Đơn hàng bị huỷ hoặc hoàn tiền sẽ bị thu hồi số điểm tương ứng.'
+      ] }
+    ] },
+    { h: '3. Quy chế tiêu điểm và đổi thưởng', items: [
+      { list: [
+        'Tỷ lệ quy đổi: 1 Điểm HOMI tương ứng ………… VNĐ.',
+        'Yêu cầu quy đổi được xử lý theo quy trình duyệt nội bộ và chi trả vào tài khoản ngân hàng Thành viên đã đăng ký.',
+        'Mỗi Thành viên được gửi tối đa 01 yêu cầu quy đổi trong một tháng.',
+        'Điểm có thời hạn ………… tháng kể từ ngày ghi nhận. Quá thời hạn mà không quy đổi thì điểm tự động hết hiệu lực và không được khôi phục.'
+      ] },
+      'Thông tin tài khoản nhận tiền do Thành viên khai báo. Trường hợp khai sai dẫn tới chuyển nhầm, Thành viên chịu trách nhiệm phối hợp xử lý với ngân hàng.'
+    ] },
+    { h: '4. Quyền thay đổi thể lệ', items: [
+      'HOMI365 có quyền điều chỉnh, tạm ngừng hoặc chấm dứt chương trình, bao gồm tỷ lệ tích điểm, tỷ lệ quy đổi và điều kiện xếp hạng.',
+      { list: [
+        'Mọi thay đổi được thông báo qua email và trên hệ thống trước tối thiểu ………… ngày so với ngày có hiệu lực.',
+        'Điểm đã tích trước thời điểm thay đổi được bảo lưu theo thể lệ cũ.',
+        'Mỗi lần thay đổi sẽ phát hành một phiên bản Điều khoản mới; phiên bản cũ được lưu trữ để đối chiếu.'
+      ] }
+    ] },
+    { h: '5. Bảo mật và xử lý dữ liệu cá nhân', items: [
+      'Thành viên đồng ý để HOMI365 thu thập và xử lý dữ liệu cá nhân gồm họ tên, số điện thoại, email, số CCCD, ngày cấp và nơi cấp, địa chỉ, ảnh chụp CCCD và thông tin tài khoản ngân hàng.',
+      { list: [
+        'Mục đích: vận hành chương trình, chi trả ưu đãi và thực hiện nghĩa vụ thuế theo pháp luật Việt Nam.',
+        'Dữ liệu được lưu trữ có mã hoá; chỉ nhân sự được phân quyền mới có quyền truy cập.',
+        'Không chuyển giao cho bên thứ ba, trừ trường hợp pháp luật yêu cầu.',
+        'Thành viên có quyền yêu cầu tra cứu, chỉnh sửa hoặc xoá dữ liệu bằng cách liên hệ hotline 1900 633 570.'
+      ] }
+    ] },
+    { h: '6. Chấm dứt tư cách Thành viên', items: [
+      'HOMI365 có quyền khoá tài khoản và thu hồi điểm chưa quy đổi nếu phát hiện hành vi gian lận, tạo đơn khống, mạo danh hoặc vi phạm pháp luật.',
+      'Thành viên có thể chủ động chấm dứt tham gia bằng văn bản. Điểm chưa quy đổi tại thời điểm chấm dứt sẽ hết hiệu lực.'
+    ] },
+    { h: '7. Ghi nhận việc chấp thuận', items: [
+      'Khi Thành viên xác nhận đồng ý, hệ thống lưu lại: định danh Thành viên, thời điểm chấp thuận chính xác tới giây, số hiệu phiên bản Điều khoản và địa chỉ IP của thiết bị.',
+      'Bản ghi này chỉ được thêm mới, không sửa và không xoá, dùng làm căn cứ đối chiếu khi có khiếu nại hoặc khi cơ quan quản lý kiểm tra.'
+    ] }
+  ]
+});

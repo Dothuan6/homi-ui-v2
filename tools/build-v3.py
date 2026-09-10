@@ -378,9 +378,80 @@ _BTN_GHOST = ('height:38px;padding:0 var(--s6);background:var(--c12);'
               'font-size:13px;font-weight:600;color:var(--c2)')
 
 
+# Điều khoản & Điều kiện chương trình thành viên — dựng thành một trang chính
+# sách độc lập, có địa chỉ cố định và số hiệu phiên bản, để còn trích dẫn được
+# khi thành viên khiếu nại hoặc cơ quan thuế kiểm tra. Nội dung trùng với văn
+# bản hiển thị ở bước 4 của form đăng ký.
+TNC_POLICY_JS = """
+
+/* --- Bổ sung 10/09: Điều khoản & Điều kiện chương trình thành viên --------
+   Đặt lên đầu danh mục vì đây là văn bản thành viên phải đồng ý khi đăng ký.
+   Các con số bỏ trống chờ bộ phận Pháp lý và khách hàng chốt.            */
+POLICIES.unshift({
+  id: 'dieu-khoan-thanh-vien',
+  title: 'Điều khoản & Điều kiện chương trình thành viên',
+  intro: 'Phiên bản 1.0 · hiệu lực từ …/…/2026. Văn bản này điều chỉnh quan hệ giữa Công ty Cổ phần Giải pháp và Dịch vụ HOMI365 và Thành viên tham gia chương trình giới thiệu khách hàng. Thành viên xác nhận đồng ý với toàn bộ nội dung dưới đây trước khi tài khoản được kích hoạt.',
+  sections: [
+    { h: '1. Điểm thưởng là gì', items: [
+      'Điểm thưởng (sau đây gọi là Điểm HOMI) là đơn vị quy ước nội bộ do HOMI365 phát hành, ghi nhận đóng góp của Thành viên trong việc giới thiệu khách hàng.',
+      { list: [
+        'Điểm HOMI không phải là tiền tệ và không có giá trị thanh toán ngoài hệ thống HOMI365.',
+        'Điểm HOMI không được mua bán, tặng cho hay chuyển nhượng giữa các Thành viên.',
+        'Điểm HOMI không được quy đổi thành tiền mặt ngoài cơ chế đổi thưởng quy định tại Mục 3.'
+      ] }
+    ] },
+    { h: '2. Quy chế tích điểm', items: [
+      'Điểm được ghi nhận khi đơn hàng phát sinh qua link giới thiệu của Thành viên và được HOMI365 xác nhận thanh toán thành công.',
+      { list: [
+        'Tỷ lệ quy đổi: ………… VNĐ giá trị đơn hàng tương ứng 1 Điểm HOMI.',
+        'Điểm chỉ được cộng vào tài khoản sau khi Thành viên đã được kích hoạt.',
+        'Các đơn hàng phát sinh trước thời điểm kích hoạt vẫn được ghi nhận và cộng bù đầy đủ, tính từ đơn đầu tiên.',
+        'Đơn hàng bị huỷ hoặc hoàn tiền sẽ bị thu hồi số điểm tương ứng.'
+      ] }
+    ] },
+    { h: '3. Quy chế tiêu điểm và đổi thưởng', items: [
+      { list: [
+        'Tỷ lệ quy đổi: 1 Điểm HOMI tương ứng ………… VNĐ.',
+        'Yêu cầu quy đổi được xử lý theo quy trình duyệt nội bộ và chi trả vào tài khoản ngân hàng Thành viên đã đăng ký.',
+        'Mỗi Thành viên được gửi tối đa 01 yêu cầu quy đổi trong một tháng.',
+        'Điểm có thời hạn ………… tháng kể từ ngày ghi nhận. Quá thời hạn mà không quy đổi thì điểm tự động hết hiệu lực và không được khôi phục.'
+      ] },
+      'Thông tin tài khoản nhận tiền do Thành viên khai báo. Trường hợp khai sai dẫn tới chuyển nhầm, Thành viên chịu trách nhiệm phối hợp xử lý với ngân hàng.'
+    ] },
+    { h: '4. Quyền thay đổi thể lệ', items: [
+      'HOMI365 có quyền điều chỉnh, tạm ngừng hoặc chấm dứt chương trình, bao gồm tỷ lệ tích điểm, tỷ lệ quy đổi và điều kiện xếp hạng.',
+      { list: [
+        'Mọi thay đổi được thông báo qua email và trên hệ thống trước tối thiểu ………… ngày so với ngày có hiệu lực.',
+        'Điểm đã tích trước thời điểm thay đổi được bảo lưu theo thể lệ cũ.',
+        'Mỗi lần thay đổi sẽ phát hành một phiên bản Điều khoản mới; phiên bản cũ được lưu trữ để đối chiếu.'
+      ] }
+    ] },
+    { h: '5. Bảo mật và xử lý dữ liệu cá nhân', items: [
+      'Thành viên đồng ý để HOMI365 thu thập và xử lý dữ liệu cá nhân gồm họ tên, số điện thoại, email, số CCCD, ngày cấp và nơi cấp, địa chỉ, ảnh chụp CCCD và thông tin tài khoản ngân hàng.',
+      { list: [
+        'Mục đích: vận hành chương trình, chi trả ưu đãi và thực hiện nghĩa vụ thuế theo pháp luật Việt Nam.',
+        'Dữ liệu được lưu trữ có mã hoá; chỉ nhân sự được phân quyền mới có quyền truy cập.',
+        'Không chuyển giao cho bên thứ ba, trừ trường hợp pháp luật yêu cầu.',
+        'Thành viên có quyền yêu cầu tra cứu, chỉnh sửa hoặc xoá dữ liệu bằng cách liên hệ hotline 1900 633 570.'
+      ] }
+    ] },
+    { h: '6. Chấm dứt tư cách Thành viên', items: [
+      'HOMI365 có quyền khoá tài khoản và thu hồi điểm chưa quy đổi nếu phát hiện hành vi gian lận, tạo đơn khống, mạo danh hoặc vi phạm pháp luật.',
+      'Thành viên có thể chủ động chấm dứt tham gia bằng văn bản. Điểm chưa quy đổi tại thời điểm chấm dứt sẽ hết hiệu lực.'
+    ] },
+    { h: '7. Ghi nhận việc chấp thuận', items: [
+      'Khi Thành viên xác nhận đồng ý, hệ thống lưu lại: định danh Thành viên, thời điểm chấp thuận chính xác tới giây, số hiệu phiên bản Điều khoản và địa chỉ IP của thiết bị.',
+      'Bản ghi này chỉ được thêm mới, không sửa và không xoá, dùng làm căn cứ đối chiếu khi có khiếu nại hoặc khi cơ quan quản lý kiểm tra.'
+    ] }
+  ]
+});
+"""
+
+
 # (6) (7) Footer công ty + link sang trang chính sách.
 # Chỗ nào KH chưa cung cấp thì để dấu chấm lửng đúng như bản gốc, không bịa.
 POLICY_LINKS = [
+    ("dieu-khoan-thanh-vien", "Điều khoản thành viên"),
     ("quy-che-website", "Quy chế hoạt động"),
     ("bao-mat-thong-tin", "Chính sách bảo mật thông tin"),
     ("thanh-toan", "Chính sách thanh toán"),
@@ -461,10 +532,27 @@ TNC_BODY = """<div style="font-size:14px;font-weight:700;color:var(--c1)">ĐIỀ
 
             <div style="margin-top:var(--s7);padding-top:var(--s5);border-top:1px solid rgba(170,170,170,.3);font-size:12px;color:var(--c5)">— Hết văn bản. Xem thêm <a href="policy.html?s=bao-mat-thong-tin" class="tnc-link" style="color:#00ADEE;font-weight:600">Chính sách bảo mật thông tin</a> và <a href="policy.html?s=quy-che-website" class="tnc-link" style="color:#00ADEE;font-weight:600">Quy chế hoạt động</a>.</div>"""
 
-TNC_HINT = ('\n          <div class="tnc-hint" style="font-size:12px;color:#a36400;'
-            'background:rgba(255,165,0,.12);border-radius:var(--r-sm);'
-            'padding:var(--s4);line-height:1.6">Cuộn hết nội dung điều khoản '
-            '(hoặc mở link chính sách) thì ô đồng ý mới bấm được.</div>')
+# Không hiện dòng nhắc — ô đồng ý mờ sẵn đã đủ nói lên là chưa bấm được.
+TNC_HINT = ""
+
+# Dải dẫn đầu khung điều khoản. Hai việc: cho người đọc lối mở bản đầy đủ ở
+# một địa chỉ cố định (để còn lưu, in, trích dẫn khi khiếu nại), và làm nhánh
+# "bấm vào link điều khoản" mở khoá ô đồng ý dùng được thật — trước đây link
+# chỉ nằm ở đáy khung nên phải cuộn hết mới thấy, thành ra thừa.
+TNC_TOP = (
+    '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:var(--s4);'
+    'justify-content:space-between;background:rgba(0,173,238,.07);'
+    'border:1px solid rgba(0,173,238,.3);border-radius:var(--r-md);'
+    'padding:var(--s4) var(--s5);margin-bottom:var(--s5)">'
+    '<div style="font-size:12px;color:var(--c4);line-height:1.6">'
+    'Bản đầy đủ, có hiệu lực pháp lý: <strong>Điều khoản &amp; Điều kiện '
+    'chương trình thành viên — phiên bản 1.0</strong></div>'
+    '<a href="policy.html?s=dieu-khoan-thanh-vien" target="_blank" '
+    'class="tnc-link" style="flex:none;font-size:12px;font-weight:700;'
+    'color:#00ADEE;text-decoration:none;border:1px solid #00ADEE;'
+    'border-radius:var(--r-sm);padding:6px 12px;white-space:nowrap">'
+    'Mở văn bản đầy đủ ↗</a></div>'
+)
 
 
 OTP_JS = """// Ô nhập OTP: gõ một số là nhảy sang ô kế, Backspace ở ô trống thì lùi lại,
@@ -1331,7 +1419,7 @@ BG_PATCHES += [
      'trên/tuyến dưới, và các điều kiện rút tiền được Homi365 quy định. Nội dung '
      'đầy đủ do bộ phận Pháp lý cung cấp trước khi go‑live.\n'
      '          </div>',
-     '            ' + TNC_BODY + '\n          </div>' + TNC_HINT),
+     '            ' + TNC_TOP + TNC_BODY + '\n          </div>' + TNC_HINT),
     # Nhãn checkbox phải nằm trong MỘT thẻ span — label là flex nên mỗi thẻ con
     # sẽ thành một cột riêng, chữ bị vỡ thành nhiều khối hẹp.
     ('Tôi đã đọc và đồng ý với điều khoản tham gia chương trình affiliate HOMI365.',
@@ -3011,8 +3099,11 @@ def main():
     pol_src = ROOT / "prototype-v2" / "config" / "policies.js"
     n_pol = 0
     if pol_src.exists():
-        shutil.copy(pol_src, V3 / "js" / "policies.js")
-        n_pol = len(re.findall(r"^\s{4}id:\s*'", pol_src.read_text(encoding="utf-8"), re.M))
+        # Chép nguyên bản từ v2 rồi nối thêm Điều khoản thành viên ở đây,
+        # để file gốc bên prototype-v2 không bị đụng tới.
+        (V3 / "js" / "policies.js").write_text(
+            pol_src.read_text(encoding="utf-8") + TNC_POLICY_JS, encoding="utf-8")
+        n_pol = len(re.findall(r"^\s{4}id:\s*'", pol_src.read_text(encoding="utf-8"), re.M)) + 1
         (V3 / "screens" / "policy.html").write_text(
             POLICY_PAGE.replace('<div id="foot"></div>', footer_html("../")),
             encoding="utf-8")
