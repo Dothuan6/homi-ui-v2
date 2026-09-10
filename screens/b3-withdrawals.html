@@ -605,6 +605,15 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             <span style="font-weight:700;color:var(--c1)">{{selectedMember.rank}} · {{selectedMember.tierLabel}}</span>
           </div>
 
+          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s4)">Chấp thuận điều khoản</div>
+          <div style="border:1px solid rgba(47,122,72,.35);background:rgba(47,122,72,.08);border-radius:var(--r-md);padding:var(--s5);display:flex;flex-direction:column;gap:var(--s3);font-size:13px;margin-bottom:var(--s7)">
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Phiên bản T&amp;C</span><span style="font-weight:600;font-family:monospace">{{selectedMember.tncVersion}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Thời điểm đồng ý</span><span style="font-weight:600;font-family:monospace">{{selectedMember.tncAt}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Địa chỉ IP</span><span style="font-weight:600;font-family:monospace">{{selectedMember.tncIp}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Định danh</span><span style="color:var(--c2);text-align:right;font-family:monospace">{{selectedMember.tncUser}}</span></div>
+            <div style="font-size:11px;color:var(--c5);line-height:1.6">Bằng chứng chấp thuận, phục vụ đối chiếu khi cơ quan thuế kiểm tra hoặc thành viên khiếu nại.</div>
+          </div>
+
           <button sc-camel-on-click="{{toggleProfile}}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--s5);background:rgba(154,163,176,.08);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s5) var(--s6);cursor:pointer;font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)" style-hover="background:rgba(154,163,176,.15)"><span>Thông tin hồ sơ</span><span style="font-size:14px;color:var(--c6)">{{profileCaret}}</span></button>
 
           <sc-if value="{{profileOpen}}" hint-placeholder-val="{{true}}">
@@ -1323,6 +1332,13 @@ class Component extends DCLogic {
           }
           return 'F' + lv;
         })(selectedMemberRaw, this.MEMBERS),
+        // Bằng chứng chấp thuận T&C — bốn trường bắt buộc theo rà soát
+        // pháp lý: định danh, thời điểm, phiên bản, địa chỉ IP.
+        tncVersion: 'v1.0',
+        tncAt: selectedMemberRaw.joined + ' 09:' + (10 + selectedMemberRaw.id) + ':07',
+        tncIp: '113.161.' + (40 + selectedMemberRaw.id) + '.' + (100 + selectedMemberRaw.id * 3),
+        tncUser: 'MB' + String(selectedMemberRaw.id).padStart(5, '0')
+          + ' · ' + selectedMemberRaw.phone,
         // Ghi đè bằng phần admin đã sửa (nếu có).
         ...(s.memberEdits[selectedMemberRaw.id] || {}),
         rankHistory: this.RANK_HISTORY[selectedMemberRaw.id]

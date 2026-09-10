@@ -165,11 +165,11 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
         <div style="display:flex;flex-direction:column;gap:var(--s8)">
           <div><div style="font-size:24px;font-weight:700">Điều khoản tham gia</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">Bước 4/4 · Vui lòng đọc và xác nhận</div></div>
           <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);padding:var(--s7);height:180px;overflow:auto;font-size:13px;line-height:1.6;color:var(--c4)">
-            Điều khoản hợp đồng hợp tác HOMI365. Bằng việc tích chọn xác nhận, bạn đồng ý xác nhận HOMI365 sử dụng dữ liệu cá nhân cho mục đích thực hiện các chính sách và điều khoản theo Hợp đồng hợp tác với HOMI365.
+            Điều khoản chương trình affiliate HOMI365 — Homi365. Bằng việc tích chọn xác nhận, bạn đồng ý với chính sách hoa hồng, quy định về tuyến trên/tuyến dưới, và các điều kiện rút tiền được Homi365 quy định. Nội dung đầy đủ do bộ phận Pháp lý cung cấp trước khi go‑live.
           </div>
           <label style="display:flex;align-items:flex-start;gap:var(--s4);font-size:14px;color:var(--c2)">
-            <input type="checkbox" checked="{{tncChecked}}" sc-camel-on-change="{{toggleTnc}}" style="width:18px;height:18px;margin-top:2px;accent-color:#1E3A66">
-            Tôi đã đọc và đồng ý với điều khoản tham gia hợp tác với HOMI365
+            <input type="checkbox" class="tnc-agree" disabled checked="{{tncChecked}}" sc-camel-on-change="{{toggleTnc}}" style="width:18px;height:18px;margin-top:2px;accent-color:#1E3A66;flex:none;opacity:.4;cursor:not-allowed">
+            Tôi đã đọc và đồng ý với <strong>Điều khoản &amp; Điều kiện HOMI365 phiên bản 1.0</strong>, bao gồm quy chế tích điểm, đổi thưởng và xử lý dữ liệu cá nhân.
           </label>
           <div style="display:flex;gap:var(--s5)">
             <button sc-camel-on-click="{{regPrev}}" style="flex:1;height:46px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:15px;font-weight:600">Quay lại</button>
@@ -728,6 +728,13 @@ class Component extends DCLogic {
           }
           return 'F' + lv;
         })(selectedMemberRaw, this.MEMBERS),
+        // Bằng chứng chấp thuận T&C — bốn trường bắt buộc theo rà soát
+        // pháp lý: định danh, thời điểm, phiên bản, địa chỉ IP.
+        tncVersion: 'v1.0',
+        tncAt: selectedMemberRaw.joined + ' 09:' + (10 + selectedMemberRaw.id) + ':07',
+        tncIp: '113.161.' + (40 + selectedMemberRaw.id) + '.' + (100 + selectedMemberRaw.id * 3),
+        tncUser: 'MB' + String(selectedMemberRaw.id).padStart(5, '0')
+          + ' · ' + selectedMemberRaw.phone,
         // Ghi đè bằng phần admin đã sửa (nếu có).
         ...(s.memberEdits[selectedMemberRaw.id] || {}),
         rankHistory: this.RANK_HISTORY[selectedMemberRaw.id]

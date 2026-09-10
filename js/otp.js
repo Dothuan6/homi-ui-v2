@@ -43,3 +43,40 @@
     list[Math.min(i + digits.length, list.length - 1)].focus();
   });
 })();
+
+// Điều khoản & Điều kiện: ô "Tôi đồng ý" chỉ bấm được sau khi người dùng đã
+// cuộn hết văn bản, hoặc mở một link chính sách. Runtime dựng lại DOM mỗi lần
+// đổi state nên phải áp lại trạng thái sau mỗi lần DOM thay đổi.
+(function () {
+  var read = false;
+
+  function apply() {
+    var box = document.querySelector('.tnc-agree');
+    if (!box) return;
+    var hint = document.querySelector('.tnc-hint');
+    box.disabled = !read;
+    box.style.opacity = read ? '1' : '.4';
+    box.style.cursor = read ? 'pointer' : 'not-allowed';
+    if (hint) hint.style.display = read ? 'none' : '';
+  }
+
+  function markRead() { if (!read) { read = true; apply(); } }
+
+  // scroll không nổi bọt -> bắt ở pha capture.
+  document.addEventListener('scroll', function (e) {
+    var d = e.target;
+    if (!d.classList || !d.classList.contains('tnc-doc')) return;
+    if (d.scrollTop + d.clientHeight >= d.scrollHeight - 8) markRead();
+  }, true);
+
+  document.addEventListener('click', function (e) {
+    if (e.target.classList && e.target.classList.contains('tnc-link')) markRead();
+  });
+
+  if (window.MutationObserver) {
+    new MutationObserver(apply).observe(document.documentElement,
+      { childList: true, subtree: true });
+  }
+  document.addEventListener('DOMContentLoaded', apply);
+  apply();
+})();

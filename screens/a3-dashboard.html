@@ -687,6 +687,13 @@ class Component extends DCLogic {
           }
           return 'F' + lv;
         })(selectedMemberRaw, this.MEMBERS),
+        // Bằng chứng chấp thuận T&C — bốn trường bắt buộc theo rà soát
+        // pháp lý: định danh, thời điểm, phiên bản, địa chỉ IP.
+        tncVersion: 'v1.0',
+        tncAt: selectedMemberRaw.joined + ' 09:' + (10 + selectedMemberRaw.id) + ':07',
+        tncIp: '113.161.' + (40 + selectedMemberRaw.id) + '.' + (100 + selectedMemberRaw.id * 3),
+        tncUser: 'MB' + String(selectedMemberRaw.id).padStart(5, '0')
+          + ' · ' + selectedMemberRaw.phone,
         // Ghi đè bằng phần admin đã sửa (nếu có).
         ...(s.memberEdits[selectedMemberRaw.id] || {}),
         rankHistory: this.RANK_HISTORY[selectedMemberRaw.id]

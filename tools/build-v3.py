@@ -104,6 +104,15 @@ BG_PATCHES = [
             <span style="font-weight:700;color:var(--c1)">{{selectedMember.rank}} · {{selectedMember.tierLabel}}</span>
           </div>
 
+          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s4)">Chấp thuận điều khoản</div>
+          <div style="border:1px solid rgba(47,122,72,.35);background:rgba(132,190,82,.08);border-radius:var(--r-md);padding:var(--s5);display:flex;flex-direction:column;gap:var(--s3);font-size:13px;margin-bottom:var(--s7)">
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Phiên bản T&amp;C</span><span style="font-weight:600;font-family:monospace">{{selectedMember.tncVersion}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Thời điểm đồng ý</span><span style="font-weight:600;font-family:monospace">{{selectedMember.tncAt}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Địa chỉ IP</span><span style="font-weight:600;font-family:monospace">{{selectedMember.tncIp}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">Định danh</span><span style="color:var(--c2);text-align:right;font-family:monospace">{{selectedMember.tncUser}}</span></div>
+            <div style="font-size:11px;color:var(--c5);line-height:1.6">Bằng chứng chấp thuận, phục vụ đối chiếu khi cơ quan thuế kiểm tra hoặc thành viên khiếu nại.</div>
+          </div>
+
           <button sc-camel-on-click="{{toggleProfile}}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--s5);background:rgba(170,170,170,.08);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-md);padding:var(--s5) var(--s6);cursor:pointer;font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)" style-hover="background:rgba(170,170,170,.15)"><span>Thông tin hồ sơ</span><span style="font-size:14px;color:var(--c6)">{{profileCaret}}</span></button>
 
           <sc-if value="{{profileOpen}}" hint-placeholder-val="{{true}}">
@@ -427,6 +436,35 @@ def footer_html(prefix="", pol_prefix=""):
     )
 
 
+# Toàn văn Điều khoản & Điều kiện, có đủ 5 nội dung bắt buộc theo rà soát
+# pháp lý 10/09. Số liệu để trống bằng dấu chấm lửng — chờ Pháp lý điền.
+TNC_DOC = """<div class="tnc-doc" style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);height:280px;overflow-y:auto;font-size:13px;line-height:1.75;color:var(--c4)">
+            <div style="font-size:14px;font-weight:700;color:var(--c1)">ĐIỀU KHOẢN &amp; ĐIỀU KIỆN CHƯƠNG TRÌNH THÀNH VIÊN HOMI365</div>
+            <div style="font-size:11px;color:var(--c5);margin:var(--s2) 0 var(--s6)">Phiên bản 1.0 · hiệu lực từ …/…/2026 · Công ty Cổ phần Giải pháp và Dịch vụ HOMI365</div>
+
+            <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">1. Điểm thưởng là gì</div>
+            <p style="margin:var(--s2) 0">Điểm thưởng (sau đây gọi là <strong>Điểm HOMI</strong>) là đơn vị quy ước nội bộ do HOMI365 phát hành, ghi nhận đóng góp của Thành viên trong việc giới thiệu khách hàng. Điểm HOMI <strong>không phải là tiền tệ</strong>, không có giá trị thanh toán ngoài hệ thống HOMI365, không được mua bán hay chuyển nhượng giữa các Thành viên.</p>
+
+            <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">2. Quy chế tích điểm</div>
+            <p style="margin:var(--s2) 0">Điểm được ghi nhận khi đơn hàng phát sinh qua link giới thiệu của Thành viên và được HOMI365 xác nhận thanh toán thành công. Tỷ lệ qui đổi: <strong>………… VNĐ giá trị đơn hàng = 1 Điểm HOMI</strong>. Điểm chỉ được cộng sau khi tài khoản Thành viên đã được kích hoạt; các đơn phát sinh trước thời điểm kích hoạt vẫn được tính và cộng bù đầy đủ. Đơn hàng bị huỷ hoặc hoàn tiền sẽ bị thu hồi số điểm tương ứng.</p>
+
+            <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">3. Quy chế tiêu điểm và đổi thưởng</div>
+            <p style="margin:var(--s2) 0">Điểm HOMI được quy đổi thành ưu đãi theo tỷ lệ <strong>1 Điểm HOMI = ………… VNĐ</strong>. Yêu cầu quy đổi được xử lý theo quy trình duyệt nội bộ và chi trả vào tài khoản ngân hàng Thành viên đã đăng ký. Mỗi Thành viên được gửi tối đa <strong>01 yêu cầu quy đổi trong một tháng</strong>. Điểm có thời hạn <strong>………… tháng</strong> kể từ ngày ghi nhận; quá thời hạn mà không quy đổi thì điểm tự động hết hiệu lực.</p>
+
+            <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">4. Quyền thay đổi thể lệ</div>
+            <p style="margin:var(--s2) 0">HOMI365 có quyền điều chỉnh, tạm ngừng hoặc chấm dứt chương trình, bao gồm tỷ lệ tích điểm, tỷ lệ quy đổi và điều kiện xếp hạng. Mọi thay đổi được thông báo tới Thành viên qua email và trên hệ thống <strong>trước tối thiểu ………… ngày</strong> so với ngày có hiệu lực. Điểm đã tích trước thời điểm thay đổi được bảo lưu theo thể lệ cũ.</p>
+
+            <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">5. Bảo mật và xử lý dữ liệu cá nhân</div>
+            <p style="margin:var(--s2) 0">Thành viên đồng ý để HOMI365 thu thập và xử lý dữ liệu cá nhân gồm họ tên, số điện thoại, email, số CCCD, địa chỉ và thông tin tài khoản ngân hàng, nhằm mục đích vận hành chương trình, chi trả ưu đãi và thực hiện nghĩa vụ thuế theo pháp luật Việt Nam. Dữ liệu được lưu trữ có mã hoá, chỉ nhân sự được phân quyền mới truy cập, và không chuyển giao cho bên thứ ba ngoài các trường hợp pháp luật yêu cầu. Thành viên có quyền yêu cầu tra cứu, chỉnh sửa hoặc xoá dữ liệu bằng cách liên hệ <strong>1900 633 570</strong>.</p>
+
+            <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">6. Chấm dứt tư cách Thành viên</div>
+            <p style="margin:var(--s2) 0">HOMI365 có quyền khoá tài khoản và thu hồi điểm chưa quy đổi nếu phát hiện hành vi gian lận, tạo đơn khống, mạo danh hoặc vi phạm pháp luật. Thành viên có thể chủ động chấm dứt tham gia bằng văn bản; điểm chưa quy đổi tại thời điểm chấm dứt sẽ hết hiệu lực.</p>
+
+            <div style="margin-top:var(--s7);padding-top:var(--s5);border-top:1px solid rgba(170,170,170,.3);font-size:12px;color:var(--c5)">— Hết văn bản. Xem thêm <a href="policy.html?s=bao-mat-thong-tin" class="tnc-link" style="color:#00ADEE;font-weight:600">Chính sách bảo mật thông tin</a> và <a href="policy.html?s=quy-che-website" class="tnc-link" style="color:#00ADEE;font-weight:600">Quy chế hoạt động</a>.</div>
+          </div>
+          <div class="tnc-hint" style="font-size:12px;color:#a36400;background:rgba(255,165,0,.12);border-radius:var(--r-sm);padding:var(--s4);line-height:1.6">Cuộn hết nội dung điều khoản (hoặc mở link chính sách) thì ô đồng ý mới bấm được.</div>"""
+
+
 OTP_JS = """// Ô nhập OTP: gõ một số là nhảy sang ô kế, Backspace ở ô trống thì lùi lại,
 // dán cả mã 6 số thì tự rải ra các ô. Gắn bằng event uỷ quyền trên document
 // nên không phụ thuộc thời điểm runtime dựng xong DOM.
@@ -471,6 +509,43 @@ OTP_JS = """// Ô nhập OTP: gõ một số là nhảy sang ô kế, Backspace 
     }
     list[Math.min(i + digits.length, list.length - 1)].focus();
   });
+})();
+
+// Điều khoản & Điều kiện: ô "Tôi đồng ý" chỉ bấm được sau khi người dùng đã
+// cuộn hết văn bản, hoặc mở một link chính sách. Runtime dựng lại DOM mỗi lần
+// đổi state nên phải áp lại trạng thái sau mỗi lần DOM thay đổi.
+(function () {
+  var read = false;
+
+  function apply() {
+    var box = document.querySelector('.tnc-agree');
+    if (!box) return;
+    var hint = document.querySelector('.tnc-hint');
+    box.disabled = !read;
+    box.style.opacity = read ? '1' : '.4';
+    box.style.cursor = read ? 'pointer' : 'not-allowed';
+    if (hint) hint.style.display = read ? 'none' : '';
+  }
+
+  function markRead() { if (!read) { read = true; apply(); } }
+
+  // scroll không nổi bọt -> bắt ở pha capture.
+  document.addEventListener('scroll', function (e) {
+    var d = e.target;
+    if (!d.classList || !d.classList.contains('tnc-doc')) return;
+    if (d.scrollTop + d.clientHeight >= d.scrollHeight - 8) markRead();
+  }, true);
+
+  document.addEventListener('click', function (e) {
+    if (e.target.classList && e.target.classList.contains('tnc-link')) markRead();
+  });
+
+  if (window.MutationObserver) {
+    new MutationObserver(apply).observe(document.documentElement,
+      { childList: true, subtree: true });
+  }
+  document.addEventListener('DOMContentLoaded', apply);
+  apply();
 })();
 """
 
@@ -1241,16 +1316,28 @@ BG_PATCHES += [
      'style-hover="background:#0099d1">Tiếp tục</button>'),
 
     # ----- (14) Nội dung điều khoản tham gia ------------------------------
+    # (14) + rà soát pháp lý 10/09: hiển thị TOÀN VĂN T&C, buộc cuộn hết mới
+    # bật ô đồng ý, và ghi lại bằng chứng chấp thuận.
     # Lưu ý: bản vá "Medigo -> HOMI365" chạy trước nên neo phải dùng chữ mới.
-    ('Điều khoản chương trình affiliate HOMI365 — Homi365. Bằng việc tích chọn xác '
-     'nhận, bạn đồng ý với chính sách hoa hồng, quy định về tuyến trên/tuyến dưới, '
-     'và các điều kiện rút tiền được Homi365 quy định. Nội dung đầy đủ do bộ phận '
-     'Pháp lý cung cấp trước khi go‑live.',
-     'Điều khoản hợp đồng hợp tác HOMI365. Bằng việc tích chọn xác nhận, bạn đồng ý '
-     'xác nhận HOMI365 sử dụng dữ liệu cá nhân cho mục đích thực hiện các chính sách '
-     'và điều khoản theo Hợp đồng hợp tác với HOMI365.'),
+    ('<div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);'
+     'padding:var(--s7);height:180px;overflow:auto;font-size:13px;line-height:1.6;'
+     'color:var(--c4)">\n'
+     '            Điều khoản chương trình affiliate HOMI365 — Homi365. Bằng việc '
+     'tích chọn xác nhận, bạn đồng ý với chính sách hoa hồng, quy định về tuyến '
+     'trên/tuyến dưới, và các điều kiện rút tiền được Homi365 quy định. Nội dung '
+     'đầy đủ do bộ phận Pháp lý cung cấp trước khi go‑live.\n'
+     '          </div>',
+     TNC_DOC),
     ('Tôi đã đọc và đồng ý với điều khoản tham gia chương trình affiliate HOMI365.',
-     'Tôi đã đọc và đồng ý với điều khoản tham gia hợp tác với HOMI365'),
+     'Tôi đã đọc và đồng ý với <strong>Điều khoản &amp; Điều kiện HOMI365 '
+     'phiên bản 1.0</strong>, bao gồm quy chế tích điểm, đổi thưởng và xử lý '
+     'dữ liệu cá nhân.'),
+    ('<input type="checkbox" checked="{{tncChecked}}" sc-camel-on-change="{{toggleTnc}}" '
+     'style="width:18px;height:18px;margin-top:2px;accent-color:#00ADEE">',
+     '<input type="checkbox" class="tnc-agree" disabled checked="{{tncChecked}}" '
+     'sc-camel-on-change="{{toggleTnc}}" '
+     'style="width:18px;height:18px;margin-top:2px;accent-color:#00ADEE;'
+     'flex:none;opacity:.4;cursor:not-allowed">'),
 
     # Bộ lọc hạng ở B2 dùng đủ 6 hạng chính thức, không dịch sang tiếng Việt.
     ('<option>Tất cả hạng</option><option>Đồng</option><option>Bạc</option>'
@@ -1976,6 +2063,13 @@ JS_PATCHES = [
      "          }\n"
      "          return 'F' + lv;\n"
      "        })(selectedMemberRaw, this.MEMBERS),\n"
+     "        // Bằng chứng chấp thuận T&C — bốn trường bắt buộc theo rà soát\n"
+     "        // pháp lý: định danh, thời điểm, phiên bản, địa chỉ IP.\n"
+     "        tncVersion: 'v1.0',\n"
+     "        tncAt: selectedMemberRaw.joined + ' 09:' + (10 + selectedMemberRaw.id) + ':07',\n"
+     "        tncIp: '113.161.' + (40 + selectedMemberRaw.id) + '.' + (100 + selectedMemberRaw.id * 3),\n"
+     "        tncUser: 'MB' + String(selectedMemberRaw.id).padStart(5, '0')\n"
+     "          + ' · ' + selectedMemberRaw.phone,\n"
      "        // Ghi đè bằng phần admin đã sửa (nếu có).\n"
      "        ...(s.memberEdits[selectedMemberRaw.id] || {}),\n"
      "        rankHistory: this.RANK_HISTORY[selectedMemberRaw.id]\n"
