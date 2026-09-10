@@ -1789,11 +1789,14 @@ JS_PATCHES = [
     ("      metricRank: s.agentStage === 'active' ? 'Bạc' : 'Đồng',",
      "      metricRank: s.agentStage === 'active' ? 'Silver' : 'Copper',"),
 
-    # (6) Tiêu đề biểu đồ cố định là "Khoản ưu đãi", không đổi theo bộ lọc —
-    # khoảng thời gian đã nằm ngay ở dãy chip bên dưới, nhắc lại là thừa.
-    ("title: 'Xu hướng hoa hồng · 7 ngày gần nhất'", "title: 'Khoản ưu đãi'"),
-    ("title: 'Xu hướng hoa hồng · Theo tuần trong tháng'", "title: 'Khoản ưu đãi'"),
-    ("title: 'Xu hướng hoa hồng · Theo tháng trong năm'", "title: 'Khoản ưu đãi'"),
+    # (6) Tiêu đề biểu đồ đổi theo bộ lọc đang chọn, chỉ thay cụm đầu
+    # "Xu hướng hoa hồng" thành "Khoản ưu đãi".
+    ("title: 'Xu hướng hoa hồng · 7 ngày gần nhất'",
+     "title: 'Khoản ưu đãi · 7 ngày gần nhất'"),
+    ("title: 'Xu hướng hoa hồng · Theo tuần trong tháng'",
+     "title: 'Khoản ưu đãi · Theo tuần trong tháng'"),
+    ("title: 'Xu hướng hoa hồng · Theo tháng trong năm'",
+     "title: 'Khoản ưu đãi · Theo tháng trong năm'"),
     # (Hạng của từng dòng trong bảng thành viên được đổi ngay trong bản vá
     #  "(15) Mã tuyến trên" bên dưới — cùng một dòng return nên gộp lại.)
     # (8) Bỏ duyệt 2 lượt ở màn thành viên. Đơn hàng được admin xác nhận
