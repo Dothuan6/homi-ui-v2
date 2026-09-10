@@ -479,7 +479,7 @@ def footer_html(prefix="", pol_prefix=""):
         'class="footer-grid">\n'
         '        <div style="display:flex;flex-direction:column;gap:var(--s3)">\n'
         '          <img src="%sassets/logo homi-01.png" alt="HOMI365" '
-        'style="height:34px;width:auto;align-self:flex-start;margin-bottom:var(--s2)">\n'
+        'style="width:355px;max-width:100%%;height:auto;align-self:flex-start;margin-bottom:var(--s2)">\n'
         '          <div style="font-size:13px;font-weight:700;color:var(--c1);'
         'text-transform:uppercase;line-height:1.6">Công ty Cổ phần Giải pháp và '
         'Dịch vụ HOMI365</div>\n'
