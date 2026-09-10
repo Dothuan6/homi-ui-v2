@@ -57,7 +57,7 @@ Bỏ hai thành phần vốn là khung điều khiển của bản mockup, khôn
 - Dòng chú thích `WhiteCoat Việt Nam · 7 màn hình MVP`.
 - Dãy nút chuyển màn `A1 · Thông tin nhận hàng … B4 · Kho hàng`. Việc chuyển màn giờ nằm ở `index.html`.
 
-Vì thanh chỉ còn một phần tử, logo nâng lên 40px và đệm dọc nới từ 12px lên 16px — thanh cao 73px thay vì 65px. Mọi phép `calc(100vh - 65px)` trong mockup đã được sửa theo (3 chỗ) để màn quản trị không dư thanh cuộn.
+Vì thanh chỉ còn một phần tử, logo nâng lên 52px và đệm dọc nới từ 12px lên 16px — thanh cao 85px thay vì 65px. Mọi phép `calc(100vh - 65px)` trong mockup đã được sửa theo (3 chỗ) để màn quản trị không dư thanh cuộn.
 
 Thêm nút **Đăng nhập Agent** ở góc phải thanh trên, chỉ trên 2 màn công khai A1 và A2 (trỏ sang `c1-login.html`). Không đặt ở C1 vì đang đứng sẵn ở đó, không đặt ở A3 vì đã đăng nhập, không đặt ở khung quản trị. Đây là thành phần mới so với mockup KH — cần nêu khi gửi.
 

@@ -479,7 +479,7 @@ def footer_html(prefix="", pol_prefix=""):
         'class="footer-grid">\n'
         '        <div style="display:flex;flex-direction:column;gap:var(--s3)">\n'
         '          <img src="%sassets/logo homi-01.png" alt="HOMI365" '
-        'style="width:355px;max-width:100%%;height:auto;align-self:flex-start;margin-bottom:var(--s2)">\n'
+        'style="max-width:30%%;height:auto;align-self:flex-start;margin-bottom:var(--s2)">\n'
         '          <div style="font-size:13px;font-weight:700;color:var(--c1);'
         'text-transform:uppercase;line-height:1.6">Công ty Cổ phần Giải pháp và '
         'Dịch vụ HOMI365</div>\n'
@@ -2804,7 +2804,7 @@ JS_PATCHES = [
 
 # Thanh trên giờ chỉ còn logo, nên logo phải đủ lớn để không bị lọt thỏm.
 # Đổi 2 số này là đổi được cả chiều cao thanh.
-LOGO_H = 40           # px — chiều cao ảnh logo
+LOGO_H = 52           # px — chiều cao ảnh logo (≈15% bề ngang khung 1160px)
 BAR_PAD_Y = 16        # px trên/dưới (mockup gốc là --s5 = 12px)
 BAR_H = BAR_PAD_Y * 2 + LOGO_H + 1        # +1 = đường kẻ dưới
 CONTENT_MAX = 1160    # px — bằng khung nội dung màn A1, để logo thẳng hàng
@@ -2820,7 +2820,10 @@ LOGO_HTML = (
 # (A1 mua hàng, A2 đăng ký). Không hiện ở C1 vì đang đứng sẵn ở đó, không hiện
 # ở A3 vì đã đăng nhập, không hiện ở khung quản trị.
 LOGIN_BTN = (
-    '<a href="c1-login.html" style="margin-left:auto;display:inline-flex;'
+    # flex:none + nowrap: logo to lên thì nút không được phép co lại rồi vỡ chữ
+    # thành cột hẹp như trước.
+    '<a href="c1-login.html" style="margin-left:auto;flex:none;white-space:nowrap;'
+    'display:inline-flex;'
     'align-items:center;gap:var(--s3);height:38px;padding:0 var(--s6);'
     # Viền dùng đúng màu viền chung của mockup (ô nhập, nút phụ như "Xuất CSV")
     # để thanh trên không lệch tông với phần bên dưới.
