@@ -530,7 +530,7 @@ TNC_BODY = """<div style="font-size:14px;font-weight:700;color:var(--c1)">ĐIỀ
             <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">6. Chấm dứt tư cách Thành viên</div>
             <p style="margin:var(--s2) 0">HOMI365 có quyền khoá tài khoản và thu hồi điểm chưa quy đổi nếu phát hiện hành vi gian lận, tạo đơn khống, mạo danh hoặc vi phạm pháp luật. Thành viên có thể chủ động chấm dứt tham gia bằng văn bản; điểm chưa quy đổi tại thời điểm chấm dứt sẽ hết hiệu lực.</p>
 
-            <div style="margin-top:var(--s7);padding-top:var(--s5);border-top:1px solid rgba(170,170,170,.3);font-size:12px;color:var(--c5)">— Hết văn bản. Xem thêm <a href="policy.html?s=bao-mat-thong-tin" class="tnc-link" style="color:#00ADEE;font-weight:600">Chính sách bảo mật thông tin</a> và <a href="policy.html?s=quy-che-website" class="tnc-link" style="color:#00ADEE;font-weight:600">Quy chế hoạt động</a>.</div>"""
+            <div style="margin-top:var(--s7);padding-top:var(--s5);border-top:1px solid rgba(170,170,170,.3);font-size:12px;color:var(--c5)">Xem thêm <a href="policy.html" target="_blank" class="tnc-link" style="color:#00ADEE;font-weight:600">Điều khoản và chính sách</a>.</div>"""
 
 # Không hiện dòng nhắc — ô đồng ý mờ sẵn đã đủ nói lên là chưa bấm được.
 TNC_HINT = ""
