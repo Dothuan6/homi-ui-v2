@@ -438,8 +438,7 @@ def footer_html(prefix="", pol_prefix=""):
 
 # Toàn văn Điều khoản & Điều kiện, có đủ 5 nội dung bắt buộc theo rà soát
 # pháp lý 10/09. Số liệu để trống bằng dấu chấm lửng — chờ Pháp lý điền.
-TNC_DOC = """<div class="tnc-doc" style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);padding:var(--s7);height:280px;overflow-y:auto;font-size:13px;line-height:1.75;color:var(--c4)">
-            <div style="font-size:14px;font-weight:700;color:var(--c1)">ĐIỀU KHOẢN &amp; ĐIỀU KIỆN CHƯƠNG TRÌNH THÀNH VIÊN HOMI365</div>
+TNC_BODY = """<div style="font-size:14px;font-weight:700;color:var(--c1)">ĐIỀU KHOẢN &amp; ĐIỀU KIỆN CHƯƠNG TRÌNH THÀNH VIÊN HOMI365</div>
             <div style="font-size:11px;color:var(--c5);margin:var(--s2) 0 var(--s6)">Phiên bản 1.0 · hiệu lực từ …/…/2026 · Công ty Cổ phần Giải pháp và Dịch vụ HOMI365</div>
 
             <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">1. Điểm thưởng là gì</div>
@@ -460,9 +459,12 @@ TNC_DOC = """<div class="tnc-doc" style="border:1px solid rgba(170,170,170,.35);
             <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">6. Chấm dứt tư cách Thành viên</div>
             <p style="margin:var(--s2) 0">HOMI365 có quyền khoá tài khoản và thu hồi điểm chưa quy đổi nếu phát hiện hành vi gian lận, tạo đơn khống, mạo danh hoặc vi phạm pháp luật. Thành viên có thể chủ động chấm dứt tham gia bằng văn bản; điểm chưa quy đổi tại thời điểm chấm dứt sẽ hết hiệu lực.</p>
 
-            <div style="margin-top:var(--s7);padding-top:var(--s5);border-top:1px solid rgba(170,170,170,.3);font-size:12px;color:var(--c5)">— Hết văn bản. Xem thêm <a href="policy.html?s=bao-mat-thong-tin" class="tnc-link" style="color:#00ADEE;font-weight:600">Chính sách bảo mật thông tin</a> và <a href="policy.html?s=quy-che-website" class="tnc-link" style="color:#00ADEE;font-weight:600">Quy chế hoạt động</a>.</div>
-          </div>
-          <div class="tnc-hint" style="font-size:12px;color:#a36400;background:rgba(255,165,0,.12);border-radius:var(--r-sm);padding:var(--s4);line-height:1.6">Cuộn hết nội dung điều khoản (hoặc mở link chính sách) thì ô đồng ý mới bấm được.</div>"""
+            <div style="margin-top:var(--s7);padding-top:var(--s5);border-top:1px solid rgba(170,170,170,.3);font-size:12px;color:var(--c5)">— Hết văn bản. Xem thêm <a href="policy.html?s=bao-mat-thong-tin" class="tnc-link" style="color:#00ADEE;font-weight:600">Chính sách bảo mật thông tin</a> và <a href="policy.html?s=quy-che-website" class="tnc-link" style="color:#00ADEE;font-weight:600">Quy chế hoạt động</a>.</div>"""
+
+TNC_HINT = ('\n          <div class="tnc-hint" style="font-size:12px;color:#a36400;'
+            'background:rgba(255,165,0,.12);border-radius:var(--r-sm);'
+            'padding:var(--s4);line-height:1.6">Cuộn hết nội dung điều khoản '
+            '(hoặc mở link chính sách) thì ô đồng ý mới bấm được.</div>')
 
 
 OTP_JS = """// Ô nhập OTP: gõ một số là nhảy sang ô kế, Backspace ở ô trống thì lùi lại,
@@ -1319,19 +1321,23 @@ BG_PATCHES += [
     # (14) + rà soát pháp lý 10/09: hiển thị TOÀN VĂN T&C, buộc cuộn hết mới
     # bật ô đồng ý, và ghi lại bằng chứng chấp thuận.
     # Lưu ý: bản vá "Medigo -> HOMI365" chạy trước nên neo phải dùng chữ mới.
-    ('<div style="border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);'
-     'padding:var(--s7);height:180px;overflow:auto;font-size:13px;line-height:1.6;'
-     'color:var(--c4)">\n'
-     '            Điều khoản chương trình affiliate HOMI365 — Homi365. Bằng việc '
+    # Khung điều khoản: cao hơn, gắn class để JS bắt sự kiện cuộn.
+    ('height:180px;overflow:auto;font-size:13px;line-height:1.6;color:var(--c4)">',
+     'height:280px;overflow-y:auto;font-size:13px;line-height:1.75;'
+     'color:var(--c4)" class="tnc-doc">'),
+    # Thay đoạn tóm tắt bằng toàn văn, và thêm dòng nhắc cuộn hết.
+    ('            Điều khoản chương trình affiliate HOMI365 — Homi365. Bằng việc '
      'tích chọn xác nhận, bạn đồng ý với chính sách hoa hồng, quy định về tuyến '
      'trên/tuyến dưới, và các điều kiện rút tiền được Homi365 quy định. Nội dung '
      'đầy đủ do bộ phận Pháp lý cung cấp trước khi go‑live.\n'
      '          </div>',
-     TNC_DOC),
+     '            ' + TNC_BODY + '\n          </div>' + TNC_HINT),
+    # Nhãn checkbox phải nằm trong MỘT thẻ span — label là flex nên mỗi thẻ con
+    # sẽ thành một cột riêng, chữ bị vỡ thành nhiều khối hẹp.
     ('Tôi đã đọc và đồng ý với điều khoản tham gia chương trình affiliate HOMI365.',
-     'Tôi đã đọc và đồng ý với <strong>Điều khoản &amp; Điều kiện HOMI365 '
-     'phiên bản 1.0</strong>, bao gồm quy chế tích điểm, đổi thưởng và xử lý '
-     'dữ liệu cá nhân.'),
+     '<span style="line-height:1.6">Tôi đã đọc và đồng ý với '
+     '<strong>Điều khoản &amp; Điều kiện HOMI365 phiên bản 1.0</strong>, bao gồm '
+     'quy chế tích điểm, đổi thưởng và xử lý dữ liệu cá nhân.</span>'),
     ('<input type="checkbox" checked="{{tncChecked}}" sc-camel-on-change="{{toggleTnc}}" '
      'style="width:18px;height:18px;margin-top:2px;accent-color:#00ADEE">',
      '<input type="checkbox" class="tnc-agree" disabled checked="{{tncChecked}}" '
