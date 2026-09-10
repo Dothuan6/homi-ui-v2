@@ -29,12 +29,12 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
 <div style="font-family:var(--ff); background:var(--warm-50); min-height:100vh; color:var(--c1); display:flex; flex-direction:column">
 
   <div class="homi-topbar" style="position:sticky;top:0;z-index:50;background:var(--c12);border-bottom:1px solid rgba(154,163,176,.35);display:flex;align-items:center;gap:var(--s7);padding:16px var(--s5);flex-wrap:wrap">
-    <a href="../index.html" title="Danh sách màn hình" class="homi-logo" style="display:flex;align-items:center;text-decoration:none"><img src="../assets/logo homi-01.png" alt="HOMI365" style="height:52px;width:auto;display:block"></a>
+    <a href="../index.html" title="Danh sách màn hình" class="homi-logo" style="display:flex;align-items:center;text-decoration:none"><img src="../assets/logo homi-01.png" alt="HOMI365" style="height:71px;width:auto;display:block"></a>
   </div>
 
   <!-- ================= ADMIN SHELL (B2/B3/B4) ================= -->
   <sc-if value="{{isAdminShell}}" hint-placeholder-val="{{false}}">
-  <div style="display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 85px)">
+  <div style="display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 104px)">
     <div style="background:var(--c3);padding:var(--s8) var(--s5);display:flex;flex-direction:column;gap:var(--s3)">
       <div style="color:var(--c12);opacity:.5;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:0 var(--s5);margin-bottom:var(--s3)">Vận hành</div>
       <sc-for list="{{adminNav}}" as="item" hint-placeholder-count="3">

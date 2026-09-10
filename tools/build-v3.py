@@ -506,8 +506,8 @@ RESPONSIVE_CSS = ("""/* ========================================================
 img { max-width: 100%; }
 
 /* --- Thanh trên -------------------------------------------------------- */
-/* Logo 52px (~177px ngang) + nút đăng nhập ~230px = 407px, tràn mọi điện
-   thoại. Dưới 720px cho nút xuống hàng riêng và chiếm trọn bề ngang. */
+/* Logo 71px cao = 174px ngang, cộng nút đăng nhập ~230px là 404px — tràn mọi
+   điện thoại. Dưới 720px cho nút xuống hàng riêng và chiếm trọn bề ngang. */
 @media (max-width: 720px) {
   .homi-topbar { padding-left: var(--s5) !important; padding-right: var(--s5) !important; }
   .homi-topbar-in { flex-wrap: wrap; gap: var(--s4); }
@@ -2962,7 +2962,8 @@ JS_PATCHES = [
 
 # Thanh trên giờ chỉ còn logo, nên logo phải đủ lớn để không bị lọt thỏm.
 # Đổi 2 số này là đổi được cả chiều cao thanh.
-LOGO_H = 52           # px — chiều cao ảnh logo (≈15% bề ngang khung 1160px)
+LOGO_H = 71           # px — chiều cao ảnh logo. Ảnh tỉ lệ 2.44:1 nên 71px cao
+                      # = 174px ngang = đúng 15% khung nội dung 1160px.
 BAR_PAD_Y = 16        # px trên/dưới (mockup gốc là --s5 = 12px)
 BAR_H = BAR_PAD_Y * 2 + LOGO_H + 1        # +1 = đường kẻ dưới
 CONTENT_MAX = 1160    # px — bằng khung nội dung màn A1, để logo thẳng hàng

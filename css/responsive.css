@@ -11,8 +11,8 @@
 img { max-width: 100%; }
 
 /* --- Thanh trên -------------------------------------------------------- */
-/* Logo 52px (~177px ngang) + nút đăng nhập ~230px = 407px, tràn mọi điện
-   thoại. Dưới 720px cho nút xuống hàng riêng và chiếm trọn bề ngang. */
+/* Logo 71px cao = 174px ngang, cộng nút đăng nhập ~230px là 404px — tràn mọi
+   điện thoại. Dưới 720px cho nút xuống hàng riêng và chiếm trọn bề ngang. */
 @media (max-width: 720px) {
   .homi-topbar { padding-left: var(--s5) !important; padding-right: var(--s5) !important; }
   .homi-topbar-in { flex-wrap: wrap; gap: var(--s4); }
