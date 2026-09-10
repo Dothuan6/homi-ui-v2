@@ -646,6 +646,7 @@ B5_PRODUCTS = """      <!-- B5 PRODUCTS (bổ sung, không có trong mockup KH) 
                 <span style="font-size:22px">&#11014;</span>
                 <span style="font-size:13px;font-weight:600">Tải ảnh sản phẩm</span>
                 <span style="font-size:11px">PNG hoặc JPG, tối đa 2MB</span>
+                <input type="file" accept="image/*" style="display:none">
               </label>
             </div>
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Mô tả</label>
@@ -694,6 +695,7 @@ B5_PRODUCTS = """      <!-- B5 PRODUCTS (bổ sung, không có trong mockup KH) 
 
             <label style="border:1px dashed rgba(170,170,170,.6);border-radius:var(--r-md);padding:var(--s6);display:flex;align-items:center;justify-content:center;gap:var(--s3);cursor:pointer;color:var(--c5);font-size:13px;font-weight:600" style-hover="border-color:#00ADEE;color:#00ADEE">
               <span style="font-size:18px">&#11014;</span> Chọn file Excel / CSV
+              <input type="file" accept=".xlsx,.xls,.csv" style="display:none">
             </label>
 
             <div style="display:flex;flex-direction:column;gap:var(--s2)">
@@ -1091,26 +1093,6 @@ BG_PATCHES += [
      'font-weight:700;border:1px solid rgba(170,170,170,.6);'
      'border-radius:var(--r-md)"'),
 
-    # (9) Ô tải ảnh CCCD mở hộp chọn ảnh của máy.
-    ('<span style="font-size:13px;font-weight:600">Ảnh CCCD mặt trước (*)</span>'
-     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span></label>',
-     '<span style="font-size:13px;font-weight:600">Ảnh CCCD mặt trước (*)</span>'
-     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span>'
-     '<input type="file" accept="image/*" style="display:none"></label>'),
-    ('<span style="font-size:13px;font-weight:600">Ảnh CCCD mặt sau (*)</span>'
-     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span></label>',
-     '<span style="font-size:13px;font-weight:600">Ảnh CCCD mặt sau (*)</span>'
-     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span>'
-     '<input type="file" accept="image/*" style="display:none"></label>'),
-    ('<span style="font-size:13px;font-weight:600">Tải ảnh sản phẩm</span>'
-     '<span style="font-size:11px">PNG hoặc JPG, tối đa 2MB</span>',
-     '<span style="font-size:13px;font-weight:600">Tải ảnh sản phẩm</span>'
-     '<span style="font-size:11px">PNG hoặc JPG, tối đa 2MB</span>'
-     '<input type="file" accept="image/*" style="display:none">'),
-    ('<span style="font-size:18px">&#11014;</span> Chọn file Excel / CSV',
-     '<span style="font-size:18px">&#11014;</span> Chọn file Excel / CSV'
-     '<input type="file" accept=".xlsx,.xls,.csv" style="display:none">'),
-
     # (1) Tiêu đề màn đăng nhập.
     ('Đăng nhập để quản lý hoa hồng &amp; đơn hàng của bạn',
      'Đăng nhập để xem điểm thưởng và ưu đãi của bạn'),
@@ -1242,14 +1224,16 @@ BG_PATCHES += [
      'style-hover="border-color:#00ADEE;color:#00ADEE">'
      '<span style="font-size:22px">&#11014;</span>'
      '<span style="font-size:13px;font-weight:600">Ảnh CCCD mặt trước (*)</span>'
-     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span></label>\n'
+     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span>'
+     '<input type="file" accept="image/*" style="display:none"></label>\n'
      '            <label style="border:1px dashed rgba(170,170,170,.6);'
      'border-radius:var(--r-md);padding:var(--s7);display:flex;flex-direction:column;'
      'align-items:center;gap:var(--s2);cursor:pointer;color:var(--c5);text-align:center" '
      'style-hover="border-color:#00ADEE;color:#00ADEE">'
      '<span style="font-size:22px">&#11014;</span>'
      '<span style="font-size:13px;font-weight:600">Ảnh CCCD mặt sau (*)</span>'
-     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span></label>\n'
+     '<span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span>'
+     '<input type="file" accept="image/*" style="display:none"></label>\n'
      '          </div>\n'
      '          <button sc-camel-on-click="{{regStep1Submit}}" style="height:46px;'
      'background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);'
@@ -1542,6 +1526,8 @@ def recolor(s):
 RENAMES = [
     ("Head Admin", "Head"),
     ("Admin Specialist", "Admin"),
+    # Nhãn nút còn ghi trơ "(Specialist)" chứ không kèm chữ Admin.
+    ("(Specialist)", "(Admin)"),
     ("Chờ Manager duyệt", "Chờ Head duyệt"),
     ("Manager duyệt thành viên", "Head duyệt thành viên"),
 ]
@@ -1803,13 +1789,11 @@ JS_PATCHES = [
     ("      metricRank: s.agentStage === 'active' ? 'Bạc' : 'Đồng',",
      "      metricRank: s.agentStage === 'active' ? 'Silver' : 'Copper',"),
 
-    # (6) Tiêu đề biểu đồ: "Xu hướng hoa hồng" -> "Khoản ưu đãi".
-    ("title: 'Xu hướng hoa hồng · 7 ngày gần nhất'",
-     "title: 'Khoản ưu đãi · 7 ngày gần nhất'"),
-    ("title: 'Xu hướng hoa hồng · Theo tuần trong tháng'",
-     "title: 'Khoản ưu đãi · Theo tuần trong tháng'"),
-    ("title: 'Xu hướng hoa hồng · Theo tháng trong năm'",
-     "title: 'Khoản ưu đãi · Theo tháng trong năm'"),
+    # (6) Tiêu đề biểu đồ cố định là "Khoản ưu đãi", không đổi theo bộ lọc —
+    # khoảng thời gian đã nằm ngay ở dãy chip bên dưới, nhắc lại là thừa.
+    ("title: 'Xu hướng hoa hồng · 7 ngày gần nhất'", "title: 'Khoản ưu đãi'"),
+    ("title: 'Xu hướng hoa hồng · Theo tuần trong tháng'", "title: 'Khoản ưu đãi'"),
+    ("title: 'Xu hướng hoa hồng · Theo tháng trong năm'", "title: 'Khoản ưu đãi'"),
     # (Hạng của từng dòng trong bảng thành viên được đổi ngay trong bản vá
     #  "(15) Mã tuyến trên" bên dưới — cùng một dòng return nên gộp lại.)
     # (8) Bỏ duyệt 2 lượt ở màn thành viên. Đơn hàng được admin xác nhận

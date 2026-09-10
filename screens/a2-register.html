@@ -117,8 +117,8 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           <div style="font-size:14px;font-weight:700;color:var(--c1)">Đính kèm tệp</div>
           <div style="font-size:12px;color:var(--c2);line-height:1.7">Chụp ảnh CCCD từ <strong>bản gốc</strong>, đủ mặt trước và mặt sau: không mất góc, không chói loá, không che khuất thông tin.</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)">
-            <label style="border:1px dashed rgba(154,163,176,.6);border-radius:var(--r-md);padding:var(--s7);display:flex;flex-direction:column;align-items:center;gap:var(--s2);cursor:pointer;color:var(--c5);text-align:center" style-hover="border-color:#1E3A66;color:#1E3A66"><span style="font-size:22px">&#11014;</span><span style="font-size:13px;font-weight:600">Ảnh CCCD mặt trước (*)</span><span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span></label>
-            <label style="border:1px dashed rgba(154,163,176,.6);border-radius:var(--r-md);padding:var(--s7);display:flex;flex-direction:column;align-items:center;gap:var(--s2);cursor:pointer;color:var(--c5);text-align:center" style-hover="border-color:#1E3A66;color:#1E3A66"><span style="font-size:22px">&#11014;</span><span style="font-size:13px;font-weight:600">Ảnh CCCD mặt sau (*)</span><span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span></label>
+            <label style="border:1px dashed rgba(154,163,176,.6);border-radius:var(--r-md);padding:var(--s7);display:flex;flex-direction:column;align-items:center;gap:var(--s2);cursor:pointer;color:var(--c5);text-align:center" style-hover="border-color:#1E3A66;color:#1E3A66"><span style="font-size:22px">&#11014;</span><span style="font-size:13px;font-weight:600">Ảnh CCCD mặt trước (*)</span><span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span><input type="file" accept="image/*" style="display:none"></label>
+            <label style="border:1px dashed rgba(154,163,176,.6);border-radius:var(--r-md);padding:var(--s7);display:flex;flex-direction:column;align-items:center;gap:var(--s2);cursor:pointer;color:var(--c5);text-align:center" style-hover="border-color:#1E3A66;color:#1E3A66"><span style="font-size:22px">&#11014;</span><span style="font-size:13px;font-weight:600">Ảnh CCCD mặt sau (*)</span><span style="font-size:11px">JPG hoặc PNG, tối đa 5MB</span><input type="file" accept="image/*" style="display:none"></label>
           </div>
           <button sc-camel-on-click="{{regStep1Submit}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#1B3358">Tiếp tục</button>
         </div>
@@ -295,14 +295,14 @@ class Component extends DCLogic {
   ];
 
   CHART_SETS = {
-    '7d': { title: 'Khoản ưu đãi · 7 ngày gần nhất', bars: [
+    '7d': { title: 'Khoản ưu đãi', bars: [
       { label:'T2', v:.4 },{ label:'T3', v:.65 },{ label:'T4', v:.5 },{ label:'T5', v:.9 },
       { label:'T6', v:.7 },{ label:'T7', v:.55 },{ label:'CN', v:.35 }
     ]},
-    'month': { title: 'Khoản ưu đãi · Theo tuần trong tháng', bars: [
+    'month': { title: 'Khoản ưu đãi', bars: [
       { label:'Tuần 1', v:.5 },{ label:'Tuần 2', v:.75 },{ label:'Tuần 3', v:.6 },{ label:'Tuần 4', v:.85 }
     ]},
-    'year': { title: 'Khoản ưu đãi · Theo tháng trong năm', bars: [
+    'year': { title: 'Khoản ưu đãi', bars: [
       { label:'T1', v:.3 },{ label:'T2', v:.45 },{ label:'T3', v:.5 },{ label:'T4', v:.4 },
       { label:'T5', v:.6 },{ label:'T6', v:.55 },{ label:'T7', v:.7 },{ label:'T8', v:.65 },
       { label:'T9', v:.5 },{ label:'T10', v:.8 },{ label:'T11', v:.75 },{ label:'T12', v:.9 }
@@ -769,7 +769,7 @@ class Component extends DCLogic {
         canApprove: (isSpecialist && selectedWithdrawalRaw.status === 'pending') || (!isSpecialist && selectedWithdrawalRaw.status === 'specialist_approved'),
         canReject: ['pending', 'specialist_approved'].includes(selectedWithdrawalRaw.status),
         canMarkPaid: selectedWithdrawalRaw.status === 'approved',
-        approveButtonLabel: isSpecialist ? 'Duyệt (Specialist)' : 'Duyệt (Head)',
+        approveButtonLabel: isSpecialist ? 'Duyệt (Admin)' : 'Duyệt (Head)',
         approvalStageNote: selectedWithdrawalRaw.status === 'pending' ? 'Đang chờ Admin duyệt (bước 1/2).' : selectedWithdrawalRaw.status === 'specialist_approved' ? 'Đã qua Admin — đang chờ Head xác nhận (bước 2/2).' : selectedWithdrawalRaw.status === 'approved' ? 'Đã duyệt đủ 2 cấp — chờ chi trả.' : null,
         hasReason: !!selectedWithdrawalRaw.reason, hasPaidNote: !!selectedWithdrawalRaw.paidNote };
     }
