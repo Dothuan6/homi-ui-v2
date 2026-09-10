@@ -111,8 +111,36 @@ img { max-width: 100%; }
 [style*="grid-template-columns: repeat(3, 1fr)"] { grid-template-columns: 1fr !important; }
 }
 
-/* Bảng quản trị vẫn cuộn ngang trong khung overflow:auto của nó — cố ép về
-   một cột thì các con số dính vào nhau, đọc còn khó hơn vuốt ngang. */
+/* Bảng lưới của B2/B3/B4/B6 vẫn cuộn ngang trong khung overflow:auto của nó —
+   cố ép về một cột thì các con số dính vào nhau, đọc còn khó hơn vuốt ngang. */
+
+/* B5 (sản phẩm) và B7 (tài khoản admin) dựng bằng <table> thật, khung bọc để
+   overflow:hidden. Ở màn hẹp trình duyệt bóp cột đến mức cột "Mô tả" xuống
+   dòng mỗi chữ một hàng. Cho khung cuộn ngang và đặt bề ngang tối thiểu, xử
+   lý giống các bảng còn lại. */
+@media (max-width: 900px) {
+[style*="grid-template-columns:220px 1fr"] table,
+[style*="grid-template-columns: 220px 1fr"] table {
+  min-width: 620px !important;
+}
+[style*="grid-template-columns:220px 1fr"] div:has(> table),
+[style*="grid-template-columns: 220px 1fr"] div:has(> table) {
+  overflow-x: auto !important;
+}
+}
+
+/* --- Ô nhập OTP (A2 bước 2, C1 xác thực & quên mật khẩu) --------------- */
+/* 6 ô cố định 44px + 5 khe 8px = 304px, rộng hơn lòng thẻ trên điện thoại nên
+   ô cuối tràn ra ngoài viền. Cho các ô co giãn đều theo bề ngang còn lại. */
+@media (max-width: 640px) {
+  .otp-box {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 52px;
+  }
+  div:has(> .otp-box) { gap: var(--s2) !important; }
+}
 
 /* --- Ngăn chi tiết trượt từ phải --------------------------------------- */
 @media (max-width: 640px) {
