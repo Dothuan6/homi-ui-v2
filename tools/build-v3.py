@@ -448,6 +448,163 @@ POLICIES.unshift({
 """
 
 
+# ---------------------------------------------------------------------------
+# Lớp responsive.
+#
+# Mockup KH viết toàn bộ style inline, không có class nào để bám. Muốn ghi đè
+# thì chỉ còn hai đường: sửa từng chuỗi style (hàng trăm chỗ, dễ vỡ neo của các
+# bảng vá khác), hoặc nhắm bằng selector thuộc tính [style*="…"] kèm !important.
+# Chọn cách thứ hai — không đụng một ký tự nào vào markup KH.
+#
+# Nguyên tắc: KHÔNG đổi bố cục ở màn rộng. Mọi quy tắc dưới đây đều nằm trong
+# media query, nên bản desktop mà KH đã duyệt giữ nguyên từng pixel.
+#
+# Điểm gãy: 900 khung quản trị & 2 cột · 720 thanh trên · 640 điện thoại.
+#
+# BẪY đã kiểm chứng trên bản deploy: runtime DC ghi lại style bằng
+# el.style.cssText nên trình duyệt chuẩn hoá chuỗi — "grid-template-columns:1fr
+# 1fr;gap:var(--s7)" trong file nguồn trở thành "grid-template-columns: 1fr 1fr;
+# gap: var(--s7);" trong DOM, và ".8fr" thành "0.8fr". Selector phải viết theo
+# dạng ĐÃ CHUẨN HOÁ. Vẫn giữ thêm dạng gốc (không khoảng trắng) cho những phần
+# nằm ngoài <x-dc> mà runtime không đụng tới.
+def _dual(*pats):
+    """Selector [style*=…] cho cả dạng gốc lẫn dạng runtime đã chuẩn hoá."""
+    return ",\n".join('[style*="%s"]' % p for p in pats)
+
+
+SEL_A1_GRID = _dual("grid-template-columns:1fr 380px",
+                    "grid-template-columns: 1fr 380px")
+SEL_FORM_PAIR = _dual("grid-template-columns:1fr 1fr;gap:var(--s7)",
+                      "grid-template-columns: 1fr 1fr; gap: var(--s7)")
+SEL_ADMIN = _dual("grid-template-columns:220px 1fr",
+                  "grid-template-columns: 220px 1fr")
+SEL_CARDS4 = _dual("grid-template-columns:repeat(4,1fr)",
+                   "grid-template-columns: repeat(4, 1fr)")
+SEL_CARDS3 = _dual("grid-template-columns:repeat(3,1fr)",
+                   "grid-template-columns: repeat(3, 1fr)")
+SEL_DRAWER = _dual("width:420px;max-width:92vw", "width: 420px; max-width: 92vw",
+                   "width:470px;max-width:92vw", "width: 470px; max-width: 92vw",
+                   "width:460px;max-width:92vw", "width: 460px; max-width: 92vw")
+
+
+def _admin_child(child, decls):
+    """Quy tắc cho con trực tiếp của khung quản trị, nhân cho cả 2 dạng selector."""
+    return ",\n".join("%s %s" % (s, child) for s in SEL_ADMIN.split(",\n")) \
+        + " {\n" + decls + "\n}"
+
+
+RESPONSIVE_CSS = ("""/* ============================================================
+   HOMI365 · prototype-v3 — lớp responsive
+   Sinh tự động bởi tools/build-v3.py — đừng sửa tay,
+   sửa RESPONSIVE_CSS trong script rồi chạy lại.
+
+   Toàn bộ quy tắc nằm trong media query: màn >=1025px giữ nguyên
+   bố cục desktop KH đã duyệt. Dùng [style*="…"] + !important vì
+   markup gốc không có class để bám.
+   ============================================================ */
+
+img { max-width: 100%; }
+
+/* --- Thanh trên -------------------------------------------------------- */
+/* Logo 52px (~177px ngang) + nút đăng nhập ~230px = 407px, tràn mọi điện
+   thoại. Dưới 720px cho nút xuống hàng riêng và chiếm trọn bề ngang. */
+@media (max-width: 720px) {
+  .homi-topbar { padding-left: var(--s5) !important; padding-right: var(--s5) !important; }
+  .homi-topbar-in { flex-wrap: wrap; gap: var(--s4); }
+  .homi-logo img { height: 40px !important; }
+  .homi-login {
+    margin-left: 0 !important;
+    width: 100%;
+    justify-content: center;
+    white-space: normal !important;
+    height: auto !important;
+    min-height: 40px;
+    padding: var(--s3) var(--s5) !important;
+    text-align: center;
+  }
+}
+@media (max-width: 420px) {
+  .homi-logo img { height: 34px !important; }
+}
+
+/* --- Bố cục hai cột của màn công khai ---------------------------------- */
+@media (max-width: 900px) {
+  /* A1: form nhận hàng | tóm tắt đơn 380px */
+""" + SEL_A1_GRID + """ { grid-template-columns: 1fr !important; }
+  /* Footer: khối pháp nhân | cột chính sách */
+  .footer-grid { grid-template-columns: 1fr !important; gap: var(--s7) !important; }
+}
+
+/* --- Cặp ô nhập trong form (A1, A2) ------------------------------------ */
+/* Chỉ nhắm cặp dùng gap:var(--s7) — đó là các hàng ô nhập. Cặp dùng
+   gap:var(--s5) là thẻ số liệu trong cột hẹp 430px của A3 và trong ngăn
+   chi tiết quản trị; hai cột ở đó vẫn đọc tốt trên điện thoại nên để yên. */
+@media (max-width: 640px) {
+""" + SEL_FORM_PAIR + """ { grid-template-columns: 1fr !important; }
+}
+
+/* --- Khung quản trị B2…B7 ---------------------------------------------- */
+/* Cột điều hướng dọc 220px -> dải nút ngang cuộn được, đặt ngay dưới thanh
+   trên. Hai nhãn nhóm ("Vận hành", "Vai trò (demo)") bị ẩn vì nằm ngang thì
+   chúng chỉ chiếm chỗ mà không thêm nghĩa. */
+@media (max-width: 900px) {
+""" + SEL_ADMIN + """ {
+  grid-template-columns: 1fr !important;
+  min-height: 0 !important;
+}
+""" + _admin_child("> div:first-child",
+                   "  flex-direction: row !important;\n"
+                   "  align-items: center;\n"
+                   "  gap: var(--s2) !important;\n"
+                   "  padding: var(--s3) var(--s5) !important;\n"
+                   "  overflow-x: auto;\n"
+                   "  -webkit-overflow-scrolling: touch;") + """
+""" + _admin_child("> div:first-child sc-for", "  display: contents;") + """
+""" + _admin_child("> div:first-child button",
+                   "  flex: none;\n  white-space: nowrap;") + """
+""" + _admin_child("> div:first-child > div:first-child",
+                   "  display: none !important;") + """
+""" + _admin_child("> div:first-child > div:last-child",
+                   "  margin-top: 0 !important;\n"
+                   "  padding-top: 0 !important;\n"
+                   "  border-top: 0 !important;\n"
+                   "  flex-direction: row !important;\n"
+                   "  align-items: center;\n"
+                   "  flex: none;") + """
+""" + _admin_child("> div:first-child > div:last-child > div",
+                   "  display: none !important;") + """
+""" + _admin_child("> div:last-child",
+                   "  padding: var(--s7) var(--s5) !important;") + """
+
+  /* Thẻ tổng hợp trên đầu bảng */
+""" + SEL_CARDS4 + """ { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 640px) {
+""" + SEL_CARDS4 + """,
+""" + SEL_CARDS3 + """ { grid-template-columns: 1fr !important; }
+}
+
+/* Bảng quản trị vẫn cuộn ngang trong khung overflow:auto của nó — cố ép về
+   một cột thì các con số dính vào nhau, đọc còn khó hơn vuốt ngang. */
+
+/* --- Ngăn chi tiết trượt từ phải --------------------------------------- */
+@media (max-width: 640px) {
+""" + SEL_DRAWER + """ {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+}
+
+/* --- Trang mục lục index.html ------------------------------------------ */
+/* File này có <style> riêng đặt sau link nên phải !important mới thắng. */
+@media (max-width: 640px) {
+  body > header { padding: var(--s5) !important; }
+  body > main, body > footer { padding-left: var(--s5) !important; padding-right: var(--s5) !important; }
+  body > main .grid { grid-template-columns: 1fr !important; }
+}
+""")
+
+
 # (6) (7) Footer công ty + link sang trang chính sách.
 # Chỗ nào KH chưa cung cấp thì để dấu chấm lửng đúng như bản gốc, không bịa.
 POLICY_LINKS = [
@@ -650,6 +807,7 @@ POLICY_PAGE = """<!DOCTYPE html>
 <link rel="stylesheet" href="../css/fonts.css">
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/responsive.css">
 <style>
   body{font-family:var(--ff);background:var(--warm-50);color:var(--c1);margin:0;
        min-height:100vh;display:flex;flex-direction:column}
@@ -2810,7 +2968,7 @@ BAR_H = BAR_PAD_Y * 2 + LOGO_H + 1        # +1 = đường kẻ dưới
 CONTENT_MAX = 1160    # px — bằng khung nội dung màn A1, để logo thẳng hàng
 
 LOGO_HTML = (
-    '<a href="../index.html" title="Danh sách màn hình" '
+    '<a href="../index.html" title="Danh sách màn hình" class="homi-logo" '
     'style="display:flex;align-items:center;text-decoration:none">'
     '<img src="../assets/logo homi-01.png" alt="HOMI365" '
     'style="height:%dpx;width:auto;display:block"></a>' % LOGO_H
@@ -2822,7 +2980,8 @@ LOGO_HTML = (
 LOGIN_BTN = (
     # flex:none + nowrap: logo to lên thì nút không được phép co lại rồi vỡ chữ
     # thành cột hẹp như trước.
-    '<a href="c1-login.html" style="margin-left:auto;flex:none;white-space:nowrap;'
+    '<a href="c1-login.html" class="homi-login" '
+    'style="margin-left:auto;flex:none;white-space:nowrap;'
     'display:inline-flex;'
     'align-items:center;gap:var(--s3);height:38px;padding:0 var(--s6);'
     # Viền dùng đúng màu viền chung của mockup (ô nhập, nút phụ như "Xuất CSV")
@@ -2910,6 +3069,8 @@ def main():
     (V3 / "css" / "base.css").write_text(
         "/* Reset — trích nguyên xi từ mockup KH. */\n" + seg(*L_BASE), encoding="utf-8")
 
+    (V3 / "css" / "responsive.css").write_text(RESPONSIVE_CSS, encoding="utf-8")
+
     # --- tokens.css: bóc biến ra khỏi style inline của thẻ gốc ------------
     m = re.search(r'style="([^"]*)"', lines[L_ROOTDIV - 1])
     if not m:
@@ -2981,11 +3142,15 @@ def main():
         """Thanh trên. pad_x quyết định logo thẳng hàng với cái gì."""
         w = wrap0.replace("padding:var(--s5) var(--s8)",
                           "padding:%dpx %s" % (BAR_PAD_Y, pad_x))
+        # Móc class để css/responsive.css bám vào — markup gốc toàn style inline.
+        w = w.replace('<div style="position:sticky',
+                      '<div class="homi-topbar" style="position:sticky', 1)
         if inner_max is None:
             return ("  " + w + "\n    " + LOGO_HTML +
                     (("\n    " + right) if right else "") + "\n  </div>")
         return ("  " + w + "\n"
-                '    <div style="width:100%;max-width:' + str(inner_max) +
+                '    <div class="homi-topbar-in" style="width:100%;max-width:' +
+                str(inner_max) +
                 'px;margin:0 auto;display:flex;align-items:center">\n'
                 "      " + LOGO_HTML +
                 (("\n      " + right) if right else "") +
@@ -3085,6 +3250,7 @@ def main():
             "<link rel=\"stylesheet\" href=\"../css/fonts.css\">\n"
             "<link rel=\"stylesheet\" href=\"../css/base.css\">\n"
             "<link rel=\"stylesheet\" href=\"../css/tokens.css\">\n"
+            "<link rel=\"stylesheet\" href=\"../css/responsive.css\">\n"
             "<script>\n%s</script>\n"
             "<script src=\"../js/dc-runtime.js\"></script>\n"
             "<script src=\"../js/otp.js\" defer></script>\n"
@@ -3143,6 +3309,7 @@ def main():
 <meta name="theme-color" content="#1E3A66">
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/responsive.css">
 <style>
   body{margin:0;font-family:'Roboto','Nunito',sans-serif;color:var(--c1);background:var(--warm-50)}
   *{box-sizing:border-box}
@@ -3240,6 +3407,34 @@ __CARDS__
              "viên dùng chung khung %dpx canh giữa; màn quản trị canh theo mép "
              "trái các mục sidebar. Đây là thay đổi layout duy nhất của bản này, "
              "và chỉ ở thanh trên." % CONTENT_MAX, "",
+             "### 3b. Responsive", "",
+             "Mockup KH chỉ có bản desktop. Bổ sung `css/responsive.css` — "
+             "**mọi quy tắc bố cục đều nằm trong media query**, nên từ 901px trở "
+             "lên giao diện KH đã duyệt không đổi một pixel nào (ngoài media "
+             "query chỉ có đúng một dòng `img{max-width:100%}`, ở desktop không "
+             "ảnh nào chạm ngưỡng đó).", "",
+             "| Bề ngang | Thay đổi |",
+             "|---|---|",
+             "| ≤ 900px | A1 bỏ cột tóm tắt đơn 380px, xếp dọc · footer 1 cột · "
+             "khung quản trị: cột điều hướng 220px thành dải nút ngang cuộn "
+             "được · thẻ tổng hợp 4 cột → 2 |",
+             "| ≤ 720px | Nút *Đăng nhập thành viên HOMI365* xuống hàng riêng, "
+             "rộng hết khung; logo thanh trên còn 40px |",
+             "| ≤ 640px | Cặp ô nhập trong form A1/A2 về 1 cột · thẻ tổng hợp về "
+             "1 cột · ngăn chi tiết quản trị rộng hết màn |",
+             "| ≤ 420px | Logo thanh trên còn 34px |", "",
+             "Bảng quản trị **vẫn cuộn ngang** trong khung của nó thay vì ép về "
+             "một cột: 9–10 cột số liệu mà nén lại thì dính vào nhau, đọc còn "
+             "khó hơn vuốt ngang.", "",
+             "Lưu ý kỹ thuật cho dev: markup KH không có class nào, style viết "
+             "inline hết, nên các quy tắc phải nhắm bằng `[style*=\"…\"]` kèm "
+             "`!important`. Runtime của mockup ghi lại style qua "
+             "`el.style.cssText` nên chuỗi bị trình duyệt chuẩn hoá "
+             "(`1fr 1fr;gap:` → `1fr 1fr; gap: `); selector viết cả hai dạng. "
+             "Khi dựng thật bằng React/Vue thì bỏ hết mẹo này, dùng class bình "
+             "thường.", "",
+             "Đã kiểm tra ở 360 · 390 · 768 · 1024px trên cả 12 màn: không màn "
+             "nào bị tràn ngang ngoài các khung cố ý cho cuộn.", "",
              "## 4. Bỏ trường Quận/Huyện", "",
              "Hàng địa chỉ trong form mua hàng (A1) và form đăng ký (A2) đi từ "
              "**3 ô** `Tỉnh/Thành phố · Quận/Huyện · Phường/Xã` xuống **2 ô** "
@@ -3518,6 +3713,8 @@ __CARDS__
     print("  runtime       : js/dc-runtime.js (%.1f KB)"
           % (runtime.stat().st_size / 1024))
     print("  bỏ ô Quận/Huyện: %d chỗ" % n_district)
+    print("  responsive    : css/responsive.css (%d dòng, 4 điểm gãy)"
+          % RESPONSIVE_CSS.count("\n"))
     print("  trang chính sách: %s" % ("%d mục" % n_pol if n_pol else "KHÔNG dựng"))
     print("  khối lồng sẵn, không nối thêm: %s"
           % (", ".join(n_nested) if n_nested else "không"))

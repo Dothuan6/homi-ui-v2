@@ -63,6 +63,23 @@ Thêm nút **Đăng nhập Agent** ở góc phải thanh trên, chỉ trên 2 m�
 
 Logo canh thẳng hàng với nội dung bên dưới: màn người mua và thành viên dùng chung khung 1160px canh giữa; màn quản trị canh theo mép trái các mục sidebar. Đây là thay đổi layout duy nhất của bản này, và chỉ ở thanh trên.
 
+### 3b. Responsive
+
+Mockup KH chỉ có bản desktop. Bổ sung `css/responsive.css` — **mọi quy tắc bố cục đều nằm trong media query**, nên từ 901px trở lên giao diện KH đã duyệt không đổi một pixel nào (ngoài media query chỉ có đúng một dòng `img{max-width:100%}`, ở desktop không ảnh nào chạm ngưỡng đó).
+
+| Bề ngang | Thay đổi |
+|---|---|
+| ≤ 900px | A1 bỏ cột tóm tắt đơn 380px, xếp dọc · footer 1 cột · khung quản trị: cột điều hướng 220px thành dải nút ngang cuộn được · thẻ tổng hợp 4 cột → 2 |
+| ≤ 720px | Nút *Đăng nhập thành viên HOMI365* xuống hàng riêng, rộng hết khung; logo thanh trên còn 40px |
+| ≤ 640px | Cặp ô nhập trong form A1/A2 về 1 cột · thẻ tổng hợp về 1 cột · ngăn chi tiết quản trị rộng hết màn |
+| ≤ 420px | Logo thanh trên còn 34px |
+
+Bảng quản trị **vẫn cuộn ngang** trong khung của nó thay vì ép về một cột: 9–10 cột số liệu mà nén lại thì dính vào nhau, đọc còn khó hơn vuốt ngang.
+
+Lưu ý kỹ thuật cho dev: markup KH không có class nào, style viết inline hết, nên các quy tắc phải nhắm bằng `[style*="…"]` kèm `!important`. Runtime của mockup ghi lại style qua `el.style.cssText` nên chuỗi bị trình duyệt chuẩn hoá (`1fr 1fr;gap:` → `1fr 1fr; gap: `); selector viết cả hai dạng. Khi dựng thật bằng React/Vue thì bỏ hết mẹo này, dùng class bình thường.
+
+Đã kiểm tra ở 360 · 390 · 768 · 1024px trên cả 12 màn: không màn nào bị tràn ngang ngoài các khung cố ý cho cuộn.
+
 ## 4. Bỏ trường Quận/Huyện
 
 Hàng địa chỉ trong form mua hàng (A1) và form đăng ký (A2) đi từ **3 ô** `Tỉnh/Thành phố · Quận/Huyện · Phường/Xã` xuống **2 ô** `Tỉnh/Thành phố · Phường/Xã`. Đã bỏ 2 ô, lưới đổi từ 3 cột sang 2 cột.
