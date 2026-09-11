@@ -257,6 +257,18 @@ Vòng đời hồ sơ thành viên: `Chờ xác nhận thanh toán` → `Chờ M
 
 Kỹ thuật: hai trạng thái `pending` và `specialist_approved` dùng chung giữa thành viên và rút tiền, nhưng nhãn hiển thị khác nhau (thành viên có bảng nhãn riêng). Khi dev thiết kế bảng nên tách hẳn hai bộ trạng thái, đừng dùng chung enum.
 
+## 14. Gỡ ô tra cứu đơn theo số điện thoại (11/09)
+
+Mockup KH có một hộp thoại **Nhập số điện thoại → Tra cứu đơn hàng** trên A1. Từ khi luồng đăng nhập đổi (C1 tự đối chiếu SĐT rồi mở hộp thoại kèm sẵn kết quả), **không còn nút nào trên giao diện mở nhánh gõ số để tra** — nó chỉ còn vào được bằng cách gõ tay `a1-buy.html#tra-cuu-don`.
+
+Đã gỡ hẳn: bỏ ô nhập, bỏ nút *Tra cứu đơn hàng*, bỏ khối modal khỏi A1 cùng mục `#tra-cuu-don` trong `index.html`. Phần thẻ **Đơn hàng tìm thấy** giữ nguyên và vẫn chạy trên C1.
+
+Lý do không chỉ là dọn mã chết: nhánh đó nhận **một số điện thoại bất kỳ, không xác thực gì**, rồi trả về họ tên, email, số CCCD và địa chỉ của chủ đơn. Deploy lên là ai biết URL cũng tra được dữ liệu cá nhân của người khác. Nếu sau này KH muốn có tính năng tra cứu đơn thật thì phải kèm OTP về đúng số đó, và chỉ trả mã đơn + trạng thái, không trả thông tin định danh.
+
+Kèm theo, sửa một lỗi lộ ra khi rà: modal **tuyến trên bị chặn** trước đây chỉ được nhúng vào A1, trong khi nhánh gọi nó (`lookupContinue`, khi người giới thiệu hạng Copper) lại nằm ở C1 — bấm xong không hiện gì. Đã chuyển khối này sang C1.
+
+Build in cảnh báo `ô tra cứu SĐT còn sót` nếu bản vá gỡ markup không khớp neo, vì bản vá markup im lặng khi trượt.
+
 ## Ghi chú
 
 - Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` nhưng màu hover lại là cyan `#0099d1` — gần như chắc chắn là lỗi sót. Bản này đưa về màu chính. Cần KH xác nhận.

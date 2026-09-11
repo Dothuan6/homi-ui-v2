@@ -17,7 +17,7 @@ window.__STATE__ = {"agentLoginStep": "login", "screen": "C1"};
 try { var c = sessionStorage.getItem('__homi_carry');
       if (c) { Object.assign(window.__STATE__, JSON.parse(c)); sessionStorage.removeItem('__homi_carry'); } } catch (e) {}
 // mở thẳng một trạng thái: c1-login.html#mat-khau
-var H = {"mat-khau": {"agentLoginStep": "login", "agentPhone": "0901234567", "loginPhoneChecked": true}, "chua-du-dk": {"agentLoginStep": "login", "agentPhone": "0900000000", "loginNotEligible": true}, "otp": {"agentLoginStep": "otp"}, "quen-sdt": {"agentLoginStep": "forgot_phone"}, "quen-otp": {"agentLoginStep": "forgot_otp"}, "quen-dat-lai": {"agentLoginStep": "forgot_reset"}, "quen-ok": {"agentLoginStep": "forgot_success"}}, h = location.hash.slice(1);
+var H = {"mat-khau": {"agentLoginStep": "login", "agentPhone": "0901234567", "loginPhoneChecked": true}, "chua-du-dk": {"agentLoginStep": "login", "agentPhone": "0900000000", "loginNotEligible": true}, "otp": {"agentLoginStep": "otp"}, "quen-sdt": {"agentLoginStep": "forgot_phone"}, "quen-otp": {"agentLoginStep": "forgot_otp"}, "quen-dat-lai": {"agentLoginStep": "forgot_reset"}, "quen-ok": {"agentLoginStep": "forgot_success"}, "tuyen-tren-chan": {"agentLoginStep": "login", "showUplineBlockedModal": true}}, h = location.hash.slice(1);
 if (H[h]) Object.assign(window.__STATE__, H[h]);
 </script>
 <script src="../js/dc-runtime.js"></script>
@@ -158,18 +158,9 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
     <div style="position:fixed;inset:0;background:rgba(43,48,58,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:var(--s7)">
       <div style="width:100%;max-width:380px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25)">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div style="text-align:left"><sc-if value="{{noLookupResult}}" hint-placeholder-val="{{true}}"><div style="font-size:18px;font-weight:700;color:var(--c1)">Nhập số điện thoại</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1);line-height:1.6">Hệ thống sẽ đối chiếu với đơn hàng để xác định người giới thiệu · thử SĐT 0901111111 (người giới thiệu hạng Silver) hoặc 0902222222 (hạng Copper)</div></sc-if><sc-if value="{{hasLookupResult}}" hint-placeholder-val="{{false}}"><div style="font-size:18px;font-weight:700;color:var(--c1)">Bạn đã từng mua hàng</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1);line-height:1.6">Đơn hàng dưới đây gắn với số điện thoại này. Bấm <strong>Đăng ký thành viên</strong> để tiếp tục — thông tin sẽ được điền sẵn từ đơn.</div></sc-if></div>
+          <div style="text-align:left"><div style="font-size:18px;font-weight:700;color:var(--c1)">Bạn đã từng mua hàng</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1);line-height:1.6">Đơn hàng dưới đây gắn với số điện thoại bạn vừa nhập. Bấm <strong>Đăng ký thành viên</strong> để tiếp tục — thông tin sẽ được điền sẵn từ đơn.</div></div>
           <button sc-camel-on-click="{{closeOrderLookup}}" style="background:none;border:none;font-size:18px;color:var(--c5)">✕</button>
         </div>
-        <sc-if value="{{noLookupResult}}" hint-placeholder-val="{{true}}">
-        <div style="display:flex;flex-direction:column;gap:var(--s2)">
-          <label style="font-size:14px;font-weight:600;color:var(--c2)">Số điện thoại khách hàng đã mua đơn</label>
-          <input type="text" placeholder="090xxxxxxx" value="{{orderLookupInput}}" sc-camel-on-change="{{setOrderLookupInput}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
-          <sc-if value="{{orderLookupError}}" hint-placeholder-val="{{false}}">
-            <div style="font-size:12px;color:#C0392B">Không tìm thấy đơn hàng với số điện thoại này. Vui lòng kiểm tra lại.</div>
-          </sc-if>
-        </div>
-        </sc-if>
         <sc-if value="{{hasLookupResult}}" hint-placeholder-val="{{false}}">
           <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s6);display:flex;flex-direction:column;gap:var(--s4);font-size:13px;background:rgba(154,163,176,.05)">
             <div style="font-size:12px;color:var(--c5);text-transform:uppercase;letter-spacing:.04em">Đơn hàng tìm thấy</div>
@@ -185,9 +176,16 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
         <sc-if value="{{hasLookupResult}}" hint-placeholder-val="{{false}}">
           <button sc-camel-on-click="{{lookupContinue}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#1B3358">Đăng ký thành viên</button>
         </sc-if>
-        <sc-if value="{{noLookupResult}}" hint-placeholder-val="{{true}}">
-          <button sc-camel-on-click="{{submitOrderLookup}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:16px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#1B3358">Tra cứu đơn hàng</button>
-        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{showUplineBlockedModal}}" hint-placeholder-val="{{false}}">
+    <div style="position:fixed;inset:0;background:rgba(43,48,58,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:var(--s7)">
+      <div style="width:100%;max-width:380px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25);text-align:center;align-items:center">
+        <div style="width:64px;height:64px;border-radius:var(--r-full);background:rgba(192,57,43,.1);display:flex;align-items:center;justify-content:center;font-size:30px;color:#C0392B">✕</div>
+        <div><div style="font-size:18px;font-weight:700;color:var(--c1)">Không thể đăng ký thành viên</div><div style="font-size:14px;color:var(--c5);margin-top:var(--s2);line-height:1.6">Vui lòng liên hệ lại với CSKH của Homi365 <br>để được hỗ trợ.</div></div>
+        <button sc-camel-on-click="{{closeUplineBlockedModal}}" style="height:44px;width:100%;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:600;box-shadow:var(--sh)" style-hover="background:#1B3358">Đã hiểu</button>
       </div>
     </div>
   </sc-if>

@@ -1317,40 +1317,31 @@ BG_PATCHES += [
      'để xác định agent bán hàng · thử SĐT 0901111111 (agent bán là hạng Bạc) '
      'hoặc 0902222222 (agent bán là hạng Đồng)</div></div>',
      '<div style="text-align:left">'
-     '<sc-if value="{{noLookupResult}}" hint-placeholder-val="{{true}}">'
-     '<div style="font-size:18px;font-weight:700;color:var(--c1)">'
-     'Nhập số điện thoại</div>'
-     '<div style="font-size:12px;color:var(--c5);margin-top:var(--s1);'
-     'line-height:1.6">Hệ thống sẽ đối chiếu với đơn hàng để xác định người '
-     'giới thiệu · thử SĐT 0901111111 (người giới thiệu hạng Silver) hoặc '
-     '0902222222 (hạng Copper)</div></sc-if>'
-     '<sc-if value="{{hasLookupResult}}" hint-placeholder-val="{{false}}">'
      '<div style="font-size:18px;font-weight:700;color:var(--c1)">'
      'Bạn đã từng mua hàng</div>'
      '<div style="font-size:12px;color:var(--c5);margin-top:var(--s1);'
-     'line-height:1.6">Đơn hàng dưới đây gắn với số điện thoại này. Bấm '
-     '<strong>Đăng ký thành viên</strong> để tiếp tục — thông tin sẽ được '
-     'điền sẵn từ đơn.</div></sc-if></div>'),
+     'line-height:1.6">Đơn hàng dưới đây gắn với số điện thoại bạn vừa nhập. '
+     'Bấm <strong>Đăng ký thành viên</strong> để tiếp tục — thông tin sẽ được '
+     'điền sẵn từ đơn.</div></div>'),
 
-    # Có kết quả rồi thì ẩn ô nhập SĐT.
-    ('<div style="display:flex;flex-direction:column;gap:var(--s2)">\n'
+    # Bỏ hẳn ô nhập SĐT trong modal. Sau khi luồng đăng nhập đổi (C1 tự đối
+    # chiếu SĐT rồi mở modal kèm kết quả), không còn nút nào mở nhánh "gõ số
+    # để tra" nữa. Để lại thì bất kỳ ai biết URL cũng tra được họ tên, email,
+    # số CCCD và địa chỉ của người khác chỉ bằng một số điện thoại.
+    ('        <div style="display:flex;flex-direction:column;gap:var(--s2)">\n'
      '          <label style="font-size:14px;font-weight:600;color:var(--c2)">'
-     'Số điện thoại khách hàng đã mua đơn</label>',
-     '<sc-if value="{{noLookupResult}}" hint-placeholder-val="{{true}}">\n'
-     '        <div style="display:flex;flex-direction:column;gap:var(--s2)">\n'
-     '          <label style="font-size:14px;font-weight:600;color:var(--c2)">'
-     'Số điện thoại khách hàng đã mua đơn</label>'),
-    ('          <sc-if value="{{orderLookupError}}" hint-placeholder-val="{{false}}">\n'
-     '            <div style="font-size:12px;color:#E20707">Không tìm thấy đơn hàng '
-     'với số điện thoại này. Vui lòng kiểm tra lại.</div>\n'
-     '          </sc-if>\n'
-     '        </div>',
+     'Số điện thoại khách hàng đã mua đơn</label>\n'
+     '          <input type="text" placeholder="090xxxxxxx" '
+     'value="{{orderLookupInput}}" sc-camel-on-change="{{setOrderLookupInput}}" '
+     'style="height:44px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);'
+     'border-radius:var(--r-md);font-size:16px" style-focus="border-color:#00ADEE;'
+     'box-shadow:0 0 0 3px rgba(0,173,238,.25)">\n'
      '          <sc-if value="{{orderLookupError}}" hint-placeholder-val="{{false}}">\n'
      '            <div style="font-size:12px;color:#E20707">Không tìm thấy đơn hàng '
      'với số điện thoại này. Vui lòng kiểm tra lại.</div>\n'
      '          </sc-if>\n'
-     '        </div>\n'
-     '        </sc-if>'),
+     '        </div>\n',
+     ''),
 
     # (10) Tra cứu đơn: hiện kết quả đơn hàng ngay trong modal thay vì nhảy
     # thẳng sang màn đăng ký.
@@ -1397,12 +1388,6 @@ BG_PATCHES += [
      'background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);'
      'font-size:16px;font-weight:600;box-shadow:var(--sh)" '
      'style-hover="background:#0099d1">Đăng ký thành viên</button>\n'
-     '        </sc-if>\n'
-     '        <sc-if value="{{noLookupResult}}" hint-placeholder-val="{{true}}">\n'
-     '          <button sc-camel-on-click="{{submitOrderLookup}}" style="height:46px;'
-     'background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);'
-     'font-size:16px;font-weight:600;box-shadow:var(--sh)" '
-     'style-hover="background:#0099d1">Tra cứu đơn hàng</button>\n'
      '        </sc-if>'),
 
     # (9b) Tiêu đề modal thanh toán thành công kèm lời mời gia nhập.
@@ -1937,13 +1922,14 @@ ADMIN_BLOCKS = ["ADMIN", "SLIDE_MEMBER", "SLIDE_WD", "SLIDE_STOCK", "MODALS"]
 SCREENS = [
     {
         "code": "A1", "title": "A1 · Thông tin nhận hàng", "group": "Người mua",
-        "blocks": ["A1", "QR", "PAYOK", "LOOKUP", "BLOCKED"],
+        # Modal tra cứu đơn (LOOKUP) và modal tuyến trên bị chặn (BLOCKED) đã
+        # chuyển hẳn sang C1: từ khi luồng đăng nhập đổi, A1 không còn nút nào
+        # mở chúng, chỉ gõ hash mới vào được.
+        "blocks": ["A1", "QR", "PAYOK"],
         "states": [
             ("", "Mặc định — form mua hàng", {}),
             ("qr", "Modal quét QR thanh toán", {"showQRPayment": True}),
             ("thanh-toan-ok", "Modal thanh toán thành công", {"showPaymentSuccess": True}),
-            ("tra-cuu-don", "Modal tra cứu đơn hàng", {"showOrderLookup": True}),
-            ("tuyen-tren-chan", "Modal tuyến trên bị chặn", {"showUplineBlockedModal": True}),
         ],
     },
     {
@@ -1969,7 +1955,10 @@ SCREENS = [
     },
     {
         "code": "C1", "title": "C1 · Đăng nhập thành viên", "group": "Thành viên",
-        "blocks": ["C1", "LOOKUP"],
+        # BLOCKED đi kèm LOOKUP: bấm "Đăng ký thành viên" mà người giới thiệu
+        # hạng Copper thì mở modal chặn. Trước đây khối này chỉ có ở A1 nên
+        # trên C1 nhánh đó bấm xong không hiện gì.
+        "blocks": ["C1", "LOOKUP", "BLOCKED"],
         "states": [
             ("", "Bước 1 — nhập số điện thoại", {"agentLoginStep": "login"}),
             ("mat-khau", "Bước 2 — nhập mật khẩu", {"agentLoginStep": "login",
@@ -1983,6 +1972,8 @@ SCREENS = [
             ("quen-otp", "Quên mật khẩu — OTP", {"agentLoginStep": "forgot_otp"}),
             ("quen-dat-lai", "Quên mật khẩu — đặt lại", {"agentLoginStep": "forgot_reset"}),
             ("quen-ok", "Quên mật khẩu — thành công", {"agentLoginStep": "forgot_success"}),
+            ("tuyen-tren-chan", "Modal tuyến trên bị chặn",
+             {"agentLoginStep": "login", "showUplineBlockedModal": True}),
         ],
     },
     {
@@ -3387,6 +3378,13 @@ __CARDS__
                       for f in FILES.values())
     left = sorted({c for c, _ in COLORS if c.startswith("#") and c in all_out})
 
+    # Soát mã chết: ô nhập SĐT trong modal tra cứu phải biến mất hẳn. Bản vá
+    # markup im lặng khi không khớp neo, nên phải kiểm lại ở đầu ra — sót lại
+    # là ai gõ đúng URL cũng tra được dữ liệu cá nhân của người khác.
+    leaks = sorted(f for f in FILES.values()
+                   if "setOrderLookupInput" in
+                   (V3 / "screens" / f).read_text(encoding="utf-8"))
+
     # Soát trùng: mỗi khối chỉ được xuất hiện đúng 1 lần trong mỗi file.
     dup = []
     for f in FILES.values():
@@ -3716,6 +3714,28 @@ __CARDS__
              "(thành viên có bảng nhãn riêng). Khi dev thiết kế bảng nên tách "
              "hẳn hai bộ trạng thái, đừng dùng chung enum.", "",
 
+             "## 14. Gỡ ô tra cứu đơn theo số điện thoại (11/09)", "",
+             "Mockup KH có một hộp thoại **Nhập số điện thoại → Tra cứu đơn "
+             "hàng** trên A1. Từ khi luồng đăng nhập đổi (C1 tự đối chiếu SĐT "
+             "rồi mở hộp thoại kèm sẵn kết quả), **không còn nút nào trên giao "
+             "diện mở nhánh gõ số để tra** — nó chỉ còn vào được bằng cách gõ "
+             "tay `a1-buy.html#tra-cuu-don`.", "",
+             "Đã gỡ hẳn: bỏ ô nhập, bỏ nút *Tra cứu đơn hàng*, bỏ khối modal "
+             "khỏi A1 cùng mục `#tra-cuu-don` trong `index.html`. Phần thẻ "
+             "**Đơn hàng tìm thấy** giữ nguyên và vẫn chạy trên C1.", "",
+             "Lý do không chỉ là dọn mã chết: nhánh đó nhận **một số điện "
+             "thoại bất kỳ, không xác thực gì**, rồi trả về họ tên, email, số "
+             "CCCD và địa chỉ của chủ đơn. Deploy lên là ai biết URL cũng tra "
+             "được dữ liệu cá nhân của người khác. Nếu sau này KH muốn có tính "
+             "năng tra cứu đơn thật thì phải kèm OTP về đúng số đó, và chỉ trả "
+             "mã đơn + trạng thái, không trả thông tin định danh.", "",
+             "Kèm theo, sửa một lỗi lộ ra khi rà: modal **tuyến trên bị chặn** "
+             "trước đây chỉ được nhúng vào A1, trong khi nhánh gọi nó "
+             "(`lookupContinue`, khi người giới thiệu hạng Copper) lại nằm ở "
+             "C1 — bấm xong không hiện gì. Đã chuyển khối này sang C1.", "",
+             "Build in cảnh báo `ô tra cứu SĐT còn sót` nếu bản vá gỡ markup "
+             "không khớp neo, vì bản vá markup im lặng khi trượt.", "",
+
              "## Ghi chú", "",
              "- Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` "
              "nhưng màu hover lại là cyan `#0099d1` — gần như chắc chắn là lỗi sót. "
@@ -3743,6 +3763,8 @@ __CARDS__
           % (", ".join(n_nested) if n_nested else "không"))
     print("  còn sót màu cũ: %s" % (", ".join(left) if left else "không"))
     print("  khối bị trùng : %s" % ("; ".join(dup) if dup else "không"))
+    print("  ô tra cứu SĐT còn sót: %s"
+          % ("⚠ " + ", ".join(leaks) if leaks else "không"))
     print("")
     print("Mở: %s" % (V3 / "index.html"))
 
