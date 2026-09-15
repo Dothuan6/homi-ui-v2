@@ -527,7 +527,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
 
           <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);overflow:auto">
             <div style="display:grid;grid-template-columns:1fr 1.2fr .9fr 1fr .9fr .9fr .9fr 1fr 1.1fr .8fr;min-width:1380px;background:rgba(154,163,176,.08);padding:var(--s5) var(--s6);font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em">
-              <div>Mã sản phẩm</div><div>Mã kích hoạt</div><div>Đơn hàng gắn</div><div>Thành viên</div><div>Ngày nhập kho</div><div>Trạng thái</div><div></div>
+              <div>Mã sản phẩm</div><div>Mã kích hoạt</div><div>Đơn hàng gắn</div><div>Thành viên</div><div>Ngày nhập kho</div><div>Ngày kích hoạt</div><div>Ngày hết hiệu lực</div><div>Mã vận đơn</div><div>Trạng thái</div><div></div>
             </div>
             <sc-for list="{{stockItems}}" as="p" hint-placeholder-count="6">
               <div style="display:grid;grid-template-columns:1fr 1.2fr .9fr 1fr .9fr .9fr .9fr 1fr 1.1fr .8fr;min-width:1380px;align-items:center;padding:var(--s5) var(--s6);font-size:13px;color:var(--c1);border-top:1px solid rgba(154,163,176,.2);cursor:pointer" sc-camel-on-click="{{p.onClick}}" style-hover="background:rgba(30,58,102,.05)">

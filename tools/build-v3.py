@@ -1721,11 +1721,15 @@ BG_PATCHES += [
      '<span style="display:block;font-size:11px;color:var(--c5);font-family:monospace">'
      '{{m.uplineCode}}</span></div>'),
 
-    # ----- (16) B4: thêm cột Ngày hiệu lực / Ngày hết hiệu lực ------------
+    # ----- (16) B4: thêm cột Ngày kích hoạt / Ngày hết hiệu lực / Mã vận đơn
+    # LƯU Ý NEO: bản vá đổi "Seller" -> "Thành viên" nằm TRƯỚC trong danh sách
+    # nên tới lượt bản vá này, chuỗi đã là "Thành viên". Neo theo "Seller" sẽ
+    # trượt im lặng — đúng lỗi làm hàng tiêu đề thiếu 3 cột trên bản deploy.
+    # Nhãn dùng "Ngày kích hoạt" cho khớp với bảng đơn hàng B6.
     ('<div>Mã sản phẩm</div><div>Mã kích hoạt</div><div>Đơn hàng gắn</div>'
-     '<div>Seller</div><div>Ngày nhập kho</div><div>Trạng thái</div><div></div>',
+     '<div>Thành viên</div><div>Ngày nhập kho</div><div>Trạng thái</div><div></div>',
      '<div>Mã sản phẩm</div><div>Mã kích hoạt</div><div>Đơn hàng gắn</div>'
-     '<div>Seller</div><div>Ngày nhập kho</div><div>Ngày hiệu lực</div>'
+     '<div>Thành viên</div><div>Ngày nhập kho</div><div>Ngày kích hoạt</div>'
      '<div>Ngày hết hiệu lực</div><div>Mã vận đơn</div><div>Trạng thái</div><div></div>'),
     ('<div style="color:var(--c5)">{{p.stockedAt}}</div>',
      '<div style="color:var(--c5)">{{p.stockedAt}}</div>\n'
@@ -3193,9 +3197,17 @@ def main():
     TOPBAR_PUBLIC = recolor(TOPBAR_PUBLIC)
     TOPBAR_ADMIN = recolor(TOPBAR_ADMIN)
     script = recolor(script)
+    # Bản vá markup thay chuỗi trực tiếp và IM LẶNG khi neo không khớp — khác
+    # JS_PATCHES vốn die() ngay. Đã dính hai lần: neo bị một bản vá chạy trước
+    # sửa mất (Seller -> Thành viên) làm hàng tiêu đề bảng kho thiếu 3 cột mà
+    # build vẫn báo "Xong". Ghi lại bản vá nào chưa khớp ở đâu để in cảnh báo.
+    bg_hit = set()
+
     def bg_patch(s):
-        for old, new in BG_PATCHES:
-            s = s.replace(old, new)
+        for i, (old, new) in enumerate(BG_PATCHES):
+            if old in s:
+                bg_hit.add(i)
+                s = s.replace(old, new)
         return s
 
     blocks_html = {k: rename_roles(recolor(bg_patch(block(v))))
@@ -3377,6 +3389,11 @@ __CARDS__
     all_out = "".join((V3 / "screens" / f).read_text(encoding="utf-8")
                       for f in FILES.values())
     left = sorted({c for c, _ in COLORS if c.startswith("#") and c in all_out})
+
+    # Bản vá markup nào không khớp ở bất kỳ khối nào -> nhiều khả năng neo đã
+    # bị một bản vá chạy trước sửa mất. In ra 60 ký tự đầu của neo để dò.
+    bg_miss = ["#%d: %s" % (i, BG_PATCHES[i][0][:60].replace("\n", "⏎"))
+               for i in range(len(BG_PATCHES)) if i not in bg_hit]
 
     # Soát mã chết: ô nhập SĐT trong modal tra cứu phải biến mất hẳn. Bản vá
     # markup im lặng khi không khớp neo, nên phải kiểm lại ở đầu ra — sót lại
@@ -3736,6 +3753,24 @@ __CARDS__
              "Build in cảnh báo `ô tra cứu SĐT còn sót` nếu bản vá gỡ markup "
              "không khớp neo, vì bản vá markup im lặng khi trượt.", "",
 
+             "## 15. Sửa hàng tiêu đề bảng Kho hàng (15/09)", "",
+             "Bảng kho ở B4 có **10 cột dữ liệu nhưng hàng tiêu đề chỉ có 7 ô** "
+             "— ba nhãn *Ngày kích hoạt · Ngày hết hiệu lực · Mã vận đơn* bị "
+             "thiếu, kéo theo nhãn *Trạng thái* nằm lệch ba cột so với ô trạng "
+             "thái thật.", "",
+             "Nguyên nhân: bản vá thêm cột neo vào chuỗi `<div>Seller</div>`, "
+             "nhưng bản vá đổi *Seller → Thành viên* đứng trước nó trong danh "
+             "sách. Tới lượt bản vá thêm cột thì neo đã biến mất, `str.replace` "
+             "không tìm thấy gì và **bỏ qua không báo lỗi**. Hàng dữ liệu vẫn "
+             "được thêm cột (neo khác, không bị đụng) nên bảng lệch.", "",
+             "Đã sửa neo và bổ sung bộ soát: build giờ đếm bản vá markup nào "
+             "không khớp ở bất kỳ khối nào rồi in cảnh báo kèm 60 ký tự đầu của "
+             "neo. Dòng `bản vá markup: n/n khớp hết` là bình thường; thấy ⚠ thì "
+             "có neo bị hỏng, phải xem lại trước khi gửi.", "",
+             "Dev lưu ý: đây là hạn chế của cách dựng bản mẫu (vá chuỗi trên "
+             "markup của KH), không phải vấn đề nghiệp vụ. Bản dựng thật không "
+             "có chuyện này.", "",
+
              "## Ghi chú", "",
              "- Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` "
              "nhưng màu hover lại là cyan `#0099d1` — gần như chắc chắn là lỗi sót. "
@@ -3765,6 +3800,13 @@ __CARDS__
     print("  khối bị trùng : %s" % ("; ".join(dup) if dup else "không"))
     print("  ô tra cứu SĐT còn sót: %s"
           % ("⚠ " + ", ".join(leaks) if leaks else "không"))
+    if bg_miss:
+        print("  ⚠ bản vá markup KHÔNG khớp neo (%d/%d):"
+              % (len(bg_miss), len(BG_PATCHES)))
+        for m in bg_miss:
+            print("      " + m)
+    else:
+        print("  bản vá markup: %d/%d khớp hết" % (len(BG_PATCHES), len(BG_PATCHES)))
     print("")
     print("Mở: %s" % (V3 / "index.html"))
 

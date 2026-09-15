@@ -269,6 +269,16 @@ Kèm theo, sửa một lỗi lộ ra khi rà: modal **tuyến trên bị chặn*
 
 Build in cảnh báo `ô tra cứu SĐT còn sót` nếu bản vá gỡ markup không khớp neo, vì bản vá markup im lặng khi trượt.
 
+## 15. Sửa hàng tiêu đề bảng Kho hàng (15/09)
+
+Bảng kho ở B4 có **10 cột dữ liệu nhưng hàng tiêu đề chỉ có 7 ô** — ba nhãn *Ngày kích hoạt · Ngày hết hiệu lực · Mã vận đơn* bị thiếu, kéo theo nhãn *Trạng thái* nằm lệch ba cột so với ô trạng thái thật.
+
+Nguyên nhân: bản vá thêm cột neo vào chuỗi `<div>Seller</div>`, nhưng bản vá đổi *Seller → Thành viên* đứng trước nó trong danh sách. Tới lượt bản vá thêm cột thì neo đã biến mất, `str.replace` không tìm thấy gì và **bỏ qua không báo lỗi**. Hàng dữ liệu vẫn được thêm cột (neo khác, không bị đụng) nên bảng lệch.
+
+Đã sửa neo và bổ sung bộ soát: build giờ đếm bản vá markup nào không khớp ở bất kỳ khối nào rồi in cảnh báo kèm 60 ký tự đầu của neo. Dòng `bản vá markup: n/n khớp hết` là bình thường; thấy ⚠ thì có neo bị hỏng, phải xem lại trước khi gửi.
+
+Dev lưu ý: đây là hạn chế của cách dựng bản mẫu (vá chuỗi trên markup của KH), không phải vấn đề nghiệp vụ. Bản dựng thật không có chuyện này.
+
 ## Ghi chú
 
 - Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` nhưng màu hover lại là cyan `#0099d1` — gần như chắc chắn là lỗi sót. Bản này đưa về màu chính. Cần KH xác nhận.
