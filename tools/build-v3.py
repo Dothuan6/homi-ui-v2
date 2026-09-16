@@ -1281,8 +1281,29 @@ BG_PATCHES += [
      'font-weight: 700; box-shadow: var(--sh); background-color: #EE0000" '
      'style-hover="background:#0099d1" style-active="background:#0088ba" '
      'style-focus="box-shadow:0 0 0 3px rgba(0,173,238,.4)">Thanh toán</button>',
-     '<button sc-camel-on-click="{{openQRPayment}}" disabled="{{payDisabled}}" '
-     'style="{{payStyle}}">Thanh toán</button>\n'
+     # (17) Hai thông báo trước nút: lỗi đường truyền và đơn đã tồn tại.
+     '<sc-if value="{{payTimedOut}}" hint-placeholder-val="{{false}}">\n'
+     '          <div style="display:flex;gap:var(--s3);align-items:flex-start;'
+     'background:rgba(217,52,43,.08);border:1px solid rgba(217,52,43,.35);'
+     'border-radius:var(--r-md);padding:var(--s4) var(--s5);font-size:12px;'
+     'color:#D9342B;line-height:1.6">'
+     '<span style="flex:none;font-weight:700">!</span>'
+     '<span><strong>Lỗi đường truyền, vui lòng gửi lại yêu cầu.</strong> '
+     'Thông tin bạn đã nhập vẫn được giữ nguyên và hệ thống không tạo đơn '
+     'trùng.</span></div>\n'
+     '          </sc-if>\n'
+     '          <sc-if value="{{payOrderExists}}" hint-placeholder-val="{{false}}">\n'
+     '          <div style="display:flex;gap:var(--s3);align-items:flex-start;'
+     'background:rgba(255,165,0,.1);border:1px solid rgba(255,165,0,.4);'
+     'border-radius:var(--r-md);padding:var(--s4) var(--s5);font-size:12px;'
+     'color:#FFA500;line-height:1.6">'
+     '<span style="flex:none;font-weight:700">i</span>'
+     '<span>Đơn hàng <strong>#{{orderId}}</strong> đã được tạo cho thông tin '
+     'này. Hệ thống mở lại mã thanh toán của đơn cũ, <strong>không tạo đơn '
+     'mới</strong>.</span></div>\n'
+     '          </sc-if>\n'
+     '          <button sc-camel-on-click="{{submitPayment}}" disabled="{{payDisabled}}" '
+     'style="{{payStyle}}">{{payLabel}}</button>\n'
      '          <label style="display:flex;gap:var(--s3);align-items:flex-start;'
      'cursor:pointer;font-size:12px;color:var(--c2);line-height:1.6">'
      '<input type="checkbox" checked="{{buyTcChecked}}" '
@@ -1934,6 +1955,11 @@ SCREENS = [
             ("", "Mặc định — form mua hàng", {}),
             ("qr", "Modal quét QR thanh toán", {"showQRPayment": True}),
             ("thanh-toan-ok", "Modal thanh toán thành công", {"showPaymentSuccess": True}),
+            ("loi-duong-truyen", "Lỗi đường truyền — cho gửi lại yêu cầu",
+             {"buyTcChecked": True, "payStage": "timeout"}),
+            ("don-da-ton-tai", "Bấm lại khi đơn đã tạo — không tạo đơn trùng",
+             {"buyTcChecked": True, "orderCreated": True,
+              "payNotice": "exists", "showQRPayment": True}),
         ],
     },
     {
@@ -2095,6 +2121,43 @@ JS_PATCHES = [
     # Đăng nhập admin -> màn Thành viên
     ("adminLoginSubmit: () => this.setState({ screen: 'B2' })",
      "adminLoginSubmit: () => GO('B2')"),
+
+    # ----- (17) Gửi yêu cầu thanh toán: chống bấm trùng + lỗi đường truyền --
+    # Ba trạng thái của nút: idle -> sending -> (mở QR | timeout).
+    # payOrderId giữ nguyên qua mọi lần gửi lại — đây chính là khoá chống trùng
+    # (idempotency key) mà backend phải dùng, bản mẫu mô phỏng bằng cách không
+    # sinh mã mới.
+    ("    showQRPayment: false, orderId: 'DH923983',",
+     "    showQRPayment: false, orderId: 'DH923983',\n"
+     "    payStage: 'idle', payNotice: null, orderCreated: false,"),
+
+    ("      openQRPayment: () => this.setState({ showQRPayment: true }),",
+     "      // (17) Bấm Thanh toán. Ba nhánh: đang gửi thì bỏ qua, đơn đã tạo\n"
+     "      // thì mở lại đúng đơn đó, còn lại mới gửi yêu cầu mới.\n"
+     "      payLabel: s.payStage === 'sending' ? 'Đang gửi yêu cầu…'\n"
+     "        : s.payStage === 'timeout' ? 'Gửi lại yêu cầu thanh toán'\n"
+     "        : 'Thanh toán',\n"
+     "      payTimedOut: s.payStage === 'timeout',\n"
+     "      payOrderExists: s.payNotice === 'exists',\n"
+     "      submitPayment: () => {\n"
+     "        if (s.payStage === 'sending') return;      // chặn bấm dồn\n"
+     "        if (s.orderCreated) {                       // đơn đã có, mở lại\n"
+     "          this.setState({ payNotice: 'exists', showQRPayment: true });\n"
+     "          return;\n"
+     "        }\n"
+     "        this.setState({ payStage: 'sending', payNotice: null });\n"
+     "        clearTimeout(this.__payTimer);\n"
+     "        // Bản mẫu: 1,2s cho thấy trạng thái chờ. Bản thật đặt ngưỡng chờ\n"
+     "        // 5 giây, quá thì chuyển sang payStage 'timeout'.\n"
+     "        this.__payTimer = setTimeout(() => this.setState({\n"
+     "          payStage: 'idle', orderCreated: true, showQRPayment: true\n"
+     "        }), 1200);\n"
+     "      },\n"
+     "      openQRPayment: () => this.setState({ showQRPayment: true }),"),
+
+    # Đóng modal QR thì dọn thông báo, để lần bấm sau hiện lại cho đúng lượt.
+    ("      closeQRPayment: () => this.setState({ showQRPayment: false }),",
+     "      closeQRPayment: () => this.setState({ showQRPayment: false, payNotice: null }),"),
 
     # (10) Mở / đóng modal tra cứu thì xoá kết quả cũ.
     # openOrderLookup được khai báo 2 lần trong renderVals (bản gốc của KH),
@@ -2815,11 +2878,15 @@ JS_PATCHES = [
       // Điều khoản mua hàng — chưa tích thì không bấm thanh toán được.
       buyTcChecked: s.buyTcChecked,
       toggleBuyTc: () => this.setState({ buyTcChecked: !s.buyTcChecked }),
-      payDisabled: !s.buyTcChecked,
+      // (17) Khoá nút khi chưa tích điều khoản HOẶC đang chờ phản hồi —
+      // vế sau là cách chặn bấm dồn tạo hai đơn.
+      payDisabled: !s.buyTcChecked || s.payStage === 'sending',
       payStyle: 'height:48px;color:var(--c12);border:none;border-radius:var(--r-md);'
         + 'font-size:16px;font-weight:700;box-shadow:var(--sh);background:'
-        + (s.buyTcChecked ? 'var(--c6)' : 'rgba(170,170,170,.5)')
-        + ';cursor:' + (s.buyTcChecked ? 'pointer' : 'not-allowed'),
+        + ((s.buyTcChecked && s.payStage !== 'sending')
+             ? 'var(--c6)' : 'rgba(170,170,170,.5)')
+        + ';cursor:' + ((s.buyTcChecked && s.payStage !== 'sending')
+             ? 'pointer' : 'not-allowed'),
 
       // CCCD — ngày cấp / nơi cấp (màn đăng ký agent)
       cccdIssueDate: s.cccdIssueDate,
@@ -3770,6 +3837,40 @@ __CARDS__
              "Dev lưu ý: đây là hạn chế của cách dựng bản mẫu (vá chuỗi trên "
              "markup của KH), không phải vấn đề nghiệp vụ. Bản dựng thật không "
              "có chuyện này.", "",
+
+             "## 16. Gửi yêu cầu thanh toán — chống đơn trùng & lỗi mạng (16/09)",
+             "",
+             "Mockup KH bấm **Thanh toán** là mở ngay mã QR, không có trạng "
+             "thái chờ. Thực tế gọi cổng thanh toán mất vài giây và có thể "
+             "hỏng giữa chừng, nên bổ sung ba trạng thái cho nút:", "",
+             "| Trạng thái | Nút | Hiển thị thêm |",
+             "|---|---|---|",
+             "| `idle` | *Thanh toán*, bấm được | — |",
+             "| `sending` | *Đang gửi yêu cầu…*, **khoá** | — |",
+             "| `timeout` | *Gửi lại yêu cầu thanh toán*, bấm được | Dải đỏ "
+             "*Lỗi đường truyền, vui lòng gửi lại yêu cầu* |", "",
+             "Thêm dải vàng khi bấm lại lúc đơn đã tạo: *Đơn hàng #DH923983 đã "
+             "được tạo cho thông tin này. Hệ thống mở lại mã thanh toán của đơn "
+             "cũ, không tạo đơn mới.*", "",
+             "**Ba quy tắc dev phải làm đúng, không chỉ là giao diện:**", "",
+             "1. **Ngưỡng chờ 5 giây.** Quá 5s chưa nhận được phản hồi mở mã "
+             "thanh toán thì chuyển nút sang `timeout`. Bản mẫu để 1,2s cho dễ "
+             "xem, con số thật là 5s.",
+             "2. **Giữ nguyên form.** Gửi lại không được xoá hay nạp lại bất kỳ "
+             "trường nào người mua đã nhập.",
+             "3. **Khoá chống trùng (idempotency key).** Mã đơn sinh **một "
+             "lần** rồi dùng lại cho mọi lần gửi lại; server thấy khoá cũ thì "
+             "trả về đơn cũ chứ không tạo đơn mới. Không có khoá này thì người "
+             "mua mạng yếu bấm ba lần là ba đơn, ba mã kích hoạt bị giữ.", "",
+             "Trong lúc `sending` nút bị khoá hẳn — đó là lớp chặn bấm dồn thứ "
+             "nhất; khoá chống trùng là lớp thứ hai, phòng khi người dùng tải "
+             "lại trang rồi bấm tiếp.", "",
+             "Xem thử: `a1-buy.html#loi-duong-truyen` và "
+             "`a1-buy.html#don-da-ton-tai`. Bấm *Gửi lại yêu cầu thanh toán* ở "
+             "trạng thái lỗi sẽ chạy hết luồng và mở mã QR bình thường.", "",
+             "Chưa làm, cần KH chốt: sau bao nhiêu lần gửi lại liên tiếp thì "
+             "dừng và mời liên hệ hotline, và đơn đã tạo nhưng chưa thanh toán "
+             "thì giữ hiệu lực bao lâu trước khi tự huỷ.", "",
 
              "## Ghi chú", "",
              "- Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` "

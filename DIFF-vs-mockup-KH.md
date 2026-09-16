@@ -279,6 +279,30 @@ Nguyên nhân: bản vá thêm cột neo vào chuỗi `<div>Seller</div>`, nhưn
 
 Dev lưu ý: đây là hạn chế của cách dựng bản mẫu (vá chuỗi trên markup của KH), không phải vấn đề nghiệp vụ. Bản dựng thật không có chuyện này.
 
+## 16. Gửi yêu cầu thanh toán — chống đơn trùng & lỗi mạng (16/09)
+
+Mockup KH bấm **Thanh toán** là mở ngay mã QR, không có trạng thái chờ. Thực tế gọi cổng thanh toán mất vài giây và có thể hỏng giữa chừng, nên bổ sung ba trạng thái cho nút:
+
+| Trạng thái | Nút | Hiển thị thêm |
+|---|---|---|
+| `idle` | *Thanh toán*, bấm được | — |
+| `sending` | *Đang gửi yêu cầu…*, **khoá** | — |
+| `timeout` | *Gửi lại yêu cầu thanh toán*, bấm được | Dải đỏ *Lỗi đường truyền, vui lòng gửi lại yêu cầu* |
+
+Thêm dải vàng khi bấm lại lúc đơn đã tạo: *Đơn hàng #DH923983 đã được tạo cho thông tin này. Hệ thống mở lại mã thanh toán của đơn cũ, không tạo đơn mới.*
+
+**Ba quy tắc dev phải làm đúng, không chỉ là giao diện:**
+
+1. **Ngưỡng chờ 5 giây.** Quá 5s chưa nhận được phản hồi mở mã thanh toán thì chuyển nút sang `timeout`. Bản mẫu để 1,2s cho dễ xem, con số thật là 5s.
+2. **Giữ nguyên form.** Gửi lại không được xoá hay nạp lại bất kỳ trường nào người mua đã nhập.
+3. **Khoá chống trùng (idempotency key).** Mã đơn sinh **một lần** rồi dùng lại cho mọi lần gửi lại; server thấy khoá cũ thì trả về đơn cũ chứ không tạo đơn mới. Không có khoá này thì người mua mạng yếu bấm ba lần là ba đơn, ba mã kích hoạt bị giữ.
+
+Trong lúc `sending` nút bị khoá hẳn — đó là lớp chặn bấm dồn thứ nhất; khoá chống trùng là lớp thứ hai, phòng khi người dùng tải lại trang rồi bấm tiếp.
+
+Xem thử: `a1-buy.html#loi-duong-truyen` và `a1-buy.html#don-da-ton-tai`. Bấm *Gửi lại yêu cầu thanh toán* ở trạng thái lỗi sẽ chạy hết luồng và mở mã QR bình thường.
+
+Chưa làm, cần KH chốt: sau bao nhiêu lần gửi lại liên tiếp thì dừng và mời liên hệ hotline, và đơn đã tạo nhưng chưa thanh toán thì giữ hiệu lực bao lâu trước khi tự huỷ.
+
 ## Ghi chú
 
 - Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` nhưng màu hover lại là cyan `#0099d1` — gần như chắc chắn là lỗi sót. Bản này đưa về màu chính. Cần KH xác nhận.

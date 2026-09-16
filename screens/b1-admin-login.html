@@ -58,6 +58,7 @@ class Component extends DCLogic {
     buyerName: '', buyerPhone: '', buyerEmail: '', buyerCccd: '', buyerAddress: '', buyerDob: '', buyerBankAccount: '',
     cn02Package: '1y',
     showQRPayment: false, orderId: 'DH923983',
+    payStage: 'idle', payNotice: null, orderCreated: false,
     showPaymentSuccess: false,
     showOrderLookup: false, orderLookupInput: '', orderLookupError: false,
     showUplineBlockedModal: false, uplineRank: 'silver',
@@ -688,8 +689,29 @@ class Component extends DCLogic {
       buyerDob: s.buyerDob, setBuyerDob: (e) => this.setState({ buyerDob: this.dateMask(e.target.value) }),
       buyerBankAccount: s.buyerBankAccount, setBuyerBankAccount: (e) => this.setState({ buyerBankAccount: e.target.value }),
       cn02Packages, cn02PackagePrice: cn02SelectedPackage.price,
+      // (17) Bấm Thanh toán. Ba nhánh: đang gửi thì bỏ qua, đơn đã tạo
+      // thì mở lại đúng đơn đó, còn lại mới gửi yêu cầu mới.
+      payLabel: s.payStage === 'sending' ? 'Đang gửi yêu cầu…'
+        : s.payStage === 'timeout' ? 'Gửi lại yêu cầu thanh toán'
+        : 'Thanh toán',
+      payTimedOut: s.payStage === 'timeout',
+      payOrderExists: s.payNotice === 'exists',
+      submitPayment: () => {
+        if (s.payStage === 'sending') return;      // chặn bấm dồn
+        if (s.orderCreated) {                       // đơn đã có, mở lại
+          this.setState({ payNotice: 'exists', showQRPayment: true });
+          return;
+        }
+        this.setState({ payStage: 'sending', payNotice: null });
+        clearTimeout(this.__payTimer);
+        // Bản mẫu: 1,2s cho thấy trạng thái chờ. Bản thật đặt ngưỡng chờ
+        // 5 giây, quá thì chuyển sang payStage 'timeout'.
+        this.__payTimer = setTimeout(() => this.setState({
+          payStage: 'idle', orderCreated: true, showQRPayment: true
+        }), 1200);
+      },
       openQRPayment: () => this.setState({ showQRPayment: true }),
-      closeQRPayment: () => this.setState({ showQRPayment: false }),
+      closeQRPayment: () => this.setState({ showQRPayment: false, payNotice: null }),
       showQRPayment: s.showQRPayment, orderId: s.orderId, qrModules,
       confirmQRPayment: () => this.setState({ showQRPayment: false, showPaymentSuccess: true }),
       showPaymentSuccess: s.showPaymentSuccess,
@@ -1001,11 +1023,15 @@ class Component extends DCLogic {
       // Điều khoản mua hàng — chưa tích thì không bấm thanh toán được.
       buyTcChecked: s.buyTcChecked,
       toggleBuyTc: () => this.setState({ buyTcChecked: !s.buyTcChecked }),
-      payDisabled: !s.buyTcChecked,
+      // (17) Khoá nút khi chưa tích điều khoản HOẶC đang chờ phản hồi —
+      // vế sau là cách chặn bấm dồn tạo hai đơn.
+      payDisabled: !s.buyTcChecked || s.payStage === 'sending',
       payStyle: 'height:48px;color:var(--c12);border:none;border-radius:var(--r-md);'
         + 'font-size:16px;font-weight:700;box-shadow:var(--sh);background:'
-        + (s.buyTcChecked ? 'var(--c6)' : 'rgba(154,163,176,.5)')
-        + ';cursor:' + (s.buyTcChecked ? 'pointer' : 'not-allowed'),
+        + ((s.buyTcChecked && s.payStage !== 'sending')
+             ? 'var(--c6)' : 'rgba(154,163,176,.5)')
+        + ';cursor:' + ((s.buyTcChecked && s.payStage !== 'sending')
+             ? 'pointer' : 'not-allowed'),
 
       // CCCD — ngày cấp / nơi cấp (màn đăng ký agent)
       cccdIssueDate: s.cccdIssueDate,
