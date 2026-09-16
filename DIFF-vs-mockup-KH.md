@@ -289,7 +289,7 @@ Mockup KH bấm **Thanh toán** là mở ngay mã QR, không có trạng thái c
 | `sending` | *Đang gửi yêu cầu…*, **khoá** | — |
 | `timeout` | *Gửi lại yêu cầu thanh toán*, bấm được | Dải đỏ *Lỗi đường truyền, vui lòng gửi lại yêu cầu* |
 
-Thêm dải vàng khi bấm lại lúc đơn đã tạo: *Đơn hàng #DH923983 đã được tạo cho thông tin này. Hệ thống mở lại mã thanh toán của đơn cũ, không tạo đơn mới.*
+Đây là **thông báo duy nhất** của luồng này — chốt 16/09. Trường hợp bấm lại khi đơn đã tạo **không hiện thông báo**: hệ thống lặng lẽ mở lại mã thanh toán của đúng đơn cũ, người mua không cần biết chuyện gì vừa xảy ra. Chống trùng vẫn phải làm đủ ở tầng dưới, chỉ là không nói ra trên giao diện.
 
 **Ba quy tắc dev phải làm đúng, không chỉ là giao diện:**
 
@@ -299,7 +299,7 @@ Thêm dải vàng khi bấm lại lúc đơn đã tạo: *Đơn hàng #DH923983 
 
 Trong lúc `sending` nút bị khoá hẳn — đó là lớp chặn bấm dồn thứ nhất; khoá chống trùng là lớp thứ hai, phòng khi người dùng tải lại trang rồi bấm tiếp.
 
-Xem thử: `a1-buy.html#loi-duong-truyen` và `a1-buy.html#don-da-ton-tai`. Bấm *Gửi lại yêu cầu thanh toán* ở trạng thái lỗi sẽ chạy hết luồng và mở mã QR bình thường.
+Xem thử: `a1-buy.html#loi-duong-truyen`. Bấm *Gửi lại yêu cầu thanh toán* sẽ chạy hết luồng và mở mã QR bình thường.
 
 Chưa làm, cần KH chốt: sau bao nhiêu lần gửi lại liên tiếp thì dừng và mời liên hệ hotline, và đơn đã tạo nhưng chưa thanh toán thì giữ hiệu lực bao lâu trước khi tự huỷ.
 

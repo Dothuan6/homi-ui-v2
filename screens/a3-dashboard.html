@@ -191,7 +191,7 @@ class Component extends DCLogic {
     buyerName: '', buyerPhone: '', buyerEmail: '', buyerCccd: '', buyerAddress: '', buyerDob: '', buyerBankAccount: '',
     cn02Package: '1y',
     showQRPayment: false, orderId: 'DH923983',
-    payStage: 'idle', payNotice: null, orderCreated: false,
+    payStage: 'idle', orderCreated: false,
     showPaymentSuccess: false,
     showOrderLookup: false, orderLookupInput: '', orderLookupError: false,
     showUplineBlockedModal: false, uplineRank: 'silver',
@@ -828,14 +828,11 @@ class Component extends DCLogic {
         : s.payStage === 'timeout' ? 'Gửi lại yêu cầu thanh toán'
         : 'Thanh toán',
       payTimedOut: s.payStage === 'timeout',
-      payOrderExists: s.payNotice === 'exists',
       submitPayment: () => {
         if (s.payStage === 'sending') return;      // chặn bấm dồn
-        if (s.orderCreated) {                       // đơn đã có, mở lại
-          this.setState({ payNotice: 'exists', showQRPayment: true });
-          return;
-        }
-        this.setState({ payStage: 'sending', payNotice: null });
+        // Đơn đã tạo thì mở lại đúng đơn đó, không sinh mã đơn mới.
+        if (s.orderCreated) { this.setState({ showQRPayment: true }); return; }
+        this.setState({ payStage: 'sending' });
         clearTimeout(this.__payTimer);
         // Bản mẫu: 1,2s cho thấy trạng thái chờ. Bản thật đặt ngưỡng chờ
         // 5 giây, quá thì chuyển sang payStage 'timeout'.
@@ -844,7 +841,7 @@ class Component extends DCLogic {
         }), 1200);
       },
       openQRPayment: () => this.setState({ showQRPayment: true }),
-      closeQRPayment: () => this.setState({ showQRPayment: false, payNotice: null }),
+      closeQRPayment: () => this.setState({ showQRPayment: false }),
       showQRPayment: s.showQRPayment, orderId: s.orderId, qrModules,
       confirmQRPayment: () => this.setState({ showQRPayment: false, showPaymentSuccess: true }),
       showPaymentSuccess: s.showPaymentSuccess,

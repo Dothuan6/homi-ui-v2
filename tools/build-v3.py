@@ -1281,26 +1281,14 @@ BG_PATCHES += [
      'font-weight: 700; box-shadow: var(--sh); background-color: #EE0000" '
      'style-hover="background:#0099d1" style-active="background:#0088ba" '
      'style-focus="box-shadow:0 0 0 3px rgba(0,173,238,.4)">Thanh toán</button>',
-     # (17) Hai thông báo trước nút: lỗi đường truyền và đơn đã tồn tại.
+     # (17) Một thông báo duy nhất trước nút: lỗi đường truyền.
      '<sc-if value="{{payTimedOut}}" hint-placeholder-val="{{false}}">\n'
      '          <div style="display:flex;gap:var(--s3);align-items:flex-start;'
      'background:rgba(217,52,43,.08);border:1px solid rgba(217,52,43,.35);'
      'border-radius:var(--r-md);padding:var(--s4) var(--s5);font-size:12px;'
      'color:#D9342B;line-height:1.6">'
      '<span style="flex:none;font-weight:700">!</span>'
-     '<span><strong>Lỗi đường truyền, vui lòng gửi lại yêu cầu.</strong> '
-     'Thông tin bạn đã nhập vẫn được giữ nguyên và hệ thống không tạo đơn '
-     'trùng.</span></div>\n'
-     '          </sc-if>\n'
-     '          <sc-if value="{{payOrderExists}}" hint-placeholder-val="{{false}}">\n'
-     '          <div style="display:flex;gap:var(--s3);align-items:flex-start;'
-     'background:rgba(255,165,0,.1);border:1px solid rgba(255,165,0,.4);'
-     'border-radius:var(--r-md);padding:var(--s4) var(--s5);font-size:12px;'
-     'color:#FFA500;line-height:1.6">'
-     '<span style="flex:none;font-weight:700">i</span>'
-     '<span>Đơn hàng <strong>#{{orderId}}</strong> đã được tạo cho thông tin '
-     'này. Hệ thống mở lại mã thanh toán của đơn cũ, <strong>không tạo đơn '
-     'mới</strong>.</span></div>\n'
+     '<span>Lỗi đường truyền, vui lòng gửi lại yêu cầu</span></div>\n'
      '          </sc-if>\n'
      '          <button sc-camel-on-click="{{submitPayment}}" disabled="{{payDisabled}}" '
      'style="{{payStyle}}">{{payLabel}}</button>\n'
@@ -1957,9 +1945,6 @@ SCREENS = [
             ("thanh-toan-ok", "Modal thanh toán thành công", {"showPaymentSuccess": True}),
             ("loi-duong-truyen", "Lỗi đường truyền — cho gửi lại yêu cầu",
              {"buyTcChecked": True, "payStage": "timeout"}),
-            ("don-da-ton-tai", "Bấm lại khi đơn đã tạo — không tạo đơn trùng",
-             {"buyTcChecked": True, "orderCreated": True,
-              "payNotice": "exists", "showQRPayment": True}),
         ],
     },
     {
@@ -2129,7 +2114,7 @@ JS_PATCHES = [
     # sinh mã mới.
     ("    showQRPayment: false, orderId: 'DH923983',",
      "    showQRPayment: false, orderId: 'DH923983',\n"
-     "    payStage: 'idle', payNotice: null, orderCreated: false,"),
+     "    payStage: 'idle', orderCreated: false,"),
 
     ("      openQRPayment: () => this.setState({ showQRPayment: true }),",
      "      // (17) Bấm Thanh toán. Ba nhánh: đang gửi thì bỏ qua, đơn đã tạo\n"
@@ -2138,14 +2123,11 @@ JS_PATCHES = [
      "        : s.payStage === 'timeout' ? 'Gửi lại yêu cầu thanh toán'\n"
      "        : 'Thanh toán',\n"
      "      payTimedOut: s.payStage === 'timeout',\n"
-     "      payOrderExists: s.payNotice === 'exists',\n"
      "      submitPayment: () => {\n"
      "        if (s.payStage === 'sending') return;      // chặn bấm dồn\n"
-     "        if (s.orderCreated) {                       // đơn đã có, mở lại\n"
-     "          this.setState({ payNotice: 'exists', showQRPayment: true });\n"
-     "          return;\n"
-     "        }\n"
-     "        this.setState({ payStage: 'sending', payNotice: null });\n"
+     "        // Đơn đã tạo thì mở lại đúng đơn đó, không sinh mã đơn mới.\n"
+     "        if (s.orderCreated) { this.setState({ showQRPayment: true }); return; }\n"
+     "        this.setState({ payStage: 'sending' });\n"
      "        clearTimeout(this.__payTimer);\n"
      "        // Bản mẫu: 1,2s cho thấy trạng thái chờ. Bản thật đặt ngưỡng chờ\n"
      "        // 5 giây, quá thì chuyển sang payStage 'timeout'.\n"
@@ -2154,10 +2136,6 @@ JS_PATCHES = [
      "        }), 1200);\n"
      "      },\n"
      "      openQRPayment: () => this.setState({ showQRPayment: true }),"),
-
-    # Đóng modal QR thì dọn thông báo, để lần bấm sau hiện lại cho đúng lượt.
-    ("      closeQRPayment: () => this.setState({ showQRPayment: false }),",
-     "      closeQRPayment: () => this.setState({ showQRPayment: false, payNotice: null }),"),
 
     # (10) Mở / đóng modal tra cứu thì xoá kết quả cũ.
     # openOrderLookup được khai báo 2 lần trong renderVals (bản gốc của KH),
@@ -3849,9 +3827,11 @@ __CARDS__
              "| `sending` | *Đang gửi yêu cầu…*, **khoá** | — |",
              "| `timeout` | *Gửi lại yêu cầu thanh toán*, bấm được | Dải đỏ "
              "*Lỗi đường truyền, vui lòng gửi lại yêu cầu* |", "",
-             "Thêm dải vàng khi bấm lại lúc đơn đã tạo: *Đơn hàng #DH923983 đã "
-             "được tạo cho thông tin này. Hệ thống mở lại mã thanh toán của đơn "
-             "cũ, không tạo đơn mới.*", "",
+             "Đây là **thông báo duy nhất** của luồng này — chốt 16/09. Trường "
+             "hợp bấm lại khi đơn đã tạo **không hiện thông báo**: hệ thống "
+             "lặng lẽ mở lại mã thanh toán của đúng đơn cũ, người mua không cần "
+             "biết chuyện gì vừa xảy ra. Chống trùng vẫn phải làm đủ ở tầng "
+             "dưới, chỉ là không nói ra trên giao diện.", "",
              "**Ba quy tắc dev phải làm đúng, không chỉ là giao diện:**", "",
              "1. **Ngưỡng chờ 5 giây.** Quá 5s chưa nhận được phản hồi mở mã "
              "thanh toán thì chuyển nút sang `timeout`. Bản mẫu để 1,2s cho dễ "
@@ -3865,9 +3845,8 @@ __CARDS__
              "Trong lúc `sending` nút bị khoá hẳn — đó là lớp chặn bấm dồn thứ "
              "nhất; khoá chống trùng là lớp thứ hai, phòng khi người dùng tải "
              "lại trang rồi bấm tiếp.", "",
-             "Xem thử: `a1-buy.html#loi-duong-truyen` và "
-             "`a1-buy.html#don-da-ton-tai`. Bấm *Gửi lại yêu cầu thanh toán* ở "
-             "trạng thái lỗi sẽ chạy hết luồng và mở mã QR bình thường.", "",
+             "Xem thử: `a1-buy.html#loi-duong-truyen`. Bấm *Gửi lại yêu cầu "
+             "thanh toán* sẽ chạy hết luồng và mở mã QR bình thường.", "",
              "Chưa làm, cần KH chốt: sau bao nhiêu lần gửi lại liên tiếp thì "
              "dừng và mời liên hệ hotline, và đơn đã tạo nhưng chưa thanh toán "
              "thì giữ hiệu lực bao lâu trước khi tự huỷ.", "",
