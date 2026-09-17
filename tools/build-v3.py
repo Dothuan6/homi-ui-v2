@@ -1955,6 +1955,17 @@ RANK_MODALS = """  <!-- MODAL: cập nhật cấp thành viên (bổ sung 17/09)
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Ngày duyệt</label><input type="text" placeholder="dd/mm/yyyy" value="{{rankDocDate}}" sc-camel-on-change="{{setRankDocDate}}" style="RKINP" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
           </div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Người duyệt</label><input type="text" placeholder="Họ tên người đã duyệt" value="{{rankApprover}}" sc-camel-on-change="{{setRankApprover}}" style="RKINP" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)">
+            <label style="font-size:12px;color:var(--c5)">File minh chứng (ảnh chụp email / phiếu duyệt đã ký)</label>
+            <label style="border:1px dashed rgba(170,170,170,.6);border-radius:var(--r-md);padding:var(--s6);display:flex;align-items:center;justify-content:center;gap:var(--s3);cursor:pointer;color:var(--c5);font-size:13px;font-weight:600;text-align:center" style-hover="border-color:#00ADEE;color:#00ADEE">
+              <span style="font-size:18px">&#11014;</span> Chọn file từ thiết bị
+              <input type="file" accept="image/*,.pdf,.eml,.msg" sc-camel-on-change="{{setRankDocFile}}" style="display:none">
+            </label>
+            <sc-if value="{{hasRankDocFile}}" hint-placeholder-val="{{false}}">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--s4);background:rgba(154,163,176,.1);border-radius:var(--r-md);padding:var(--s3) var(--s5);font-size:12px;color:var(--c2)"><span style="font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{rankDocFile}}</span><button sc-camel-on-click="{{clearRankDocFile}}" style="background:none;border:none;color:var(--c5);font-size:14px;flex:none;cursor:pointer">&#10005;</button></div>
+            </sc-if>
+            <div style="font-size:11px;color:var(--c5);line-height:1.6">Ảnh, PDF hoặc file email, tối đa 10MB. Không bắt buộc, nhưng nên có — ba trường phía trên chỉ là số hiệu, file mới là bằng chứng.</div>
+          </div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Lý do / trích nội dung đã duyệt</label><textarea placeholder="Vì sao cấp được điều chỉnh?" value="{{rankEditReason}}" sc-camel-on-change="{{setRankEditReason}}" style="min-height:70px;padding:var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;resize:vertical"></textarea></div>
         </div>
 
@@ -2200,7 +2211,7 @@ JS_PATCHES = [
      "    // nhận. rankOverrides: cấp đang áp dụng. rankLogs: lưu vết.\n"
      "    rankOverrides: {}, rankLogs: {},\n"
      "    rankEditId: null, rankEditChoice: null, rankEditReason: '',\n"
-     "    rankDocNo: '', rankDocDate: '', rankApprover: '',"),
+     "    rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: '',"),
 
     # Khối tính toán đặt ngay trước phần kho, tức là sau khi selectedMember
     # đã dựng xong.
@@ -2285,14 +2296,22 @@ JS_PATCHES = [
      "      setRankDocDate: (e) => this.setState({ rankDocDate: this.dateMask(e.target.value) }),\n"
      "      rankApprover: s.rankApprover,\n"
      "      setRankApprover: (e) => this.setState({ rankApprover: e.target.value }),\n"
+     "      rankDocFile: s.rankDocFile,\n"
+     "      hasRankDocFile: !!s.rankDocFile,\n"
+     "      // Bản mẫu chỉ giữ tên file; bản thật tải file lên kho lưu trữ.\n"
+     "      setRankDocFile: (e) => this.setState({\n"
+     "        rankDocFile: (e.target.files && e.target.files[0])\n"
+     "          ? e.target.files[0].name : '' }),\n"
+     "      clearRankDocFile: () => this.setState({ rankDocFile: '' }),\n"
      "      openRankEdit: () => selectedMember && this.setState({\n"
      "        rankEditId: selectedMember.id,\n"
      "        rankEditChoice: rankOf(selectedMember), rankEditReason: '',\n"
-     "        rankDocNo: '', rankDocDate: '', rankApprover: ''\n"
+     "        rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: ''\n"
      "      }),\n"
      "      closeRankEdit: () => this.setState({ rankEditId: null,\n"
      "        rankEditChoice: null, rankEditReason: '',\n"
-     "        rankDocNo: '', rankDocDate: '', rankApprover: '' }),\n"
+     "        rankDocNo: '', rankDocDate: '', rankApprover: '',\n"
+     "        rankDocFile: '' }),\n"
      "      rankSubmitDisabled: !rankReady,\n"
      "      rankSubmitStyle: 'flex:2;height:44px;border:none;'\n"
      "        + 'border-radius:var(--r-md);font-size:14px;font-weight:600;'\n"
@@ -2309,6 +2328,7 @@ JS_PATCHES = [
      "            + ' · phiếu ' + s.rankDocNo.trim()\n"
      "            + ' ngày ' + s.rankDocDate.trim()\n"
      "            + ' · duyệt: ' + s.rankApprover.trim()\n"
+     "            + (s.rankDocFile ? ' · file: ' + s.rankDocFile : '')\n"
      "            + (s.rankEditReason.trim()\n"
      "                ? ' · ' + s.rankEditReason.trim() : ''),\n"
      "          time: this.nowStamp()\n"
@@ -2317,7 +2337,7 @@ JS_PATCHES = [
      "          rankOverrides: { ...s.rankOverrides, [id]: s.rankEditChoice },\n"
      "          rankLogs: { ...s.rankLogs, [id]: log },\n"
      "          rankEditId: null, rankEditChoice: null, rankEditReason: '',\n"
-     "          rankDocNo: '', rankDocDate: '', rankApprover: ''\n"
+     "          rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: ''\n"
      "        });\n"
      "      },\n"),
 
@@ -4099,8 +4119,14 @@ __CARDS__
              "cấp**, kèm dòng nhắc *việc trình và duyệt làm ngoài hệ thống*. "
              "Hộp thoại gồm: danh sách 6 cấp, và **ba trường minh chứng bắt "
              "buộc** — số phiếu / mã email, ngày duyệt, người duyệt — cộng ô "
-             "lý do không bắt buộc. Thiếu một trong ba thì nút *Lưu & áp dụng* "
-             "vẫn xám.", "",
+             "**tải file minh chứng** (ảnh, PDF, hoặc file email `.eml`/`.msg`) "
+             "và ô lý do. Thiếu một trong ba trường bắt buộc thì nút *Lưu & áp "
+             "dụng* vẫn xám; file và lý do không bắt buộc.", "",
+             "Ba trường kia chỉ là số hiệu do người nhập gõ vào — **file mới "
+             "là bằng chứng thật**. Khuyến nghị KH quy định bắt buộc đính kèm "
+             "file trong quy chế nội bộ, kể cả khi hệ thống không chặn. Bản "
+             "mẫu chỉ giữ tên file; bản thật phải tải lên kho lưu trữ, gắn với "
+             "bản ghi và không cho xoá.", "",
              "**Hai ràng buộc khi chọn cấp.** Cấp vi phạm bị làm mờ kèm dòng "
              "giải thích:", "",
              "- **Trần:** không cao hơn cấp của người giới thiệu trực tiếp.",
@@ -4132,11 +4158,9 @@ __CARDS__
              "1. Hướng của ràng buộc — em hiểu là *tuyến dưới không được vượt "
              "tuyến trên*; nếu KH muốn ngược lại thì phải đảo cả trần lẫn sàn.",
              "2. Có hồi tố không — đơn đã chốt theo cấp cũ có tính lại ưu đãi, "
-             "hay chỉ áp cấp mới từ lúc cập nhật.",
-             "3. Lượt **bị từ chối** có ghi nhận trong hệ thống không, hay chỉ "
-             "lưu ngoài. Bản mẫu đang không ghi.",
-             "4. **Ai được quyền cập nhật** — chỉ Head hay Admin nào cũng "
-             "được. Bản mẫu đang cho cả hai vai.", "",
+             "hay chỉ áp cấp mới từ lúc cập nhật.", "",
+             "Hai câu còn lại đã chốt 17/09, xem ở trên: không ghi nhận lượt "
+             "bị từ chối; Admin là người cập nhật.", "",
 
              "## Ghi chú", "",
              "- Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` "

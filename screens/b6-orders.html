@@ -802,6 +802,17 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Ngày duyệt</label><input type="text" placeholder="dd/mm/yyyy" value="{{rankDocDate}}" sc-camel-on-change="{{setRankDocDate}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
           </div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Người duyệt</label><input type="text" placeholder="Họ tên người đã duyệt" value="{{rankApprover}}" sc-camel-on-change="{{setRankApprover}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)">
+            <label style="font-size:12px;color:var(--c5)">File minh chứng (ảnh chụp email / phiếu duyệt đã ký)</label>
+            <label style="border:1px dashed rgba(154,163,176,.6);border-radius:var(--r-md);padding:var(--s6);display:flex;align-items:center;justify-content:center;gap:var(--s3);cursor:pointer;color:var(--c5);font-size:13px;font-weight:600;text-align:center" style-hover="border-color:#1E3A66;color:#1E3A66">
+              <span style="font-size:18px">&#11014;</span> Chọn file từ thiết bị
+              <input type="file" accept="image/*,.pdf,.eml,.msg" sc-camel-on-change="{{setRankDocFile}}" style="display:none">
+            </label>
+            <sc-if value="{{hasRankDocFile}}" hint-placeholder-val="{{false}}">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--s4);background:rgba(154,163,176,.1);border-radius:var(--r-md);padding:var(--s3) var(--s5);font-size:12px;color:var(--c2)"><span style="font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{rankDocFile}}</span><button sc-camel-on-click="{{clearRankDocFile}}" style="background:none;border:none;color:var(--c5);font-size:14px;flex:none;cursor:pointer">&#10005;</button></div>
+            </sc-if>
+            <div style="font-size:11px;color:var(--c5);line-height:1.6">Ảnh, PDF hoặc file email, tối đa 10MB. Không bắt buộc, nhưng nên có — ba trường phía trên chỉ là số hiệu, file mới là bằng chứng.</div>
+          </div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Lý do / trích nội dung đã duyệt</label><textarea placeholder="Vì sao cấp được điều chỉnh?" value="{{rankEditReason}}" sc-camel-on-change="{{setRankEditReason}}" style="min-height:70px;padding:var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;resize:vertical"></textarea></div>
         </div>
 
@@ -907,7 +918,7 @@ class Component extends DCLogic {
     // nhận. rankOverrides: cấp đang áp dụng. rankLogs: lưu vết.
     rankOverrides: {}, rankLogs: {},
     rankEditId: null, rankEditChoice: null, rankEditReason: '',
-    rankDocNo: '', rankDocDate: '', rankApprover: '',
+    rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: '',
     lockedIds: {}, copiedLinkId: null,
     withdrawalSearch: '', withdrawalStatusFilter: 'all',
     stockSearch: '', stockStatusFilter: 'all', stockPage: 1,
@@ -1807,14 +1818,22 @@ class Component extends DCLogic {
       setRankDocDate: (e) => this.setState({ rankDocDate: this.dateMask(e.target.value) }),
       rankApprover: s.rankApprover,
       setRankApprover: (e) => this.setState({ rankApprover: e.target.value }),
+      rankDocFile: s.rankDocFile,
+      hasRankDocFile: !!s.rankDocFile,
+      // Bản mẫu chỉ giữ tên file; bản thật tải file lên kho lưu trữ.
+      setRankDocFile: (e) => this.setState({
+        rankDocFile: (e.target.files && e.target.files[0])
+          ? e.target.files[0].name : '' }),
+      clearRankDocFile: () => this.setState({ rankDocFile: '' }),
       openRankEdit: () => selectedMember && this.setState({
         rankEditId: selectedMember.id,
         rankEditChoice: rankOf(selectedMember), rankEditReason: '',
-        rankDocNo: '', rankDocDate: '', rankApprover: ''
+        rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: ''
       }),
       closeRankEdit: () => this.setState({ rankEditId: null,
         rankEditChoice: null, rankEditReason: '',
-        rankDocNo: '', rankDocDate: '', rankApprover: '' }),
+        rankDocNo: '', rankDocDate: '', rankApprover: '',
+        rankDocFile: '' }),
       rankSubmitDisabled: !rankReady,
       rankSubmitStyle: 'flex:2;height:44px;border:none;'
         + 'border-radius:var(--r-md);font-size:14px;font-weight:600;'
@@ -1831,6 +1850,7 @@ class Component extends DCLogic {
             + ' · phiếu ' + s.rankDocNo.trim()
             + ' ngày ' + s.rankDocDate.trim()
             + ' · duyệt: ' + s.rankApprover.trim()
+            + (s.rankDocFile ? ' · file: ' + s.rankDocFile : '')
             + (s.rankEditReason.trim()
                 ? ' · ' + s.rankEditReason.trim() : ''),
           time: this.nowStamp()
@@ -1839,7 +1859,7 @@ class Component extends DCLogic {
           rankOverrides: { ...s.rankOverrides, [id]: s.rankEditChoice },
           rankLogs: { ...s.rankLogs, [id]: log },
           rankEditId: null, rankEditChoice: null, rankEditReason: '',
-          rankDocNo: '', rankDocDate: '', rankApprover: ''
+          rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: ''
         });
       },
 

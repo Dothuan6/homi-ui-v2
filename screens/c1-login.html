@@ -234,7 +234,7 @@ class Component extends DCLogic {
     // nhận. rankOverrides: cấp đang áp dụng. rankLogs: lưu vết.
     rankOverrides: {}, rankLogs: {},
     rankEditId: null, rankEditChoice: null, rankEditReason: '',
-    rankDocNo: '', rankDocDate: '', rankApprover: '',
+    rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: '',
     lockedIds: {}, copiedLinkId: null,
     withdrawalSearch: '', withdrawalStatusFilter: 'all',
     stockSearch: '', stockStatusFilter: 'all', stockPage: 1,
@@ -1134,14 +1134,22 @@ class Component extends DCLogic {
       setRankDocDate: (e) => this.setState({ rankDocDate: this.dateMask(e.target.value) }),
       rankApprover: s.rankApprover,
       setRankApprover: (e) => this.setState({ rankApprover: e.target.value }),
+      rankDocFile: s.rankDocFile,
+      hasRankDocFile: !!s.rankDocFile,
+      // Bản mẫu chỉ giữ tên file; bản thật tải file lên kho lưu trữ.
+      setRankDocFile: (e) => this.setState({
+        rankDocFile: (e.target.files && e.target.files[0])
+          ? e.target.files[0].name : '' }),
+      clearRankDocFile: () => this.setState({ rankDocFile: '' }),
       openRankEdit: () => selectedMember && this.setState({
         rankEditId: selectedMember.id,
         rankEditChoice: rankOf(selectedMember), rankEditReason: '',
-        rankDocNo: '', rankDocDate: '', rankApprover: ''
+        rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: ''
       }),
       closeRankEdit: () => this.setState({ rankEditId: null,
         rankEditChoice: null, rankEditReason: '',
-        rankDocNo: '', rankDocDate: '', rankApprover: '' }),
+        rankDocNo: '', rankDocDate: '', rankApprover: '',
+        rankDocFile: '' }),
       rankSubmitDisabled: !rankReady,
       rankSubmitStyle: 'flex:2;height:44px;border:none;'
         + 'border-radius:var(--r-md);font-size:14px;font-weight:600;'
@@ -1158,6 +1166,7 @@ class Component extends DCLogic {
             + ' · phiếu ' + s.rankDocNo.trim()
             + ' ngày ' + s.rankDocDate.trim()
             + ' · duyệt: ' + s.rankApprover.trim()
+            + (s.rankDocFile ? ' · file: ' + s.rankDocFile : '')
             + (s.rankEditReason.trim()
                 ? ' · ' + s.rankEditReason.trim() : ''),
           time: this.nowStamp()
@@ -1166,7 +1175,7 @@ class Component extends DCLogic {
           rankOverrides: { ...s.rankOverrides, [id]: s.rankEditChoice },
           rankLogs: { ...s.rankLogs, [id]: log },
           rankEditId: null, rankEditChoice: null, rankEditReason: '',
-          rankDocNo: '', rankDocDate: '', rankApprover: ''
+          rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: ''
         });
       },
 

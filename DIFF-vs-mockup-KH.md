@@ -317,9 +317,13 @@ Trước đây cấp chỉ do hệ thống gán theo doanh số, không ai sửa
 | 4. Cập nhật | **Trong** | Admin | Mở hồ sơ → *Cập nhật cấp* → chọn cấp đã duyệt + nhập minh chứng → Lưu |
 | 5. Áp dụng | **Trong** | Hệ thống | Cấp mới hiệu lực ngay, ghi lịch sử. Không duyệt lại |
 
-Bị từ chối thì **không thao tác gì trong hệ thống**.
+**Bị từ chối thì không thao tác gì trong hệ thống** — chốt 17/09: ngoài core xem như chưa từng đề xuất, nên hệ thống không ghi nhận gì cả. Hệ quả cần biết: nhìn vào hồ sơ sẽ không thấy dấu vết đã từng trình rồi bị bác; muốn tra thì phải tìm ở nguồn ngoài.
 
-**Giao diện.** Ngăn chi tiết thành viên (B2) có nút **Cập nhật cấp**, kèm dòng nhắc *việc trình và duyệt làm ngoài hệ thống*. Hộp thoại gồm: danh sách 6 cấp, và **ba trường minh chứng bắt buộc** — số phiếu / mã email, ngày duyệt, người duyệt — cộng ô lý do không bắt buộc. Thiếu một trong ba thì nút *Lưu & áp dụng* vẫn xám.
+**Quyền cập nhật: Admin** — chốt 17/09. Admin tự cập nhật và tự đính kèm minh chứng, không cần Head thao tác. Head vẫn làm được vì là vai cao hơn.
+
+**Giao diện.** Ngăn chi tiết thành viên (B2) có nút **Cập nhật cấp**, kèm dòng nhắc *việc trình và duyệt làm ngoài hệ thống*. Hộp thoại gồm: danh sách 6 cấp, và **ba trường minh chứng bắt buộc** — số phiếu / mã email, ngày duyệt, người duyệt — cộng ô **tải file minh chứng** (ảnh, PDF, hoặc file email `.eml`/`.msg`) và ô lý do. Thiếu một trong ba trường bắt buộc thì nút *Lưu & áp dụng* vẫn xám; file và lý do không bắt buộc.
+
+Ba trường kia chỉ là số hiệu do người nhập gõ vào — **file mới là bằng chứng thật**. Khuyến nghị KH quy định bắt buộc đính kèm file trong quy chế nội bộ, kể cả khi hệ thống không chặn. Bản mẫu chỉ giữ tên file; bản thật phải tải lên kho lưu trữ, gắn với bản ghi và không cho xoá.
 
 **Hai ràng buộc khi chọn cấp.** Cấp vi phạm bị làm mờ kèm dòng giải thích:
 
@@ -343,8 +347,8 @@ Xem thử: `b2-members.html#cap-nhat-cap` và `#da-cap-nhat-cap`.
 
 1. Hướng của ràng buộc — em hiểu là *tuyến dưới không được vượt tuyến trên*; nếu KH muốn ngược lại thì phải đảo cả trần lẫn sàn.
 2. Có hồi tố không — đơn đã chốt theo cấp cũ có tính lại ưu đãi, hay chỉ áp cấp mới từ lúc cập nhật.
-3. Lượt **bị từ chối** có ghi nhận trong hệ thống không, hay chỉ lưu ngoài. Bản mẫu đang không ghi.
-4. **Ai được quyền cập nhật** — chỉ Head hay Admin nào cũng được. Bản mẫu đang cho cả hai vai.
+
+Hai câu còn lại đã chốt 17/09, xem ở trên: không ghi nhận lượt bị từ chối; Admin là người cập nhật.
 
 ## Ghi chú
 
