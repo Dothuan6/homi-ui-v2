@@ -303,6 +303,36 @@ Xem thử: `a1-buy.html#loi-duong-truyen`. Bấm *Gửi lại yêu cầu thanh t
 
 Chưa làm, cần KH chốt: sau bao nhiêu lần gửi lại liên tiếp thì dừng và mời liên hệ hotline, và đơn đã tạo nhưng chưa thanh toán thì giữ hiệu lực bao lâu trước khi tự huỷ.
 
+## 17. Điều chỉnh cấp thành viên (17/09)
+
+Trước đây cấp chỉ do hệ thống gán theo doanh số, không ai sửa được. Bổ sung luồng cho phép sửa tay, nhưng có kiểm soát.
+
+**Luồng**
+
+1. Thành viên **tự đăng ký như bình thường** — không có đường tắt, admin không tạo hồ sơ thay. Cấp ban đầu vẫn do hệ thống gán.
+2. Trong ngăn chi tiết thành viên (B2) có nút **Đề nghị điều chỉnh cấp** (Admin) / **Điều chỉnh cấp** (Head).
+3. Hộp thoại liệt kê đủ 6 cấp, bắt nhập **lý do**. Admin bấm *Gửi Head duyệt*; Head bấm *Áp dụng ngay*.
+4. Hồ sơ đang chờ hiện dải vàng kèm cấp cũ → cấp mới, người đề nghị và lý do. Head thấy thêm hai nút **Duyệt** / **Từ chối**.
+
+**Head sửa trực tiếp.** Head chọn cấp là áp dụng ngay, không cần ai duyệt lại — Head vốn là người duyệt cuối. Nhờ vậy Head lỡ bấm từ chối nhầm thì tự vào sửa lại, Admin không phải làm lại đề nghị. Nút *Từ chối* còn có thêm một hộp xác nhận để chặn nhầm ngay từ đầu.
+
+**Hai ràng buộc khi chọn cấp** — áp dụng cho cả Admin lẫn Head. Cấp vi phạm bị làm mờ trong danh sách kèm dòng giải thích:
+
+- **Trần:** không cao hơn cấp của người giới thiệu trực tiếp.
+- **Sàn:** không thấp hơn cấp của tuyến dưới trực tiếp. Ràng buộc này KH chưa nêu nhưng bắt buộc phải có — vì chỉ sửa cấp của riêng một người, hạ người trên xuống cũng làm tuyến dưới vượt tuyến trên, đúng cái điều mà trần đang cấm.
+
+Sửa cấp **chỉ đổi đúng thành viên đó**, tuyến dưới giữ nguyên.
+
+**Lưu vết:** mọi lượt đều ghi lại cấp cũ → cấp mới, ai đề nghị, ai duyệt, lý do, thời điểm. **Lượt bị từ chối vẫn nằm lại trong lịch sử**, không xoá, để sau này đối chiếu.
+
+Xem thử: `b2-members.html#dieu-chinh-cap`, `#cho-head-duyet`, `#head-duyet-cap`.
+
+**Còn chờ KH chốt** (đã hỏi, chưa có trả lời):
+
+1. Hướng của ràng buộc — em hiểu là *tuyến dưới không được vượt tuyến trên*; nếu KH muốn ngược lại thì phải đảo cả trần lẫn sàn.
+2. Có hồi tố không — đơn đã chốt theo cấp cũ có tính lại ưu đãi, hay chỉ áp cấp mới từ lúc duyệt.
+3. Thành viên thấy gì trong lúc chờ Head — giữ nguyên cấp cũ và im lặng, hay hiện trạng thái *đang xem xét*. Bản mẫu đang làm theo hướng im lặng.
+
 ## Ghi chú
 
 - Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` nhưng màu hover lại là cyan `#0099d1` — gần như chắc chắn là lỗi sót. Bản này đưa về màu chính. Cần KH xác nhận.
