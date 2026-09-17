@@ -270,7 +270,7 @@ class Component extends DCLogic {
     // (18) Trình - duyệt làm NGOÀI hệ thống; trong hệ thống chỉ ghi
     // nhận. rankOverrides: cấp đang áp dụng. rankLogs: lưu vết.
     rankOverrides: {}, rankLogs: {},
-    rankEditId: null, rankEditChoice: null, rankEditReason: '',
+    rankEditId: null, rankEditChoice: null,
     rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: '',
     lockedIds: {}, copiedLinkId: null,
     withdrawalSearch: '', withdrawalStatusFilter: 'all',
@@ -1163,8 +1163,6 @@ class Component extends DCLogic {
 
       showRankEdit: !!s.rankEditId,
       rankEditName, rankEditCurrent, rankOptions,
-      rankEditReason: s.rankEditReason,
-      setRankEditReason: (e) => this.setState({ rankEditReason: e.target.value }),
       rankDocNo: s.rankDocNo,
       setRankDocNo: (e) => this.setState({ rankDocNo: e.target.value }),
       rankDocDate: s.rankDocDate,
@@ -1180,11 +1178,11 @@ class Component extends DCLogic {
       clearRankDocFile: () => this.setState({ rankDocFile: '' }),
       openRankEdit: () => selectedMember && this.setState({
         rankEditId: selectedMember.id,
-        rankEditChoice: rankOf(selectedMember), rankEditReason: '',
+        rankEditChoice: rankOf(selectedMember),
         rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: ''
       }),
       closeRankEdit: () => this.setState({ rankEditId: null,
-        rankEditChoice: null, rankEditReason: '',
+        rankEditChoice: null,
         rankDocNo: '', rankDocDate: '', rankApprover: '',
         rankDocFile: '' }),
       rankSubmitDisabled: !rankReady,
@@ -1203,15 +1201,13 @@ class Component extends DCLogic {
             + ' · phiếu ' + s.rankDocNo.trim()
             + ' ngày ' + s.rankDocDate.trim()
             + ' · duyệt: ' + s.rankApprover.trim()
-            + (s.rankDocFile ? ' · file: ' + s.rankDocFile : '')
-            + (s.rankEditReason.trim()
-                ? ' · ' + s.rankEditReason.trim() : ''),
+            + (s.rankDocFile ? ' · file: ' + s.rankDocFile : ''),
           time: this.nowStamp()
         });
         this.setState({
           rankOverrides: { ...s.rankOverrides, [id]: s.rankEditChoice },
           rankLogs: { ...s.rankLogs, [id]: log },
-          rankEditId: null, rankEditChoice: null, rankEditReason: '',
+          rankEditId: null, rankEditChoice: null,
           rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: ''
         });
       },

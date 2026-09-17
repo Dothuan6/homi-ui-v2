@@ -1966,7 +1966,6 @@ RANK_MODALS = """  <!-- MODAL: cập nhật cấp thành viên (bổ sung 17/09)
             </sc-if>
             <div style="font-size:11px;color:var(--c5);line-height:1.6">Ảnh, PDF hoặc file email, tối đa 10MB. Không bắt buộc, nhưng nên có — ba trường phía trên chỉ là số hiệu, file mới là bằng chứng.</div>
           </div>
-          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Lý do / trích nội dung đã duyệt</label><textarea placeholder="Vì sao cấp được điều chỉnh?" value="{{rankEditReason}}" sc-camel-on-change="{{setRankEditReason}}" style="min-height:70px;padding:var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;resize:vertical"></textarea></div>
         </div>
 
         <div style="display:flex;gap:var(--s3)">
@@ -2090,8 +2089,8 @@ SCREENS = [
              {"selectedMemberId": 2, "rankOverrides": {"2": "Silver"},
               "rankLogs": {"2": [{
                   "label": "Copper → Silver · phiếu PD-2026-014 ngày 16/09/2026"
-                           " · duyệt: Phùng Thị Thúy Linh · Bù cấp cho 3 đơn"
-                           " ghi nhận thiếu tháng 8",
+                           " · duyệt: Phùng Thị Thúy Linh"
+                           " · file: PD-2026-014-da-ky.pdf",
                   "time": "16/09/2026 14:20"}]}}),
         ],
     },
@@ -2210,7 +2209,7 @@ JS_PATCHES = [
      "    // (18) Trình - duyệt làm NGOÀI hệ thống; trong hệ thống chỉ ghi\n"
      "    // nhận. rankOverrides: cấp đang áp dụng. rankLogs: lưu vết.\n"
      "    rankOverrides: {}, rankLogs: {},\n"
-     "    rankEditId: null, rankEditChoice: null, rankEditReason: '',\n"
+     "    rankEditId: null, rankEditChoice: null,\n"
      "    rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: '',"),
 
     # Khối tính toán đặt ngay trước phần kho, tức là sau khi selectedMember
@@ -2288,8 +2287,6 @@ JS_PATCHES = [
      "\n"
      "      showRankEdit: !!s.rankEditId,\n"
      "      rankEditName, rankEditCurrent, rankOptions,\n"
-     "      rankEditReason: s.rankEditReason,\n"
-     "      setRankEditReason: (e) => this.setState({ rankEditReason: e.target.value }),\n"
      "      rankDocNo: s.rankDocNo,\n"
      "      setRankDocNo: (e) => this.setState({ rankDocNo: e.target.value }),\n"
      "      rankDocDate: s.rankDocDate,\n"
@@ -2305,11 +2302,11 @@ JS_PATCHES = [
      "      clearRankDocFile: () => this.setState({ rankDocFile: '' }),\n"
      "      openRankEdit: () => selectedMember && this.setState({\n"
      "        rankEditId: selectedMember.id,\n"
-     "        rankEditChoice: rankOf(selectedMember), rankEditReason: '',\n"
+     "        rankEditChoice: rankOf(selectedMember),\n"
      "        rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: ''\n"
      "      }),\n"
      "      closeRankEdit: () => this.setState({ rankEditId: null,\n"
-     "        rankEditChoice: null, rankEditReason: '',\n"
+     "        rankEditChoice: null,\n"
      "        rankDocNo: '', rankDocDate: '', rankApprover: '',\n"
      "        rankDocFile: '' }),\n"
      "      rankSubmitDisabled: !rankReady,\n"
@@ -2328,15 +2325,13 @@ JS_PATCHES = [
      "            + ' · phiếu ' + s.rankDocNo.trim()\n"
      "            + ' ngày ' + s.rankDocDate.trim()\n"
      "            + ' · duyệt: ' + s.rankApprover.trim()\n"
-     "            + (s.rankDocFile ? ' · file: ' + s.rankDocFile : '')\n"
-     "            + (s.rankEditReason.trim()\n"
-     "                ? ' · ' + s.rankEditReason.trim() : ''),\n"
+     "            + (s.rankDocFile ? ' · file: ' + s.rankDocFile : ''),\n"
      "          time: this.nowStamp()\n"
      "        });\n"
      "        this.setState({\n"
      "          rankOverrides: { ...s.rankOverrides, [id]: s.rankEditChoice },\n"
      "          rankLogs: { ...s.rankLogs, [id]: log },\n"
-     "          rankEditId: null, rankEditChoice: null, rankEditReason: '',\n"
+     "          rankEditId: null, rankEditChoice: null,\n"
      "          rankDocNo: '', rankDocDate: '', rankApprover: '', rankDocFile: ''\n"
      "        });\n"
      "      },\n"),
@@ -4119,9 +4114,12 @@ __CARDS__
              "cấp**, kèm dòng nhắc *việc trình và duyệt làm ngoài hệ thống*. "
              "Hộp thoại gồm: danh sách 6 cấp, và **ba trường minh chứng bắt "
              "buộc** — số phiếu / mã email, ngày duyệt, người duyệt — cộng ô "
-             "**tải file minh chứng** (ảnh, PDF, hoặc file email `.eml`/`.msg`) "
-             "và ô lý do. Thiếu một trong ba trường bắt buộc thì nút *Lưu & áp "
-             "dụng* vẫn xám; file và lý do không bắt buộc.", "",
+             "**tải file minh chứng** (ảnh, PDF, hoặc file email `.eml`/`.msg`). "
+             "Thiếu một trong ba trường bắt buộc thì nút *Lưu & áp dụng* vẫn "
+             "xám; file không bắt buộc.", "",
+             "Không có ô nhập lý do — chốt 17/09. Lý do nằm trong phiếu duyệt "
+             "ngoài, gõ lại vào đây chỉ sinh ra một bản chép tay có thể sai "
+             "khác với bản gốc.", "",
              "Ba trường kia chỉ là số hiệu do người nhập gõ vào — **file mới "
              "là bằng chứng thật**. Khuyến nghị KH quy định bắt buộc đính kèm "
              "file trong quy chế nội bộ, kể cả khi hệ thống không chặn. Bản "
@@ -4141,8 +4139,8 @@ __CARDS__
              "Sửa cấp **chỉ đổi đúng thành viên đó**, tuyến dưới giữ nguyên.",
              "",
              "**Lưu vết:** mỗi lượt ghi cấp cũ → cấp mới, mã phiếu, ngày "
-             "duyệt, người duyệt, lý do, thời điểm cập nhật. Hiện ở mục *Lịch "
-             "sử điều chỉnh cấp* trong hồ sơ.", "",
+             "duyệt, người duyệt, tên file minh chứng, thời điểm cập nhật. "
+             "Hiện ở mục *Lịch sử điều chỉnh cấp* trong hồ sơ.", "",
              "Xem thử: `b2-members.html#cap-nhat-cap` và `#da-cap-nhat-cap`.",
              "",
              "**Rủi ro khi đưa duyệt ra ngoài — cần bù lại bằng quy trình:**",

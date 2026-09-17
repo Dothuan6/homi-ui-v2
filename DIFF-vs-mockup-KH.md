@@ -321,7 +321,9 @@ Trước đây cấp chỉ do hệ thống gán theo doanh số, không ai sửa
 
 **Quyền cập nhật: Admin** — chốt 17/09. Admin tự cập nhật và tự đính kèm minh chứng, không cần Head thao tác. Head vẫn làm được vì là vai cao hơn.
 
-**Giao diện.** Ngăn chi tiết thành viên (B2) có nút **Cập nhật cấp**, kèm dòng nhắc *việc trình và duyệt làm ngoài hệ thống*. Hộp thoại gồm: danh sách 6 cấp, và **ba trường minh chứng bắt buộc** — số phiếu / mã email, ngày duyệt, người duyệt — cộng ô **tải file minh chứng** (ảnh, PDF, hoặc file email `.eml`/`.msg`) và ô lý do. Thiếu một trong ba trường bắt buộc thì nút *Lưu & áp dụng* vẫn xám; file và lý do không bắt buộc.
+**Giao diện.** Ngăn chi tiết thành viên (B2) có nút **Cập nhật cấp**, kèm dòng nhắc *việc trình và duyệt làm ngoài hệ thống*. Hộp thoại gồm: danh sách 6 cấp, và **ba trường minh chứng bắt buộc** — số phiếu / mã email, ngày duyệt, người duyệt — cộng ô **tải file minh chứng** (ảnh, PDF, hoặc file email `.eml`/`.msg`). Thiếu một trong ba trường bắt buộc thì nút *Lưu & áp dụng* vẫn xám; file không bắt buộc.
+
+Không có ô nhập lý do — chốt 17/09. Lý do nằm trong phiếu duyệt ngoài, gõ lại vào đây chỉ sinh ra một bản chép tay có thể sai khác với bản gốc.
 
 Ba trường kia chỉ là số hiệu do người nhập gõ vào — **file mới là bằng chứng thật**. Khuyến nghị KH quy định bắt buộc đính kèm file trong quy chế nội bộ, kể cả khi hệ thống không chặn. Bản mẫu chỉ giữ tên file; bản thật phải tải lên kho lưu trữ, gắn với bản ghi và không cho xoá.
 
@@ -334,7 +336,7 @@ Ràng buộc vẫn áp **kể cả khi phiếu ngoài đã duyệt**. Gặp trư
 
 Sửa cấp **chỉ đổi đúng thành viên đó**, tuyến dưới giữ nguyên.
 
-**Lưu vết:** mỗi lượt ghi cấp cũ → cấp mới, mã phiếu, ngày duyệt, người duyệt, lý do, thời điểm cập nhật. Hiện ở mục *Lịch sử điều chỉnh cấp* trong hồ sơ.
+**Lưu vết:** mỗi lượt ghi cấp cũ → cấp mới, mã phiếu, ngày duyệt, người duyệt, tên file minh chứng, thời điểm cập nhật. Hiện ở mục *Lịch sử điều chỉnh cấp* trong hồ sơ.
 
 Xem thử: `b2-members.html#cap-nhat-cap` và `#da-cap-nhat-cap`.
 
