@@ -205,11 +205,11 @@ class Component extends DCLogic {
     forgotPhone: '', forgotPhoneError: false, forgotNewPassword: '', forgotConfirmPassword: '', forgotResetErrorMsg: '',
     adminRole: 'specialist',
     memberSearch: '', memberStatusOverrides: {}, memberAuditLog: {},
-    // (18) rankOverrides: cấp đã áp dụng. rankReqs: đề nghị chờ Head.
-    // rankLogs: lưu vết mọi lượt, kể cả lượt bị từ chối.
-    rankOverrides: {}, rankReqs: {}, rankLogs: {},
+    // (18) Trình - duyệt làm NGOÀI hệ thống; trong hệ thống chỉ ghi
+    // nhận. rankOverrides: cấp đang áp dụng. rankLogs: lưu vết.
+    rankOverrides: {}, rankLogs: {},
     rankEditId: null, rankEditChoice: null, rankEditReason: '',
-    rankRejectId: null,
+    rankDocNo: '', rankDocDate: '', rankApprover: '',
     lockedIds: {}, copiedLinkId: null,
     withdrawalSearch: '', withdrawalStatusFilter: 'all',
     stockSearch: '', stockStatusFilter: 'all', stockPage: 1,
@@ -740,7 +740,6 @@ class Component extends DCLogic {
     const rankOf = (m) => s.rankOverrides[m.id]
       || this.RANK_LABEL[m.rank] || m.rank;
     const rankIdx = (r) => this.RANKS.indexOf(r);
-    const isHead = s.adminRole !== 'specialist';
     let rankEditName = '', rankEditCurrent = '', rankOptions = [];
     const rankTarget = s.rankEditId
       ? this.MEMBERS.find(m => m.id === s.rankEditId) : null;
@@ -782,10 +781,14 @@ class Component extends DCLogic {
         };
       });
     }
-    const rankReadyName = s.rankEditChoice
-      && s.rankEditChoice !== rankEditCurrent;
-    const rankReady = !!rankReadyName && s.rankEditReason.trim().length > 0;
-    const rankRejectReq = s.rankRejectId ? s.rankReqs[s.rankRejectId] : null;
+    // Phải chọn cấp khác cấp hiện tại VÀ nhập đủ ba trường minh chứng.
+    // Thiếu minh chứng thì sau này không nối được số liệu trong hệ thống
+    // với quyết định đã duyệt bên ngoài.
+    const rankReady = !!s.rankEditChoice
+      && s.rankEditChoice !== rankEditCurrent
+      && s.rankDocNo.trim().length > 0
+      && s.rankDocDate.trim().length > 0
+      && s.rankApprover.trim().length > 0;
 
     const selectedStockRaw = s.selectedStockId ? stockData.find(p => p.id === s.selectedStockId) : null;
     let selectedStock = null;
@@ -1092,21 +1095,6 @@ class Component extends DCLogic {
 
       // ----- (18) Điều chỉnh cấp -----------------------------------
       effRank: selectedMember ? rankOf(selectedMember) : '',
-      rankReqPending: !!(selectedMember && s.rankReqs[selectedMember.id]),
-      rankReqLabel: selectedMember && s.rankReqs[selectedMember.id]
-        ? s.rankReqs[selectedMember.id].from + ' → '
-          + s.rankReqs[selectedMember.id].to : '',
-      rankReqBy: selectedMember && s.rankReqs[selectedMember.id]
-        ? s.rankReqs[selectedMember.id].by : '',
-      rankReqReason: selectedMember && s.rankReqs[selectedMember.id]
-        ? s.rankReqs[selectedMember.id].reason : '',
-      // Chỉ Head mới quyết được; Admin chỉ nhìn thấy dòng chờ.
-      canDecideRank: isHead,
-      waitingHead: !isHead,
-      // Đang chờ duyệt thì khoá nút, tránh chồng hai đề nghị lên nhau.
-      canEditRank: !!(selectedMember && !s.rankReqs[selectedMember.id]),
-      rankEditLabel: isHead ? 'Điều chỉnh cấp'
-        : 'Đề nghị điều chỉnh cấp',
       hasRankLog: !!(selectedMember
         && (s.rankLogs[selectedMember.id] || []).length),
       rankLog: selectedMember ? (s.rankLogs[selectedMember.id] || []) : [],
@@ -1115,74 +1103,46 @@ class Component extends DCLogic {
       rankEditName, rankEditCurrent, rankOptions,
       rankEditReason: s.rankEditReason,
       setRankEditReason: (e) => this.setState({ rankEditReason: e.target.value }),
+      rankDocNo: s.rankDocNo,
+      setRankDocNo: (e) => this.setState({ rankDocNo: e.target.value }),
+      rankDocDate: s.rankDocDate,
+      setRankDocDate: (e) => this.setState({ rankDocDate: this.dateMask(e.target.value) }),
+      rankApprover: s.rankApprover,
+      setRankApprover: (e) => this.setState({ rankApprover: e.target.value }),
       openRankEdit: () => selectedMember && this.setState({
         rankEditId: selectedMember.id,
-        rankEditChoice: rankOf(selectedMember), rankEditReason: ''
+        rankEditChoice: rankOf(selectedMember), rankEditReason: '',
+        rankDocNo: '', rankDocDate: '', rankApprover: ''
       }),
       closeRankEdit: () => this.setState({ rankEditId: null,
-        rankEditChoice: null, rankEditReason: '' }),
+        rankEditChoice: null, rankEditReason: '',
+        rankDocNo: '', rankDocDate: '', rankApprover: '' }),
       rankSubmitDisabled: !rankReady,
-      rankSubmitLabel: isHead ? 'Áp dụng ngay' : 'Gửi Head duyệt',
       rankSubmitStyle: 'flex:2;height:44px;border:none;'
         + 'border-radius:var(--r-md);font-size:14px;font-weight:600;'
         + 'color:#FFFFFF;background:'
         + (rankReady ? 'var(--c6)' : 'rgba(154,163,176,.5)')
         + ';cursor:' + (rankReady ? 'pointer' : 'not-allowed'),
+      // Không xét duyệt lại trong hệ thống: lưu là áp dụng ngay.
       submitRankEdit: () => {
         if (!rankReady || !rankTarget) return;
-        const id = rankTarget.id, from = rankEditCurrent,
-              to = s.rankEditChoice, when = this.nowStamp();
+        const id = rankTarget.id;
         const log = (s.rankLogs[id] || []).slice();
-        if (isHead) {
-          // Head là người duyệt cuối nên sửa là có hiệu lực ngay.
-          log.unshift({ label: from + ' → ' + to
-            + ' · Head điều chỉnh trực tiếp · ' + s.rankEditReason.trim(),
-            time: when });
-          this.setState({
-            rankOverrides: { ...s.rankOverrides, [id]: to },
-            rankLogs: { ...s.rankLogs, [id]: log },
-            rankEditId: null, rankEditChoice: null, rankEditReason: ''
-          });
-        } else {
-          log.unshift({ label: from + ' → ' + to
-            + ' · Admin đề nghị · ' + s.rankEditReason.trim(), time: when });
-          this.setState({
-            rankReqs: { ...s.rankReqs, [id]: { from, to, by: 'Admin',
-              reason: s.rankEditReason.trim() } },
-            rankLogs: { ...s.rankLogs, [id]: log },
-            rankEditId: null, rankEditChoice: null, rankEditReason: ''
-          });
-        }
-      },
-      approveRankReq: () => {
-        if (!selectedMember) return;
-        const id = selectedMember.id, req = s.rankReqs[id];
-        if (!req) return;
-        const reqs = { ...s.rankReqs }; delete reqs[id];
-        const log = (s.rankLogs[id] || []).slice();
-        log.unshift({ label: req.from + ' → ' + req.to
-          + ' · Head duyệt, đã áp dụng', time: this.nowStamp() });
-        this.setState({
-          rankOverrides: { ...s.rankOverrides, [id]: req.to },
-          rankReqs: reqs, rankLogs: { ...s.rankLogs, [id]: log }
+        log.unshift({
+          label: rankEditCurrent + ' → ' + s.rankEditChoice
+            + ' · phiếu ' + s.rankDocNo.trim()
+            + ' ngày ' + s.rankDocDate.trim()
+            + ' · duyệt: ' + s.rankApprover.trim()
+            + (s.rankEditReason.trim()
+                ? ' · ' + s.rankEditReason.trim() : ''),
+          time: this.nowStamp()
         });
-      },
-      askRejectRankReq: () => selectedMember
-        && this.setState({ rankRejectId: selectedMember.id }),
-      showRankReject: !!s.rankRejectId,
-      rankRejectLabel: rankRejectReq
-        ? rankRejectReq.from + ' → ' + rankRejectReq.to : '',
-      closeRankReject: () => this.setState({ rankRejectId: null }),
-      confirmRankReject: () => {
-        const id = s.rankRejectId, req = s.rankReqs[id];
-        if (!req) { this.setState({ rankRejectId: null }); return; }
-        const reqs = { ...s.rankReqs }; delete reqs[id];
-        const log = (s.rankLogs[id] || []).slice();
-        // Lượt bị từ chối vẫn nằm lại trong lịch sử, không xoá.
-        log.unshift({ label: req.from + ' → ' + req.to
-          + ' · Head từ chối, giữ nguyên cấp cũ', time: this.nowStamp() });
-        this.setState({ rankReqs: reqs,
-          rankLogs: { ...s.rankLogs, [id]: log }, rankRejectId: null });
+        this.setState({
+          rankOverrides: { ...s.rankOverrides, [id]: s.rankEditChoice },
+          rankLogs: { ...s.rankLogs, [id]: log },
+          rankEditId: null, rankEditChoice: null, rankEditReason: '',
+          rankDocNo: '', rankDocDate: '', rankApprover: ''
+        });
       },
 
       openApproveMemberModal: () => this.setState({ actionModal: { type: 'approve', kind: 'member', id: s.selectedMemberId } }),

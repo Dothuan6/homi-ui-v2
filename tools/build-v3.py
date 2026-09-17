@@ -104,26 +104,9 @@ BG_PATCHES = [
             <span style="font-weight:700;color:var(--c1)">{{effRank}} · {{selectedMember.tierLabel}}</span>
           </div>
 
-          <!-- (18) Điều chỉnh cấp: Admin đề nghị -> Head duyệt; Head sửa thẳng -->
-          <sc-if value="{{rankReqPending}}" hint-placeholder-val="{{false}}">
-            <div style="border:1px solid rgba(255,165,0,.45);background:rgba(255,165,0,.1);border-radius:var(--r-md);padding:var(--s5);margin-bottom:var(--s6);display:flex;flex-direction:column;gap:var(--s3);font-size:13px">
-              <div style="font-weight:700;color:#FFA500">Chờ Head duyệt điều chỉnh cấp</div>
-              <div style="color:var(--c1);font-weight:600">{{rankReqLabel}}</div>
-              <div style="font-size:12px;color:var(--c5);line-height:1.6">Người đề nghị: {{rankReqBy}} · Lý do: {{rankReqReason}}</div>
-              <sc-if value="{{canDecideRank}}" hint-placeholder-val="{{false}}">
-                <div style="display:flex;gap:var(--s4);margin-top:var(--s2)">
-                  <button sc-camel-on-click="{{approveRankReq}}" style="flex:1;height:38px;border:none;border-radius:var(--r-md);background:var(--c6);color:var(--c12);font-size:13px;font-weight:600">Duyệt điều chỉnh (Head)</button>
-                  <button sc-camel-on-click="{{askRejectRankReq}}" style="flex:1;height:38px;border:1px solid #D9342B;border-radius:var(--r-md);background:var(--c12);color:#D9342B;font-size:13px;font-weight:600">Từ chối</button>
-                </div>
-              </sc-if>
-              <sc-if value="{{waitingHead}}" hint-placeholder-val="{{true}}">
-                <div style="font-size:12px;color:var(--c5)">Đề nghị đã gửi, chờ Head xử lý.</div>
-              </sc-if>
-            </div>
-          </sc-if>
-          <sc-if value="{{canEditRank}}" hint-placeholder-val="{{true}}">
-            <button sc-camel-on-click="{{openRankEdit}}" style="width:100%;height:40px;margin-bottom:var(--s6);background:var(--c12);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c6)" style-hover="background:rgba(170,170,170,.08)">{{rankEditLabel}}</button>
-          </sc-if>
+          <!-- (18) Cập nhật cấp theo phiếu đã duyệt ngoài hệ thống -->
+          <button sc-camel-on-click="{{openRankEdit}}" style="width:100%;height:40px;margin-bottom:var(--s3);background:var(--c12);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c6)" style-hover="background:rgba(170,170,170,.08)">Cập nhật cấp</button>
+          <div style="font-size:11px;color:var(--c5);line-height:1.6;margin-bottom:var(--s6)">Việc trình và duyệt làm ngoài hệ thống. Ở đây chỉ ghi nhận cấp đã được duyệt, kèm số phiếu để đối chiếu.</div>
 
           <sc-if value="{{hasRankLog}}" hint-placeholder-val="{{false}}">
             <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s4)">Lịch sử điều chỉnh cấp</div>
@@ -1939,56 +1922,51 @@ L_TOPBAR_WRAP = 744      # thẻ <div> bọc thanh trên (giữ nguyên style)
 L_SCRIPT = (1611, 2114)  # cả <script type="text/x-dc"> … </script>
 
 # Khối bắt đầu tại dòng nào (nếu là dòng comment thì <sc-if> nằm ngay sau).
-# (18) Hai hộp thoại của luồng điều chỉnh cấp — chèn ngay trước cụm modal
-# duyệt/từ chối sẵn có của mockup.
-RANK_MODALS = """  <!-- MODAL: điều chỉnh cấp thành viên (bổ sung 17/09) -->
+# (18) Hộp thoại cập nhật cấp — chèn ngay trước cụm modal duyệt/từ chối
+# sẵn có của mockup. Trình và duyệt làm ngoài hệ thống, ở đây chỉ ghi nhận.
+_RK_INP = ('height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);'
+           'border-radius:var(--r-md);font-size:13px')
+RANK_MODALS = """  <!-- MODAL: cập nhật cấp thành viên (bổ sung 17/09) -->
   <sc-if value="{{showRankEdit}}" hint-placeholder-val="{{false}}">
     <div style="position:fixed;inset:0;background:rgba(31,31,31,.5);display:flex;align-items:flex-start;justify-content:center;z-index:260;padding:var(--s7);overflow-y:auto">
       <div style="width:100%;max-width:440px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25);margin:var(--s8) 0">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s5)">
           <div>
-            <div style="font-size:18px;font-weight:700;color:var(--c1)">Điều chỉnh cấp</div>
+            <div style="font-size:18px;font-weight:700;color:var(--c1)">Cập nhật cấp</div>
             <div style="font-size:12px;color:var(--c5);margin-top:var(--s1);line-height:1.6">{{rankEditName}} · đang ở cấp <strong>{{rankEditCurrent}}</strong></div>
           </div>
           <button sc-camel-on-click="{{closeRankEdit}}" style="background:none;border:none;font-size:18px;color:var(--c5);flex:none">&#10005;</button>
         </div>
 
+        <div style="font-size:12px;color:var(--c4);background:rgba(0,173,238,.07);border:1px solid rgba(0,173,238,.3);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">Chọn đúng cấp đã được duyệt trong phiếu. Hệ thống không xét duyệt lại — lưu là áp dụng ngay.</div>
+
         <div style="display:flex;flex-direction:column;gap:var(--s2)">
-          <div style="font-size:13px;font-weight:600;color:var(--c2)">Chọn cấp mới</div>
+          <div style="font-size:13px;font-weight:600;color:var(--c2)">Cấp đã được duyệt</div>
           <sc-for list="{{rankOptions}}" as="ro" hint-placeholder-count="6">
             <button sc-camel-on-click="{{ro.onClick}}" disabled="{{ro.disabled}}" style="{{ro.style}}"><span>{{ro.name}}</span><span style="font-size:11px;text-align:right;line-height:1.5">{{ro.note}}</span></button>
           </sc-for>
-          <div style="font-size:11px;color:var(--c5);line-height:1.6">Chỉ đổi cấp của riêng thành viên này — tuyến dưới giữ nguyên. Cấp bị làm mờ là cấp phá vỡ trật tự tuyến.</div>
+          <div style="font-size:11px;color:var(--c5);line-height:1.6">Chỉ đổi cấp của riêng thành viên này — tuyến dưới giữ nguyên. Cấp bị làm mờ là cấp phá vỡ trật tự tuyến; gặp trường hợp này phải trình lại bên ngoài, không tự phá rào.</div>
         </div>
 
-        <div style="display:flex;flex-direction:column;gap:var(--s2)">
-          <label style="font-size:13px;font-weight:600;color:var(--c2)">Lý do điều chỉnh (bắt buộc)</label>
-          <textarea placeholder="Vì sao cần đổi cấp cho thành viên này?" value="{{rankEditReason}}" sc-camel-on-change="{{setRankEditReason}}" style="min-height:80px;padding:var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;resize:vertical"></textarea>
+        <div style="display:flex;flex-direction:column;gap:var(--s4)">
+          <div style="font-size:13px;font-weight:600;color:var(--c2)">Minh chứng phê duyệt (bắt buộc)</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s5)">
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Số phiếu / mã email</label><input type="text" placeholder="PD-2026-014" value="{{rankDocNo}}" sc-camel-on-change="{{setRankDocNo}}" style="RKINP" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Ngày duyệt</label><input type="text" placeholder="dd/mm/yyyy" value="{{rankDocDate}}" sc-camel-on-change="{{setRankDocDate}}" style="RKINP" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Người duyệt</label><input type="text" placeholder="Họ tên người đã duyệt" value="{{rankApprover}}" sc-camel-on-change="{{setRankApprover}}" style="RKINP" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)"></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Lý do / trích nội dung đã duyệt</label><textarea placeholder="Vì sao cấp được điều chỉnh?" value="{{rankEditReason}}" sc-camel-on-change="{{setRankEditReason}}" style="min-height:70px;padding:var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;resize:vertical"></textarea></div>
         </div>
 
         <div style="display:flex;gap:var(--s3)">
           <button sc-camel-on-click="{{closeRankEdit}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Huỷ</button>
-          <button sc-camel-on-click="{{submitRankEdit}}" disabled="{{rankSubmitDisabled}}" style="{{rankSubmitStyle}}">{{rankSubmitLabel}}</button>
+          <button sc-camel-on-click="{{submitRankEdit}}" disabled="{{rankSubmitDisabled}}" style="{{rankSubmitStyle}}">Lưu &amp; áp dụng</button>
         </div>
       </div>
     </div>
   </sc-if>
 
-  <!-- MODAL: chặn Head bấm nhầm nút Từ chối -->
-  <sc-if value="{{showRankReject}}" hint-placeholder-val="{{false}}">
-    <div style="position:fixed;inset:0;background:rgba(31,31,31,.5);display:flex;align-items:center;justify-content:center;z-index:270;padding:var(--s7)">
-      <div style="width:100%;max-width:400px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25)">
-        <div style="font-size:18px;font-weight:700;color:var(--c1)">Từ chối điều chỉnh cấp?</div>
-        <div style="font-size:14px;color:var(--c2);line-height:1.6"><strong>{{rankRejectLabel}}</strong> sẽ không được áp dụng, thành viên giữ nguyên cấp hiện tại. Bạn vẫn có thể tự điều chỉnh lại sau.</div>
-        <div style="display:flex;gap:var(--s3)">
-          <button sc-camel-on-click="{{closeRankReject}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Quay lại</button>
-          <button sc-camel-on-click="{{confirmRankReject}}" style="flex:1;height:44px;background:var(--c12);color:#D9342B;border:1px solid #D9342B;border-radius:var(--r-md);font-size:14px;font-weight:600">Từ chối</button>
-        </div>
-      </div>
-    </div>
-  </sc-if>
-
-"""
+""".replace("RKINP", _RK_INP)
 
 BG_PATCHES.append(
     ("  <!-- MODAL: approve/reject/paid confirm -->",
@@ -2092,19 +2070,18 @@ SCREENS = [
                                             "actionModal": {"type": "approve", "kind": "member", "id": 6}}),
             ("tu-choi", "Modal từ chối hồ sơ", {"selectedMemberId": 6,
                                                 "actionModal": {"type": "reject", "kind": "member", "id": 6}}),
-            # (18) Luồng điều chỉnh cấp. Chọn Lê Văn Cường (id 2) vì có cả
-            # tuyến trên (Trần Thị Bích · Silver) lẫn tuyến dưới (Ngô Thị Em ·
-            # Copper), nên thấy được cả trần lẫn sàn của danh sách cấp.
-            ("dieu-chinh-cap", "Modal chọn cấp mới",
+            # (18) Cập nhật cấp theo phiếu duyệt ngoài. Chọn Lê Văn Cường
+            # (id 2) vì có cả tuyến trên (Trần Thị Bích · Silver) lẫn tuyến
+            # dưới (Ngô Thị Em · Copper) — thấy được cả trần lẫn sàn.
+            ("cap-nhat-cap", "Modal cập nhật cấp theo phiếu duyệt",
              {"selectedMemberId": 2, "rankEditId": 2, "rankEditChoice": "Copper"}),
-            ("cho-head-duyet", "Admin đã gửi, đang chờ Head",
-             {"selectedMemberId": 2, "adminRole": "specialist",
-              "rankReqs": {"2": {"from": "Copper", "to": "Silver", "by": "Admin",
-                                 "reason": "Bù cấp cho 3 đơn ghi nhận thiếu tháng 8"}}}),
-            ("head-duyet-cap", "Head duyệt / từ chối điều chỉnh",
-             {"selectedMemberId": 2, "adminRole": "head",
-              "rankReqs": {"2": {"from": "Copper", "to": "Silver", "by": "Admin",
-                                 "reason": "Bù cấp cho 3 đơn ghi nhận thiếu tháng 8"}}}),
+            ("da-cap-nhat-cap", "Hồ sơ đã cập nhật cấp — xem lịch sử",
+             {"selectedMemberId": 2, "rankOverrides": {"2": "Silver"},
+              "rankLogs": {"2": [{
+                  "label": "Copper → Silver · phiếu PD-2026-014 ngày 16/09/2026"
+                           " · duyệt: Phùng Thị Thúy Linh · Bù cấp cho 3 đơn"
+                           " ghi nhận thiếu tháng 8",
+                  "time": "16/09/2026 14:20"}]}}),
         ],
     },
     {
@@ -2219,11 +2196,11 @@ JS_PATCHES = [
 
     ("    memberSearch: '', memberStatusOverrides: {}, memberAuditLog: {},",
      "    memberSearch: '', memberStatusOverrides: {}, memberAuditLog: {},\n"
-     "    // (18) rankOverrides: cấp đã áp dụng. rankReqs: đề nghị chờ Head.\n"
-     "    // rankLogs: lưu vết mọi lượt, kể cả lượt bị từ chối.\n"
-     "    rankOverrides: {}, rankReqs: {}, rankLogs: {},\n"
+     "    // (18) Trình - duyệt làm NGOÀI hệ thống; trong hệ thống chỉ ghi\n"
+     "    // nhận. rankOverrides: cấp đang áp dụng. rankLogs: lưu vết.\n"
+     "    rankOverrides: {}, rankLogs: {},\n"
      "    rankEditId: null, rankEditChoice: null, rankEditReason: '',\n"
-     "    rankRejectId: null,"),
+     "    rankDocNo: '', rankDocDate: '', rankApprover: '',"),
 
     # Khối tính toán đặt ngay trước phần kho, tức là sau khi selectedMember
     # đã dựng xong.
@@ -2235,7 +2212,6 @@ JS_PATCHES = [
      "    const rankOf = (m) => s.rankOverrides[m.id]\n"
      "      || this.RANK_LABEL[m.rank] || m.rank;\n"
      "    const rankIdx = (r) => this.RANKS.indexOf(r);\n"
-     "    const isHead = s.adminRole !== 'specialist';\n"
      "    let rankEditName = '', rankEditCurrent = '', rankOptions = [];\n"
      "    const rankTarget = s.rankEditId\n"
      "      ? this.MEMBERS.find(m => m.id === s.rankEditId) : null;\n"
@@ -2277,10 +2253,14 @@ JS_PATCHES = [
      "        };\n"
      "      });\n"
      "    }\n"
-     "    const rankReadyName = s.rankEditChoice\n"
-     "      && s.rankEditChoice !== rankEditCurrent;\n"
-     "    const rankReady = !!rankReadyName && s.rankEditReason.trim().length > 0;\n"
-     "    const rankRejectReq = s.rankRejectId ? s.rankReqs[s.rankRejectId] : null;\n"
+     "    // Phải chọn cấp khác cấp hiện tại VÀ nhập đủ ba trường minh chứng.\n"
+     "    // Thiếu minh chứng thì sau này không nối được số liệu trong hệ thống\n"
+     "    // với quyết định đã duyệt bên ngoài.\n"
+     "    const rankReady = !!s.rankEditChoice\n"
+     "      && s.rankEditChoice !== rankEditCurrent\n"
+     "      && s.rankDocNo.trim().length > 0\n"
+     "      && s.rankDocDate.trim().length > 0\n"
+     "      && s.rankApprover.trim().length > 0;\n"
      "\n"
      "    const selectedStockRaw = s.selectedStockId "
      "? stockData.find(p => p.id === s.selectedStockId) : null;"),
@@ -2291,21 +2271,6 @@ JS_PATCHES = [
      "\n"
      "      // ----- (18) Điều chỉnh cấp -----------------------------------\n"
      "      effRank: selectedMember ? rankOf(selectedMember) : '',\n"
-     "      rankReqPending: !!(selectedMember && s.rankReqs[selectedMember.id]),\n"
-     "      rankReqLabel: selectedMember && s.rankReqs[selectedMember.id]\n"
-     "        ? s.rankReqs[selectedMember.id].from + ' → '\n"
-     "          + s.rankReqs[selectedMember.id].to : '',\n"
-     "      rankReqBy: selectedMember && s.rankReqs[selectedMember.id]\n"
-     "        ? s.rankReqs[selectedMember.id].by : '',\n"
-     "      rankReqReason: selectedMember && s.rankReqs[selectedMember.id]\n"
-     "        ? s.rankReqs[selectedMember.id].reason : '',\n"
-     "      // Chỉ Head mới quyết được; Admin chỉ nhìn thấy dòng chờ.\n"
-     "      canDecideRank: isHead,\n"
-     "      waitingHead: !isHead,\n"
-     "      // Đang chờ duyệt thì khoá nút, tránh chồng hai đề nghị lên nhau.\n"
-     "      canEditRank: !!(selectedMember && !s.rankReqs[selectedMember.id]),\n"
-     "      rankEditLabel: isHead ? 'Điều chỉnh cấp'\n"
-     "        : 'Đề nghị điều chỉnh cấp',\n"
      "      hasRankLog: !!(selectedMember\n"
      "        && (s.rankLogs[selectedMember.id] || []).length),\n"
      "      rankLog: selectedMember ? (s.rankLogs[selectedMember.id] || []) : [],\n"
@@ -2314,74 +2279,46 @@ JS_PATCHES = [
      "      rankEditName, rankEditCurrent, rankOptions,\n"
      "      rankEditReason: s.rankEditReason,\n"
      "      setRankEditReason: (e) => this.setState({ rankEditReason: e.target.value }),\n"
+     "      rankDocNo: s.rankDocNo,\n"
+     "      setRankDocNo: (e) => this.setState({ rankDocNo: e.target.value }),\n"
+     "      rankDocDate: s.rankDocDate,\n"
+     "      setRankDocDate: (e) => this.setState({ rankDocDate: this.dateMask(e.target.value) }),\n"
+     "      rankApprover: s.rankApprover,\n"
+     "      setRankApprover: (e) => this.setState({ rankApprover: e.target.value }),\n"
      "      openRankEdit: () => selectedMember && this.setState({\n"
      "        rankEditId: selectedMember.id,\n"
-     "        rankEditChoice: rankOf(selectedMember), rankEditReason: ''\n"
+     "        rankEditChoice: rankOf(selectedMember), rankEditReason: '',\n"
+     "        rankDocNo: '', rankDocDate: '', rankApprover: ''\n"
      "      }),\n"
      "      closeRankEdit: () => this.setState({ rankEditId: null,\n"
-     "        rankEditChoice: null, rankEditReason: '' }),\n"
+     "        rankEditChoice: null, rankEditReason: '',\n"
+     "        rankDocNo: '', rankDocDate: '', rankApprover: '' }),\n"
      "      rankSubmitDisabled: !rankReady,\n"
-     "      rankSubmitLabel: isHead ? 'Áp dụng ngay' : 'Gửi Head duyệt',\n"
      "      rankSubmitStyle: 'flex:2;height:44px;border:none;'\n"
      "        + 'border-radius:var(--r-md);font-size:14px;font-weight:600;'\n"
      "        + 'color:#FFFFFF;background:'\n"
      "        + (rankReady ? 'var(--c6)' : 'rgba(170,170,170,.5)')\n"
      "        + ';cursor:' + (rankReady ? 'pointer' : 'not-allowed'),\n"
+     "      // Không xét duyệt lại trong hệ thống: lưu là áp dụng ngay.\n"
      "      submitRankEdit: () => {\n"
      "        if (!rankReady || !rankTarget) return;\n"
-     "        const id = rankTarget.id, from = rankEditCurrent,\n"
-     "              to = s.rankEditChoice, when = this.nowStamp();\n"
+     "        const id = rankTarget.id;\n"
      "        const log = (s.rankLogs[id] || []).slice();\n"
-     "        if (isHead) {\n"
-     "          // Head là người duyệt cuối nên sửa là có hiệu lực ngay.\n"
-     "          log.unshift({ label: from + ' → ' + to\n"
-     "            + ' · Head điều chỉnh trực tiếp · ' + s.rankEditReason.trim(),\n"
-     "            time: when });\n"
-     "          this.setState({\n"
-     "            rankOverrides: { ...s.rankOverrides, [id]: to },\n"
-     "            rankLogs: { ...s.rankLogs, [id]: log },\n"
-     "            rankEditId: null, rankEditChoice: null, rankEditReason: ''\n"
-     "          });\n"
-     "        } else {\n"
-     "          log.unshift({ label: from + ' → ' + to\n"
-     "            + ' · Admin đề nghị · ' + s.rankEditReason.trim(), time: when });\n"
-     "          this.setState({\n"
-     "            rankReqs: { ...s.rankReqs, [id]: { from, to, by: 'Admin',\n"
-     "              reason: s.rankEditReason.trim() } },\n"
-     "            rankLogs: { ...s.rankLogs, [id]: log },\n"
-     "            rankEditId: null, rankEditChoice: null, rankEditReason: ''\n"
-     "          });\n"
-     "        }\n"
-     "      },\n"
-     "      approveRankReq: () => {\n"
-     "        if (!selectedMember) return;\n"
-     "        const id = selectedMember.id, req = s.rankReqs[id];\n"
-     "        if (!req) return;\n"
-     "        const reqs = { ...s.rankReqs }; delete reqs[id];\n"
-     "        const log = (s.rankLogs[id] || []).slice();\n"
-     "        log.unshift({ label: req.from + ' → ' + req.to\n"
-     "          + ' · Head duyệt, đã áp dụng', time: this.nowStamp() });\n"
-     "        this.setState({\n"
-     "          rankOverrides: { ...s.rankOverrides, [id]: req.to },\n"
-     "          rankReqs: reqs, rankLogs: { ...s.rankLogs, [id]: log }\n"
+     "        log.unshift({\n"
+     "          label: rankEditCurrent + ' → ' + s.rankEditChoice\n"
+     "            + ' · phiếu ' + s.rankDocNo.trim()\n"
+     "            + ' ngày ' + s.rankDocDate.trim()\n"
+     "            + ' · duyệt: ' + s.rankApprover.trim()\n"
+     "            + (s.rankEditReason.trim()\n"
+     "                ? ' · ' + s.rankEditReason.trim() : ''),\n"
+     "          time: this.nowStamp()\n"
      "        });\n"
-     "      },\n"
-     "      askRejectRankReq: () => selectedMember\n"
-     "        && this.setState({ rankRejectId: selectedMember.id }),\n"
-     "      showRankReject: !!s.rankRejectId,\n"
-     "      rankRejectLabel: rankRejectReq\n"
-     "        ? rankRejectReq.from + ' → ' + rankRejectReq.to : '',\n"
-     "      closeRankReject: () => this.setState({ rankRejectId: null }),\n"
-     "      confirmRankReject: () => {\n"
-     "        const id = s.rankRejectId, req = s.rankReqs[id];\n"
-     "        if (!req) { this.setState({ rankRejectId: null }); return; }\n"
-     "        const reqs = { ...s.rankReqs }; delete reqs[id];\n"
-     "        const log = (s.rankLogs[id] || []).slice();\n"
-     "        // Lượt bị từ chối vẫn nằm lại trong lịch sử, không xoá.\n"
-     "        log.unshift({ label: req.from + ' → ' + req.to\n"
-     "          + ' · Head từ chối, giữ nguyên cấp cũ', time: this.nowStamp() });\n"
-     "        this.setState({ rankReqs: reqs,\n"
-     "          rankLogs: { ...s.rankLogs, [id]: log }, rankRejectId: null });\n"
+     "        this.setState({\n"
+     "          rankOverrides: { ...s.rankOverrides, [id]: s.rankEditChoice },\n"
+     "          rankLogs: { ...s.rankLogs, [id]: log },\n"
+     "          rankEditId: null, rankEditChoice: null, rankEditReason: '',\n"
+     "          rankDocNo: '', rankDocDate: '', rankApprover: ''\n"
+     "        });\n"
      "      },\n"),
 
     # ----- (17) Gửi yêu cầu thanh toán: chống bấm trùng + lỗi đường truyền --
@@ -4130,44 +4067,76 @@ __CARDS__
              "dừng và mời liên hệ hotline, và đơn đã tạo nhưng chưa thanh toán "
              "thì giữ hiệu lực bao lâu trước khi tự huỷ.", "",
 
-             "## 17. Điều chỉnh cấp thành viên (17/09)", "",
+             "## 17. Cập nhật cấp thành viên (17/09)", "",
              "Trước đây cấp chỉ do hệ thống gán theo doanh số, không ai sửa "
-             "được. Bổ sung luồng cho phép sửa tay, nhưng có kiểm soát.", "",
-             "**Luồng**", "",
-             "1. Thành viên **tự đăng ký như bình thường** — không có đường "
-             "tắt, admin không tạo hồ sơ thay. Cấp ban đầu vẫn do hệ thống gán.",
-             "2. Trong ngăn chi tiết thành viên (B2) có nút **Đề nghị điều "
-             "chỉnh cấp** (Admin) / **Điều chỉnh cấp** (Head).",
-             "3. Hộp thoại liệt kê đủ 6 cấp, bắt nhập **lý do**. Admin bấm "
-             "*Gửi Head duyệt*; Head bấm *Áp dụng ngay*.",
-             "4. Hồ sơ đang chờ hiện dải vàng kèm cấp cũ → cấp mới, người đề "
-             "nghị và lý do. Head thấy thêm hai nút **Duyệt** / **Từ chối**.", "",
-             "**Head sửa trực tiếp.** Head chọn cấp là áp dụng ngay, không cần "
-             "ai duyệt lại — Head vốn là người duyệt cuối. Nhờ vậy Head lỡ bấm "
-             "từ chối nhầm thì tự vào sửa lại, Admin không phải làm lại đề "
-             "nghị. Nút *Từ chối* còn có thêm một hộp xác nhận để chặn nhầm "
-             "ngay từ đầu.", "",
-             "**Hai ràng buộc khi chọn cấp** — áp dụng cho cả Admin lẫn Head. "
-             "Cấp vi phạm bị làm mờ trong danh sách kèm dòng giải thích:", "",
+             "được. Bổ sung luồng cho phép sửa tay.", "",
+             "**Chốt 17/09: việc trình – xét – duyệt làm NGOÀI hệ thống** "
+             "(email hoặc biểu mẫu nội bộ). Hệ thống không ra quyết định, chỉ "
+             "ghi nhận quyết định đã có và áp dụng nó. Bản dựng trước đó có "
+             "luồng *Admin đề nghị → Head duyệt* ngay trong hệ thống — đã gỡ "
+             "bỏ.", "",
+             "| Bước | Ở đâu | Ai làm | Ra cái gì |", "|---|---|---|---|",
+             "| 1. Trình tăng cấp | Ngoài | Người phụ trách | Phiếu trình: "
+             "thành viên, cấp hiện tại, cấp đề xuất, lý do, số liệu |",
+             "| 2. Review nội dung | Ngoài | Người duyệt | Ý kiến, yêu cầu bổ "
+             "sung |",
+             "| 3. Quyết định | Ngoài | Người duyệt | Duyệt · Sửa rồi duyệt · "
+             "Từ chối. Kết quả là phiếu/email chốt có **mã phiếu, người duyệt, "
+             "ngày duyệt, cấp cuối cùng** |",
+             "| 4. Cập nhật | **Trong** | Admin | Mở hồ sơ → *Cập nhật cấp* → "
+             "chọn cấp đã duyệt + nhập minh chứng → Lưu |",
+             "| 5. Áp dụng | **Trong** | Hệ thống | Cấp mới hiệu lực ngay, ghi "
+             "lịch sử. Không duyệt lại |", "",
+             "**Bị từ chối thì không thao tác gì trong hệ thống** — chốt "
+             "17/09: ngoài core xem như chưa từng đề xuất, nên hệ thống không "
+             "ghi nhận gì cả. Hệ quả cần biết: nhìn vào hồ sơ sẽ không thấy "
+             "dấu vết đã từng trình rồi bị bác; muốn tra thì phải tìm ở nguồn "
+             "ngoài.", "",
+             "**Quyền cập nhật: Admin** — chốt 17/09. Admin tự cập nhật và tự "
+             "đính kèm minh chứng, không cần Head thao tác. Head vẫn làm được "
+             "vì là vai cao hơn.", "",
+             "**Giao diện.** Ngăn chi tiết thành viên (B2) có nút **Cập nhật "
+             "cấp**, kèm dòng nhắc *việc trình và duyệt làm ngoài hệ thống*. "
+             "Hộp thoại gồm: danh sách 6 cấp, và **ba trường minh chứng bắt "
+             "buộc** — số phiếu / mã email, ngày duyệt, người duyệt — cộng ô "
+             "lý do không bắt buộc. Thiếu một trong ba thì nút *Lưu & áp dụng* "
+             "vẫn xám.", "",
+             "**Hai ràng buộc khi chọn cấp.** Cấp vi phạm bị làm mờ kèm dòng "
+             "giải thích:", "",
              "- **Trần:** không cao hơn cấp của người giới thiệu trực tiếp.",
              "- **Sàn:** không thấp hơn cấp của tuyến dưới trực tiếp. Ràng "
              "buộc này KH chưa nêu nhưng bắt buộc phải có — vì chỉ sửa cấp của "
              "riêng một người, hạ người trên xuống cũng làm tuyến dưới vượt "
              "tuyến trên, đúng cái điều mà trần đang cấm.", "",
+             "Ràng buộc vẫn áp **kể cả khi phiếu ngoài đã duyệt**. Gặp trường "
+             "hợp bị chặn thì Admin không tự phá rào, phải trình lại bên "
+             "ngoài. Cần nói rõ điều này với bộ phận duyệt, nếu không họ sẽ "
+             "duyệt ra thứ hệ thống không nhận.", "",
              "Sửa cấp **chỉ đổi đúng thành viên đó**, tuyến dưới giữ nguyên.",
-             "", "**Lưu vết:** mọi lượt đều ghi lại cấp cũ → cấp mới, ai đề "
-             "nghị, ai duyệt, lý do, thời điểm. **Lượt bị từ chối vẫn nằm lại "
-             "trong lịch sử**, không xoá, để sau này đối chiếu.", "",
-             "Xem thử: `b2-members.html#dieu-chinh-cap`, `#cho-head-duyet`, "
-             "`#head-duyet-cap`.", "",
-             "**Còn chờ KH chốt** (đã hỏi, chưa có trả lời):", "",
+             "",
+             "**Lưu vết:** mỗi lượt ghi cấp cũ → cấp mới, mã phiếu, ngày "
+             "duyệt, người duyệt, lý do, thời điểm cập nhật. Hiện ở mục *Lịch "
+             "sử điều chỉnh cấp* trong hồ sơ.", "",
+             "Xem thử: `b2-members.html#cap-nhat-cap` và `#da-cap-nhat-cap`.",
+             "",
+             "**Rủi ro khi đưa duyệt ra ngoài — cần bù lại bằng quy trình:**",
+             "",
+             "1. **Mất dấu vết ai duyệt.** Quyết định nằm trong hộp thư cá "
+             "nhân. Ba trường minh chứng là sợi dây duy nhất nối số liệu trong "
+             "hệ thống với phiếu ngoài — vì vậy để bắt buộc.",
+             "2. **Không còn cơ chế hai người.** Trước phải Admin trình + Head "
+             "duyệt mới đổi được cấp; giờ một Admin gõ là xong. Đề xuất bù: "
+             "log chỉ thêm, không sửa/xoá, và định kỳ xuất báo cáo các lượt "
+             "đổi cấp để đối chiếu với phiếu ngoài.", "",
+             "**Còn chờ KH chốt:**", "",
              "1. Hướng của ràng buộc — em hiểu là *tuyến dưới không được vượt "
              "tuyến trên*; nếu KH muốn ngược lại thì phải đảo cả trần lẫn sàn.",
              "2. Có hồi tố không — đơn đã chốt theo cấp cũ có tính lại ưu đãi, "
-             "hay chỉ áp cấp mới từ lúc duyệt.",
-             "3. Thành viên thấy gì trong lúc chờ Head — giữ nguyên cấp cũ và "
-             "im lặng, hay hiện trạng thái *đang xem xét*. Bản mẫu đang làm "
-             "theo hướng im lặng.", "",
+             "hay chỉ áp cấp mới từ lúc cập nhật.",
+             "3. Lượt **bị từ chối** có ghi nhận trong hệ thống không, hay chỉ "
+             "lưu ngoài. Bản mẫu đang không ghi.",
+             "4. **Ai được quyền cập nhật** — chỉ Head hay Admin nào cũng "
+             "được. Bản mẫu đang cho cả hai vai.", "",
 
              "## Ghi chú", "",
              "- Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` "

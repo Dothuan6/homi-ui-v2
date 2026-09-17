@@ -303,35 +303,48 @@ Xem thử: `a1-buy.html#loi-duong-truyen`. Bấm *Gửi lại yêu cầu thanh t
 
 Chưa làm, cần KH chốt: sau bao nhiêu lần gửi lại liên tiếp thì dừng và mời liên hệ hotline, và đơn đã tạo nhưng chưa thanh toán thì giữ hiệu lực bao lâu trước khi tự huỷ.
 
-## 17. Điều chỉnh cấp thành viên (17/09)
+## 17. Cập nhật cấp thành viên (17/09)
 
-Trước đây cấp chỉ do hệ thống gán theo doanh số, không ai sửa được. Bổ sung luồng cho phép sửa tay, nhưng có kiểm soát.
+Trước đây cấp chỉ do hệ thống gán theo doanh số, không ai sửa được. Bổ sung luồng cho phép sửa tay.
 
-**Luồng**
+**Chốt 17/09: việc trình – xét – duyệt làm NGOÀI hệ thống** (email hoặc biểu mẫu nội bộ). Hệ thống không ra quyết định, chỉ ghi nhận quyết định đã có và áp dụng nó. Bản dựng trước đó có luồng *Admin đề nghị → Head duyệt* ngay trong hệ thống — đã gỡ bỏ.
 
-1. Thành viên **tự đăng ký như bình thường** — không có đường tắt, admin không tạo hồ sơ thay. Cấp ban đầu vẫn do hệ thống gán.
-2. Trong ngăn chi tiết thành viên (B2) có nút **Đề nghị điều chỉnh cấp** (Admin) / **Điều chỉnh cấp** (Head).
-3. Hộp thoại liệt kê đủ 6 cấp, bắt nhập **lý do**. Admin bấm *Gửi Head duyệt*; Head bấm *Áp dụng ngay*.
-4. Hồ sơ đang chờ hiện dải vàng kèm cấp cũ → cấp mới, người đề nghị và lý do. Head thấy thêm hai nút **Duyệt** / **Từ chối**.
+| Bước | Ở đâu | Ai làm | Ra cái gì |
+|---|---|---|---|
+| 1. Trình tăng cấp | Ngoài | Người phụ trách | Phiếu trình: thành viên, cấp hiện tại, cấp đề xuất, lý do, số liệu |
+| 2. Review nội dung | Ngoài | Người duyệt | Ý kiến, yêu cầu bổ sung |
+| 3. Quyết định | Ngoài | Người duyệt | Duyệt · Sửa rồi duyệt · Từ chối. Kết quả là phiếu/email chốt có **mã phiếu, người duyệt, ngày duyệt, cấp cuối cùng** |
+| 4. Cập nhật | **Trong** | Admin | Mở hồ sơ → *Cập nhật cấp* → chọn cấp đã duyệt + nhập minh chứng → Lưu |
+| 5. Áp dụng | **Trong** | Hệ thống | Cấp mới hiệu lực ngay, ghi lịch sử. Không duyệt lại |
 
-**Head sửa trực tiếp.** Head chọn cấp là áp dụng ngay, không cần ai duyệt lại — Head vốn là người duyệt cuối. Nhờ vậy Head lỡ bấm từ chối nhầm thì tự vào sửa lại, Admin không phải làm lại đề nghị. Nút *Từ chối* còn có thêm một hộp xác nhận để chặn nhầm ngay từ đầu.
+Bị từ chối thì **không thao tác gì trong hệ thống**.
 
-**Hai ràng buộc khi chọn cấp** — áp dụng cho cả Admin lẫn Head. Cấp vi phạm bị làm mờ trong danh sách kèm dòng giải thích:
+**Giao diện.** Ngăn chi tiết thành viên (B2) có nút **Cập nhật cấp**, kèm dòng nhắc *việc trình và duyệt làm ngoài hệ thống*. Hộp thoại gồm: danh sách 6 cấp, và **ba trường minh chứng bắt buộc** — số phiếu / mã email, ngày duyệt, người duyệt — cộng ô lý do không bắt buộc. Thiếu một trong ba thì nút *Lưu & áp dụng* vẫn xám.
+
+**Hai ràng buộc khi chọn cấp.** Cấp vi phạm bị làm mờ kèm dòng giải thích:
 
 - **Trần:** không cao hơn cấp của người giới thiệu trực tiếp.
 - **Sàn:** không thấp hơn cấp của tuyến dưới trực tiếp. Ràng buộc này KH chưa nêu nhưng bắt buộc phải có — vì chỉ sửa cấp của riêng một người, hạ người trên xuống cũng làm tuyến dưới vượt tuyến trên, đúng cái điều mà trần đang cấm.
 
+Ràng buộc vẫn áp **kể cả khi phiếu ngoài đã duyệt**. Gặp trường hợp bị chặn thì Admin không tự phá rào, phải trình lại bên ngoài. Cần nói rõ điều này với bộ phận duyệt, nếu không họ sẽ duyệt ra thứ hệ thống không nhận.
+
 Sửa cấp **chỉ đổi đúng thành viên đó**, tuyến dưới giữ nguyên.
 
-**Lưu vết:** mọi lượt đều ghi lại cấp cũ → cấp mới, ai đề nghị, ai duyệt, lý do, thời điểm. **Lượt bị từ chối vẫn nằm lại trong lịch sử**, không xoá, để sau này đối chiếu.
+**Lưu vết:** mỗi lượt ghi cấp cũ → cấp mới, mã phiếu, ngày duyệt, người duyệt, lý do, thời điểm cập nhật. Hiện ở mục *Lịch sử điều chỉnh cấp* trong hồ sơ.
 
-Xem thử: `b2-members.html#dieu-chinh-cap`, `#cho-head-duyet`, `#head-duyet-cap`.
+Xem thử: `b2-members.html#cap-nhat-cap` và `#da-cap-nhat-cap`.
 
-**Còn chờ KH chốt** (đã hỏi, chưa có trả lời):
+**Rủi ro khi đưa duyệt ra ngoài — cần bù lại bằng quy trình:**
+
+1. **Mất dấu vết ai duyệt.** Quyết định nằm trong hộp thư cá nhân. Ba trường minh chứng là sợi dây duy nhất nối số liệu trong hệ thống với phiếu ngoài — vì vậy để bắt buộc.
+2. **Không còn cơ chế hai người.** Trước phải Admin trình + Head duyệt mới đổi được cấp; giờ một Admin gõ là xong. Đề xuất bù: log chỉ thêm, không sửa/xoá, và định kỳ xuất báo cáo các lượt đổi cấp để đối chiếu với phiếu ngoài.
+
+**Còn chờ KH chốt:**
 
 1. Hướng của ràng buộc — em hiểu là *tuyến dưới không được vượt tuyến trên*; nếu KH muốn ngược lại thì phải đảo cả trần lẫn sàn.
-2. Có hồi tố không — đơn đã chốt theo cấp cũ có tính lại ưu đãi, hay chỉ áp cấp mới từ lúc duyệt.
-3. Thành viên thấy gì trong lúc chờ Head — giữ nguyên cấp cũ và im lặng, hay hiện trạng thái *đang xem xét*. Bản mẫu đang làm theo hướng im lặng.
+2. Có hồi tố không — đơn đã chốt theo cấp cũ có tính lại ưu đãi, hay chỉ áp cấp mới từ lúc cập nhật.
+3. Lượt **bị từ chối** có ghi nhận trong hệ thống không, hay chỉ lưu ngoài. Bản mẫu đang không ghi.
+4. **Ai được quyền cập nhật** — chỉ Head hay Admin nào cũng được. Bản mẫu đang cho cả hai vai.
 
 ## Ghi chú
 
