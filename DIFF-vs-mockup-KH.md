@@ -352,6 +352,31 @@ Xem thử: `b2-members.html#cap-nhat-cap` và `#da-cap-nhat-cap`.
 
 Hai câu còn lại đã chốt 17/09, xem ở trên: không ghi nhận lượt bị từ chối; Admin là người cập nhật.
 
+## 18. Bổ sung màn Nhật ký hệ thống (B8) — 17/09
+
+Màn mới, **phạm vi toàn hệ thống**, không riêng phân hệ nào. Hai tab:
+
+**Tab 1 — Thay đổi dữ liệu.** 9 cột: thời điểm · người thực hiện (kèm vai) · phân hệ · đối tượng · hành động · giá trị trước · giá trị sau · minh chứng · địa chỉ IP. Lọc theo phân hệ, hành động, khoảng ngày, và tìm theo người thực hiện / đối tượng / mã phiếu.
+
+Sáu phân hệ được ghi: Thành viên · Đơn hàng · Kho hàng · Sản phẩm · Rút tiền · Tài khoản admin. Sáu nhóm hành động: Tạo mới · Cập nhật · Duyệt · Từ chối · Khoá/mở khoá · Tải file lên. Cả thao tác của **hệ thống tự động** (gán mã kích hoạt khi xác nhận đơn) lẫn của **thành viên** (đăng ký, chấp thuận T&C) đều vào nhật ký, không chỉ thao tác của admin.
+
+**Tab 2 — File đã tải lên.** Tên file · loại · gắn với đối tượng nào · người tải · thời điểm · dung lượng · nút tải về. Gom mọi file trong hệ thống: ảnh CCCD, phiếu duyệt điều chỉnh cấp, file import kho, ảnh sản phẩm, uỷ nhiệm chi.
+
+**Hai nguyên tắc ghi rõ trên màn:**
+
+- Nhật ký **chỉ ghi thêm** — không sửa, không xoá, kể cả Head.
+- File đã tải lên **không xoá được**. Nộp nhầm thì tải bản đúng lên rồi ghi chú, bản cũ vẫn giữ.
+
+Không có hai điều này thì nhật ký vô nghĩa: ai xoá được dấu vết thì dấu vết không còn là bằng chứng.
+
+Xem thử: `b8-audit-log.html` và `#file`.
+
+**Cần chốt với dev:**
+
+1. **Thời gian lưu.** Giữ bao lâu rồi chuyển sang lưu trữ lạnh? Nhật ký toàn hệ thống phình rất nhanh.
+2. **Ai được xem.** Bản mẫu cho cả Admin lẫn Head. Nhật ký chứa IP và thao tác của mọi người — KH cân nhắc có nên giới hạn ở Head không.
+3. Dữ liệu trong bản mẫu là **dựng sẵn**, không nối với thao tác thật trên các màn khác — bản thật backend ghi vào bảng `audit_log` ngay trong cùng giao dịch với thay đổi dữ liệu, không ghi sau bằng job riêng.
+
 ## Ghi chú
 
 - Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` nhưng màu hover lại là cyan `#0099d1` — gần như chắc chắn là lỗi sót. Bản này đưa về màu chính. Cần KH xác nhận.

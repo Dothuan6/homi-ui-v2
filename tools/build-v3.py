@@ -956,6 +956,92 @@ def combo(key, placeholder):
            _INP, _FOCUS, key, key, key)
     )
 
+# (19) B8 — Nhật ký hệ thống. Phạm vi toàn hệ thống, không riêng phân hệ nào.
+# Hai tab: thay đổi dữ liệu và file đã tải lên. Dùng lưới CSS (không phải
+# <table>) để khung cuộn ngang giống các bảng quản trị còn lại.
+_AU_COLS = ("1.1fr 1.2fr .9fr 1.3fr 1.2fr 1fr 1fr 1.2fr .8fr")
+_AU_MINW = "1560px"
+_AF_COLS = "1.7fr .9fr 1.3fr 1.1fr 1fr .7fr .6fr"
+_AF_MINW = "1120px"
+
+B8_AUDIT = """      <!-- B8 NHẬT KÝ HỆ THỐNG (bổ sung, không có trong mockup KH) -->
+      <sc-if value="{{isB8}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s7)">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s5)">
+            <div><div style="font-size:24px;font-weight:700">Nhật ký hệ thống</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">Ghi lại mọi thay đổi dữ liệu và file tải lên, trên toàn bộ phân hệ</div></div>
+            <button style="height:38px;padding:0 var(--s6);background:var(--c12);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)" style-hover="background:rgba(170,170,170,.08)">Xuất file Excel</button>
+          </div>
+
+          <div style="display:flex;gap:var(--s3);flex-wrap:wrap">
+            <sc-for list="{{auditTabs}}" as="tb" hint-placeholder-count="2">
+              <button sc-camel-on-click="{{tb.onClick}}" style="{{tb.style}}">{{tb.label}}</button>
+            </sc-for>
+          </div>
+
+          <div style="font-size:12px;color:var(--c4);background:rgba(0,173,238,.07);border:1px solid rgba(0,173,238,.3);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">Nhật ký chỉ ghi thêm — không sửa, không xoá được, kể cả với Head. Đây là căn cứ đối chiếu khi có khiếu nại hoặc khi cơ quan quản lý kiểm tra.</div>
+
+          <!-- TAB 1: thay đổi dữ liệu -->
+          <sc-if value="{{isAuditChanges}}" hint-placeholder-val="{{true}}">
+            <div style="display:flex;gap:var(--s5);flex-wrap:wrap">
+              <input type="text" value="{{auditSearch}}" sc-camel-on-change="{{setAuditSearch}}" placeholder="Tìm theo người thực hiện, đối tượng, mã phiếu…" style="flex:1;min-width:240px;height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+              <sc-raw-select style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Tất cả phân hệ</option><option>Thành viên</option><option>Đơn hàng</option><option>Kho hàng</option><option>Sản phẩm</option><option>Rút tiền</option><option>Tài khoản admin</option></sc-raw-select>
+              <sc-raw-select style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Tất cả hành động</option><option>Tạo mới</option><option>Cập nhật</option><option>Duyệt</option><option>Từ chối</option><option>Khoá / mở khoá</option><option>Tải file lên</option></sc-raw-select>
+              <sc-raw-select style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>30 ngày gần nhất</option><option>7 ngày gần nhất</option><option>Tháng này</option><option>Khoảng ngày…</option></sc-raw-select>
+            </div>
+
+            <div style="background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);overflow:auto">
+              <div style="display:grid;grid-template-columns:AUCOLS;min-width:AUMINW;background:rgba(170,170,170,.08);padding:var(--s5) var(--s6);font-size:11px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap">
+                <div>Thời điểm</div><div>Người thực hiện</div><div>Phân hệ</div><div>Đối tượng</div><div>Hành động</div><div>Giá trị trước</div><div>Giá trị sau</div><div>Minh chứng</div><div>Địa chỉ IP</div>
+              </div>
+              <sc-for list="{{auditRows}}" as="a" hint-placeholder-count="8">
+                <div style="display:grid;grid-template-columns:AUCOLS;min-width:AUMINW;align-items:center;padding:var(--s5) var(--s6);font-size:13px;color:var(--c1);border-top:1px solid rgba(170,170,170,.2)">
+                  <div style="color:var(--c5);font-family:monospace;font-size:12px">{{a.time}}</div>
+                  <div><div style="font-weight:600">{{a.actor}}</div><div style="font-size:11px;color:var(--c5)">{{a.role}}</div></div>
+                  <div style="color:var(--c4)">{{a.module}}</div>
+                  <div style="color:var(--c4);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{a.target}}</div>
+                  <div><span style="font-size:11px;font-weight:700;padding:var(--s1) var(--s5);border-radius:var(--r-xl);background:{{a.badgeBg}};color:{{a.badgeColor}}">{{a.action}}</span></div>
+                  <div style="color:var(--c5)">{{a.before}}</div>
+                  <div style="font-weight:600">{{a.after}}</div>
+                  <div style="color:var(--c6);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{a.evidence}}</div>
+                  <div style="color:var(--c5);font-family:monospace;font-size:12px">{{a.ip}}</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <!-- TAB 2: file đã tải lên -->
+          <sc-if value="{{isAuditFiles}}" hint-placeholder-val="{{false}}">
+            <div style="display:flex;gap:var(--s5);flex-wrap:wrap">
+              <input type="text" value="{{auditSearch}}" sc-camel-on-change="{{setAuditSearch}}" placeholder="Tìm theo tên file, người tải, đối tượng gắn kèm…" style="flex:1;min-width:240px;height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#00ADEE;box-shadow:0 0 0 3px rgba(0,173,238,.25)">
+              <sc-raw-select style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Tất cả loại file</option><option>Ảnh</option><option>PDF</option><option>Email</option><option>Excel / CSV</option></sc-raw-select>
+              <sc-raw-select style="height:40px;padding:0 var(--s5);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Tất cả phân hệ</option><option>Thành viên</option><option>Đơn hàng</option><option>Kho hàng</option><option>Sản phẩm</option></sc-raw-select>
+            </div>
+
+            <div style="background:var(--c12);border:1px solid rgba(170,170,170,.35);border-radius:var(--r-lg);overflow:auto">
+              <div style="display:grid;grid-template-columns:AFCOLS;min-width:AFMINW;background:rgba(170,170,170,.08);padding:var(--s5) var(--s6);font-size:11px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap">
+                <div>Tên file</div><div>Loại</div><div>Gắn với</div><div>Người tải lên</div><div>Thời điểm</div><div>Dung lượng</div><div></div>
+              </div>
+              <sc-for list="{{auditFiles}}" as="f" hint-placeholder-count="6">
+                <div style="display:grid;grid-template-columns:AFCOLS;min-width:AFMINW;align-items:center;padding:var(--s5) var(--s6);font-size:13px;color:var(--c1);border-top:1px solid rgba(170,170,170,.2)">
+                  <div style="font-family:monospace;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{f.name}}</div>
+                  <div style="color:var(--c4)">{{f.kind}}</div>
+                  <div style="color:var(--c4);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{f.linkedTo}}</div>
+                  <div style="color:var(--c4)">{{f.by}}</div>
+                  <div style="color:var(--c5);font-family:monospace;font-size:12px">{{f.time}}</div>
+                  <div style="color:var(--c5)">{{f.size}}</div>
+                  <div style="text-align:right"><button style="height:30px;padding:0 var(--s5);background:var(--c12);border:1px solid rgba(170,170,170,.6);border-radius:var(--r-md);font-size:12px;font-weight:600;color:var(--c2)" style-hover="background:rgba(170,170,170,.08)">Tải về</button></div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="font-size:11px;color:var(--c5);line-height:1.6">File đã tải lên không xoá được. Nếu nộp nhầm, tải bản đúng lên rồi ghi chú trong nhật ký — bản cũ vẫn phải giữ nguyên.</div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+""".replace("AUCOLS", _AU_COLS).replace("AUMINW", _AU_MINW) \
+   .replace("AFCOLS", _AF_COLS).replace("AFMINW", _AF_MINW)
+
+
 B5_PRODUCTS = """      <!-- B5 PRODUCTS (bổ sung, không có trong mockup KH) -->
       <sc-if value="{{isB5}}" hint-placeholder-val="{{false}}">
         <div style="display:flex;flex-direction:column;gap:var(--s7)">
@@ -1763,9 +1849,9 @@ BG_PATCHES += [
      'grid-template-columns:1fr 1.2fr .9fr 1fr .9fr .9fr .9fr 1fr 1.1fr .8fr;'
      'min-width:1380px'),
 
-    # Chèn màn Đơn hàng (B6) và Quản lý sản phẩm (B5) ngay trước khối B4.
+    # Chèn màn Đơn hàng (B6), Sản phẩm (B5), Nhật ký (B8) trước khối B4.
     ("      <!-- B4 WAREHOUSE -->",
-     B6_ORDERS + B5_PRODUCTS + "      <!-- B4 WAREHOUSE -->"),
+     B6_ORDERS + B5_PRODUCTS + B8_AUDIT + "      <!-- B4 WAREHOUSE -->"),
     # B4: thêm nút Import / Thêm hàng cạnh nút xuất Excel.
     # Neo phải gồm CẢ tiêu đề "Quản lý kho hàng" — nút "Xuất file Excel" xuất
     # hiện y hệt ở B3 (và ở B6 mới thêm), thay theo chuỗi ngắn sẽ dính cả ba.
@@ -2000,9 +2086,9 @@ FILES = {
     "C1": "c1-login.html", "B1": "b1-admin-login.html",
     "B2": "b2-members.html", "B3": "b3-withdrawals.html", "B4": "b4-warehouse.html",
     "B5": "b5-products.html", "B6": "b6-orders.html",
-    "B7": "b7-admin-users.html",
+    "B7": "b7-admin-users.html", "B8": "b8-audit-log.html",
 }
-ADMIN_CODES = ("B2", "B3", "B4", "B5", "B6", "B7")
+ADMIN_CODES = ("B2", "B3", "B4", "B5", "B6", "B7", "B8")
 
 ADMIN_BLOCKS = ["ADMIN", "SLIDE_MEMBER", "SLIDE_WD", "SLIDE_STOCK", "MODALS"]
 
@@ -2139,6 +2225,14 @@ SCREENS = [
         ],
     },
     {
+        "code": "B8", "title": "B8 · Nhật ký hệ thống", "group": "Quản trị",
+        "blocks": ADMIN_BLOCKS,
+        "states": [
+            ("", "Nhật ký thay đổi dữ liệu", {"auditTab": "changes"}),
+            ("file", "Danh sách file đã tải lên", {"auditTab": "files"}),
+        ],
+    },
+    {
         "code": "B5", "title": "B5 · Quản lý sản phẩm", "group": "Quản trị",
         "blocks": ADMIN_BLOCKS,
         "states": [
@@ -2192,6 +2286,101 @@ JS_PATCHES = [
     # Đăng nhập admin -> màn Thành viên
     ("adminLoginSubmit: () => this.setState({ screen: 'B2' })",
      "adminLoginSubmit: () => GO('B2')"),
+
+    # ----- (19) B8 Nhật ký hệ thống ---------------------------------------
+    # Dữ liệu dựng sẵn, trải đều 6 phân hệ để KH thấy phạm vi là toàn hệ
+    # thống. Bản thật lấy từ bảng audit_log do backend ghi.
+    # Neo vào MEMBERS vì đây là trường có sẵn trong bản gốc của KH. Không neo
+    # vào RANKS — trường đó do một bản vá KHÁC thêm vào, mà bản vá ấy nằm sau
+    # bản vá này trong danh sách nên lúc chạy tới đây nó chưa tồn tại.
+    ("  MEMBERS = [",
+     "  // (19) Nhật ký hệ thống — bản mẫu dựng sẵn.\n"
+     "  AUDIT = [\n"
+     "    { time:'17/09/2026 09:12', actor:'Nguyễn Thị Hạnh', role:'Admin',\n"
+     "      module:'Thành viên', target:'Lê Văn Cường · LVC5456',\n"
+     "      action:'Cập nhật', before:'Copper', after:'Silver',\n"
+     "      evidence:'PD-2026-014-da-ky.pdf', ip:'113.161.46.118' },\n"
+     "    { time:'17/09/2026 08:55', actor:'Nguyễn Thị Hạnh', role:'Admin',\n"
+     "      module:'Đơn hàng', target:'DH923983',\n"
+     "      action:'Duyệt', before:'Chờ đối soát', after:'Đã thanh toán',\n"
+     "      evidence:'GD-VCB-77120394', ip:'113.161.46.118' },\n"
+     "    { time:'17/09/2026 08:40', actor:'Hệ thống', role:'Tự động',\n"
+     "      module:'Kho hàng', target:'ACT-100037',\n"
+     "      action:'Cập nhật', before:'Sẵn hàng', after:'Đã gán đơn hàng',\n"
+     "      evidence:'—', ip:'—' },\n"
+     "    { time:'16/09/2026 17:20', actor:'Phùng Thị Thúy Linh', role:'Head',\n"
+     "      module:'Rút tiền', target:'YC-2026-0088 · Trần Thị Bích',\n"
+     "      action:'Duyệt', before:'Chờ Head duyệt', after:'Đã duyệt',\n"
+     "      evidence:'—', ip:'118.70.12.4' },\n"
+     "    { time:'16/09/2026 16:02', actor:'Nguyễn Thị Hạnh', role:'Admin',\n"
+     "      module:'Kho hàng', target:'Import 120 mã kích hoạt',\n"
+     "      action:'Tải file lên', before:'—', after:'118 nhận / 2 bỏ qua',\n"
+     "      evidence:'kho-nhap-1609.xlsx', ip:'113.161.46.118' },\n"
+     "    { time:'16/09/2026 14:31', actor:'Phùng Thị Thúy Linh', role:'Head',\n"
+     "      module:'Tài khoản admin', target:'tranvanminh@homi365.com.vn',\n"
+     "      action:'Tạo mới', before:'—', after:'Vai trò Admin',\n"
+     "      evidence:'—', ip:'118.70.12.4' },\n"
+     "    { time:'16/09/2026 11:08', actor:'Nguyễn Thị Hạnh', role:'Admin',\n"
+     "      module:'Thành viên', target:'Phạm Thị Dung · PTD4789',\n"
+     "      action:'Khoá / mở khoá', before:'Đang hoạt động', after:'Đã khoá',\n"
+     "      evidence:'—', ip:'113.161.46.118' },\n"
+     "    { time:'16/09/2026 10:44', actor:'Nguyễn Thị Hạnh', role:'Admin',\n"
+     "      module:'Sản phẩm', target:'CN02',\n"
+     "      action:'Cập nhật', before:'Mô tả cũ', after:'Mô tả mới',\n"
+     "      evidence:'cn02-moi.png', ip:'113.161.46.118' },\n"
+     "    { time:'15/09/2026 15:26', actor:'Đặng Văn Phúc', role:'Thành viên',\n"
+     "      module:'Thành viên', target:'Đặng Văn Phúc · DVP8221',\n"
+     "      action:'Tạo mới', before:'—', after:'Chờ xác nhận thanh toán',\n"
+     "      evidence:'cccd-truoc-dvp8221.jpg', ip:'171.224.88.9' },\n"
+     "    { time:'15/09/2026 15:26', actor:'Đặng Văn Phúc', role:'Thành viên',\n"
+     "      module:'Thành viên', target:'Chấp thuận T&C v1.0',\n"
+     "      action:'Tạo mới', before:'—', after:'Đã đồng ý',\n"
+     "      evidence:'—', ip:'171.224.88.9' },\n"
+     "    { time:'15/09/2026 09:03', actor:'Phùng Thị Thúy Linh', role:'Head',\n"
+     "      module:'Rút tiền', target:'YC-2026-0085 · Vũ Minh Khang',\n"
+     "      action:'Từ chối', before:'Chờ Head duyệt', after:'Từ chối',\n"
+     "      evidence:'—', ip:'118.70.12.4' },\n"
+     "    { time:'14/09/2026 13:47', actor:'Nguyễn Thị Hạnh', role:'Admin',\n"
+     "      module:'Đơn hàng', target:'DH100511',\n"
+     "      action:'Từ chối', before:'Chờ đối soát', after:'Từ chối',\n"
+     "      evidence:'—', ip:'113.161.46.118' }\n"
+     "  ];\n"
+     "\n"
+     "  AUDIT_FILES = [\n"
+     "    { name:'PD-2026-014-da-ky.pdf', kind:'PDF', module:'Thành viên',\n"
+     "      linkedTo:'Cập nhật cấp · Lê Văn Cường', by:'Nguyễn Thị Hạnh',\n"
+     "      time:'17/09/2026 09:12', size:'412 KB' },\n"
+     "    { name:'kho-nhap-1609.xlsx', kind:'Excel / CSV', module:'Kho hàng',\n"
+     "      linkedTo:'Import 120 mã kích hoạt', by:'Nguyễn Thị Hạnh',\n"
+     "      time:'16/09/2026 16:02', size:'38 KB' },\n"
+     "    { name:'cn02-moi.png', kind:'Ảnh', module:'Sản phẩm',\n"
+     "      linkedTo:'Sản phẩm CN02', by:'Nguyễn Thị Hạnh',\n"
+     "      time:'16/09/2026 10:44', size:'1,2 MB' },\n"
+     "    { name:'cccd-truoc-dvp8221.jpg', kind:'Ảnh', module:'Thành viên',\n"
+     "      linkedTo:'Hồ sơ Đặng Văn Phúc', by:'Đặng Văn Phúc',\n"
+     "      time:'15/09/2026 15:26', size:'820 KB' },\n"
+     "    { name:'cccd-sau-dvp8221.jpg', kind:'Ảnh', module:'Thành viên',\n"
+     "      linkedTo:'Hồ sơ Đặng Văn Phúc', by:'Đặng Văn Phúc',\n"
+     "      time:'15/09/2026 15:26', size:'795 KB' },\n"
+     "    { name:'uy-nhiem-chi-dh923983.jpg', kind:'Ảnh', module:'Đơn hàng',\n"
+     "      linkedTo:'Đơn DH923983', by:'Nguyễn Văn A',\n"
+     "      time:'15/09/2026 08:11', size:'1,0 MB' }\n"
+     "  ];\n"
+     "\n"
+     "  AUDIT_BADGE = {\n"
+     "    'Tạo mới': ['rgba(0,173,238,.12)', '#00ADEE'],\n"
+     "    'Cập nhật': ['rgba(170,170,170,.18)', '#414445'],\n"
+     "    'Duyệt': ['rgba(132,190,82,.16)', '#4c7a2e'],\n"
+     "    'Từ chối': ['rgba(217,52,43,.12)', '#D9342B'],\n"
+     "    'Khoá / mở khoá': ['rgba(255,165,0,.15)', '#FFA500'],\n"
+     "    'Tải file lên': ['rgba(0,173,238,.12)', '#00ADEE']\n"
+     "  };\n"
+     "\n"
+     "  MEMBERS = ["),
+
+    ("    stockSearch: '', stockStatusFilter: 'all', stockPage: 1,",
+     "    stockSearch: '', stockStatusFilter: 'all', stockPage: 1,\n"
+     "    auditTab: 'changes', auditSearch: '',"),
 
     # ----- (18) Điều chỉnh cấp thành viên ---------------------------------
     # Dấu thời gian cho lịch sử điều chỉnh — dd/mm/yyyy hh:mm.
@@ -2647,15 +2836,43 @@ JS_PATCHES = [
      "['B4','Quản lý kho hàng']];",
      "  ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu rút tiền'],"
      "['B6','Đơn hàng'],['B4','Kho hàng'],['B5','Sản phẩm'],"
-     "['B7','Tài khoản admin']];"),
+     "['B8','Nhật ký hệ thống'],['B7','Tài khoản admin']];"),
 
     # B5 cũng nằm trong khung quản trị.
     ("const adminOn = ['B2','B3','B4'].includes(s.screen);",
-     "const adminOn = ['B2','B3','B4','B5','B6','B7'].includes(s.screen);"),
+     "const adminOn = ['B2','B3','B4','B5','B6','B7','B8'].includes(s.screen);"),
 
     ("isB3: s.screen === 'B3', isB4: s.screen === 'B4',",
      "isB3: s.screen === 'B3', isB4: s.screen === 'B4', "
      "isB5: s.screen === 'B5', isB6: s.screen === 'B6', isB7: s.screen === 'B7',\n"
+     "      isB8: s.screen === 'B8',\n"
+     "      // (19) Nhật ký hệ thống\n"
+     "      isAuditChanges: s.auditTab === 'changes',\n"
+     "      isAuditFiles: s.auditTab === 'files',\n"
+     "      auditTabs: [['changes', 'Thay đổi dữ liệu'], ['files', 'File đã tải lên']]\n"
+     "        .map(([k, label]) => ({\n"
+     "          label, onClick: () => this.setState({ auditTab: k, auditSearch: '' }),\n"
+     "          style: 'height:36px;padding:0 var(--s6);border-radius:var(--r-xl);'\n"
+     "            + 'font-size:13px;font-weight:600;'\n"
+     "            + (s.auditTab === k\n"
+     "                ? 'border:1px solid var(--c6);background:rgba(0,173,238,.1);color:var(--c6)'\n"
+     "                : 'border:1px solid rgba(170,170,170,.6);background:var(--c12);color:var(--c2)')\n"
+     "        })),\n"
+     "      auditSearch: s.auditSearch,\n"
+     "      setAuditSearch: (e) => this.setState({ auditSearch: e.target.value }),\n"
+     "      auditRows: this.AUDIT\n"
+     "        .filter(a => !s.auditSearch.trim()\n"
+     "          || (a.actor + ' ' + a.target + ' ' + a.evidence)\n"
+     "               .toLowerCase().includes(s.auditSearch.trim().toLowerCase()))\n"
+     "        .map(a => {\n"
+     "          const [bg, color] = this.AUDIT_BADGE[a.action]\n"
+     "            || ['rgba(170,170,170,.18)', '#414445'];\n"
+     "          return { ...a, badgeBg: bg, badgeColor: color };\n"
+     "        }),\n"
+     "      auditFiles: this.AUDIT_FILES\n"
+     "        .filter(f => !s.auditSearch.trim()\n"
+     "          || (f.name + ' ' + f.by + ' ' + f.linkedTo)\n"
+     "               .toLowerCase().includes(s.auditSearch.trim().toLowerCase())),\n"
      "      isB7Allowed: s.screen === 'B7' && s.adminRole !== 'specialist',\n"
      "      isB7Denied: s.screen === 'B7' && s.adminRole === 'specialist',"),
 
@@ -4159,6 +4376,42 @@ __CARDS__
              "hay chỉ áp cấp mới từ lúc cập nhật.", "",
              "Hai câu còn lại đã chốt 17/09, xem ở trên: không ghi nhận lượt "
              "bị từ chối; Admin là người cập nhật.", "",
+
+             "## 18. Bổ sung màn Nhật ký hệ thống (B8) — 17/09", "",
+             "Màn mới, **phạm vi toàn hệ thống**, không riêng phân hệ nào. Hai "
+             "tab:", "",
+             "**Tab 1 — Thay đổi dữ liệu.** 9 cột: thời điểm · người thực hiện "
+             "(kèm vai) · phân hệ · đối tượng · hành động · giá trị trước · giá "
+             "trị sau · minh chứng · địa chỉ IP. Lọc theo phân hệ, hành động, "
+             "khoảng ngày, và tìm theo người thực hiện / đối tượng / mã phiếu.",
+             "",
+             "Sáu phân hệ được ghi: Thành viên · Đơn hàng · Kho hàng · Sản "
+             "phẩm · Rút tiền · Tài khoản admin. Sáu nhóm hành động: Tạo mới · "
+             "Cập nhật · Duyệt · Từ chối · Khoá/mở khoá · Tải file lên. Cả "
+             "thao tác của **hệ thống tự động** (gán mã kích hoạt khi xác nhận "
+             "đơn) lẫn của **thành viên** (đăng ký, chấp thuận T&C) đều vào "
+             "nhật ký, không chỉ thao tác của admin.", "",
+             "**Tab 2 — File đã tải lên.** Tên file · loại · gắn với đối tượng "
+             "nào · người tải · thời điểm · dung lượng · nút tải về. Gom mọi "
+             "file trong hệ thống: ảnh CCCD, phiếu duyệt điều chỉnh cấp, file "
+             "import kho, ảnh sản phẩm, uỷ nhiệm chi.", "",
+             "**Hai nguyên tắc ghi rõ trên màn:**", "",
+             "- Nhật ký **chỉ ghi thêm** — không sửa, không xoá, kể cả Head.",
+             "- File đã tải lên **không xoá được**. Nộp nhầm thì tải bản đúng "
+             "lên rồi ghi chú, bản cũ vẫn giữ.", "",
+             "Không có hai điều này thì nhật ký vô nghĩa: ai xoá được dấu vết "
+             "thì dấu vết không còn là bằng chứng.", "",
+             "Xem thử: `b8-audit-log.html` và `#file`.", "",
+             "**Cần chốt với dev:**", "",
+             "1. **Thời gian lưu.** Giữ bao lâu rồi chuyển sang lưu trữ lạnh? "
+             "Nhật ký toàn hệ thống phình rất nhanh.",
+             "2. **Ai được xem.** Bản mẫu cho cả Admin lẫn Head. Nhật ký chứa "
+             "IP và thao tác của mọi người — KH cân nhắc có nên giới hạn ở "
+             "Head không.",
+             "3. Dữ liệu trong bản mẫu là **dựng sẵn**, không nối với thao tác "
+             "thật trên các màn khác — bản thật backend ghi vào bảng "
+             "`audit_log` ngay trong cùng giao dịch với thay đổi dữ liệu, "
+             "không ghi sau bằng job riêng.", "",
 
              "## Ghi chú", "",
              "- Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` "

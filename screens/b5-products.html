@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="../css/tokens.css">
 <link rel="stylesheet" href="../css/responsive.css">
 <script>
-window.__FILES = {"A1": "a1-buy.html", "A2": "a2-register.html", "A3": "a3-dashboard.html", "C1": "c1-login.html", "B1": "b1-admin-login.html", "B2": "b2-members.html", "B3": "b3-withdrawals.html", "B4": "b4-warehouse.html", "B5": "b5-products.html", "B6": "b6-orders.html", "B7": "b7-admin-users.html"};
+window.__FILES = {"A1": "a1-buy.html", "A2": "a2-register.html", "A3": "a3-dashboard.html", "C1": "c1-login.html", "B1": "b1-admin-login.html", "B2": "b2-members.html", "B3": "b3-withdrawals.html", "B4": "b4-warehouse.html", "B5": "b5-products.html", "B6": "b6-orders.html", "B7": "b7-admin-users.html", "B8": "b8-audit-log.html"};
 window.__STATE__ = {"screen": "B5"};
 // dữ liệu mang sang từ màn trước (bấm nút điều hướng)
 try { var c = sessionStorage.getItem('__homi_carry');
@@ -414,6 +414,80 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
               <button sc-camel-on-click="{{runImportStock}}" style="flex:1;height:44px;background:var(--c6);border:none;border-radius:var(--r-md);font-size:14px;font-weight:600;color:var(--c12)" style-hover="background:#1B3358">Import</button>
             </div>
           </div>
+        </div>
+      </sc-if>
+
+      <!-- B8 NHẬT KÝ HỆ THỐNG (bổ sung, không có trong mockup KH) -->
+      <sc-if value="{{isB8}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s7)">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s5)">
+            <div><div style="font-size:24px;font-weight:700">Nhật ký hệ thống</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">Ghi lại mọi thay đổi dữ liệu và file tải lên, trên toàn bộ phân hệ</div></div>
+            <button style="height:38px;padding:0 var(--s6);background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)" style-hover="background:rgba(154,163,176,.08)">Xuất file Excel</button>
+          </div>
+
+          <div style="display:flex;gap:var(--s3);flex-wrap:wrap">
+            <sc-for list="{{auditTabs}}" as="tb" hint-placeholder-count="2">
+              <button sc-camel-on-click="{{tb.onClick}}" style="{{tb.style}}">{{tb.label}}</button>
+            </sc-for>
+          </div>
+
+          <div style="font-size:12px;color:var(--c4);background:rgba(30,58,102,.07);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">Nhật ký chỉ ghi thêm — không sửa, không xoá được, kể cả với Head. Đây là căn cứ đối chiếu khi có khiếu nại hoặc khi cơ quan quản lý kiểm tra.</div>
+
+          <!-- TAB 1: thay đổi dữ liệu -->
+          <sc-if value="{{isAuditChanges}}" hint-placeholder-val="{{true}}">
+            <div style="display:flex;gap:var(--s5);flex-wrap:wrap">
+              <input type="text" value="{{auditSearch}}" sc-camel-on-change="{{setAuditSearch}}" placeholder="Tìm theo người thực hiện, đối tượng, mã phiếu…" style="flex:1;min-width:240px;height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
+              <sc-raw-select style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Tất cả phân hệ</option><option>Thành viên</option><option>Đơn hàng</option><option>Kho hàng</option><option>Sản phẩm</option><option>Rút tiền</option><option>Tài khoản admin</option></sc-raw-select>
+              <sc-raw-select style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Tất cả hành động</option><option>Tạo mới</option><option>Cập nhật</option><option>Duyệt</option><option>Từ chối</option><option>Khoá / mở khoá</option><option>Tải file lên</option></sc-raw-select>
+              <sc-raw-select style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>30 ngày gần nhất</option><option>7 ngày gần nhất</option><option>Tháng này</option><option>Khoảng ngày…</option></sc-raw-select>
+            </div>
+
+            <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);overflow:auto">
+              <div style="display:grid;grid-template-columns:1.1fr 1.2fr .9fr 1.3fr 1.2fr 1fr 1fr 1.2fr .8fr;min-width:1560px;background:rgba(154,163,176,.08);padding:var(--s5) var(--s6);font-size:11px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap">
+                <div>Thời điểm</div><div>Người thực hiện</div><div>Phân hệ</div><div>Đối tượng</div><div>Hành động</div><div>Giá trị trước</div><div>Giá trị sau</div><div>Minh chứng</div><div>Địa chỉ IP</div>
+              </div>
+              <sc-for list="{{auditRows}}" as="a" hint-placeholder-count="8">
+                <div style="display:grid;grid-template-columns:1.1fr 1.2fr .9fr 1.3fr 1.2fr 1fr 1fr 1.2fr .8fr;min-width:1560px;align-items:center;padding:var(--s5) var(--s6);font-size:13px;color:var(--c1);border-top:1px solid rgba(154,163,176,.2)">
+                  <div style="color:var(--c5);font-family:monospace;font-size:12px">{{a.time}}</div>
+                  <div><div style="font-weight:600">{{a.actor}}</div><div style="font-size:11px;color:var(--c5)">{{a.role}}</div></div>
+                  <div style="color:var(--c4)">{{a.module}}</div>
+                  <div style="color:var(--c4);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{a.target}}</div>
+                  <div><span style="font-size:11px;font-weight:700;padding:var(--s1) var(--s5);border-radius:var(--r-xl);background:{{a.badgeBg}};color:{{a.badgeColor}}">{{a.action}}</span></div>
+                  <div style="color:var(--c5)">{{a.before}}</div>
+                  <div style="font-weight:600">{{a.after}}</div>
+                  <div style="color:var(--c6);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{a.evidence}}</div>
+                  <div style="color:var(--c5);font-family:monospace;font-size:12px">{{a.ip}}</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <!-- TAB 2: file đã tải lên -->
+          <sc-if value="{{isAuditFiles}}" hint-placeholder-val="{{false}}">
+            <div style="display:flex;gap:var(--s5);flex-wrap:wrap">
+              <input type="text" value="{{auditSearch}}" sc-camel-on-change="{{setAuditSearch}}" placeholder="Tìm theo tên file, người tải, đối tượng gắn kèm…" style="flex:1;min-width:240px;height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
+              <sc-raw-select style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Tất cả loại file</option><option>Ảnh</option><option>PDF</option><option>Email</option><option>Excel / CSV</option></sc-raw-select>
+              <sc-raw-select style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Tất cả phân hệ</option><option>Thành viên</option><option>Đơn hàng</option><option>Kho hàng</option><option>Sản phẩm</option></sc-raw-select>
+            </div>
+
+            <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);overflow:auto">
+              <div style="display:grid;grid-template-columns:1.7fr .9fr 1.3fr 1.1fr 1fr .7fr .6fr;min-width:1120px;background:rgba(154,163,176,.08);padding:var(--s5) var(--s6);font-size:11px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap">
+                <div>Tên file</div><div>Loại</div><div>Gắn với</div><div>Người tải lên</div><div>Thời điểm</div><div>Dung lượng</div><div></div>
+              </div>
+              <sc-for list="{{auditFiles}}" as="f" hint-placeholder-count="6">
+                <div style="display:grid;grid-template-columns:1.7fr .9fr 1.3fr 1.1fr 1fr .7fr .6fr;min-width:1120px;align-items:center;padding:var(--s5) var(--s6);font-size:13px;color:var(--c1);border-top:1px solid rgba(154,163,176,.2)">
+                  <div style="font-family:monospace;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{f.name}}</div>
+                  <div style="color:var(--c4)">{{f.kind}}</div>
+                  <div style="color:var(--c4);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{f.linkedTo}}</div>
+                  <div style="color:var(--c4)">{{f.by}}</div>
+                  <div style="color:var(--c5);font-family:monospace;font-size:12px">{{f.time}}</div>
+                  <div style="color:var(--c5)">{{f.size}}</div>
+                  <div style="text-align:right"><button style="height:30px;padding:0 var(--s5);background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:12px;font-weight:600;color:var(--c2)" style-hover="background:rgba(154,163,176,.08)">Tải về</button></div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="font-size:11px;color:var(--c5);line-height:1.6">File đã tải lên không xoá được. Nếu nộp nhầm, tải bản đúng lên rồi ghi chú trong nhật ký — bản cũ vẫn phải giữ nguyên.</div>
+          </sc-if>
         </div>
       </sc-if>
 
@@ -921,6 +995,7 @@ class Component extends DCLogic {
     lockedIds: {}, copiedLinkId: null,
     withdrawalSearch: '', withdrawalStatusFilter: 'all',
     stockSearch: '', stockStatusFilter: 'all', stockPage: 1,
+    auditTab: 'changes', auditSearch: '',
     selectedMemberId: null, selectedWithdrawalId: null, selectedStockId: null,
     actionModal: null, rejectReason: '', paidNote: '',
     showProductForm: false, editingProductId: null,
@@ -950,7 +1025,7 @@ class Component extends DCLogic {
     ['B1','B1 · Đăng nhập admin'],['B2','B2 · Thành viên'],['B3','B3 · Rút tiền'],['B4','B4 · Kho hàng']
   ];
 
-  ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu rút tiền'],['B6','Đơn hàng'],['B4','Kho hàng'],['B5','Sản phẩm'],['B7','Tài khoản admin']];
+  ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu rút tiền'],['B6','Đơn hàng'],['B4','Kho hàng'],['B5','Sản phẩm'],['B8','Nhật ký hệ thống'],['B7','Tài khoản admin']];
   STOCK_FILTERS = [['all','Tất cả'],['received','Nhập kho'],['available','Sẵn hàng'],['assigned','Đã gán đơn hàng'],['shipped','Xuất kho'],['delivered','Giao hàng thành công']];
   WITHDRAWAL_FILTERS = [['all','Tất cả'],['pending','Chờ duyệt'],['specialist_approved','Chờ Head'],['approved','Đã duyệt'],['rejected','Từ chối'],['paid','Đã chi trả']];
   STATUS_ORDER = { pending: 0, specialist_approved: 1, approved: 2, rejected: 3, paid: 4 };
@@ -983,6 +1058,88 @@ class Component extends DCLogic {
     ]}
   };
   CHART_RANGES = [['7d','7 ngày'],['month','Tháng'],['year','Năm']];
+
+  // (19) Nhật ký hệ thống — bản mẫu dựng sẵn.
+  AUDIT = [
+    { time:'17/09/2026 09:12', actor:'Nguyễn Thị Hạnh', role:'Admin',
+      module:'Thành viên', target:'Lê Văn Cường · LVC5456',
+      action:'Cập nhật', before:'Copper', after:'Silver',
+      evidence:'PD-2026-014-da-ky.pdf', ip:'113.161.46.118' },
+    { time:'17/09/2026 08:55', actor:'Nguyễn Thị Hạnh', role:'Admin',
+      module:'Đơn hàng', target:'DH923983',
+      action:'Duyệt', before:'Chờ đối soát', after:'Đã thanh toán',
+      evidence:'GD-VCB-77120394', ip:'113.161.46.118' },
+    { time:'17/09/2026 08:40', actor:'Hệ thống', role:'Tự động',
+      module:'Kho hàng', target:'ACT-100037',
+      action:'Cập nhật', before:'Sẵn hàng', after:'Đã gán đơn hàng',
+      evidence:'—', ip:'—' },
+    { time:'16/09/2026 17:20', actor:'Phùng Thị Thúy Linh', role:'Head',
+      module:'Rút tiền', target:'YC-2026-0088 · Trần Thị Bích',
+      action:'Duyệt', before:'Chờ Head duyệt', after:'Đã duyệt',
+      evidence:'—', ip:'118.70.12.4' },
+    { time:'16/09/2026 16:02', actor:'Nguyễn Thị Hạnh', role:'Admin',
+      module:'Kho hàng', target:'Import 120 mã kích hoạt',
+      action:'Tải file lên', before:'—', after:'118 nhận / 2 bỏ qua',
+      evidence:'kho-nhap-1609.xlsx', ip:'113.161.46.118' },
+    { time:'16/09/2026 14:31', actor:'Phùng Thị Thúy Linh', role:'Head',
+      module:'Tài khoản admin', target:'tranvanminh@homi365.com.vn',
+      action:'Tạo mới', before:'—', after:'Vai trò Admin',
+      evidence:'—', ip:'118.70.12.4' },
+    { time:'16/09/2026 11:08', actor:'Nguyễn Thị Hạnh', role:'Admin',
+      module:'Thành viên', target:'Phạm Thị Dung · PTD4789',
+      action:'Khoá / mở khoá', before:'Đang hoạt động', after:'Đã khoá',
+      evidence:'—', ip:'113.161.46.118' },
+    { time:'16/09/2026 10:44', actor:'Nguyễn Thị Hạnh', role:'Admin',
+      module:'Sản phẩm', target:'CN02',
+      action:'Cập nhật', before:'Mô tả cũ', after:'Mô tả mới',
+      evidence:'cn02-moi.png', ip:'113.161.46.118' },
+    { time:'15/09/2026 15:26', actor:'Đặng Văn Phúc', role:'Thành viên',
+      module:'Thành viên', target:'Đặng Văn Phúc · DVP8221',
+      action:'Tạo mới', before:'—', after:'Chờ xác nhận thanh toán',
+      evidence:'cccd-truoc-dvp8221.jpg', ip:'171.224.88.9' },
+    { time:'15/09/2026 15:26', actor:'Đặng Văn Phúc', role:'Thành viên',
+      module:'Thành viên', target:'Chấp thuận T&C v1.0',
+      action:'Tạo mới', before:'—', after:'Đã đồng ý',
+      evidence:'—', ip:'171.224.88.9' },
+    { time:'15/09/2026 09:03', actor:'Phùng Thị Thúy Linh', role:'Head',
+      module:'Rút tiền', target:'YC-2026-0085 · Vũ Minh Khang',
+      action:'Từ chối', before:'Chờ Head duyệt', after:'Từ chối',
+      evidence:'—', ip:'118.70.12.4' },
+    { time:'14/09/2026 13:47', actor:'Nguyễn Thị Hạnh', role:'Admin',
+      module:'Đơn hàng', target:'DH100511',
+      action:'Từ chối', before:'Chờ đối soát', after:'Từ chối',
+      evidence:'—', ip:'113.161.46.118' }
+  ];
+
+  AUDIT_FILES = [
+    { name:'PD-2026-014-da-ky.pdf', kind:'PDF', module:'Thành viên',
+      linkedTo:'Cập nhật cấp · Lê Văn Cường', by:'Nguyễn Thị Hạnh',
+      time:'17/09/2026 09:12', size:'412 KB' },
+    { name:'kho-nhap-1609.xlsx', kind:'Excel / CSV', module:'Kho hàng',
+      linkedTo:'Import 120 mã kích hoạt', by:'Nguyễn Thị Hạnh',
+      time:'16/09/2026 16:02', size:'38 KB' },
+    { name:'cn02-moi.png', kind:'Ảnh', module:'Sản phẩm',
+      linkedTo:'Sản phẩm CN02', by:'Nguyễn Thị Hạnh',
+      time:'16/09/2026 10:44', size:'1,2 MB' },
+    { name:'cccd-truoc-dvp8221.jpg', kind:'Ảnh', module:'Thành viên',
+      linkedTo:'Hồ sơ Đặng Văn Phúc', by:'Đặng Văn Phúc',
+      time:'15/09/2026 15:26', size:'820 KB' },
+    { name:'cccd-sau-dvp8221.jpg', kind:'Ảnh', module:'Thành viên',
+      linkedTo:'Hồ sơ Đặng Văn Phúc', by:'Đặng Văn Phúc',
+      time:'15/09/2026 15:26', size:'795 KB' },
+    { name:'uy-nhiem-chi-dh923983.jpg', kind:'Ảnh', module:'Đơn hàng',
+      linkedTo:'Đơn DH923983', by:'Nguyễn Văn A',
+      time:'15/09/2026 08:11', size:'1,0 MB' }
+  ];
+
+  AUDIT_BADGE = {
+    'Tạo mới': ['rgba(30,58,102,.12)', '#1E3A66'],
+    'Cập nhật': ['rgba(154,163,176,.18)', '#5B6472'],
+    'Duyệt': ['rgba(47,122,72,.16)', '#2F7A48'],
+    'Từ chối': ['rgba(192,57,43,.12)', '#C0392B'],
+    'Khoá / mở khoá': ['rgba(150,92,10,.15)', '#965C0A'],
+    'Tải file lên': ['rgba(30,58,102,.12)', '#1E3A66']
+  };
 
   MEMBERS = [
     { id:1, name:'Trần Thị Bích', phone:'0901234123', contact:'090•••123', affId:'923983', upline:'—', rank:'Bạc', joined:'12/08/2026', status:'active',
@@ -1240,7 +1397,7 @@ class Component extends DCLogic {
         (s.screen === id ? 'rgba(30,58,102,.1)' : 'transparent') + ';color:' + (s.screen === id ? '#1E3A66' : 'var(--c5)')
     }));
 
-    const adminOn = ['B2','B3','B4','B5','B6','B7'].includes(s.screen);
+    const adminOn = ['B2','B3','B4','B5','B6','B7','B8'].includes(s.screen);
     const adminNav = this.ADMIN_NAV
       .filter(([id]) => id !== 'B7' || s.adminRole !== 'specialist')
       .map(([id, label]) => ({
@@ -1587,6 +1744,34 @@ class Component extends DCLogic {
       nav, adminNav,
       isA1: s.screen === 'A1', isA2: s.screen === 'A2', isA3: s.screen === 'A3',
       isC1: s.screen === 'C1', isB1: s.screen === 'B1', isB2: s.screen === 'B2', isB3: s.screen === 'B3', isB4: s.screen === 'B4', isB5: s.screen === 'B5', isB6: s.screen === 'B6', isB7: s.screen === 'B7',
+      isB8: s.screen === 'B8',
+      // (19) Nhật ký hệ thống
+      isAuditChanges: s.auditTab === 'changes',
+      isAuditFiles: s.auditTab === 'files',
+      auditTabs: [['changes', 'Thay đổi dữ liệu'], ['files', 'File đã tải lên']]
+        .map(([k, label]) => ({
+          label, onClick: () => this.setState({ auditTab: k, auditSearch: '' }),
+          style: 'height:36px;padding:0 var(--s6);border-radius:var(--r-xl);'
+            + 'font-size:13px;font-weight:600;'
+            + (s.auditTab === k
+                ? 'border:1px solid var(--c6);background:rgba(30,58,102,.1);color:var(--c6)'
+                : 'border:1px solid rgba(154,163,176,.6);background:var(--c12);color:var(--c2)')
+        })),
+      auditSearch: s.auditSearch,
+      setAuditSearch: (e) => this.setState({ auditSearch: e.target.value }),
+      auditRows: this.AUDIT
+        .filter(a => !s.auditSearch.trim()
+          || (a.actor + ' ' + a.target + ' ' + a.evidence)
+               .toLowerCase().includes(s.auditSearch.trim().toLowerCase()))
+        .map(a => {
+          const [bg, color] = this.AUDIT_BADGE[a.action]
+            || ['rgba(154,163,176,.18)', '#5B6472'];
+          return { ...a, badgeBg: bg, badgeColor: color };
+        }),
+      auditFiles: this.AUDIT_FILES
+        .filter(f => !s.auditSearch.trim()
+          || (f.name + ' ' + f.by + ' ' + f.linkedTo)
+               .toLowerCase().includes(s.auditSearch.trim().toLowerCase())),
       isB7Allowed: s.screen === 'B7' && s.adminRole !== 'specialist',
       isB7Denied: s.screen === 'B7' && s.adminRole === 'specialist',
       isAdminShell: adminOn,

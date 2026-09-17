@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>B2 · Thành viên · HOMI365</title>
+<title>B8 · Nhật ký hệ thống · HOMI365</title>
 <link rel="icon" href="../assets/Icon_viewweb_final.jpg">
 <meta name="theme-color" content="#1E3A66">
 <link rel="stylesheet" href="../css/fonts.css">
@@ -12,12 +12,12 @@
 <link rel="stylesheet" href="../css/responsive.css">
 <script>
 window.__FILES = {"A1": "a1-buy.html", "A2": "a2-register.html", "A3": "a3-dashboard.html", "C1": "c1-login.html", "B1": "b1-admin-login.html", "B2": "b2-members.html", "B3": "b3-withdrawals.html", "B4": "b4-warehouse.html", "B5": "b5-products.html", "B6": "b6-orders.html", "B7": "b7-admin-users.html", "B8": "b8-audit-log.html"};
-window.__STATE__ = {"screen": "B2"};
+window.__STATE__ = {"auditTab": "changes", "screen": "B8"};
 // dữ liệu mang sang từ màn trước (bấm nút điều hướng)
 try { var c = sessionStorage.getItem('__homi_carry');
       if (c) { Object.assign(window.__STATE__, JSON.parse(c)); sessionStorage.removeItem('__homi_carry'); } } catch (e) {}
-// mở thẳng một trạng thái: b2-members.html#chi-tiet
-var H = {"chi-tiet": {"selectedMemberId": 6}, "duyet": {"selectedMemberId": 6, "actionModal": {"type": "approve", "kind": "member", "id": 6}}, "tu-choi": {"selectedMemberId": 6, "actionModal": {"type": "reject", "kind": "member", "id": 6}}, "cap-nhat-cap": {"selectedMemberId": 2, "rankEditId": 2, "rankEditChoice": "Copper"}, "da-cap-nhat-cap": {"selectedMemberId": 2, "rankOverrides": {"2": "Silver"}, "rankLogs": {"2": [{"label": "Copper → Silver · phiếu PD-2026-014 ngày 16/09/2026 · duyệt: Phùng Thị Thúy Linh · file: PD-2026-014-da-ky.pdf", "time": "16/09/2026 14:20"}]}}}, h = location.hash.slice(1);
+// mở thẳng một trạng thái: b8-audit-log.html#file
+var H = {"file": {"auditTab": "files"}}, h = location.hash.slice(1);
 if (H[h]) Object.assign(window.__STATE__, H[h]);
 </script>
 <script src="../js/dc-runtime.js"></script>
