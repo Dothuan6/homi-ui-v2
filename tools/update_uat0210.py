@@ -334,6 +334,15 @@ MARKUP = [
      '>Phường/Xã</label>\n              <div style="position:relative">\n'
      '                <input type="text" value="{{wardQuery}}"', ("A1",)),
     (_A1_TC_OLD, _A1_TC_NEW),
+    # (06/10, bổ sung) Ba ô nhận ưu đãi ở form MUA HÀNG không còn bắt buộc:
+    # người chỉ mua, không làm thành viên thì chưa cần khai tài khoản. Form
+    # đăng ký thành viên (A2) vẫn bắt buộc vì đó là nơi nhận chi trả.
+    ('>Ngân hàng (*)</label>', '>Ngân hàng</label>', ("A1",)),
+    ('>Số tài khoản (*)</label><input type="text" placeholder="Nhập số tài khoản" '
+     'value="{{buyerBankAccount}}"',
+     '>Số tài khoản</label><input type="text" placeholder="Nhập số tài khoản" '
+     'value="{{buyerBankAccount}}"', ("A1",)),
+    ('>Tên chủ tài khoản (*)</label>', '>Tên chủ tài khoản</label>', ("A1",)),
     # --- C1 ---
     (_C1_HEAD_OLD, _C1_HEAD_NEW),
     # --- A2 ---
@@ -920,7 +929,10 @@ DIFF = [
     "| 3 | A1 | Ô Ngày sinh kiểm tra tuổi **18–100**, báo lỗi ngay dưới ô và khoá "
     "nút Thanh toán. Chỉ xét khi đã gõ đủ `dd/mm/yyyy`. | `#loi-tuoi` |",
     "| 4 | A1 | Bỏ dấu (*) ở Tỉnh/Thành phố và Phường/Xã. Nút Thanh toán vốn "
-    "không phụ thuộc hai ô này nên không có điều kiện nào phải gỡ. | `#form` |",
+    "không phụ thuộc hai ô này nên không có điều kiện nào phải gỡ. Bổ sung cùng "
+    "ngày: ba ô **Ngân hàng, Số tài khoản, Tên chủ tài khoản** ở form mua hàng "
+    "cũng bỏ dấu (*) — vẫn giữ ô, chỉ không bắt buộc nhập. Form đăng ký thành "
+    "viên A2 giữ nguyên bắt buộc. | `#form` |",
     "| 5 | A1 | Ô đồng ý chính sách **mờ và khoá**, bấm một trong hai link chính "
     "sách thì mở. Hai link đổi sang mở tab mới — trước đây mở cùng tab, bấm là "
     "mất dữ liệu đang nhập. Dùng lại cơ chế của A2 bước 4 trong `js/otp.js`. | "
