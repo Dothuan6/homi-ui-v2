@@ -184,7 +184,7 @@ const POLICIES = [
 POLICIES.unshift({
   id: 'dieu-khoan-thanh-vien',
   title: 'Điều khoản & Điều kiện chương trình thành viên',
-  intro: 'Phiên bản 1.0 · hiệu lực từ …/…/2026. Văn bản này điều chỉnh quan hệ giữa Công ty Cổ phần Giải pháp và Dịch vụ HOMI365 và Thành viên tham gia chương trình giới thiệu khách hàng. Thành viên xác nhận đồng ý với toàn bộ nội dung dưới đây trước khi tài khoản được kích hoạt.',
+  intro: 'Phiên bản 1.0 · hiệu lực từ …/…/2026. Văn bản này điều chỉnh quan hệ giữa Công ty Cổ phần Giải pháp và Dịch vụ HOMI365 và Thành viên tham gia chương trình giới thiệu khách hàng. Thành viên xác nhận đồng ý với toàn bộ nội dung dưới đây khi hoàn tất đăng ký.',
   sections: [
     { h: '1. Điểm thưởng là gì', items: [
       'Điểm thưởng (sau đây gọi là Điểm HOMI) là đơn vị quy ước nội bộ do HOMI365 phát hành, ghi nhận đóng góp của Thành viên trong việc giới thiệu khách hàng.',
@@ -198,8 +198,8 @@ POLICIES.unshift({
       'Điểm được ghi nhận khi đơn hàng phát sinh qua link giới thiệu của Thành viên và được HOMI365 xác nhận thanh toán thành công.',
       { list: [
         'Tỷ lệ quy đổi: ………… VNĐ giá trị đơn hàng tương ứng 1 Điểm HOMI.',
-        'Điểm chỉ được cộng vào tài khoản sau khi Thành viên đã được kích hoạt.',
-        'Các đơn hàng phát sinh trước thời điểm kích hoạt vẫn được ghi nhận và cộng bù đầy đủ, tính từ đơn đầu tiên.',
+        'Điểm của mỗi đơn được cộng ngay sau khi đơn đó được HOMI365 duyệt.',
+        'Thành viên dùng được link giới thiệu và gửi yêu cầu đổi điểm ngay sau khi đăng ký.',
         'Đơn hàng bị huỷ hoặc hoàn tiền sẽ bị thu hồi số điểm tương ứng.'
       ] }
     ] },

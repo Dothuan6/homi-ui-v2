@@ -24,6 +24,9 @@ import shutil
 import sys
 from pathlib import Path
 
+# Cập nhật sau UAT 02/10 — xem tools/update_uat0210.py
+import update_uat0210 as uat
+
 HERE = Path(__file__).resolve().parent          # prototype-v3/tools
 V3 = HERE.parent                                 # prototype-v3
 ROOT = V3.parent                                 # Medigo/ — để lấy lại nội dung v2
@@ -3540,6 +3543,9 @@ def main():
     text = SRC.read_text(encoding="utf-8")
     lines = text.split("\n")
 
+    # (UAT 02/10) Thêm / đổi tên các trạng thái xem thử.
+    uat.patch_screens(SCREENS)
+
     def seg(a, b):
         """Lấy các dòng a..b (1-based, bao gồm cả hai đầu)."""
         return "\n".join(lines[a - 1:b])
@@ -3632,7 +3638,7 @@ def main():
     shutil.copy(runtime, V3 / "js" / "dc-runtime.js")
 
     # (8) Ô OTP tự nhảy — viết ngoài runtime của KH để khỏi đụng vào nó.
-    (V3 / "js" / "otp.js").write_text(OTP_JS, encoding="utf-8")
+    (V3 / "js" / "otp.js").write_text(uat.patch_otp(OTP_JS, die), encoding="utf-8")
     n_font = 0
     for f in (RAW / "res").glob("*.woff2"):
         shutil.copy(f, V3 / "css" / "fonts" / f.name)
@@ -3690,6 +3696,8 @@ def main():
     TOPBAR_PUBLIC = recolor(TOPBAR_PUBLIC)
     TOPBAR_ADMIN = recolor(TOPBAR_ADMIN)
     script = recolor(script)
+    # (UAT 02/10) Bản vá JS đợt 06/10 — chạy sau cùng, neo chặt.
+    script = uat.patch_script(script, die)
     # Bản vá markup thay chuỗi trực tiếp và IM LẶNG khi neo không khớp — khác
     # JS_PATCHES vốn die() ngay. Đã dính hai lần: neo bị một bản vá chạy trước
     # sửa mất (Seller -> Thành viên) làm hàng tiêu đề bảng kho thiếu 3 cột mà
@@ -3720,6 +3728,9 @@ def main():
             n_calc += v.count("calc(100vh - 65px)")
             blocks_html[k] = v.replace("calc(100vh - 65px)",
                                        "calc(100vh - %dpx)" % BAR_H)
+
+    # (UAT 02/10) Bản vá markup đợt 06/10 — chạy sau cùng, neo chặt.
+    blocks_html = uat.patch_blocks(blocks_html, die)
 
     files_js = json.dumps(FILES, ensure_ascii=False)
 
@@ -3790,7 +3801,8 @@ def main():
         # Chép nguyên bản từ v2 rồi nối thêm Điều khoản thành viên ở đây,
         # để file gốc bên prototype-v2 không bị đụng tới.
         (V3 / "js" / "policies.js").write_text(
-            pol_src.read_text(encoding="utf-8") + TNC_POLICY_JS, encoding="utf-8")
+            pol_src.read_text(encoding="utf-8")
+            + uat.patch_policy(TNC_POLICY_JS, die), encoding="utf-8")
         n_pol = len(re.findall(r"^\s{4}id:\s*'", pol_src.read_text(encoding="utf-8"), re.M)) + 1
         (V3 / "screens" / "policy.html").write_text(
             POLICY_PAGE.replace('<div id="foot"></div>', footer_html("../")),
@@ -4423,6 +4435,7 @@ __CARDS__
              "- Thêm vòng focus bàn phím (WCAG 2.4.7) — không ảnh hưởng layout."]
     if left:
         diff += ["", "## ⚠ Còn sót màu cũ", ""] + ["- `%s`" % c for c in left]
+    diff = uat.patch_diff(diff)      # (UAT 02/10) mục 19
     (V3 / "DIFF-vs-mockup-KH.md").write_text("\n".join(diff) + "\n", encoding="utf-8")
 
     # --- tổng kết ----------------------------------------------------------

@@ -377,6 +377,49 @@ Xem thử: `b8-audit-log.html` và `#file`.
 2. **Ai được xem.** Bản mẫu cho cả Admin lẫn Head. Nhật ký chứa IP và thao tác của mọi người — KH cân nhắc có nên giới hạn ở Head không.
 3. Dữ liệu trong bản mẫu là **dựng sẵn**, không nối với thao tác thật trên các màn khác — bản thật backend ghi vào bảng `audit_log` ngay trong cùng giao dịch với thay đổi dữ liệu, không ghi sau bằng job riêng.
 
+## 19. Cập nhật sau UAT 02/10 — đợt 06/10
+
+Nguồn: sheet `Plan Update` trong Google Sheet `[Homi] - Change Request`. Đợt này chỉ làm các mục **không bị chặn** bởi câu hỏi H2–H5. Toàn bộ bản vá nằm ở `tools/update_uat0210.py`, neo không khớp là dừng build.
+
+| Mục | Màn | Thay đổi | Xem thử |
+|---|---|---|---|
+| 1 | A1, C1 | Thêm **bước nhập số điện thoại** trước form mua hàng. Số đã có tài khoản thì hiện khối gợi ý với hai nút Đăng nhập / Bỏ qua và tự điền; số mới vào thẳng form, điền sẵn số vừa nhập. Hệ thống chỉ trả lời có hay chưa có tài khoản. Đăng nhập đi qua C1 rồi **quay lại form mua hàng** (đã chốt). | `a1-buy.html`, `#sdt-da-co`, `#form`, `c1-login.html#tu-mua-hang` |
+| 2 | A1 | Sau đăng nhập form **tự điền theo đơn gần nhất**, có dòng "Đã điền theo đơn ngày …", sửa trực tiếp được. Nút **Mua cho người khác** xoá phần tự điền; có nút dùng lại thông tin cũ. | `#form-tu-dien`, `#mua-cho-nguoi-khac` |
+| 3 | A1 | Ô Ngày sinh kiểm tra tuổi **18–100**, báo lỗi ngay dưới ô và khoá nút Thanh toán. Chỉ xét khi đã gõ đủ `dd/mm/yyyy`. | `#loi-tuoi` |
+| 4 | A1 | Bỏ dấu (*) ở Tỉnh/Thành phố và Phường/Xã. Nút Thanh toán vốn không phụ thuộc hai ô này nên không có điều kiện nào phải gỡ. | `#form` |
+| 5 | A1 | Ô đồng ý chính sách **mờ và khoá**, bấm một trong hai link chính sách thì mở. Hai link đổi sang mở tab mới — trước đây mở cùng tab, bấm là mất dữ liệu đang nhập. Dùng lại cơ chế của A2 bước 4 trong `js/otp.js`. | `#form` |
+| 6 | A2, A3 | **Bỏ trạng thái chờ kích hoạt.** A2 bước 5 và nút bước 4 không còn chữ "kích hoạt", "tạm giữ". A3 gỡ banner CHỜ KÍCH HOẠT; khối số dư và nút đổi điểm hiện cho cả thành viên mới, số dư là số thật. Đơn chưa duyệt hiện dòng "điểm được ghi nhận sau khi đơn được duyệt" (H1 đã chốt). Sửa câu tương ứng ở Điều khoản mục 2. | `a2-register.html#buoc-5`, `a3-dashboard.html` |
+| 7 | mọi màn | Đổi toàn bộ **"rút tiền" → "đổi điểm"**: tiêu đề, nút, cột bảng, bộ lọc, sidebar, phân hệ trong nhật ký, tên trạng thái ở `index.html`. Hash `#rut-tien` đổi thành `#doi-diem`. | — |
+| 10 | B3 | Nút **Xuất danh sách chi trả** mở hộp thoại chọn kỳ, liệt kê 5 cột của file, xem trước các dòng và tổng chi của kỳ. | `b3-withdrawals.html#xuat-chi-tra` |
+| 11 | B3, B8 | Hai trạng thái mới **Chi không thành công** và **Đã hoàn điểm**, có bộ lọc riêng. Yêu cầu đã duyệt có thêm nút ghi nhận ngân hàng trả về; sau đó nút **Hoàn điểm** với lý do bắt buộc và dòng nhắc hệ thống gửi email. B8 thêm hành động Hoàn điểm. | `#bao-chi-loi`, `#chi-khong-thanh-cong`, `#hoan-diem`, `#da-hoan-diem` |
+| 22 | B2, B8 | Form sửa hồ sơ có dòng nhắc **hệ thống sẽ gửi email báo thay đổi**; đổi email thì nêu cả địa chỉ cũ và mới. Lưu xong hiện dòng xác nhận. B8 thêm dòng mẫu. | `b2-members.html#sua-ho-so`, `#sua-ho-so-doi-email` |
+
+**Hai mục không có gì phải sửa trên giao diện:**
+
+- **Mục 19** (bỏ từ "tách nhánh"): prototype không dùng từ này ở màn nào.
+- **Mục 16** (email khi thăng/hạ cấp): không có giao diện, xem danh sách email dưới đây.
+
+**Email hệ thống phát sinh từ đợt này** — nội dung do team HOMI365 biên soạn:
+
+| Email | Gửi cho | Khi nào | Mục |
+|---|---|---|---|
+| Báo thăng / hạ cấp | Thành viên | Mỗi khi cấp thay đổi | 16 |
+| Báo tài khoản nhận tiền có vấn đề | Thành viên | Admin bấm Hoàn điểm | 11 |
+| Báo hồ sơ được sửa, nêu giá trị mới | Thành viên (đổi email thì cả địa chỉ cũ lẫn mới) | Admin lưu hồ sơ | 22 |
+
+**Giả định của bản mẫu — cần xác nhận khi làm thật:**
+
+1. **Thế nào là "đã có tài khoản" (mục 1).** Bản mẫu coi là số đã đăng ký thành viên, vì chỉ thành viên mới đăng nhập được. Khách từng mua nhưng chưa đăng ký thành viên được coi như khách mới.
+2. **Mua cho người khác (mục 2)** xoá hết phần tự điền, kể cả số điện thoại và tài khoản ngân hàng. Ai là người giới thiệu của đơn mua lần 2 trở đi đang chờ trả lời câu hỏi H5 ở sheet Change Request.
+3. **Chi không thành công (mục 11)** được ghi nhận từ trạng thái Đã duyệt, trước khi đánh dấu đã chi trả. Nếu ngân hàng trả về sau khi đã đánh dấu thì cần thêm nhánh từ Đã chi trả.
+4. **Cột của file chi trả (mục 10)** là 5 cột theo sheet; danh sách cuối cùng còn chờ phía HOMI365 xác nhận.
+5. **Nội dung chuyển khoản** ở chi tiết yêu cầu đổi từ `Rut khoan thuong…` sang `Doi diem thuong…` cho khớp mục 7.
+6. **Điều khoản mục 2** (bước 4 đăng ký và trang chính sách) đã sửa một câu cho khớp mục 6 — cần Pháp lý đọc lại.
+
+**Chưa làm, chờ khách hàng:** mục 8, 9 (H2, H3) · 12, 13, 14 (màn đề xuất thăng/hạ cấp) · 15, 20, 21 (H4) · 17, 18 (H5) · 23 (xác nhận đảo quyết định về B5).
+
+**Còn lệch, nằm ngoài phạm vi đợt này:** ngăn chi tiết thành viên ở B2 và hộp thoại Head duyệt hồ sơ vẫn ghi "ưu đãi đang tạm giữ", "kích hoạt". Sau mục 6 các câu này không còn đúng, nhưng ý nghĩa mới của bước Head duyệt hồ sơ chưa được chốt nên chưa sửa.
+
 ## Ghi chú
 
 - Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` nhưng màu hover lại là cyan `#0099d1` — gần như chắc chắn là lỗi sót. Bản này đưa về màu chính. Cần KH xác nhận.

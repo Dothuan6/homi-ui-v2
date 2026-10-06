@@ -7,3 +7,6 @@ tools/_raw/
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Python cache sinh ra khi chạy tools/build-v3.py
+__pycache__/

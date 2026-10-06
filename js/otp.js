@@ -45,7 +45,8 @@
 })();
 
 // Điều khoản & Điều kiện: ô "Tôi đồng ý" chỉ bấm được sau khi người dùng đã
-// cuộn hết văn bản, hoặc mở một link chính sách. Runtime dựng lại DOM mỗi lần
+// cuộn hết văn bản, hoặc mở một link chính sách. Từ 06/10 form mua hàng
+// (A1) dùng chung cơ chế này: ô đồng ý khoá tới khi bấm link chính sách. Runtime dựng lại DOM mỗi lần
 // đổi state nên phải áp lại trạng thái sau mỗi lần DOM thay đổi.
 (function () {
   var read = false;
@@ -53,6 +54,8 @@
   function apply() {
     var box = document.querySelector('.tnc-agree');
     if (!box) return;
+    var st0 = window.__STATE__ || {};
+    if (st0.buyTcChecked || st0.tncChecked) read = true;
     var hint = document.querySelector('.tnc-hint');
     box.disabled = !read;
     box.style.opacity = read ? '1' : '.4';

@@ -173,7 +173,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             <p style="margin:var(--s2) 0">Điểm thưởng (sau đây gọi là <strong>Điểm HOMI</strong>) là đơn vị quy ước nội bộ do HOMI365 phát hành, ghi nhận đóng góp của Thành viên trong việc giới thiệu khách hàng. Điểm HOMI <strong>không phải là tiền tệ</strong>, không có giá trị thanh toán ngoài hệ thống HOMI365, không được mua bán hay chuyển nhượng giữa các Thành viên.</p>
 
             <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">2. Quy chế tích điểm</div>
-            <p style="margin:var(--s2) 0">Điểm được ghi nhận khi đơn hàng phát sinh qua link giới thiệu của Thành viên và được HOMI365 xác nhận thanh toán thành công. Tỷ lệ qui đổi: <strong>………… VNĐ giá trị đơn hàng = 1 Điểm HOMI</strong>. Điểm chỉ được cộng sau khi tài khoản Thành viên đã được kích hoạt; các đơn phát sinh trước thời điểm kích hoạt vẫn được tính và cộng bù đầy đủ. Đơn hàng bị huỷ hoặc hoàn tiền sẽ bị thu hồi số điểm tương ứng.</p>
+            <p style="margin:var(--s2) 0">Điểm được ghi nhận khi đơn hàng phát sinh qua link giới thiệu của Thành viên và được HOMI365 xác nhận thanh toán thành công. Tỷ lệ qui đổi: <strong>………… VNĐ giá trị đơn hàng = 1 Điểm HOMI</strong>. Điểm của mỗi đơn được cộng ngay sau khi đơn đó được HOMI365 duyệt; Thành viên dùng được link giới thiệu và gửi yêu cầu đổi điểm ngay sau khi đăng ký. Đơn hàng bị huỷ hoặc hoàn tiền sẽ bị thu hồi số điểm tương ứng.</p>
 
             <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">3. Quy chế tiêu điểm và đổi thưởng</div>
             <p style="margin:var(--s2) 0">Điểm HOMI được quy đổi thành ưu đãi theo tỷ lệ <strong>1 Điểm HOMI = ………… VNĐ</strong>. Yêu cầu quy đổi được xử lý theo quy trình duyệt nội bộ và chi trả vào tài khoản ngân hàng Thành viên đã đăng ký. Mỗi Thành viên được gửi tối đa <strong>01 yêu cầu quy đổi trong một tháng</strong>. Điểm có thời hạn <strong>………… tháng</strong> kể từ ngày ghi nhận; quá thời hạn mà không quy đổi thì điểm tự động hết hiệu lực.</p>
@@ -195,7 +195,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           </label>
           <div style="display:flex;gap:var(--s5)">
             <button sc-camel-on-click="{{regPrev}}" style="flex:1;height:46px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:15px;font-weight:600">Quay lại</button>
-            <button sc-camel-on-click="{{regNext}}" disabled="{{tncDisabled}}" style="{{regSubmitStyle}}">Xác nhận &amp; kích hoạt</button>
+            <button sc-camel-on-click="{{regNext}}" disabled="{{tncDisabled}}" style="{{regSubmitStyle}}">Xác nhận &amp; hoàn tất đăng ký</button>
           </div>
         </div>
       </sc-if>
@@ -203,7 +203,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
       <sc-if value="{{isRegStep5}}" hint-placeholder-val="{{false}}">
         <div style="display:flex;flex-direction:column;gap:var(--s8);text-align:center;align-items:center">
           <div style="width:64px;height:64px;border-radius:var(--r-full);background:rgba(47,122,72,.15);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--c8)">✓</div>
-          <div><div style="font-size:24px;font-weight:700">Đăng ký thành công</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2);line-height:1.8">HOMI365 đã nhận được đăng ký từ bạn.<br>Ngay lập tức, bạn có thể giới thiệu khách hàng tham gia sản phẩm.<br>Điểm thưởng và ưu đãi sẽ tạm giữ cho tới khi Quản trị viên kích hoạt thành công.</div></div>
+          <div><div style="font-size:24px;font-weight:700">Đăng ký thành công</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2);line-height:1.8">HOMI365 đã nhận được đăng ký từ bạn.<br>Bạn giới thiệu khách hàng và gửi yêu cầu đổi điểm được ngay.<br>Điểm HOMI của mỗi đơn được ghi nhận sau khi đơn đó được Quản trị viên duyệt.</div></div>
           <div style="width:100%;border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s5);background:var(--c12);box-shadow:var(--sh)">
             <div style="font-size:12px;color:var(--c5);text-transform:uppercase;letter-spacing:.04em">Mã thành viên của bạn</div>
             <div style="font-size:30px;font-weight:900;color:var(--c1);letter-spacing:.02em">{{refCode}}</div>
@@ -296,19 +296,62 @@ class Component extends DCLogic {
     orderRange: 'month',
     ordersData: null, orderSearch: '', orderStatusFilter: 'all',
     selectedOrderId: null,
+    // (20) Sau UAT 02/10 — bước SĐT trước form mua hàng + tự điền.
+    // buyStep: 'phone' | 'form'. buyMode: '' chưa đăng nhập | 'self' đã
+    // tự điền theo đơn cũ | 'other' đang mua cho người khác.
+    buyStep: 'phone', buyPhoneInput: '', buyPhoneError: '', buyPhoneFound: false,
+    buyMode: '', buyProfile: null, returnTo: '',
+    // (21) Xuất danh sách chi trả theo kỳ.
+    showPayoutExport: false, payoutPeriod: '08/2026', payoutExported: '',
+    // (23) Dòng xác nhận sau khi admin lưu hồ sơ: { id, text }.
+    profileSaved: null,
     ...(window.__STATE__ || {})
   };
 
   NAV = [
     ['A1','A1 · Thông tin nhận hàng'],['A2','A2 · Đăng ký Agent'],['A3','A3 · Dashboard'],
     ['C1','C1 · Đăng nhập Agent'],
-    ['B1','B1 · Đăng nhập admin'],['B2','B2 · Thành viên'],['B3','B3 · Rút tiền'],['B4','B4 · Kho hàng']
+    ['B1','B1 · Đăng nhập admin'],['B2','B2 · Thành viên'],['B3','B3 · Đổi điểm'],['B4','B4 · Kho hàng']
   ];
 
-  ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu rút tiền'],['B6','Đơn hàng'],['B4','Kho hàng'],['B5','Sản phẩm'],['B8','Nhật ký hệ thống'],['B7','Tài khoản admin']];
+  ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu đổi điểm'],['B6','Đơn hàng'],['B4','Kho hàng'],['B5','Sản phẩm'],['B8','Nhật ký hệ thống'],['B7','Tài khoản admin']];
   STOCK_FILTERS = [['all','Tất cả'],['received','Nhập kho'],['available','Sẵn hàng'],['assigned','Đã gán đơn hàng'],['shipped','Xuất kho'],['delivered','Giao hàng thành công']];
-  WITHDRAWAL_FILTERS = [['all','Tất cả'],['pending','Chờ duyệt'],['specialist_approved','Chờ Head'],['approved','Đã duyệt'],['rejected','Từ chối'],['paid','Đã chi trả']];
-  STATUS_ORDER = { pending: 0, specialist_approved: 1, approved: 2, rejected: 3, paid: 4 };
+  WITHDRAWAL_FILTERS = [['all','Tất cả'],['pending','Chờ duyệt'],['specialist_approved','Chờ Head'],['approved','Đã duyệt'],['rejected','Từ chối'],['paid','Đã chi trả'],['pay_failed','Chi không thành công'],['refunded','Đã hoàn điểm']];
+  STATUS_ORDER = { pending: 0, specialist_approved: 1, approved: 2, rejected: 3, paid: 4, pay_failed: 5, refunded: 6 };
+  PAYOUT_PERIODS = ['09/2026', '08/2026', '07/2026'];
+
+  // (20) Đơn gần nhất của người đã có tài khoản — dùng để tự điền form mua
+  // hàng. Bản mẫu dùng chung một hồ sơ cho mọi SĐT đã đăng ký; bản thật lấy
+  // từ đơn mới nhất của chính tài khoản vừa đăng nhập.
+  BUYER_LAST_ORDER = {
+    orderId: 'DH100077', orderDate: '12/08/2026',
+    buyerName: 'Hoàng Thị Mỹ Trinh', buyerEmail: 'trinh.htm@gmail.com',
+    buyerCccd: '079191000083', buyerAddress: 'Số 36 đường 27A',
+    buyerDob: '22/01/1991', buyerBankAccount: '0071001234567',
+    accountHolder: 'HOANG THI MY TRINH'
+  };
+  buyCarry(phone) {
+    const p = this.BUYER_LAST_ORDER;
+    return { buyStep: 'form', buyMode: 'self', buyProfile: { ...p, buyerPhone: phone },
+      buyerPhone: phone, buyerName: p.buyerName, buyerEmail: p.buyerEmail,
+      buyerCccd: p.buyerCccd, buyerAddress: p.buyerAddress, buyerDob: p.buyerDob,
+      buyerBankAccount: p.buyerBankAccount, accountHolder: p.accountHolder };
+  }
+
+  // (20) Mục 3 — người mua phải từ 18 đến 100 tuổi. Chỉ xét khi đã gõ đủ
+  // dd/mm/yyyy; đang gõ dở thì chưa báo lỗi.
+  dobError(v) {
+    const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v || '');
+    if (!m) return '';
+    const d = +m[1], mo = +m[2], y = +m[3];
+    const dt = new Date(y, mo - 1, d);
+    if (dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d)
+      return 'Ngày sinh không hợp lệ.';
+    const now = new Date();
+    let age = now.getFullYear() - y;
+    if (now.getMonth() < mo - 1 || (now.getMonth() === mo - 1 && now.getDate() < d)) age--;
+    return (age < 18 || age > 100) ? 'Người mua phải từ 18 đến 100 tuổi.' : '';
+  }
   SELLER_BALANCE = { 'Trần Thị Bích': 4000000 };
   REGISTERED_PHONES = ['0901234567', '0912345678', '0987654321', '0938884123'];
   // Đăng nhập được nhưng hồ sơ chưa qua bước Head duyệt.
@@ -341,6 +384,15 @@ class Component extends DCLogic {
 
   // (19) Nhật ký hệ thống — bản mẫu dựng sẵn.
   AUDIT = [
+    // (22)(23) Dòng mẫu cho hoàn điểm và admin sửa hồ sơ — sau UAT 02/10.
+    { time:'17/09/2026 10:05', actor:'Nguyễn Thị Hạnh', role:'Admin',
+      module:'Đổi điểm', target:'YC-2026-0091 · Đỗ Anh Tuấn',
+      action:'Hoàn điểm', before:'Chi không thành công', after:'Đã hoàn điểm · +1.500.000',
+      evidence:'Lý do: sai số tài khoản', ip:'113.161.46.118' },
+    { time:'17/09/2026 09:40', actor:'Nguyễn Thị Hạnh', role:'Admin',
+      module:'Thành viên', target:'Ngô Thị Em · NTE3112',
+      action:'Cập nhật', before:'Email: em3112@gmail.com', after:'Email: ngothiem.hcm@gmail.com',
+      evidence:'Đã gửi email báo (địa chỉ cũ + mới)', ip:'113.161.46.118' },
     { time:'17/09/2026 09:12', actor:'Nguyễn Thị Hạnh', role:'Admin',
       module:'Thành viên', target:'Lê Văn Cường · LVC5456',
       action:'Cập nhật', before:'Copper', after:'Silver',
@@ -354,7 +406,7 @@ class Component extends DCLogic {
       action:'Cập nhật', before:'Sẵn hàng', after:'Đã gán đơn hàng',
       evidence:'—', ip:'—' },
     { time:'16/09/2026 17:20', actor:'Phùng Thị Thúy Linh', role:'Head',
-      module:'Rút tiền', target:'YC-2026-0088 · Trần Thị Bích',
+      module:'Đổi điểm', target:'YC-2026-0088 · Trần Thị Bích',
       action:'Duyệt', before:'Chờ Head duyệt', after:'Đã duyệt',
       evidence:'—', ip:'118.70.12.4' },
     { time:'16/09/2026 16:02', actor:'Nguyễn Thị Hạnh', role:'Admin',
@@ -382,7 +434,7 @@ class Component extends DCLogic {
       action:'Tạo mới', before:'—', after:'Đã đồng ý',
       evidence:'—', ip:'171.224.88.9' },
     { time:'15/09/2026 09:03', actor:'Phùng Thị Thúy Linh', role:'Head',
-      module:'Rút tiền', target:'YC-2026-0085 · Vũ Minh Khang',
+      module:'Đổi điểm', target:'YC-2026-0085 · Vũ Minh Khang',
       action:'Từ chối', before:'Chờ Head duyệt', after:'Từ chối',
       evidence:'—', ip:'118.70.12.4' },
     { time:'14/09/2026 13:47', actor:'Nguyễn Thị Hạnh', role:'Admin',
@@ -418,6 +470,7 @@ class Component extends DCLogic {
     'Duyệt': ['rgba(47,122,72,.16)', '#2F7A48'],
     'Từ chối': ['rgba(192,57,43,.12)', '#C0392B'],
     'Khoá / mở khoá': ['rgba(150,92,10,.15)', '#965C0A'],
+    'Hoàn điểm': ['rgba(150,92,10,.15)', '#965C0A'],
     'Tải file lên': ['rgba(30,58,102,.12)', '#1E3A66']
   };
 
@@ -517,7 +570,7 @@ class Component extends DCLogic {
   ORDER_RANGE_VALUES = { today:'0', week:'3', month:'10', all:'27', custom:'6' };
   ORDER_RANGE_VALUES_NEW = { today:'0', week:'0', month:'1', all:'1', custom:'1' };
 
-  // Trạng thái hồ sơ thành viên (khác vòng duyệt 2 lượt của rút tiền).
+  // Trạng thái hồ sơ thành viên (khác vòng duyệt 2 lượt của đổi điểm).
   MEMBER_STATUS_LABEL = {
     pending: 'Chờ xác nhận thanh toán',
     specialist_approved: 'Chờ Head duyệt',
@@ -590,6 +643,8 @@ class Component extends DCLogic {
       approved: ['rgba(15,127,150,.14)', '#0F7F96', 'Đã duyệt (2/2)'],
       rejected: ['rgba(192,57,43,.12)', '#C0392B', 'Từ chối'],
       paid: ['rgba(47,122,72,.14)', '#2F7A48', 'Đã chi trả'],
+      pay_failed: ['rgba(192,57,43,.12)', '#C0392B', 'Chi không thành công'],
+      refunded: ['rgba(154,163,176,.18)', '#5B6472', 'Đã hoàn điểm'],
       available: ['rgba(47,122,72,.14)', '#2F7A48', 'Sẵn hàng'],
       assigned: ['rgba(150,92,10,.15)', '#965C0A', 'Đã gán đơn hàng'],
       activated: ['rgba(15,127,150,.14)', '#0F7F96', 'Đã kích hoạt'],
@@ -628,6 +683,13 @@ class Component extends DCLogic {
       { id:4, seller:'Phạm Thị Dung', amountNum:300000, date:'20/08/2026', accountNumber:'0331234567', bankName:'ACB', branch:'CN TP.HCM', accountHolder:'PHAM THI DUNG', status:'rejected', reason:'Thông tin tài khoản không khớp CCCD.', auditLog:[{label:'Tạo yêu cầu', actor:'Phạm Thị Dung', time:'20/08/2026 08:00'},{label:'Từ chối yêu cầu', actor:'Admin', time:'20/08/2026 11:00'}] },
       { id:5, seller:'Ngô Thị Em', amountNum:1200000, date:'15/08/2026', accountNumber:'0221234567', bankName:'MB Bank', branch:'CN TP.HCM', accountHolder:'NGO THI EM', status:'paid', paidNote:'FT26081512345', auditLog:[{label:'Tạo yêu cầu', actor:'Ngô Thị Em', time:'15/08/2026 08:00'},{label:'Admin duyệt (chờ Head)', actor:'Admin', time:'15/08/2026 09:00'},{label:'Head xác nhận duyệt', actor:'Head', time:'15/08/2026 10:00'},{label:'Đánh dấu đã chi trả', actor:'Head', time:'16/08/2026 09:00'}] }
     ];
+    // (22) Hai dòng mẫu cho luồng ngân hàng chi không thành công.
+    raw.push(
+      { id:6, seller:'Đỗ Anh Tuấn', amountNum:1500000, date:'22/08/2026', accountNumber:'0451000987654', bankName:'Vietcombank', branch:'CN Bình Dương', accountHolder:'DO ANH TUAN', status:'pay_failed', failNote:'Số tài khoản không tồn tại.',
+        auditLog:[{label:'Tạo yêu cầu', actor:'Đỗ Anh Tuấn', time:'22/08/2026 09:14'},{label:'Admin duyệt (chờ Head)', actor:'Admin', time:'23/08/2026 10:02'},{label:'Head xác nhận duyệt', actor:'Head', time:'24/08/2026 08:40'},{label:'Ngân hàng chi không thành công', actor:'Admin', time:'03/09/2026 09:30'}] },
+      { id:7, seller:'Trần Thị Bích', amountNum:1000000, date:'18/07/2026', accountNumber:'0071001234567', bankName:'Vietcombank', branch:'CN TP.HCM', accountHolder:'TRAN THI BICH', status:'refunded', failNote:'Tên chủ tài khoản không khớp.', refundReason:'Ngân hàng trả về do sai tên chủ tài khoản; thành viên đã được báo cập nhật lại.',
+        auditLog:[{label:'Tạo yêu cầu', actor:'Trần Thị Bích', time:'18/07/2026 14:20'},{label:'Head xác nhận duyệt', actor:'Head', time:'20/07/2026 09:00'},{label:'Ngân hàng chi không thành công', actor:'Admin', time:'04/08/2026 10:10'},{label:'Hoàn điểm: sai tên chủ tài khoản', actor:'Admin', time:'04/08/2026 10:25'},{label:'Gửi email báo tài khoản nhận tiền có vấn đề', actor:'Hệ thống', time:'04/08/2026 10:25'}] }
+    );
     return raw.map(w => ({ ...w, amount: w.amountNum.toLocaleString('vi-VN') + 'đ' }));
   }
 
@@ -709,6 +771,10 @@ class Component extends DCLogic {
       return { color: dark ? '#2B303A' : '#FFFFFF' };
     });
 
+    // (20) A1 sau UAT 02/10 — tuổi người mua + điều kiện bật nút Thanh toán.
+    const buyerDobError = this.dobError(s.buyerDob);
+    const payOk = s.buyTcChecked && s.payStage !== 'sending' && !buyerDobError;
+
     // A2
     const regStepBg = (n) => s.regStep >= n ? '#1E3A66' : 'rgba(154,163,176,.3)';
     const regSteps = [1,2,3,4].map(n => ({ bg: regStepBg(n) }));
@@ -731,8 +797,10 @@ class Component extends DCLogic {
 
     // withdraw form
     const withdrawAmountNum = parseInt((s.withdrawAmount || '').replace(/\D/g, ''), 10) || 0;
-    const availableBalance = 4000000;
-    const withdrawAmountError = s.withdrawAmount && (withdrawAmountNum <= 0 ? 'Vui lòng nhập số tiền hợp lệ.' : (withdrawAmountNum > availableBalance ? 'Số tiền vượt quá số dư khả dụng.' : ''));
+    // (20) Mục 6 — thành viên mới dùng được ngay; số dư là số thật,
+    // chưa có đơn nào được duyệt thì bằng 0.
+    const availableBalance = s.agentStage === 'active' ? 4000000 : 0;
+    const withdrawAmountError = s.withdrawAmount && (withdrawAmountNum <= 0 ? 'Vui lòng nhập số điểm hợp lệ.' : (withdrawAmountNum > availableBalance ? 'Số điểm vượt quá số dư khả dụng.' : ''));
     const withdrawSubmitDisabled = !s.withdrawAmount || !!withdrawAmountError;
     const withdrawSubmitStyle = 'height:46px;border:none;border-radius:5px;font-size:16px;font-weight:600;color:#FFFFFF;background:' + (withdrawSubmitDisabled ? 'rgba(154,163,176,.5)' : 'var(--c6)') + ';cursor:' + (withdrawSubmitDisabled ? 'not-allowed' : 'pointer');
 
@@ -752,8 +820,8 @@ class Component extends DCLogic {
           // (18) Cấp admin đã chỉnh thắng cấp gốc theo doanh số.
           rank: s.rankOverrides[m.id] || this.RANK_LABEL[m.rank] || m.rank,
           status: effStatus, badgeBg: bg, badgeColor: color,
-          // Nhãn riêng cho thành viên — badge() dùng chung với rút tiền,
-          // mà rút tiền vẫn giữ mô hình duyệt 2 lượt.
+          // Nhãn riêng cho thành viên — badge() dùng chung với đổi điểm,
+          // mà đổi điểm vẫn giữ mô hình duyệt 2 lượt.
           statusLabel: this.MEMBER_STATUS_LABEL[effStatus] || label,
           uplineCode: up ? ALIAS[up.id] : '',
           formLink: 'homi365.com.vn/' + affCode, formLinkShort: '.../' + affCode,
@@ -956,6 +1024,29 @@ class Component extends DCLogic {
         hasReason: !!selectedWithdrawalRaw.reason, hasPaidNote: !!selectedWithdrawalRaw.paidNote };
     }
 
+    // (22) Ngân hàng chi không thành công -> hoàn điểm thủ công.
+    if (selectedWithdrawal) {
+      const st = selectedWithdrawal.status;
+      Object.assign(selectedWithdrawal, {
+        canRefund: st === 'pay_failed',
+        hasFailNote: !!selectedWithdrawal.failNote,
+        hasRefundReason: !!selectedWithdrawal.refundReason
+      });
+      if (st === 'pay_failed') selectedWithdrawal.approvalStageNote =
+        'Ngân hàng chi không thành công. Điểm của yêu cầu này chưa được trả lại — bấm Hoàn điểm để cộng lại vào số dư của thành viên.';
+      if (st === 'refunded') selectedWithdrawal.approvalStageNote =
+        'Đã hoàn điểm cho thành viên. Yêu cầu này đóng lại, thành viên tạo yêu cầu mới sau khi sửa thông tin tài khoản.';
+    }
+
+    const pfv = (k) => { const d = s.profileDraft || {};
+      return d[k] !== undefined ? d[k] : ((selectedMember || {})[k] || ''); };
+
+    // (21) Danh sách chi trả theo kỳ: yêu cầu đã duyệt đủ 2 bước, chưa chi.
+    const payoutRows = withdrawalsData
+      .filter(w => w.status === 'approved' && (w.date || '').slice(3) === s.payoutPeriod)
+      .map(w => ({ ...w, points: w.amountNum.toLocaleString('vi-VN') }));
+    const payoutEmpty = payoutRows.length === 0;
+
     // Action modal
     const actionWithdrawalRaw = (s.actionModal && s.actionModal.kind !== 'member') ? withdrawalsData.find(w => w.id === s.actionModal.id) : null;
     const sellerBalance = actionWithdrawalRaw ? (this.SELLER_BALANCE[actionWithdrawalRaw.seller] ?? Infinity) : 0;
@@ -1022,7 +1113,49 @@ class Component extends DCLogic {
 
     return {
       nav, adminNav,
-      isA1: s.screen === 'A1', isA2: s.screen === 'A2', isA3: s.screen === 'A3',
+      isA1: s.screen === 'A1' && s.buyStep === 'form',
+      // (20) Bước 0 — nhập SĐT trước form mua hàng.
+      isA1Phone: s.screen === 'A1' && s.buyStep !== 'form',
+      buyPhoneInput: s.buyPhoneInput,
+      setBuyPhoneInput: (e) => this.setState({
+        buyPhoneInput: (e.target.value || '').replace(/\D/g, '').slice(0, 10),
+        buyPhoneError: '', buyPhoneFound: false }),
+      buyPhoneError: s.buyPhoneError,
+      buyPhoneBorder: s.buyPhoneError ? '#C0392B' : 'rgba(154,163,176,.6)',
+      buyPhoneFound: s.buyPhoneFound, buyPhoneAsk: !s.buyPhoneFound,
+      // Chỉ trả lời CÓ / CHƯA có tài khoản — không lộ tên hay đơn hàng của
+      // người khác cho ai gõ đúng số.
+      submitBuyPhone: () => {
+        const ph = (s.buyPhoneInput || '').trim();
+        if (!ph) { this.setState({ buyPhoneError: 'Vui lòng nhập số điện thoại.' }); return; }
+        if (!/^0\d{9}$/.test(ph)) { this.setState({ buyPhoneError: 'Số điện thoại gồm 10 chữ số, bắt đầu bằng 0.' }); return; }
+        if (this.REGISTERED_PHONES.includes(ph)) { this.setState({ buyPhoneFound: true, buyPhoneError: '' }); return; }
+        this.setState({ buyStep: 'form', buyerPhone: ph, buyMode: '' });
+      },
+      buyGoLogin: () => GO('C1', { agentLoginStep: 'login', agentPhone: s.buyPhoneInput,
+        loginPhoneChecked: true, returnTo: 'A1' }),
+      buySkipLogin: () => this.setState({ buyStep: 'form', buyerPhone: s.buyPhoneInput, buyMode: '' }),
+      buyResetPhone: () => this.setState({ buyPhoneInput: '', buyPhoneFound: false, buyPhoneError: '' }),
+      // (20) Mục 2 — tự điền theo đơn gần nhất, cho đổi sang mua cho người khác.
+      buyIsSelf: s.buyMode === 'self', buyIsOther: s.buyMode === 'other',
+      buyProfileDate: (s.buyProfile || {}).orderDate || '',
+      buyProfileOrder: (s.buyProfile || {}).orderId || '',
+      buyForOther: () => this.setState({ buyMode: 'other', buyerName: '', buyerPhone: '',
+        buyerEmail: '', buyerCccd: '', buyerAddress: '', buyerDob: '',
+        buyerBankAccount: '', accountHolder: '' }),
+      buyForSelf: () => { const p = s.buyProfile || {}; this.setState({ buyMode: 'self',
+        buyerName: p.buyerName || '', buyerPhone: p.buyerPhone || '',
+        buyerEmail: p.buyerEmail || '', buyerCccd: p.buyerCccd || '',
+        buyerAddress: p.buyerAddress || '', buyerDob: p.buyerDob || '',
+        buyerBankAccount: p.buyerBankAccount || '', accountHolder: p.accountHolder || '' }); },
+      buyerDobError,
+      buyerDobBorder: buyerDobError ? '#C0392B' : 'rgba(154,163,176,.6)',
+      // (20) C1 được gọi từ form mua hàng.
+      loginFromBuy: s.returnTo === 'A1',
+      loginHeading: s.returnTo === 'A1' ? 'Đăng nhập để tiếp tục mua hàng'
+        : 'Đăng nhập để xem điểm thưởng và ưu đãi của bạn',
+      backToBuy: () => GO('A1', { buyStep: 'form', buyerPhone: s.agentPhone.trim(), buyMode: '' }),
+      isA2: s.screen === 'A2', isA3: s.screen === 'A3',
       isC1: s.screen === 'C1', isB1: s.screen === 'B1', isB2: s.screen === 'B2', isB3: s.screen === 'B3', isB4: s.screen === 'B4', isB5: s.screen === 'B5', isB6: s.screen === 'B6', isB7: s.screen === 'B7',
       isB8: s.screen === 'B8',
       // (19) Nhật ký hệ thống
@@ -1150,13 +1283,16 @@ class Component extends DCLogic {
       isNewAgent, isActiveAgent,
       metricOrders: (s.agentStage === 'active' ? this.ORDER_RANGE_VALUES
         : this.ORDER_RANGE_VALUES_NEW)[s.orderRange || 'month'],
-      // Chưa kích hoạt thì hoa hồng bị giữ, chưa được tính điểm.
-      heldCommissionLabel: '1.200.000đ',
       metricPoints: s.agentStage === 'active' ? '1.240' : '0',
       metricRank: s.agentStage === 'active' ? 'Silver' : 'Copper',
       metricWithdrawn: s.agentStage === 'active' ? '1.200.000đ' : '0đ',
       chartTitle, chartRanges, chartBars,
-      availableBalanceLabel: '4.000.000đ', pendingBalanceLabel: '800.000đ', earnedBalanceLabel: '6.000.000đ',
+      availableBalanceLabel: s.agentStage === 'active' ? '4.000.000đ' : '0đ',
+      pendingBalanceLabel: s.agentStage === 'active' ? '800.000đ' : '0đ',
+      earnedBalanceLabel: s.agentStage === 'active' ? '6.000.000đ' : '0đ',
+      // H1 đã chốt: điểm ghi nhận SAU KHI admin duyệt đơn. Thành viên mới
+      // có 1 đơn đang chờ duyệt nên điểm chưa vào số dư.
+      hasPendingOrders: s.agentStage !== 'active', pendingOrderCount: 1,
       hasActiveThisMonth, nextWithdrawDate: '01/10/2026',
       openWithdrawForm: () => this.setState({ showWithdrawForm: true, withdrawAmount: '' }),
       withdrawButtonDisabled, withdrawButtonStyle,
@@ -1187,9 +1323,12 @@ class Component extends DCLogic {
             buyerDob: boughtOrder.buyerDob });
           return;
         }
-        // Agent đã được Head duyệt -> dashboard hoạt động (rút tiền được).
-        // Agent chưa duyệt -> dashboard chờ kích hoạt (ưu đãi tạm giữ).
+        // Sau UAT 02/10 không còn trạng thái chờ kích hoạt: thành viên nào
+        // cũng vào dashboard dùng được ngay. 'new' chỉ còn nghĩa là chưa có
+        // đơn nào được duyệt nên số dư bằng 0.
         if (ph && s.agentPassword === '123456') {
+          // (20) Gọi từ form mua hàng thì quay lại form, điền sẵn.
+          if (s.returnTo === 'A1') { GO('A1', this.buyCarry(ph)); return; }
           GO('A3', { agentStage: this.PENDING_PHONES.includes(ph) ? 'new' : 'active' });
         }
         else { this.setState({ agentLoginError: true, agentLoginStep: 'otp' }); }
@@ -1235,7 +1374,9 @@ class Component extends DCLogic {
       },
       agentMaskedPhone: s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123',
       agentBackToLogin: () => this.setState({ agentLoginStep: 'login' }),
-      agentOtpConfirm: () => GO('A3', { agentStage: 'active' }),
+      agentOtpConfirm: () => (s.returnTo === 'A1'
+        ? GO('A1', this.buyCarry(s.agentPhone.trim()))
+        : GO('A3', { agentStage: 'active' })),
       openForgotPassword: (e) => { if (e) e.preventDefault(); this.setState({ agentLoginStep: 'forgot_phone', forgotPhoneError: false }); },
       openOrderLookup: (e) => { if (e) e.preventDefault(); this.setState({ showOrderLookup: true, orderLookupInput: '', orderLookupError: false, lookupResult: null }); },
       forgotPhone: s.forgotPhone, setForgotPhone: (e) => this.setState({ forgotPhone: e.target.value, forgotPhoneError: false }),
@@ -1336,6 +1477,50 @@ class Component extends DCLogic {
       openApproveModal: () => this.setState({ actionModal: { type: 'approve', kind: 'withdrawal', id: s.selectedWithdrawalId } }),
       openRejectModal: () => this.setState({ actionModal: { type: 'reject', kind: 'withdrawal', id: s.selectedWithdrawalId }, rejectReason: '' }),
       openPaidModal: () => this.setState({ actionModal: { type: 'paid', kind: 'withdrawal', id: s.selectedWithdrawalId }, paidNote: '' }),
+      // (22) Chi không thành công + hoàn điểm.
+      openPayFailModal: () => this.setState({ actionModal: { type: 'payfail', kind: 'withdrawal', id: s.selectedWithdrawalId }, paidNote: '' }),
+      openRefundModal: () => this.setState({ actionModal: { type: 'refund', kind: 'withdrawal', id: s.selectedWithdrawalId }, rejectReason: '' }),
+      isPayFailModal: !!(s.actionModal && s.actionModal.type === 'payfail'),
+      isRefundModal: !!(s.actionModal && s.actionModal.type === 'refund'),
+      refundConfirmStyle: 'flex:1;height:44px;border:none;border-radius:5px;font-size:14px;font-weight:600;color:#FFFFFF;background:'
+        + (rejectDisabled ? 'rgba(154,163,176,.5)' : 'var(--c6)') + ';cursor:' + (rejectDisabled ? 'not-allowed' : 'pointer'),
+      confirmPayFail: () => {
+        const id = s.actionModal.id, now = '03/09/2026 10:15';
+        const actor = s.adminRole === 'specialist' ? 'Admin' : 'Head';
+        this.setState({ withdrawalsData: withdrawalsData.map(w => w.id === id
+          ? { ...w, status: 'pay_failed', failNote: (s.paidNote || '').trim(),
+              auditLog: [...w.auditLog, { label: 'Ngân hàng chi không thành công', actor, time: now }] }
+          : w), actionModal: null, paidNote: '' });
+      },
+      confirmRefund: () => {
+        if (!s.rejectReason.trim()) return;
+        const id = s.actionModal.id, now = '03/09/2026 10:20';
+        const actor = s.adminRole === 'specialist' ? 'Admin' : 'Head';
+        this.setState({ withdrawalsData: withdrawalsData.map(w => w.id === id
+          ? { ...w, status: 'refunded', refundReason: s.rejectReason.trim(),
+              auditLog: [...w.auditLog,
+                { label: 'Hoàn điểm: ' + s.rejectReason.trim(), actor, time: now },
+                { label: 'Gửi email báo tài khoản nhận tiền có vấn đề', actor: 'Hệ thống', time: now }] }
+          : w), actionModal: null, rejectReason: '' });
+      },
+      // (21) Xuất danh sách chi trả.
+      showPayoutExport: s.showPayoutExport,
+      openPayoutExport: () => this.setState({ showPayoutExport: true, payoutExported: '' }),
+      closePayoutExport: () => this.setState({ showPayoutExport: false, payoutExported: '' }),
+      payoutPeriod: s.payoutPeriod,
+      payoutPeriods: this.PAYOUT_PERIODS.map(p => ({
+        label: 'Tháng ' + p, onClick: () => this.setState({ payoutPeriod: p, payoutExported: '' }),
+        style: 'height:34px;padding:0 14px;border-radius:30px;font-size:12px;font-weight:600;border:1px solid '
+          + (s.payoutPeriod === p ? '#1E3A66;background:rgba(30,58,102,.08);color:#1E3A66'
+                                  : 'rgba(154,163,176,.4);background:transparent;color:var(--c5)')
+      })),
+      payoutRows, payoutEmpty, payoutCount: payoutRows.length,
+      payoutTotal: payoutRows.reduce((t, w) => t + w.amountNum, 0).toLocaleString('vi-VN') + 'đ',
+      payoutExported: s.payoutExported,
+      payoutBtnStyle: 'flex:1;height:44px;border:none;border-radius:var(--r-md);font-size:14px;font-weight:600;color:#FFFFFF;background:'
+        + (payoutEmpty ? 'rgba(154,163,176,.5)' : 'var(--c6)') + ';cursor:' + (payoutEmpty ? 'not-allowed' : 'pointer'),
+      runPayoutExport: () => { if (payoutEmpty) return; this.setState({
+        payoutExported: 'chi-tra-HOMI365-' + s.payoutPeriod.slice(3) + '-' + s.payoutPeriod.slice(0, 2) + '.xlsx' }); },
 
       stockTotal: stockData.length,
       stockReceived: stockData.filter(p => p.status === 'received').length,
@@ -1383,24 +1568,45 @@ class Component extends DCLogic {
       startProfileEdit: () => this.setState({ profileEdit: true,
         profileDraft: { ...(selectedMember || {}) } }),
       cancelProfileEdit: () => this.setState({ profileEdit: false, profileDraft: {} }),
-      saveProfileEdit: () => this.setState({
-        memberEdits: { ...s.memberEdits, [s.selectedMemberId]: { ...s.profileDraft } },
-        profileEdit: false, profileDraft: {} }),
-      pfName: (s.profileDraft || {}).name || '',
+      // (23) Mục 22 — admin sửa hồ sơ thì hệ thống gửi email cho người đó,
+      // nêu giá trị mới. Đổi email thì gửi cả địa chỉ cũ lẫn địa chỉ mới.
+      saveProfileEdit: () => {
+        const cur = selectedMember || {}, d = s.profileDraft || {};
+        const keys = ['name', 'phone', 'email', 'cccd', 'dobGender', 'address', 'bankAccount', 'bankHolder'];
+        const changed = keys.filter(k => d[k] !== undefined && d[k] !== cur[k]);
+        const mailChanged = changed.includes('email');
+        const text = !changed.length ? ''
+          : mailChanged
+            ? 'Đã lưu hồ sơ · đã gửi email báo thay đổi tới ' + cur.email + ' (địa chỉ cũ) và ' + d.email + ' (địa chỉ mới).'
+            : 'Đã lưu hồ sơ · đã gửi email báo thay đổi tới ' + cur.email + '.';
+        this.setState({
+          memberEdits: { ...s.memberEdits, [s.selectedMemberId]: { ...(s.memberEdits[s.selectedMemberId] || {}), ...d } },
+          profileEdit: false, profileDraft: {},
+          profileSaved: text ? { id: s.selectedMemberId, text } : null });
+      },
+      profileSavedNote: (s.profileSaved && s.profileSaved.id === s.selectedMemberId
+        && s.profileOpen && !s.profileEdit) ? s.profileSaved.text : '',
+      pfMailNote: (() => {
+        const cur = (selectedMember || {}).email || '', nw = pfv('email');
+        return (nw && nw !== cur)
+          ? 'Email đã đổi. Khi lưu, hệ thống gửi email báo thay đổi tới cả địa chỉ cũ (' + cur + ') và địa chỉ mới (' + nw + '), nêu rõ các giá trị mới.'
+          : 'Khi lưu, hệ thống sẽ gửi email báo thay đổi tới ' + cur + ', nêu rõ các giá trị mới.';
+      })(),
+      pfName: pfv('name'),
       setPfName: (e) => this.setState({ profileDraft: { ...s.profileDraft, name: e.target.value } }),
-      pfPhone: (s.profileDraft || {}).phone || '',
+      pfPhone: pfv('phone'),
       setPfPhone: (e) => this.setState({ profileDraft: { ...s.profileDraft, phone: e.target.value } }),
-      pfEmail: (s.profileDraft || {}).email || '',
+      pfEmail: pfv('email'),
       setPfEmail: (e) => this.setState({ profileDraft: { ...s.profileDraft, email: e.target.value } }),
-      pfCccd: (s.profileDraft || {}).cccd || '',
+      pfCccd: pfv('cccd'),
       setPfCccd: (e) => this.setState({ profileDraft: { ...s.profileDraft, cccd: e.target.value } }),
-      pfDob: (s.profileDraft || {}).dobGender || '',
+      pfDob: pfv('dobGender'),
       setPfDob: (e) => this.setState({ profileDraft: { ...s.profileDraft, dobGender: e.target.value } }),
-      pfAddress: (s.profileDraft || {}).address || '',
+      pfAddress: pfv('address'),
       setPfAddress: (e) => this.setState({ profileDraft: { ...s.profileDraft, address: e.target.value } }),
-      pfBankAccount: (s.profileDraft || {}).bankAccount || '',
+      pfBankAccount: pfv('bankAccount'),
       setPfBankAccount: (e) => this.setState({ profileDraft: { ...s.profileDraft, bankAccount: e.target.value } }),
-      pfBankHolder: (s.profileDraft || {}).bankHolder || '',
+      pfBankHolder: pfv('bankHolder'),
       setPfBankHolder: (e) => this.setState({ profileDraft: { ...s.profileDraft, bankHolder: this.vnUpper(e.target.value) } }),
 
       // (10) Kết quả tra cứu đơn hàng
@@ -1455,13 +1661,11 @@ class Component extends DCLogic {
       toggleBuyTc: () => this.setState({ buyTcChecked: !s.buyTcChecked }),
       // (17) Khoá nút khi chưa tích điều khoản HOẶC đang chờ phản hồi —
       // vế sau là cách chặn bấm dồn tạo hai đơn.
-      payDisabled: !s.buyTcChecked || s.payStage === 'sending',
+      payDisabled: !payOk,
       payStyle: 'height:48px;color:var(--c12);border:none;border-radius:var(--r-md);'
         + 'font-size:16px;font-weight:700;box-shadow:var(--sh);background:'
-        + ((s.buyTcChecked && s.payStage !== 'sending')
-             ? 'var(--c6)' : 'rgba(154,163,176,.5)')
-        + ';cursor:' + ((s.buyTcChecked && s.payStage !== 'sending')
-             ? 'pointer' : 'not-allowed'),
+        + (payOk ? 'var(--c6)' : 'rgba(154,163,176,.5)')
+        + ';cursor:' + (payOk ? 'pointer' : 'not-allowed'),
 
       // CCCD — ngày cấp / nơi cấp (màn đăng ký agent)
       cccdIssueDate: s.cccdIssueDate,
@@ -1469,7 +1673,7 @@ class Component extends DCLogic {
       cccdIssuePlace: s.cccdIssuePlace,
       setCccdIssuePlace: (e) => this.setState({ cccdIssuePlace: e.target.value }),
 
-      // Tài khoản nhận tiền hiển thị ở modal rút tiền — lấy từ hồ sơ agent,
+      // Tài khoản nhận tiền hiển thị ở modal đổi điểm — lấy từ hồ sơ agent,
       // agent không sửa được ở đây (muốn đổi phải qua CSKH).
       withdrawHolder: this.vnUpper(s.accountHolder) || 'HOANG THI MY TRINH',
       withdrawBank: 'Vietcombank — NH TMCP Ngoại thương Việt Nam',
