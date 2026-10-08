@@ -26,6 +26,8 @@ from pathlib import Path
 
 # Cập nhật sau UAT 02/10 — xem tools/update_uat0210.py
 import update_uat0210 as uat
+# Toàn văn 2 chính sách HOMI365 gửi 08/10 (hiệu lực 01/10/2026).
+import policy_docs as pdoc
 
 HERE = Path(__file__).resolve().parent          # prototype-v3/tools
 V3 = HERE.parent                                 # prototype-v3
@@ -646,14 +648,9 @@ img { max-width: 100%; }
 # (6) (7) Footer công ty + link sang trang chính sách.
 # Chỗ nào KH chưa cung cấp thì để dấu chấm lửng đúng như bản gốc, không bịa.
 POLICY_LINKS = [
-    ("dieu-khoan-thanh-vien", "Điều khoản thành viên"),
-    ("quy-che-website", "Quy chế hoạt động"),
-    ("bao-mat-thong-tin", "Chính sách bảo mật thông tin"),
-    ("thanh-toan", "Chính sách thanh toán"),
-    ("van-chuyen-giao-nhan", "Vận chuyển & giao nhận"),
-    ("doi-tra-hoan-tien", "Đổi trả & hoàn tiền"),
-    ("bao-hanh", "Chính sách bảo hành"),
-    ("kiem-hang", "Chính sách kiểm hàng"),
+    # (08/10) Chỉ còn 2 văn bản HOMI365 ban hành; 7 trang mẫu cũ đã bỏ.
+    ("dieu-khoan-thanh-vien", "Chính sách ưu đãi thành viên"),
+    ("chinh-sach-mua-hang", "Chính sách mua hàng &amp; bảo mật dữ liệu"),
 ]
 
 
@@ -678,12 +675,15 @@ def footer_html(prefix="", pol_prefix=""):
         '          <div style="font-size:13px;font-weight:700;color:var(--c1);'
         'text-transform:uppercase;line-height:1.6">Công ty Cổ phần Giải pháp và '
         'Dịch vụ HOMI365</div>\n'
+        # Thông tin pháp nhân — HOMI365 gửi 08/10/2026.
         '          <div style="font-size:13px;color:var(--c2);line-height:1.8">'
-        'Mã số thuế: …………<br>'
-        'Địa chỉ: Số 36 đường 27A, Phường Bình Trưng, Thành phố Hồ Chí Minh, Việt Nam<br>'
-        'Hotline: <a href="tel:1900633570" style="color:#00ADEE;font-weight:600;'
-        'text-decoration:none">1900 633 570</a><br>'
-        'Email: …………</div>\n'
+        'Giấy chứng nhận đăng ký doanh nghiệp số 0319717698 cấp ngày 21 tháng 09 năm 2026<br>'
+        'Trụ sở chính tại: Số 36 đường 27A, Phường Bình Trưng, Thành Phố Hồ Chí Minh, Việt Nam<br>'
+        'Mã số thuế: 0319717698<br>'
+        'Hotline: <a href="tel:19009007" style="color:#00ADEE;font-weight:600;'
+        'text-decoration:none">1900 9007</a><br>'
+        'Email: <a href="mailto:info@homi365.com.vn" style="color:#00ADEE;font-weight:600;'
+        'text-decoration:none">info@homi365.com.vn</a></div>\n'
         '        </div>\n'
         '        <div style="display:flex;flex-direction:column;gap:var(--s3)">\n'
         '          <div style="font-size:12px;font-weight:700;color:var(--c5);'
@@ -693,9 +693,7 @@ def footer_html(prefix="", pol_prefix=""):
         '      </div>\n'
         '      <div style="border-top:1px solid rgba(170,170,170,.25);padding-top:var(--s6);'
         'font-size:12px;color:var(--c5);line-height:1.8;text-align:center">'
-        '………… All rights reserved. '
-        'Giấy phép đăng ký kinh doanh số ………………… do Sở ………………… cấp lần đầu ngày …………'
-        '<br>Người chịu trách nhiệm nội dung: Bà Phùng Thị Thúy Linh. '
+        'Người chịu trách nhiệm nội dung: Bà Phùng Thị Thúy Linh. '
         'Chức vụ: Giám đốc</div>\n'
         '    </div>\n'
         '  </footer>\n' % (prefix, links)
@@ -704,28 +702,13 @@ def footer_html(prefix="", pol_prefix=""):
 
 # Toàn văn Điều khoản & Điều kiện, có đủ 5 nội dung bắt buộc theo rà soát
 # pháp lý 10/09. Số liệu để trống bằng dấu chấm lửng — chờ Pháp lý điền.
-TNC_BODY = """<div style="font-size:14px;font-weight:700;color:var(--c1)">ĐIỀU KHOẢN &amp; ĐIỀU KIỆN CHƯƠNG TRÌNH THÀNH VIÊN HOMI365</div>
-            <div style="font-size:11px;color:var(--c5);margin:var(--s2) 0 var(--s6)">Phiên bản 1.0 · hiệu lực từ …/…/2026 · Công ty Cổ phần Giải pháp và Dịch vụ HOMI365</div>
-
-            <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">1. Điểm thưởng là gì</div>
-            <p style="margin:var(--s2) 0">Điểm thưởng (sau đây gọi là <strong>Điểm HOMI</strong>) là đơn vị quy ước nội bộ do HOMI365 phát hành, ghi nhận đóng góp của Thành viên trong việc giới thiệu khách hàng. Điểm HOMI <strong>không phải là tiền tệ</strong>, không có giá trị thanh toán ngoài hệ thống HOMI365, không được mua bán hay chuyển nhượng giữa các Thành viên.</p>
-
-            <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">2. Quy chế tích điểm</div>
-            <p style="margin:var(--s2) 0">Điểm được ghi nhận khi đơn hàng phát sinh qua link giới thiệu của Thành viên và được HOMI365 xác nhận thanh toán thành công. Tỷ lệ qui đổi: <strong>………… VNĐ giá trị đơn hàng = 1 Điểm HOMI</strong>. Điểm chỉ được cộng sau khi tài khoản Thành viên đã được kích hoạt; các đơn phát sinh trước thời điểm kích hoạt vẫn được tính và cộng bù đầy đủ. Đơn hàng bị huỷ hoặc hoàn tiền sẽ bị thu hồi số điểm tương ứng.</p>
-
-            <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">3. Quy chế tiêu điểm và đổi thưởng</div>
-            <p style="margin:var(--s2) 0">Điểm HOMI được quy đổi thành ưu đãi theo tỷ lệ <strong>1 Điểm HOMI = ………… VNĐ</strong>. Yêu cầu quy đổi được xử lý theo quy trình duyệt nội bộ và chi trả vào tài khoản ngân hàng Thành viên đã đăng ký. Mỗi Thành viên được gửi tối đa <strong>01 yêu cầu quy đổi trong một tháng</strong>. Điểm có thời hạn <strong>………… tháng</strong> kể từ ngày ghi nhận; quá thời hạn mà không quy đổi thì điểm tự động hết hiệu lực.</p>
-
-            <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">4. Quyền thay đổi thể lệ</div>
-            <p style="margin:var(--s2) 0">HOMI365 có quyền điều chỉnh, tạm ngừng hoặc chấm dứt chương trình, bao gồm tỷ lệ tích điểm, tỷ lệ quy đổi và điều kiện xếp hạng. Mọi thay đổi được thông báo tới Thành viên qua email và trên hệ thống <strong>trước tối thiểu ………… ngày</strong> so với ngày có hiệu lực. Điểm đã tích trước thời điểm thay đổi được bảo lưu theo thể lệ cũ.</p>
-
-            <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">5. Bảo mật và xử lý dữ liệu cá nhân</div>
-            <p style="margin:var(--s2) 0">Thành viên đồng ý để HOMI365 thu thập và xử lý dữ liệu cá nhân gồm họ tên, số điện thoại, email, số CCCD, địa chỉ và thông tin tài khoản ngân hàng, nhằm mục đích vận hành chương trình, chi trả ưu đãi và thực hiện nghĩa vụ thuế theo pháp luật Việt Nam. Dữ liệu được lưu trữ có mã hoá, chỉ nhân sự được phân quyền mới truy cập, và không chuyển giao cho bên thứ ba ngoài các trường hợp pháp luật yêu cầu. Thành viên có quyền yêu cầu tra cứu, chỉnh sửa hoặc xoá dữ liệu bằng cách liên hệ <strong>1900 633 570</strong>.</p>
-
-            <div style="font-weight:700;color:var(--c2);margin-top:var(--s5)">6. Chấm dứt tư cách Thành viên</div>
-            <p style="margin:var(--s2) 0">HOMI365 có quyền khoá tài khoản và thu hồi điểm chưa quy đổi nếu phát hiện hành vi gian lận, tạo đơn khống, mạo danh hoặc vi phạm pháp luật. Thành viên có thể chủ động chấm dứt tham gia bằng văn bản; điểm chưa quy đổi tại thời điểm chấm dứt sẽ hết hiệu lực.</p>
-
-            <div style="margin-top:var(--s7);padding-top:var(--s5);border-top:1px solid rgba(170,170,170,.3);font-size:12px;color:var(--c5)">Xem thêm <a href="policy.html" target="_blank" class="tnc-link" style="color:#00ADEE;font-weight:600">Điều khoản và chính sách</a>.</div>"""
+# (08/10) Thay bằng toàn văn "Chính sách ưu đãi thành viên HOMI365" do KH gửi,
+# hiệu lực 01/10/2026 — nguồn ở tools/policy_docs.py.
+TNC_BODY = (pdoc.html(pdoc.MEMBER)
+    + '<div style="margin-top:var(--s6);padding-top:var(--s4);border-top:1px solid rgba(170,170,170,.3);'
+      'font-size:12px;color:var(--c5)">Chính sách này áp dụng cùng '
+      '<a href="policy.html?s=chinh-sach-mua-hang" target="_blank" style="color:#00ADEE;font-weight:600">'
+      'Điều kiện giao dịch chung và Chính sách bảo mật, bảo vệ dữ liệu cá nhân</a>.</div>')
 
 # Không hiện dòng nhắc — ô đồng ý mờ sẵn đã đủ nói lên là chưa bấm được.
 TNC_HINT = ""
@@ -740,10 +723,10 @@ TNC_TOP = (
     'border:1px solid rgba(0,173,238,.3);border-radius:var(--r-md);'
     'padding:var(--s4) var(--s5);margin-bottom:var(--s5)">'
     '<div style="font-size:12px;color:var(--c4);line-height:1.6">'
-    'Bản đầy đủ, có hiệu lực pháp lý: <strong>Điều khoản &amp; Điều kiện '
-    'chương trình thành viên — phiên bản 1.0</strong></div>'
+    'Bản đầy đủ: <strong>Chính sách ưu đãi thành viên HOMI365 — phiên bản 1.0, '
+    'hiệu lực từ 01/10/2026</strong></div>'
     '<a href="policy.html?s=dieu-khoan-thanh-vien" target="_blank" '
-    'class="tnc-link" style="flex:none;font-size:12px;font-weight:700;'
+    'style="flex:none;font-size:12px;font-weight:700;'
     'color:#00ADEE;text-decoration:none;border:1px solid #00ADEE;'
     'border-radius:var(--r-sm);padding:6px 12px;white-space:nowrap">'
     'Mở văn bản đầy đủ ↗</a></div>'
@@ -893,6 +876,12 @@ POLICY_PAGE = """<!DOCTYPE html>
 <script>
 (function () {
   var id = new URLSearchParams(location.search).get('s') || POLICIES[0].id;
+  // Link cũ tới 7 trang mẫu đã bỏ (08/10) → về văn bản chính thức tương ứng.
+  var MOVED = { 'quy-che-website': 'chinh-sach-mua-hang', 'bao-mat-thong-tin': 'chinh-sach-mua-hang',
+    'thanh-toan': 'chinh-sach-mua-hang', 'van-chuyen-giao-nhan': 'chinh-sach-mua-hang',
+    'doi-tra-hoan-tien': 'chinh-sach-mua-hang', 'bao-hanh': 'chinh-sach-mua-hang',
+    'kiem-hang': 'chinh-sach-mua-hang' };
+  id = MOVED[id] || id;
   var p = POLICIES.find(function (x) { return x.id === id; }) || POLICIES[0];
 
   document.getElementById('menu').innerHTML = POLICIES.map(function (x) {
@@ -909,16 +898,16 @@ POLICY_PAGE = """<!DOCTYPE html>
 
   document.getElementById('doc').innerHTML =
     '<div class="crumb"><a href="../index.html">Trang chủ</a> / ' + p.title + '</div>'
-    + '<h1>' + p.title + '</h1>'
+    + '<h1>' + (p.heading || p.title) + '</h1>'
     + (p.intro ? '<p class="intro">' + p.intro + '</p>' : '')
     + p.sections.map(function (sec) {
         return '<h2>' + sec.h + '</h2>' + sec.items.map(block).join('');
       }).join('')
-    + '<p style="font-size:12px;color:var(--c5);margin-top:var(--s8)">'
+    + (p.official ? '' : '<p style="font-size:12px;color:var(--c5);margin-top:var(--s8)">'
     + 'Nội dung mẫu dựng giao diện — bản chính thức cần bộ phận Pháp lý rà soát '
-    + 'và cập nhật pháp nhân, hotline, email theo thông tin HOMI365.</p>';
+    + 'và cập nhật pháp nhân, hotline, email theo thông tin HOMI365.</p>');
 
-  document.title = p.title + ' · HOMI365';
+  document.title = p.title.replace('&amp;', '&') + ' · HOMI365';
 })();
 </script>
 </body>
@@ -1700,8 +1689,9 @@ BG_PATCHES += [
     # sẽ thành một cột riêng, chữ bị vỡ thành nhiều khối hẹp.
     ('Tôi đã đọc và đồng ý với điều khoản tham gia chương trình affiliate HOMI365.',
      '<span style="line-height:1.6">Tôi đã đọc và đồng ý với '
-     '<strong>Điều khoản &amp; Điều kiện HOMI365 phiên bản 1.0</strong>, bao gồm '
-     'quy chế tích điểm, đổi thưởng và xử lý dữ liệu cá nhân.</span>'),
+     '<strong>Chính sách ưu đãi thành viên HOMI365</strong> (phiên bản 1.0, hiệu lực '
+     'từ 01/10/2026), cùng Điều kiện giao dịch chung và Chính sách bảo mật, bảo vệ '
+     'dữ liệu cá nhân của HOMI365.</span>'),
     ('<input type="checkbox" checked="{{tncChecked}}" sc-camel-on-change="{{toggleTnc}}" '
      'style="width:18px;height:18px;margin-top:2px;accent-color:#00ADEE">',
      '<input type="checkbox" class="tnc-agree" disabled checked="{{tncChecked}}" '
@@ -2090,8 +2080,10 @@ FILES = {
     "B2": "b2-members.html", "B3": "b3-withdrawals.html", "B4": "b4-warehouse.html",
     "B5": "b5-products.html", "B6": "b6-orders.html",
     "B7": "b7-admin-users.html", "B8": "b8-audit-log.html",
+    # (UAT 02/10) màn mới Xét thăng / hạ cấp — xem tools/update_uat0210.py
+    "B9": "b9-rank-review.html",
 }
-ADMIN_CODES = ("B2", "B3", "B4", "B5", "B6", "B7", "B8")
+ADMIN_CODES = ("B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9")   # B9: sau UAT 02/10
 
 ADMIN_BLOCKS = ["ADMIN", "SLIDE_MEMBER", "SLIDE_WD", "SLIDE_STOCK", "MODALS"]
 
@@ -3795,20 +3787,18 @@ def main():
         (V3 / "screens" / FILES[sc["code"]]).write_text(page, encoding="utf-8")
 
     # --- trang chính sách (lấy nội dung từ prototype-v2) --------------------
-    pol_src = ROOT / "prototype-v2" / "config" / "policies.js"
-    n_pol = 0
-    if pol_src.exists():
-        # Chép nguyên bản từ v2 rồi nối thêm Điều khoản thành viên ở đây,
-        # để file gốc bên prototype-v2 không bị đụng tới.
-        (V3 / "js" / "policies.js").write_text(
-            pol_src.read_text(encoding="utf-8")
-            + uat.patch_policy(TNC_POLICY_JS, die), encoding="utf-8")
-        n_pol = len(re.findall(r"^\s{4}id:\s*'", pol_src.read_text(encoding="utf-8"), re.M)) + 1
-        (V3 / "screens" / "policy.html").write_text(
-            POLICY_PAGE.replace('<div id="foot"></div>', footer_html("../")),
-            encoding="utf-8")
-    else:
-        print("  ! không thấy %s — bỏ qua trang chính sách" % pol_src)
+    # (08/10) HOMI365 chốt: trang chính sách CHỈ gồm 2 văn bản KH gửi (Chính
+    # sách ưu đãi thành viên + Chính sách mua hàng & bảo mật dữ liệu). Bỏ 7 trang
+    # mẫu chép từ prototype-v2 (gốc gocare.vn) — không còn đọc file v2 nữa.
+    (V3 / "js" / "policies.js").write_text(
+        "/**\n * Nội dung trang Chính sách (screens/policy.html) — chỉ gồm các văn bản\n"
+        " * HOMI365 ban hành. Sinh từ tools/policy_docs.py, đừng sửa tay.\n */\n"
+        "const POLICIES = [];"
+        + uat.patch_policy(TNC_POLICY_JS, die), encoding="utf-8")
+    n_pol = len(pdoc.DOCS)
+    (V3 / "screens" / "policy.html").write_text(
+        POLICY_PAGE.replace('<div id="foot"></div>', footer_html("../")),
+        encoding="utf-8")
 
     # --- index -------------------------------------------------------------
     groups = {}

@@ -59,14 +59,14 @@
         <div style="display:flex;flex-direction:column;gap:var(--s3)">
           <img src="../assets/logo homi-01.png" alt="HOMI365" style="max-width:30%;height:auto;align-self:flex-start;margin-bottom:var(--s2)">
           <div style="font-size:13px;font-weight:700;color:var(--c1);text-transform:uppercase;line-height:1.6">Công ty Cổ phần Giải pháp và Dịch vụ HOMI365</div>
-          <div style="font-size:13px;color:var(--c2);line-height:1.8">Mã số thuế: …………<br>Địa chỉ: Số 36 đường 27A, Phường Bình Trưng, Thành phố Hồ Chí Minh, Việt Nam<br>Hotline: <a href="tel:1900633570" style="color:#00ADEE;font-weight:600;text-decoration:none">1900 633 570</a><br>Email: …………</div>
+          <div style="font-size:13px;color:var(--c2);line-height:1.8">Giấy chứng nhận đăng ký doanh nghiệp số 0319717698 cấp ngày 21 tháng 09 năm 2026<br>Trụ sở chính tại: Số 36 đường 27A, Phường Bình Trưng, Thành Phố Hồ Chí Minh, Việt Nam<br>Mã số thuế: 0319717698<br>Hotline: <a href="tel:19009007" style="color:#00ADEE;font-weight:600;text-decoration:none">1900 9007</a><br>Email: <a href="mailto:info@homi365.com.vn" style="color:#00ADEE;font-weight:600;text-decoration:none">info@homi365.com.vn</a></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:var(--s3)">
           <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.05em">Chính sách</div>
-          <a href="policy.html?s=dieu-khoan-thanh-vien" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Điều khoản thành viên</a><a href="policy.html?s=quy-che-website" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Quy chế hoạt động</a><a href="policy.html?s=bao-mat-thong-tin" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Chính sách bảo mật thông tin</a><a href="policy.html?s=thanh-toan" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Chính sách thanh toán</a><a href="policy.html?s=van-chuyen-giao-nhan" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Vận chuyển & giao nhận</a><a href="policy.html?s=doi-tra-hoan-tien" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Đổi trả & hoàn tiền</a><a href="policy.html?s=bao-hanh" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Chính sách bảo hành</a><a href="policy.html?s=kiem-hang" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Chính sách kiểm hàng</a>
+          <a href="policy.html?s=dieu-khoan-thanh-vien" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Chính sách ưu đãi thành viên</a><a href="policy.html?s=chinh-sach-mua-hang" style="color:var(--c2);text-decoration:none;font-size:13px" style-hover="color:#00ADEE">Chính sách mua hàng &amp; bảo mật dữ liệu</a>
         </div>
       </div>
-      <div style="border-top:1px solid rgba(170,170,170,.25);padding-top:var(--s6);font-size:12px;color:var(--c5);line-height:1.8;text-align:center">………… All rights reserved. Giấy phép đăng ký kinh doanh số ………………… do Sở ………………… cấp lần đầu ngày …………<br>Người chịu trách nhiệm nội dung: Bà Phùng Thị Thúy Linh. Chức vụ: Giám đốc</div>
+      <div style="border-top:1px solid rgba(170,170,170,.25);padding-top:var(--s6);font-size:12px;color:var(--c5);line-height:1.8;text-align:center">Người chịu trách nhiệm nội dung: Bà Phùng Thị Thúy Linh. Chức vụ: Giám đốc</div>
     </div>
   </footer>
 
@@ -74,6 +74,12 @@
 <script>
 (function () {
   var id = new URLSearchParams(location.search).get('s') || POLICIES[0].id;
+  // Link cũ tới 7 trang mẫu đã bỏ (08/10) → về văn bản chính thức tương ứng.
+  var MOVED = { 'quy-che-website': 'chinh-sach-mua-hang', 'bao-mat-thong-tin': 'chinh-sach-mua-hang',
+    'thanh-toan': 'chinh-sach-mua-hang', 'van-chuyen-giao-nhan': 'chinh-sach-mua-hang',
+    'doi-tra-hoan-tien': 'chinh-sach-mua-hang', 'bao-hanh': 'chinh-sach-mua-hang',
+    'kiem-hang': 'chinh-sach-mua-hang' };
+  id = MOVED[id] || id;
   var p = POLICIES.find(function (x) { return x.id === id; }) || POLICIES[0];
 
   document.getElementById('menu').innerHTML = POLICIES.map(function (x) {
@@ -90,16 +96,16 @@
 
   document.getElementById('doc').innerHTML =
     '<div class="crumb"><a href="../index.html">Trang chủ</a> / ' + p.title + '</div>'
-    + '<h1>' + p.title + '</h1>'
+    + '<h1>' + (p.heading || p.title) + '</h1>'
     + (p.intro ? '<p class="intro">' + p.intro + '</p>' : '')
     + p.sections.map(function (sec) {
         return '<h2>' + sec.h + '</h2>' + sec.items.map(block).join('');
       }).join('')
-    + '<p style="font-size:12px;color:var(--c5);margin-top:var(--s8)">'
+    + (p.official ? '' : '<p style="font-size:12px;color:var(--c5);margin-top:var(--s8)">'
     + 'Nội dung mẫu dựng giao diện — bản chính thức cần bộ phận Pháp lý rà soát '
-    + 'và cập nhật pháp nhân, hotline, email theo thông tin HOMI365.</p>';
+    + 'và cập nhật pháp nhân, hotline, email theo thông tin HOMI365.</p>');
 
-  document.title = p.title + ' · HOMI365';
+  document.title = p.title.replace('&amp;', '&') + ' · HOMI365';
 })();
 </script>
 </body>

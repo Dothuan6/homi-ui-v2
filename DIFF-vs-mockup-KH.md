@@ -420,6 +420,57 @@ Nguồn: sheet `Plan Update` trong Google Sheet `[Homi] - Change Request`. Đợ
 
 **Còn lệch, nằm ngoài phạm vi đợt này:** ngăn chi tiết thành viên ở B2 và hộp thoại Head duyệt hồ sơ vẫn ghi "ưu đãi đang tạm giữ", "kích hoạt". Sau mục 6 các câu này không còn đúng, nhưng ý nghĩa mới của bước Head duyệt hồ sơ chưa được chốt nên chưa sửa.
 
+## 20. Cập nhật theo phản hồi KH ở sheet Change Request — đợt 08/10
+
+KH đã trả lời các câu hỏi H1–H5 và chốt từng mục; đợt này làm hết, kể cả các thay đổi lớn. Bản vá vẫn nằm trong `tools/update_uat0210.py` (mục 7), neo không khớp là dừng build.
+
+| Mục | Màn | Thay đổi | Xem thử |
+|---|---|---|---|
+| 1 (làm lại) | A1 | Bỏ màn nhập SĐT riêng của đợt 06/10. Vào trang thấy **form mua hàng nhưng bị khoá** (mờ, không bấm được); ô nhập SĐT nằm ở **đầu trang**. Xác định xong SĐT thì form mở khoá, đầu trang thu lại thành một dòng có nút Đổi số. | `a1-buy.html`, `#sdt-da-co`, `#form` |
+| 5 (làm lại) | A1 | Không mở khoá bằng bấm link nữa. Form hiện **khung nội dung chính sách** cuộn được; khách **kéo xuống đọc hết** mới tick được ô đồng ý. Link bản đầy đủ vẫn mở tab mới nhưng không mở khoá. | `#form` |
+| 8 | A3 | Thẻ **Yêu cầu đổi điểm kỳ 09/2026** dưới nút tạo yêu cầu: trạng thái, nút **Huỷ yêu cầu** + hộp xác nhận. Gửi / huỷ được tới 23:59 ngày liền trước ngày cuối tháng (Chính sách ưu đãi thành viên mục 4, chốt 08/10); ngày cuối tháng khoá sổ, nút mờ kèm giải thích. Đang có yêu cầu thì khoá nút tạo mới. | `a3-dashboard.html#co-yeu-cau`, `#huy-yeu-cau`, `#da-khoa-so` |
+| 9 | B3 | **Đảo ngược mô hình duyệt 2 lớp**: bỏ bước Head, bỏ trạng thái Chờ Head. Luồng mới: Chờ duyệt → Admin duyệt → Đã duyệt → xuất file → ngân hàng chi → **tải lên file kết quả thanh toán** → Thanh toán thành công / Chi không thành công. Có ô chọn từng dòng, **Duyệt đã chọn** và **Duyệt tất cả Chờ duyệt** (H2). Không còn nhập mã giao dịch từng lệnh, không còn nút đánh dấu đã chi trả bằng tay. | `b3-withdrawals.html`, `#duyet-hang-loat`, `#tai-ket-qua` |
+| 10 | B3 | Hộp thoại xuất danh sách chi trả lấy các yêu cầu **Đã duyệt** (bỏ điều kiện duyệt đủ 2 bước). | `#xuat-chi-tra` |
+| 11 | B3 | Chi không thành công giờ sinh ra từ file kết quả (yêu cầu Đã duyệt không có trong file). Hoàn điểm giữ nguyên: lý do bắt buộc, gửi email, ghi nhật ký. Thêm trạng thái **Thành viên đã huỷ** cho mục 8. | `#chi-khong-thanh-cong`, `#hoan-diem`, `#thanh-vien-huy` |
+| 12, 13, 14, 17, 18 | **B9 (màn mới)** | Màn **Xét thăng / hạ cấp**: danh sách đề xuất cuối kỳ (cấp hiện tại, gói xét cấp, gói tháng này đã quy đổi, cấp đề xuất chỉ ±1 bậc, lý do hệ thống), ô chọn, **Duyệt đã chọn / Duyệt tất cả**, **Từ chối bắt nhập lý do**, nút **Chạy lại xét cấp cho nhóm đã chọn**. Gói 6 tháng tính 0,5; dưới 1 gói / tháng thì đề xuất hạ; nửa gói lẻ không cộng dồn (H4). | `b9-rank-review.html`, `#tu-choi`, `#duyet-tat-ca`, `#da-xu-ly` |
+| 14, 17 | A3, B2 | A3: dòng tiến độ đổi sang **gói xét cấp đã quy đổi** + dòng tháng này. B2: thêm khối Gói xét cấp / Gói tháng này. | `a3-dashboard.html`, `b2-members.html#chi-tiet` |
+| 15 | B2 | **Bổ nhiệm đặc biệt** thay cho Cập nhật cấp: bỏ số phiếu, ngày duyệt, người duyệt, file minh chứng; thêm **Lý do** và **Người yêu cầu** (bắt buộc). Gửi xong thì **chờ anh Phương duyệt qua email**, cấp mới chỉ có hiệu lực sau khi duyệt (bản mẫu có nút mô phỏng duyệt). **Không cho chọn cấp bằng tuyến trên** (H3). | `#cap-nhat-cap`, `#cho-duyet-bo-nhiem` |
+| 20 | B2 | Hiện **tuyến trên trực tiếp** và **tuyến trên hiệu lực** (đi ngược lên tới người đầu tiên có cấp cao hơn, không có thì là công ty) kèm ghi chú khi khác nhau. Trần của bổ nhiệm đặc biệt tính theo tuyến trên hiệu lực. | `#tuyen-tren-hieu-luc` |
+| 21 | B2, B5 | **Super Lithium** hiện trong danh sách cấp nhưng không chọn được (tài khoản công ty), có dòng riêng trong bảng hoa hồng; A3 không bao giờ hiện. Thêm cấu hình **độ sâu cây tối đa**. | `b5-products.html` |
+| 23 | B5 | Khối **Hoa hồng theo cấp**: mỗi cấp nhập **% trên giá trị gói**, tự quy ra tiền cho gói 1 năm và nửa năm, dòng tổng phân bổ tối đa, cảnh báo khi ngoài 0–100% hoặc cấp trên thấp hơn cấp dưới. Cột **chênh lệch cũng nhập %** (H6 trả lời 08/10), mặc định quy từ số tiền cũ trên gói 1 năm (Silver 10% … Lithium 0,5%), hiện kèm số tiền chênh lệch của từng gói. | `#hoa-hong-loi` |
+| 24 | A1, B5, B6 | Đổi **tên hiển thị** gói thành **HOMI365-01**. Mã CN02 trong SKU kho và mã gói giữ nguyên. | — |
+
+**Giả định của bản mẫu — cần xác nhận:**
+
+1. **Bổ nhiệm đặc biệt (15)**: chọn cách cấp mới **chờ anh Phương duyệt** mới có hiệu lực (KH ghi "gửi email về anh Phương duyệt"). Nếu KH muốn áp dụng ngay khi lưu thì bỏ bước chờ.
+2. **Ngưỡng số gói từng cấp** — đã chốt 08/10 theo Chính sách ưu đãi thành viên: Silver 10, Gold 18, Diamond 24, Titanium 28, Lithium 30 (xem mục 21).
+3. **Hoa hồng % mặc định** quy từ bảng tiền cũ của gói 1 năm (Copper 20% … Lithium 38,5%). Tính % trên gói nửa năm 6tr cho ra 1.200.000đ … 2.310.000đ, khác bản chốt 01/10 (ưu đãi gói nửa năm = 1/2 gói 1 năm). Cần KH xác nhận lại.
+4. **Đối chiếu file kết quả thanh toán** theo số tài khoản + số tiền. Bản mẫu giả lập 1 yêu cầu không có trong file và 1 dòng file không khớp yêu cầu nào.
+5. **Duyệt đổi điểm** cho cả Admin và Head bấm (Head có đủ quyền Admin).
+6. **Mốc chi trả 5 ngày sau khoá sổ** (H1) KH chưa trả lời — chưa thể hiện trên giao diện.
+
+**Còn lệch, chưa sửa:** ngăn chi tiết thành viên ở B2 và hộp thoại Head duyệt hồ sơ vẫn ghi "ưu đãi đang tạm giữ", "kích hoạt" (xem mục 19).
+
+## 21. Văn bản chính sách chính thức (HOMI365 gửi 08/10, hiệu lực 01/10/2026)
+
+Nguồn dữ liệu duy nhất: `tools/policy_docs.py` — sinh ra cả khung đọc trong form lẫn trang `policy.html`, nên hai nơi không lệch chữ.
+
+| Văn bản | Hiện ở | Ghi chú |
+|---|---|---|
+| Chính sách mua hàng + Chính sách bảo mật và bảo vệ dữ liệu cá nhân (kèm Điều kiện giao dịch chung, Vận chuyển và giao nhận, Phương thức thanh toán) | A1 khung đọc trên ô đồng ý · `policy.html?s=chinh-sach-mua-hang` | Thay bản tóm tắt tự viết. "Ngày cập nhật 10/10/2026" đổi thành "Hiệu lực từ 01/10/2026". |
+| Chính sách ưu đãi thành viên HOMI365, phiên bản 1.0 | A2 bước 4 · `policy.html?s=dieu-khoan-thanh-vien` (giữ id cũ) | Thay bản Điều khoản & Điều kiện cũ (còn chỗ trống ………). Sửa lỗi gõ "ngày cuối cũng" → "ngày cuối cùng". |
+
+Cả A1 và A2: ô đồng ý chỉ mở khi **kéo đọc hết** khung; bấm link mở bản đầy đủ không còn mở khoá. Footer: thêm link Chính sách mua hàng & bảo mật dữ liệu, đổi tên "Điều khoản thành viên" → "Chính sách ưu đãi thành viên". Hai văn bản chính thức không còn dòng "Nội dung mẫu dựng giao diện" ở cuối trang.
+
+**Bỏ 7 trang chính sách mẫu (HOMI365 chốt 08/10):** Quy chế hoạt động, Bảo mật thông tin, Thanh toán, Vận chuyển & giao nhận, Đổi trả & hoàn tiền, Bảo hành, Kiểm hàng — nội dung chép từ gocare.vn, mâu thuẫn với văn bản KH (thẻ/ví/cổng thanh toán, phí giao hàng). Trang chính sách và footer chỉ còn 2 văn bản; link cũ `?s=<id cũ>` tự chuyển về Chính sách mua hàng & bảo mật dữ liệu. Câu "Chính sách đổi trả và hoàn tiền" ở mục Phí giao hàng: HOMI365 xác nhận nội dung này nằm chung trang Chính sách mua hàng, không tách trang riêng.
+
+**Văn bản lệch với prototype — kết quả chốt 08/10:**
+
+1. **Ngưỡng hạng — ĐÃ CHỐT 08/10.** Ngưỡng theo văn bản: Silver 10, Gold 18, Diamond 24, Titanium 28, Lithium 30 — đã thay số minh hoạ ở B9/A3/B2. Đơn vị vẫn là *gói quy đổi* (gói 1 năm = 1, gói 6 tháng = 0,5 — Change Request mục 17) và lên cấp thì đếm lại từ 0, không nhảy bậc (mục 14) — HOMI365 xác nhận lại 08/10: Copper bán 12 gói thì tháng sau lên Silver, từ Silver đếm từ 0 đủ 18 mới lên Gold, từ Gold đếm từ 0 đủ 24 mới lên Diamond; bán bao nhiêu trong tháng cũng chỉ lên 1 cấp, phần dư bỏ. Văn bản ghi "số đơn giao dịch hợp lệ lũy kế", chưa nêu trọng số gói 6 tháng và việc đếm lại — nên đề nghị HOMI365 bổ sung câu chữ cho khớp.
+2. **Hạ hạng — ĐÃ CHỐT 08/10: giữ logic prototype.** Trong tháng phải đạt tối thiểu 1 gói quy đổi mới giữ hạng: gói 1 năm = 1 gói, gói 6 tháng = 0,5 gói, nên cần 2 gói 6 tháng (hoặc 1 gói 1 năm). Tháng chỉ có 1 đơn gói 6 tháng vẫn bị đề xuất hạ 1 cấp. Văn bản mục 3 ("ít nhất 01 đơn mới trong mỗi tháng") đang lệch với quy tắc này — cần HOMI365 sửa câu chữ trong văn bản.
+3. **Hạn gửi yêu cầu đổi điểm — ĐÃ CHỐT 08/10: theo văn bản.** Gửi và huỷ được tới 23:59 ngày liền trước ngày cuối tháng (kỳ 09/2026: 23:59 ngày 29/09); ngày cuối tháng khoá sổ. A3 đã sửa mốc, thêm trạng thái `#het-han-gui` (chưa có yêu cầu, qua hạn → nút tạo mờ, hẹn kỳ sau).
+4. Văn bản không nhắc tới Super Lithium, bổ nhiệm đặc biệt, tỷ lệ hoa hồng % theo gói — giữ nguyên trên prototype.
+
 ## Ghi chú
 
 - Nút **Thanh toán** ở màn A1 trong mockup KH đang để nền đỏ `#EE0000` nhưng màu hover lại là cyan `#0099d1` — gần như chắc chắn là lỗi sót. Bản này đưa về màu chính. Cần KH xác nhận.

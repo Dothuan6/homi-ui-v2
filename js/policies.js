@@ -1,241 +1,263 @@
 /**
- * Nội dung trang Chính sách (#policy) — chuyển từ 7 trang chính sách của gocare.vn (tháng 09/2026),
- * đổi tên thương hiệu GoCare → HOMI365, giữ nguyên pháp nhân, hotline, email và nội dung nghiệp vụ.
- * LƯU Ý: đây là nội dung mẫu để dựng giao diện; bản chính thức cần khách/pháp chế rà soát.
- *
- * Cấu trúc: { id, title, intro?, sections: [{ h, items: [ 'đoạn văn' | { list: [...] } | { steps: [...] } ] }] }
+ * Nội dung trang Chính sách (screens/policy.html) — chỉ gồm các văn bản
+ * HOMI365 ban hành. Sinh từ tools/policy_docs.py, đừng sửa tay.
  */
-const POLICIES = [
-  {
-    id: 'bao-hanh', title: 'Chính sách bảo hành',
-    sections: [
-      { h: 'I. Điều kiện bảo hành', items: [
-        'Sản phẩm được bảo hành miễn phí nếu đảm bảo tất cả các điều kiện sau:',
-        { list: ['Sản phẩm thuộc danh mục được bảo hành từ Nhà sản xuất.', 'Sản phẩm bị lỗi kỹ thuật do Nhà sản xuất.', 'Thời hạn bảo hành ghi trên phiếu bảo hành hoặc tem bảo hành vẫn còn hiệu lực.', 'Tem bảo hành còn nguyên vẹn, không chắp vá, không bị gạch xoá hay sửa chữa, bôi bẩn.', 'Trên thân máy hay linh kiện vẫn còn đủ thông tin nhận dạng: mã sản phẩm, số seri, nhãn hiệu, ngày sản xuất.', 'Tem bảo hành và/hoặc tem niêm phong (nếu có) của Nhà sản xuất/HOMI365 trên sản phẩm còn nguyên vẹn.'] },
-        'Sản phẩm không được bảo hành hoặc sẽ phát sinh phí bảo hành nếu rơi vào một trong các trường hợp sau:',
-        { list: ['Sản phẩm không thuộc danh mục được bảo hành từ Nhà sản xuất.', 'Sản phẩm không thoả mãn một trong những điều kiện bảo hành ở mục trên.', 'Số seri, model sản phẩm không khớp với Phiếu bảo hành hay thông tin lưu trên hệ thống bảo hành của HOMI365.', 'Khách hàng tự ý can thiệp sửa chữa máy móc/thiết bị mà không có sự đồng ý của HOMI365 hoặc nhà sản xuất.', 'Sản phẩm bị hư hỏng do lỗi người sử dụng, và lỗi hư hỏng không nằm trong phạm vi bảo hành của Nhà sản xuất.', 'Trường hợp bất khả kháng: thiên tai, hoả hoạn, dịch bệnh, chiến tranh…', 'Với trường hợp phát sinh phí bảo hành, chuyên viên chăm sóc khách hàng sẽ tư vấn đầy đủ thông tin cho khách hàng trước khi tiến hành các thủ tục bảo hành.'] }
-      ] },
-      { h: 'II. Thời hạn bảo hành', items: [
-        { list: ['Máy móc/thiết bị: bảo hành 06 tháng hoặc 12 tháng kể từ ngày bàn giao và nghiệm thu, nếu hư hỏng do lỗi kỹ thuật của nhà sản xuất.', 'Linh kiện/phụ kiện: bảo hành 06 tháng kể từ ngày bàn giao và nghiệm thu, nếu hư hỏng do lỗi kỹ thuật của nhà sản xuất.'] }
-      ] },
-      { h: 'III. Phương thức liên hệ bảo hành', items: [
-        'Liên hệ: khi máy móc/thiết bị gặp sự cố trong quá trình sử dụng, Quý khách vui lòng liên hệ bộ phận Chăm sóc khách hàng qua email info@hgtechs.vn hoặc hotline 0982 466 668 để được hỗ trợ.',
-        'Địa điểm bảo hành: được thực hiện tại HOMI365 hoặc hiện trường, theo điều kiện ghi trên báo giá/hợp đồng. Với yêu cầu bảo hành tận nơi ở địa điểm xa (hơn 150 km), Quý khách vui lòng hỗ trợ chi phí phát sinh do đi lại như vé máy bay/tàu/xe, phòng khách sạn, ăn uống.',
-        'Thời gian thực hiện: trong vòng 24 giờ kể từ khi nhận được thông tin sự cố, HOMI365 sẽ liên hệ khách hàng để kiểm tra tình trạng và đề xuất phương án xử lý phù hợp. Thời gian bảo hành tuỳ thuộc mức độ sẵn có của thiết bị/linh kiện thay thế; bộ phận dịch vụ khách hàng sẽ theo dõi và thông báo kết quả sớm nhất sau khi thiết bị đã bảo hành xong.'
-      ] }
-    ]
-  },
-  {
-    id: 'doi-tra-hoan-tien', title: 'Chính sách đổi trả và hoàn tiền',
-    intro: 'Theo các điều khoản và điều kiện được quy định trong Chính sách này, HOMI365 đảm bảo quyền lợi của Người mua bằng cách cho phép gửi yêu cầu hoàn trả sản phẩm và/hoặc hoàn tiền trong thời hạn quy định.',
-    sections: [
-      { h: 'I. Chính sách đổi/trả hàng', items: [
-        'Thời gian đổi/trả: khách hàng đã mua hàng có thể đổi trả trong vòng ba (03) ngày kể từ khi nhận hàng.',
-        'Người mua chỉ có thể yêu cầu đổi/trả hàng và hoàn tiền trong các trường hợp sau:',
-        { list: ['Người mua đã thanh toán nhưng không nhận được sản phẩm.', 'Sản phẩm bị lỗi hoặc bị hư hại trong quá trình vận chuyển.', 'Giao sai sản phẩm theo đơn đặt hàng (sai kích cỡ, sai màu sắc…).', 'Sản phẩm nhận được khác biệt rõ rệt so với thông tin mô tả sản phẩm.', 'Khách hàng thay đổi nhu cầu, muốn đổi sản phẩm khác.'] },
-        'Điều kiện về hàng hoá đổi trả: sản phẩm nguyên hộp không rách nát, kèm quà tặng (nếu có), chưa bóc tem, nhãn mác, hoá đơn; tuyệt đối không có dấu hiệu đã qua sử dụng. Trường hợp hàng hoá lỗi hoặc hư hại do vận chuyển, khách hàng vui lòng cung cấp video mở hàng/hình ảnh ngay sau khi nhận hàng để chúng tôi xác nhận.',
-        'Chi phí đổi trả: lỗi từ phía chúng tôi — chúng tôi chịu hoàn toàn chi phí vận chuyển; do nhu cầu cá nhân muốn đổi sản phẩm khác — khách hàng chịu chi phí trả hàng và giao sản phẩm mới.'
-      ] },
-      { h: 'II. Chính sách hoàn tiền', items: [
-        { list: ['Việc hoàn tiền được tiến hành sau khi đã nhận được hàng hoá đổi trả của khách hàng.', 'Thời gian hoàn tiền: từ 07 đến 15 ngày kể từ khi nhận được hàng trả.', 'Tiền được hoàn vào tài khoản cá nhân do khách hàng cung cấp.', 'Trường hợp khách không muốn nhận sản phẩm do nhu cầu cá nhân thay đổi, chi phí vận chuyển được trừ trực tiếp vào tiền hoàn.'] },
-        'Chúng tôi chỉ hoàn tiền khi nhận được hàng trả lại đáp ứng đủ các điều kiện trên.'
-      ] },
-      { h: 'III. Quy trình đề xuất đổi/trả hàng và hoàn tiền', items: [
-        { steps: ['Liên hệ kênh bán hàng đã đặt hàng để yêu cầu đổi/trả; gửi đầy đủ thông tin, hình ảnh thể hiện lỗi sai khác của hàng hoá.', 'Bộ phận xử lý khiếu nại xác minh đơn hàng và đối chiếu quy định; nếu đáp ứng, chúng tôi liên lạc thông báo nội dung chi tiết và yêu cầu của việc đổi/trả.', 'Khách hàng gửi sản phẩm cần đổi trả cùng giấy tờ liên quan (nếu có); giữ nguyên vỏ hộp và phụ kiện đi kèm.', 'HOMI365 nhận lại sản phẩm, thực hiện đổi trả/hoàn tiền và cập nhật tiến trình cho khách hàng.', 'HOMI365 đóng khiếu nại sau khi hoàn trả tiền và thông báo tới khách hàng.'] }
-      ] },
-      { h: 'IV. Giải quyết tranh chấp, khiếu nại', items: [
-        'HOMI365 tiếp nhận khiếu nại qua website, hotline 0982 466 668, email info@hgtechs.vn hoặc trực tiếp tại Công ty TNHH Giải pháp Công nghệ Huy Giáp.',
-        'Việc giải quyết khiếu nại dựa trên thoả thuận và đàm phán của các bên. Nếu không thể giải quyết, một trong hai bên có quyền nhờ cơ quan pháp luật có thẩm quyền can thiệp nhằm đảm bảo lợi ích hợp pháp của các bên, đặc biệt là khách hàng.'
-      ] }
-    ]
-  },
-  {
-    id: 'quy-che-website', title: 'Quy chế hoạt động website bán hàng',
-    sections: [
-      { h: 'I. Nguyên tắc', items: [
-        'Quy chế này áp dụng cho các khách hàng đăng ký mua hàng, tham gia các chương trình khuyến mại được tổ chức trên website bán hàng trực tuyến của HOMI365.',
-        'Khách hàng tham gia giao dịch là cá nhân có đầy đủ năng lực hành vi dân sự và phải cung cấp đầy đủ thông tin cá nhân theo yêu cầu.',
-        'Tất cả nội dung trong Quy chế tuân thủ hệ thống pháp luật hiện hành của Việt Nam. Khách hàng tự tìm hiểu trách nhiệm pháp lý của mình và cam kết thực hiện đúng nội dung Quy chế.'
-      ] },
-      { h: 'II. Quy trình giao dịch', items: [
-        'Ban quản lý website giới thiệu sản phẩm, mức giá và phương thức thanh toán; khách hàng tham khảo và lựa chọn nếu phù hợp nhu cầu.',
-        'Thanh toán trước (chuyển khoản/cổng thanh toán):',
-        { steps: ['Khách hàng đặt hàng.', 'Khách hàng thanh toán trước.', 'Ban quản lý website kiểm tra và chuyển hàng.', 'Khách hàng kiểm tra và nhận hàng.'] },
-        'Thanh toán sau (nhận hàng tại văn phòng hoặc nơi khách yêu cầu trong phạm vi quy định):',
-        { steps: ['Khách hàng đặt hàng.', 'Khách hàng và Ban quản lý xác thực đơn hàng (điện thoại, tin nhắn, email).', 'Ban quản lý xác nhận thông tin khách hàng.', 'Ban quản lý giao hàng.', 'Khách hàng nhận hàng và thanh toán.'] }
-      ] },
-      { h: 'III. Đảm bảo an toàn giao dịch', items: [
-        'Ban quản lý sử dụng các dịch vụ để bảo vệ thông tin và việc thanh toán của khách hàng. Để hạn chế rủi ro, khách hàng lưu ý:',
-        { list: ['Không đưa thông tin chi tiết về việc thanh toán cho bất kỳ ai bằng email; chúng tôi không chịu trách nhiệm về mất mát do trao đổi thông tin qua internet hoặc email.', 'Tuyệt đối không sử dụng chương trình, công cụ hay hình thức nào để can thiệp vào hệ thống hay làm thay đổi cấu trúc dữ liệu. Nghiêm cấm phát tán, truyền bá hay cổ vũ hoạt động can thiệp, phá hoại, xâm nhập hệ thống website; mọi vi phạm bị xử lý theo Quy chế và pháp luật.'] }
-      ] },
-      { h: 'IV. Bảo vệ quyền lợi khách hàng', items: [
-        { list: ['Cung cấp đầy đủ thông tin cá nhân liên quan (họ tên, địa chỉ, email, điện thoại…) và chịu trách nhiệm về tính pháp lý của thông tin; Ban quản lý không giải quyết khiếu nại nếu thông tin cung cấp không chính xác.', 'Xem xét kỹ thông tin sản phẩm, dịch vụ: giá, thương hiệu, dịch vụ hỗ trợ, điều kiện sử dụng, phương thức giao hàng, thanh toán, số tài khoản ngân hàng…', 'HOMI365 nỗ lực hợp lý để giải quyết khiếu nại của khách hàng và cam kết bảo mật mọi thông tin giao dịch, trừ trường hợp cơ quan pháp luật yêu cầu.'] }
-      ] },
-      { h: 'V. Quản lý thông tin xấu', items: [
-        { list: ['Khách hàng tự chịu trách nhiệm bảo mật và lưu giữ mọi hoạt động sử dụng dịch vụ dưới tên mua hàng và hộp thư điện tử của mình.', 'Không sử dụng dịch vụ vào mục đích bất hợp pháp, lừa đảo, đe doạ, thăm dò thông tin, phá hoại, phát tán virus, đầu cơ, tạo đơn đặt hàng giả. Trường hợp vi phạm, khách hàng chịu trách nhiệm trước pháp luật.', 'Không thay đổi, chỉnh sửa, sao chép, phân phối hoặc tạo chức năng tương tự của dịch vụ cho bên thứ ba khi chưa được đồng ý.'] }
-      ] },
-      { h: 'VI. Giới hạn trách nhiệm khi phát sinh lỗi kỹ thuật', items: [
-        'HOMI365 không kiểm soát an ninh Internet hoặc mạng khách hàng sử dụng nên không chịu trách nhiệm về sự an toàn của thông tin khách hàng chọn để giao dịch, cũng như dữ liệu bị mất trong quá trình truyền.',
-        'Trường hợp phát sinh lỗi kỹ thuật, lỗi phần mềm hoặc lỗi khách quan khiến khách hàng không thể giao dịch, vui lòng thông báo qua email info@hgtechs.vn; Ban quản lý sẽ khắc phục trong thời gian sớm nhất. Ban quản lý không chịu trách nhiệm nếu khiếu nại không đến được do lỗi kỹ thuật, đường truyền, phần mềm không do Ban quản lý gây ra.'
-      ] },
-      { h: 'VII. Quyền và trách nhiệm của Ban quản lý website', items: [
-        { list: ['Tổ chức giới thiệu sản phẩm, dịch vụ với điều kiện khách hàng kê khai đầy đủ thông tin yêu cầu.', 'Có quyền từ chối, tạm ngừng hoặc chấm dứt quyền sử dụng dịch vụ nếu khách hàng cung cấp thông tin không chính xác, vi phạm pháp luật hoặc thuần phong mỹ tục.', 'Giữ bản quyền dịch vụ và nội dung website theo luật bản quyền quốc tế và pháp luật sở hữu trí tuệ Việt Nam; tất cả biểu tượng, nội dung thuộc sở hữu của Công ty TNHH Giải pháp Công nghệ Huy Giáp.', 'Chịu trách nhiệm xây dựng, duy trì website, hợp tác đối tác xây dựng dịch vụ tiện ích, cung cấp thông tin, tư vấn khách hàng thực hiện giao dịch, đặc biệt là thanh toán trực tuyến.', 'Nỗ lực duy trì hoạt động bình thường và khắc phục sự cố kỹ thuật; không chịu trách nhiệm liên đới với sự cố bất khả kháng nằm ngoài khả năng kiểm soát.'] }
-      ] },
-      { h: 'VIII. Quyền và trách nhiệm của khách hàng', items: [
-        { list: ['Được nhân viên HOMI365 hỗ trợ sử dụng công cụ, tính năng phục vụ giao dịch; có quyền đóng góp ý kiến bằng thư, fax hoặc email.', 'Tự chịu trách nhiệm bảo mật và mọi hoạt động sử dụng dịch vụ của mình; thông báo kịp thời về hành vi sử dụng trái phép để cùng xử lý.', 'Cam kết thông tin cung cấp là chính xác và hoàn chỉnh; không sử dụng dịch vụ vào mục đích bất hợp pháp.'] }
-      ] },
-      { h: 'IX. Điều khoản áp dụng', items: [
-        'Quy chế có hiệu lực kể từ ngày ký Quyết định ban hành. HOMI365 có quyền thay đổi Quy chế bằng cách thông báo trên website; việc tiếp tục sử dụng dịch vụ sau khi Quy chế sửa đổi được công bố đồng nghĩa với việc chấp nhận Quy chế sửa đổi.',
-        'Thông tin liên lạc chính thức: Công ty TNHH Giải pháp Công nghệ Huy Giáp — Lô 18, Liền kề 114 phố Thanh Bình, Phường Mộ Lao, Quận Hà Đông, Hà Nội — Điện thoại 0982 466 668 — Email info@hgtechs.vn.'
-      ] },
-      { h: 'X. Điều khoản cam kết', items: ['Ban quản lý website và Khách hàng đồng ý cam kết thực hiện đúng các điều khoản trong nội dung bản Quy chế này.'] }
-    ]
-  },
-  {
-    id: 'van-chuyen-giao-nhan', title: 'Chính sách vận chuyển và giao nhận',
-    intro: 'Nhằm thuận tiện cho khách hàng theo dõi mức phí và các quy định về giao hàng khi mua sản phẩm qua HOMI365, chúng tôi quy định như sau:',
-    sections: [
-      { h: '1. Phương thức giao hàng', items: ['HOMI365 hỗ trợ giao hàng toàn quốc; đơn hàng được giao đến tận địa chỉ Quý khách cung cấp khi đặt hàng thông qua các đơn vị vận chuyển do HOMI365 chỉ định tại từng thời điểm.'] },
-      { h: '2. Quy định về mức phí giao hàng', items: ['Phí vận chuyển được tính theo giá của đơn vị vận chuyển. Trong một số chương trình khuyến mãi, phí giao hàng hoàn toàn miễn phí trên toàn quốc. Chi tiết mức phí của từng đơn hàng được thể hiện rõ tại trang hoàn tất đơn hàng.'] },
-      { h: '3. Quy định về thời gian giao hàng', items: [
-        { list: ['Nội thành Hà Nội và TP. Hồ Chí Minh: 1–2 ngày (không tính Chủ nhật, ngày lễ, Tết).', 'Ngoại thành Hà Nội/TP. Hồ Chí Minh và các tỉnh, thành phố khác: 3–4 ngày (không tính Chủ nhật, ngày lễ, Tết).'] },
-        'Đây là thời gian giao hàng dự kiến, có thể thay đổi vì lý do ngoài ý muốn và sẽ được thông báo (nếu có). Quy định phân vùng nội/ngoại thành tuỳ thuộc từng đơn vị vận chuyển; chi tiết vui lòng liên hệ tổng đài chăm sóc khách hàng.'
-      ] },
-      { h: '4. Quy định chung về giao nhận', items: [
-        { list: ['Phát sinh chậm trễ giao hàng, HOMI365 thông báo kịp thời; khách hàng có thể huỷ đơn trong trường hợp giao hàng trễ.', 'Hàng hoá bị hư hỏng do quá trình vận chuyển, HOMI365 đứng ra chịu trách nhiệm giải quyết cho khách hàng.', 'Đơn hàng số lượng lớn có quy trình giao khác biệt, bộ phận chăm sóc khách hàng liên hệ để báo giá giao hàng theo khoảng cách và nhà xe.', 'Khách hàng cung cấp đầy đủ, chính xác thông tin cần thiết; địa chỉ không rõ ràng sẽ được liên hệ hỗ trợ xử lý.', 'Đơn hàng giao tận nhà, trừ khu vực văn phòng hạn chế ra vào hoặc chung cư/cao tầng (giao tại cửa toà nhà).'] }
-      ] },
-      { h: '5. Phân định trách nhiệm với đơn vị vận chuyển', items: [
-        'Bên cung ứng dịch vụ vận chuyển: kiểm tra xác thực hàng hoá, vận đơn; bảo đảm vận chuyển đầy đủ, an toàn, đúng thời hạn; giao hàng hoá, vận đơn nguyên vẹn cho người có quyền nhận; cung cấp đầy đủ chứng từ hàng hoá, có chữ ký hoặc hình chụp nhận hàng khi thu tiền; chịu chi phí chuyên chở; mua bảo hiểm trách nhiệm dân sự theo quy định.',
-        'Bên thuê vận chuyển (HOMI365): yêu cầu chuyên chở đúng địa điểm, thời điểm đã thoả thuận; trả đủ cước phí đúng thời hạn; cung cấp thông tin cần thiết để bảo đảm an toàn hàng hoá.',
-        'Trách nhiệm bồi thường: bên vận chuyển bồi thường nếu hàng hoá, vận đơn bị mất hoặc hư hỏng; bên thuê vận chuyển bồi thường nếu hàng hoá nguy hiểm không được đóng gói an toàn. Trường hợp bất khả kháng, bên vận chuyển không phải bồi thường trừ khi có thoả thuận khác; HOMI365 sẽ thông báo cụ thể tới khách hàng.',
-        'Mọi thông tin xin liên hệ tổng đài chăm sóc khách hàng 0982 466 668, email info@hgtechs.vn — các ngày trong tuần từ 8:00 đến 21:00, trừ Tết âm lịch.'
-      ] }
-    ]
-  },
-  {
-    id: 'thanh-toan', title: 'Chính sách thanh toán',
-    sections: [
-      { h: 'I. Xác lập và huỷ đơn đặt hàng', items: [
-        'Xác lập đơn: khách hàng mở link giới thiệu, điền thông tin nhận hàng, xác thực số điện thoại và chọn phương thức thanh toán để tạo đơn đặt hàng.',
-        'Huỷ đơn: khách hàng được quyền huỷ một phần hoặc toàn bộ đơn trước khi đơn được HOMI365 xác nhận (trừ sản phẩm có điều kiện đặc biệt) bằng cách liên hệ Trung tâm Chăm sóc khách hàng qua hotline 0982 466 668 hoặc email info@hgtechs.vn. Công ty xác nhận huỷ qua SMS, email hoặc cập nhật trạng thái đơn hàng.',
-        'Để đảm bảo công bằng, HOMI365 có quyền áp dụng điều kiện hạn chế trong các chương trình khuyến mại (giới hạn số lượng, mục đích mua, không kinh doanh lại…). Công ty có quyền không xác nhận, từ chối, huỷ hoặc thu hồi ưu đãi của đơn hàng vi phạm Chính sách khuyến mại.',
-        'Trường hợp đơn đã xác nhận bị huỷ một phần hoặc toàn bộ, số tiền đã thanh toán tương ứng được hoàn trả theo Chính sách đổi trả và hoàn tiền.'
-      ] },
-      { h: 'II. Các hình thức thanh toán', items: [
-        { list: ['Chuyển khoản ngân hàng (VietQR): nội dung chuyển khoản ghi mã đơn hàng; đơn được xác nhận sau khi đối soát.', 'Thanh toán qua cổng thanh toán online (thẻ nội địa, thẻ quốc tế, ví điện tử); kết quả cập nhật ngay sau khi cổng phản hồi.'] },
-        'Thông tin tài khoản nhận chuyển khoản được hiển thị tại bước thanh toán của từng đơn hàng.'
-      ] },
-      { h: 'III. Đổi trả hàng hoá/dịch vụ', items: [
-        { list: ['Hàng hoá/dịch vụ chỉ được đổi sang hàng hoá/dịch vụ khác có giá trị tương đương.', 'HOMI365 chỉ chấp nhận trả lại khi lỗi thuộc về Công ty (sản phẩm lỗi, không sử dụng được).', 'Không thực hiện hoặc tạm hoãn đổi trả khi bị tác động bởi nguyên nhân khách quan: yêu cầu của chính quyền, phát hiện vi phạm trong thanh toán, thiên tai, dịch bệnh, lũ lụt.', 'Kiến nghị đổi trả qua hotline 0982 466 668 hoặc email info@hgtechs.vn; thời gian xử lý 03–05 ngày làm việc kể từ ngày nhận kiến nghị.'] }
-      ] },
-      { h: 'IV. Hoàn tiền và thời gian hoàn tiền dự kiến', items: [
-        { list: ['Hoàn vào tài khoản ngân hàng với đơn thanh toán bằng chuyển khoản: 05–07 ngày làm việc.', 'Hoàn qua cổng thanh toán/ví điện tử với đơn thanh toán qua cổng: 03–05 ngày làm việc.', 'Thẻ Visa/Master/JCB: ngân hàng chuyển hoàn trong 1–3 tuần làm việc tuỳ chính sách từng ngân hàng.'] },
-        'Ngày làm việc không bao gồm thứ Bảy, Chủ nhật và ngày lễ. Quá thời gian trên chưa nhận được tiền hoàn, vui lòng liên hệ ngân hàng phát hành thẻ hoặc bộ phận Chăm sóc khách hàng. Các chính sách và điều khoản có thể được thay đổi trong tương lai.'
-      ] }
-    ]
-  },
-  {
-    id: 'bao-mat-thong-tin', title: 'Chính sách bảo mật thông tin',
-    sections: [
-      { h: 'A. Bảo mật thanh toán', items: [
-        'Tất cả thông tin giao dịch qua thẻ nội địa hoặc thẻ quốc tế trên website/ứng dụng HOMI365 đều được bảo mật bằng mã hoá. Khi thanh toán trực tuyến, khách hàng lưu ý: chỉ thanh toán trên website/ứng dụng có chứng chỉ an toàn; không cho người khác mượn thẻ; kiểm tra thẻ thường xuyên và thông báo ngay khi phát sinh giao dịch ngoài ý muốn.',
-        'Hệ thống thanh toán thẻ do các đối tác cổng thanh toán được cấp phép tại Việt Nam cung cấp, tuân thủ tiêu chuẩn bảo mật ngành: giao thức SSL/TLS, chứng nhận PCI DSS Level 1 và quy định của Ngân hàng Nhà nước. HOMI365 chỉ lưu mã đơn hàng, mã giao dịch và tên ngân hàng; thông tin thẻ do đối tác cổng thanh toán lưu trữ và bảo mật.',
-        'Khi phát hiện thông tin thanh toán bị sử dụng sai mục đích, khách hàng gửi khiếu nại qua tổng đài 0982 466 668 hoặc email info@hgtechs.vn kèm chứng cứ; HOMI365 hỗ trợ giải quyết hoặc đền bù nếu lỗi do HOMI365. Trường hợp ngoài thẩm quyền, HOMI365 đề nghị khách hàng đưa sự việc tới cơ quan nhà nước có thẩm quyền.'
-      ] },
-      { h: 'B. Bảo mật thông tin cá nhân', items: [
-        'Chính sách này do Công ty TNHH Giải pháp Công nghệ Huy Giáp (HGTECHS CO.,LTD) ban hành. Chúng tôi tôn trọng tính riêng tư của dữ liệu cá nhân, cam kết bảo mật và chỉ thu thập những thông tin cần thiết.'
-      ] },
-      { h: '1. Mục đích và phạm vi thu thập', items: [
-        'Thu thập nhằm quản lý khách hàng liên quan đến hoạt động mua sản phẩm, hỗ trợ khách hàng và kịp thời xử lý các tình huống phát sinh. Bằng việc cung cấp dữ liệu, khách hàng đồng ý dữ liệu được thu thập, sử dụng theo Chính sách này.',
-        'Dữ liệu thu thập gồm: họ tên, ngày sinh (nếu có), giới tính, số điện thoại, email, địa chỉ giao hàng, thông tin xuất hoá đơn, cookie truy cập website/ứng dụng — qua các kênh website, ứng dụng, fanpage, email hoặc cuộc gọi đóng góp ý kiến.'
-      ] },
-      { h: '2. Phạm vi sử dụng', items: [{ list: ['Xác nhận đặt hàng, giao hàng hoặc các dịch vụ khách hàng yêu cầu.', 'Chăm sóc khách hàng, cải thiện chất lượng dịch vụ bán hàng.', 'Truyền thông, quảng cáo thông tin của HOMI365.'] }] },
-      { h: '3. Thời gian lưu trữ', items: ['Dữ liệu cá nhân được lưu trữ từ khi khách hàng cung cấp cho đến khi có yêu cầu huỷ bỏ hoặc khách hàng tự đăng nhập và huỷ bỏ; các trường hợp còn lại được lưu trữ và bảo mật vĩnh viễn.'] },
-      { h: '4. Đơn vị có thể tiếp cận dữ liệu', items: [
-        'Chúng tôi cố gắng chỉ chia sẻ dữ liệu đã tổng hợp hoặc ẩn danh. Trong các trường hợp thật sự cần thiết, dữ liệu cá nhân có thể được chia sẻ với:',
-        { list: ['Bên cung cấp dịch vụ của chúng tôi (logistics và giao hàng, gửi tin nhắn khuyến mại, phân tích dữ liệu, chăm sóc khách hàng) để thay mặt chúng tôi xử lý dữ liệu theo mục đích tại mục 1 và 2.', 'Cơ quan nhà nước và cơ quan quản lý khi được yêu cầu bởi pháp luật, toà án hoặc lệnh của toà án.'] }
-      ] },
-      { h: '5. Tiếp cận và chỉnh sửa dữ liệu', items: ['Khách hàng có thể đăng nhập "Tài khoản của tôi / Thông tin cá nhân" để kiểm tra, cập nhật, chỉnh sửa hoặc huỷ bỏ dữ liệu cá nhân, hoặc liên hệ tổng đài 0982 466 668 để được hỗ trợ.'] },
-      { h: '6. Cách HOMI365 bảo vệ dữ liệu', items: [{ list: ['Bảo mật dữ liệu bằng các công cụ, giải pháp tốt nhất; chỉ nhân viên, đại diện và nhà cung cấp dịch vụ được truy cập trên cơ sở cần phải biết.', 'Trường hợp máy chủ bị tấn công dẫn đến mất mát dữ liệu, chúng tôi thông báo cho cơ quan chức năng điều tra và thông báo cho khách hàng.', 'Thông tin thanh toán được các bên cung cấp dịch vụ thanh toán bảo mật bằng SSL/TLS.'] }] },
-      { h: '7. Quyền lợi của khách hàng', items: [{ list: ['Kiểm tra, cập nhật, điều chỉnh hoặc huỷ bỏ dữ liệu cá nhân bất kỳ lúc nào.', 'Từ chối nhận thông tin khuyến mại, quảng cáo, email, tin nhắn, cuộc gọi qua tổng đài 0982 466 668.', 'Khiếu nại khi dữ liệu bị sử dụng sai mục đích; chúng tôi phản hồi muộn nhất trong 48 giờ làm việc.'] }] },
-      { h: '8. Thay đổi chính sách', items: ['Chúng tôi có quyền thay đổi nội dung Chính sách để phù hợp nhu cầu, phản hồi của khách hàng và yêu cầu pháp luật; ngày cập nhật được ghi ở phần đầu. Khách hàng tiếp tục sử dụng dịch vụ được hiểu là đã đồng ý với Chính sách cập nhật.'] },
-      { h: '9. Đơn vị thu thập và quản lý thông tin', items: ['Công ty TNHH Giải pháp Công nghệ Huy Giáp chịu toàn bộ trách nhiệm về việc thu thập và quản lý dữ liệu cá nhân. Địa chỉ: Liền kề 18, 114 Đường Thanh Bình, Phường Mộ Lao, Quận Hà Đông, TP. Hà Nội. Tổng đài chăm sóc khách hàng, giải quyết khiếu nại: 0982 466 668 — tất cả các ngày trong tuần từ 8:00 đến 21:00, trừ Tết âm lịch.'] }
-    ]
-  },
-  {
-    id: 'kiem-hang', title: 'Chính sách kiểm hàng',
-    sections: [
-      { h: 'Định nghĩa', items: ['Kiểm hàng là việc kiểm tra và so sánh các sản phẩm nhận được trong kiện hàng HOMI365 gửi với các sản phẩm trong đơn hàng khách yêu cầu.'] },
-      { h: 'Thời điểm kiểm hàng', items: ['HOMI365 chấp nhận cho khách hàng đồng kiểm với nhân viên giao hàng tại thời điểm nhận hàng; không hỗ trợ thử hàng. Sau khi nhận hàng, nếu kiểm lại phát hiện sai, khách hàng liên lạc bộ phận chăm sóc khách hàng để được hỗ trợ đổi trả. Quý khách nên quay video lúc mở thùng hàng để đối chiếu khi cần.'] },
-      { h: 'Phạm vi kiểm tra hàng hoá', items: [{ list: ['Kiểm tra sản phẩm thực nhận, đối chiếu với sản phẩm đã đặt theo ảnh mẫu, mã sản phẩm, kích thước, màu sắc, chất liệu.', 'Tuyệt đối không bóc, mở các hộp sản phẩm có tem niêm phong, tem đảm bảo.', 'Không cào lấy mã các sản phẩm có tích điểm, đổi quà.'] }] },
-      { h: 'Xử lý khi hàng hoá không đúng đơn đặt hàng', items: [
-        'Khi đồng kiểm phát hiện sản phẩm không như đơn hàng, liên hệ hotline 0982 466 668 hoặc email info@hgtechs.vn để bộ phận chăm sóc khách hàng xác nhận lại đơn.',
-        { list: ['HOMI365 đóng sai đơn: khách có thể không nhận hàng, không thanh toán; nếu đã thanh toán, khách có thể yêu cầu gửi lại đơn mới hoặc được hoàn tiền trong thời gian sớm nhất.', 'HOMI365 đóng đúng đơn nhưng khách thay đổi nhu cầu: áp dụng chính sách đổi trả hàng hoá; khách thanh toán chi phí giao hàng (nếu có).'] }
-      ] },
-      { h: 'Kênh tiếp nhận khiếu nại', items: ['Email info@hgtechs.vn hoặc hotline 0982 466 668.'] }
-    ]
-  }
-];
+const POLICIES = [];
 
-
-/* --- Bổ sung 10/09: Điều khoản & Điều kiện chương trình thành viên --------
-   Đặt lên đầu danh mục vì đây là văn bản thành viên phải đồng ý khi đăng ký.
-   Các con số bỏ trống chờ bộ phận Pháp lý và khách hàng chốt.            */
-POLICIES.unshift({
-  id: 'dieu-khoan-thanh-vien',
-  title: 'Điều khoản & Điều kiện chương trình thành viên',
-  intro: 'Phiên bản 1.0 · hiệu lực từ …/…/2026. Văn bản này điều chỉnh quan hệ giữa Công ty Cổ phần Giải pháp và Dịch vụ HOMI365 và Thành viên tham gia chương trình giới thiệu khách hàng. Thành viên xác nhận đồng ý với toàn bộ nội dung dưới đây khi hoàn tất đăng ký.',
-  sections: [
-    { h: '1. Điểm thưởng là gì', items: [
-      'Điểm thưởng (sau đây gọi là Điểm HOMI) là đơn vị quy ước nội bộ do HOMI365 phát hành, ghi nhận đóng góp của Thành viên trong việc giới thiệu khách hàng.',
-      { list: [
-        'Điểm HOMI không phải là tiền tệ và không có giá trị thanh toán ngoài hệ thống HOMI365.',
-        'Điểm HOMI không được mua bán, tặng cho hay chuyển nhượng giữa các Thành viên.',
-        'Điểm HOMI không được quy đổi thành tiền mặt ngoài cơ chế đổi thưởng quy định tại Mục 3.'
-      ] }
-    ] },
-    { h: '2. Quy chế tích điểm', items: [
-      'Điểm được ghi nhận khi đơn hàng phát sinh qua link giới thiệu của Thành viên và được HOMI365 xác nhận thanh toán thành công.',
-      { list: [
-        'Tỷ lệ quy đổi: ………… VNĐ giá trị đơn hàng tương ứng 1 Điểm HOMI.',
-        'Điểm của mỗi đơn được cộng ngay sau khi đơn đó được HOMI365 duyệt.',
-        'Thành viên dùng được link giới thiệu và gửi yêu cầu đổi điểm ngay sau khi đăng ký.',
-        'Đơn hàng bị huỷ hoặc hoàn tiền sẽ bị thu hồi số điểm tương ứng.'
-      ] }
-    ] },
-    { h: '3. Quy chế tiêu điểm và đổi thưởng', items: [
-      { list: [
-        'Tỷ lệ quy đổi: 1 Điểm HOMI tương ứng ………… VNĐ.',
-        'Yêu cầu quy đổi được xử lý theo quy trình duyệt nội bộ và chi trả vào tài khoản ngân hàng Thành viên đã đăng ký.',
-        'Mỗi Thành viên được gửi tối đa 01 yêu cầu quy đổi trong một tháng.',
-        'Điểm có thời hạn ………… tháng kể từ ngày ghi nhận. Quá thời hạn mà không quy đổi thì điểm tự động hết hiệu lực và không được khôi phục.'
-      ] },
-      'Thông tin tài khoản nhận tiền do Thành viên khai báo. Trường hợp khai sai dẫn tới chuyển nhầm, Thành viên chịu trách nhiệm phối hợp xử lý với ngân hàng.'
-    ] },
-    { h: '4. Quyền thay đổi thể lệ', items: [
-      'HOMI365 có quyền điều chỉnh, tạm ngừng hoặc chấm dứt chương trình, bao gồm tỷ lệ tích điểm, tỷ lệ quy đổi và điều kiện xếp hạng.',
-      { list: [
-        'Mọi thay đổi được thông báo qua email và trên hệ thống trước tối thiểu ………… ngày so với ngày có hiệu lực.',
-        'Điểm đã tích trước thời điểm thay đổi được bảo lưu theo thể lệ cũ.',
-        'Mỗi lần thay đổi sẽ phát hành một phiên bản Điều khoản mới; phiên bản cũ được lưu trữ để đối chiếu.'
-      ] }
-    ] },
-    { h: '5. Bảo mật và xử lý dữ liệu cá nhân', items: [
-      'Thành viên đồng ý để HOMI365 thu thập và xử lý dữ liệu cá nhân gồm họ tên, số điện thoại, email, số CCCD, ngày cấp và nơi cấp, địa chỉ, ảnh chụp CCCD và thông tin tài khoản ngân hàng.',
-      { list: [
-        'Mục đích: vận hành chương trình, chi trả ưu đãi và thực hiện nghĩa vụ thuế theo pháp luật Việt Nam.',
-        'Dữ liệu được lưu trữ có mã hoá; chỉ nhân sự được phân quyền mới có quyền truy cập.',
-        'Không chuyển giao cho bên thứ ba, trừ trường hợp pháp luật yêu cầu.',
-        'Thành viên có quyền yêu cầu tra cứu, chỉnh sửa hoặc xoá dữ liệu bằng cách liên hệ hotline 1900 633 570.'
-      ] }
-    ] },
-    { h: '6. Chấm dứt tư cách Thành viên', items: [
-      'HOMI365 có quyền khoá tài khoản và thu hồi điểm chưa quy đổi nếu phát hiện hành vi gian lận, tạo đơn khống, mạo danh hoặc vi phạm pháp luật.',
-      'Thành viên có thể chủ động chấm dứt tham gia bằng văn bản. Điểm chưa quy đổi tại thời điểm chấm dứt sẽ hết hiệu lực.'
-    ] },
-    { h: '7. Ghi nhận việc chấp thuận', items: [
-      'Khi Thành viên xác nhận đồng ý, hệ thống lưu lại: định danh Thành viên, thời điểm chấp thuận chính xác tới giây, số hiệu phiên bản Điều khoản và địa chỉ IP của thiết bị.',
-      'Bản ghi này chỉ được thêm mới, không sửa và không xoá, dùng làm căn cứ đối chiếu khi có khiếu nại hoặc khi cơ quan quản lý kiểm tra.'
-    ] }
+/* --- HOMI365 gửi 08/10/2026, hiệu lực từ 01/10/2026: Chính sách ưu đãi
+   thành viên + Chính sách mua hàng & bảo mật dữ liệu (sinh từ
+   tools/policy_docs.py — đừng sửa tay). Đặt lên đầu danh mục. */
+POLICIES.unshift(
+{
+  "id": "dieu-khoan-thanh-vien",
+  "title": "Chính sách ưu đãi thành viên",
+  "heading": "Chính sách ưu đãi thành viên HOMI365",
+  "intro": "Phiên bản 1.0 · Hiệu lực từ 01/10/2026",
+  "official": true,
+  "sections": [
+    {
+      "h": "1. ĐỐI TƯỢNG ÁP DỤNG",
+      "items": [
+        "Áp dụng cho khách hàng đủ điều kiện đăng ký và được HOMI365 xác nhận là Thành viên. Mỗi cá nhân chỉ được duy trì 01 tài khoản Thành viên."
+      ]
+    },
+    {
+      "h": "2. TÍCH ĐIỂM HOMI",
+      "items": [
+        "Mỗi đơn hàng hợp lệ được HOMI365 xác nhận thanh toán sẽ phát sinh ưu đãi theo hạng Thành viên và sản phẩm/dịch vụ áp dụng.",
+        "Điểm HOMI là đơn vị quy ước dùng để ghi nhận Khoản ưu đãi; 01 Điểm HOMI tương ứng 01 đồng Khoản ưu đãi theo chương trình hiện hành.",
+        "Đơn hàng bị hủy, từ chối hoặc hoàn tiền thì Điểm HOMI/ưu đãi tương ứng bị thu hồi."
+      ]
+    },
+    {
+      "h": "3. HẠNG THÀNH VIÊN – ÁP DỤNG GÓI HOMI365-01",
+      "items": [
+        "Hạng được xét theo số đơn giao dịch hợp lệ lũy kế:",
+        {
+          "list": [
+            "Copper: từ 0 đơn;",
+            "Silver: từ 10 đơn;",
+            "Gold: từ 18 đơn;",
+            "Diamond: từ 24 đơn;",
+            "Titanium: từ 28 đơn;",
+            "Lithium: từ 30 đơn."
+          ]
+        },
+        "HOMI365 tự động xét hạng vào cuối mỗi tháng dương lịch. Số đơn hợp lệ được cộng dồn qua các tháng. Để duy trì hạng, Thành viên cần có ít nhất 01 đơn mới trong mỗi tháng; nếu không phát sinh đơn, Thành viên có thể được điều chỉnh xuống hạng liền kề theo thể lệ."
+      ]
+    },
+    {
+      "h": "4. QUY ĐỔI ĐIỂM",
+      "items": [
+        "Thành viên được yêu cầu quy đổi số Điểm HOMI khả dụng tối đa 01 lần trong mỗi tháng dương lịch và trước ngày cuối cùng dương lịch hàng tháng.",
+        "Số điểm yêu cầu quy đổi không vượt quá số dư khả dụng."
+      ]
+    },
+    {
+      "h": "5. QUY ĐỊNH VỀ ĐIỂM VÀ ƯU ĐÃI",
+      "items": [
+        "Điểm HOMI không được mua bán, chuyển nhượng hoặc sử dụng ngoài chương trình HOMI365. HOMI365 có quyền điều chỉnh hoặc thu hồi điểm phát sinh từ đơn hàng gian lận, không hợp lệ, hoàn tiền hoặc vi phạm thể lệ."
+      ]
+    },
+    {
+      "h": "6. TRÁCH NHIỆM CỦA THÀNH VIÊN",
+      "items": [
+        "Thành viên cung cấp thông tin chính xác, bảo mật tài khoản và sử dụng chương trình đúng mục đích. Không tạo đơn hàng khống, mạo danh, sử dụng thông tin của người khác, mua bán tài khoản hoặc đưa ra thông tin sai lệch về sản phẩm/dịch vụ."
+      ]
+    },
+    {
+      "h": "7. TẠM KHÓA VÀ CHẤM DỨT",
+      "items": [
+        "HOMI365 có quyền tạm khóa tài khoản, dừng ghi nhận hoặc thu hồi điểm chưa quy đổi nếu phát hiện gian lận hoặc vi phạm Chính sách. Thành viên có thể chấm dứt tham gia theo quy trình của HOMI365."
+      ]
+    },
+    {
+      "h": "8. ĐIỀU CHỈNH CHƯƠNG TRÌNH",
+      "items": [
+        "HOMI365 có thể điều chỉnh mức ưu đãi, tỷ lệ điểm, ngưỡng hạng hoặc điều kiện chương trình. Nội dung thay đổi được công bố trước khi áp dụng và không làm ảnh hưởng trái pháp luật đến quyền đã phát sinh của Thành viên."
+      ]
+    },
+    {
+      "h": "9. THÔNG TIN VÀ KHIẾU NẠI",
+      "items": [
+        "Mọi yêu cầu tra soát điểm, hạng Thành viên hoặc khiếu nại được tiếp nhận qua:",
+        {
+          "list": [
+            "CÔNG TY CỔ PHẦN GIẢI PHÁP VÀ DỊCH VỤ HOMI365",
+            "Trụ sở chính tại: Số 36 đường 27A, Phường Bình Trưng, Thành Phố Hồ Chí Minh, Việt Nam",
+            "Mã số thuế: 0319717698",
+            "Hotline: 1900 9007",
+            "Email: info@homi365.com.vn"
+          ]
+        },
+        "Chính sách này áp dụng cùng Điều kiện giao dịch chung và Chính sách bảo mật, bảo vệ dữ liệu cá nhân của HOMI365."
+      ]
+    }
   ]
-});
+},
+{
+  "id": "chinh-sach-mua-hang",
+  "title": "Chính sách mua hàng &amp; bảo mật dữ liệu",
+  "heading": "Chính sách mua hàng và Chính sách bảo mật và bảo vệ dữ liệu cá nhân",
+  "intro": "Áp dụng đối với khách hàng và người sử dụng sản phẩm, dịch vụ của HOMI365 · Hiệu lực từ 01/10/2026",
+  "official": true,
+  "sections": [
+    {
+      "h": "1. MỤC ĐÍCH VÀ CAM KẾT",
+      "items": [
+        "HOMI365 tôn trọng quyền riêng tư và cam kết bảo vệ dữ liệu cá nhân của khách hàng, người sử dụng dịch vụ và các cá nhân có liên quan.",
+        "Chính sách này quy định cách HOMI365 thu thập, sử dụng, lưu trữ, bảo vệ và chia sẻ dữ liệu cá nhân trong quá trình cung cấp sản phẩm, dịch vụ và chăm sóc khách hàng.",
+        "HOMI365 xử lý dữ liệu cá nhân theo Luật Bảo vệ dữ liệu cá nhân và các quy định pháp luật Việt Nam hiện hành."
+      ]
+    },
+    {
+      "h": "2. DỮ LIỆU CÁ NHÂN CÓ THỂ ĐƯỢC THU THẬP",
+      "items": [
+        "Tùy từng sản phẩm, dịch vụ và phương thức tương tác, HOMI365 có thể thu thập các thông tin cần thiết, bao gồm:",
+        {
+          "list": [
+            "Họ và tên; ngày, tháng, năm sinh;",
+            "Số điện thoại, email, địa chỉ liên hệ hoặc địa chỉ sử dụng dịch vụ;",
+            "Thông tin tài khoản, thông tin đăng nhập;",
+            "Thông tin giao dịch, lịch sử sử dụng sản phẩm, dịch vụ;",
+            "Hình ảnh, thông tin do khách hàng cung cấp;",
+            "Thông tin thiết bị, địa chỉ IP và dữ liệu kỹ thuật khi sử dụng website/ứng dụng;",
+            "Thông tin của người được khách hàng đăng ký sử dụng dịch vụ trong phạm vi cần thiết;",
+            "Thông tin sức khỏe và thông tin liên quan đến chăm sóc sức khỏe khi dịch vụ có yêu cầu."
+          ]
+        },
+        "HOMI365 chỉ thu thập dữ liệu trong phạm vi cần thiết cho mục đích xử lý và theo căn cứ pháp luật áp dụng."
+      ]
+    },
+    {
+      "h": "3. MỤC ĐÍCH XỬ LÝ DỮ LIỆU",
+      "items": [
+        "HOMI365 có thể xử lý dữ liệu cá nhân để:",
+        {
+          "steps": [
+            "Đăng ký, xác thực và quản lý tài khoản;",
+            "Cung cấp, vận hành và quản lý sản phẩm, dịch vụ;",
+            "Tiếp nhận, xử lý yêu cầu sử dụng dịch vụ, thanh toán và chăm sóc khách hàng;",
+            "Liên hệ với khách hàng về giao dịch, dịch vụ, hỗ trợ và các vấn đề liên quan;",
+            "Cải thiện chất lượng sản phẩm, dịch vụ và trải nghiệm khách hàng;",
+            "Bảo đảm an toàn hệ thống, phòng ngừa gian lận và bảo vệ quyền, lợi ích hợp pháp;",
+            "Thực hiện hợp đồng và nghĩa vụ pháp lý của HOMI365;",
+            "Thực hiện các mục đích khác khi khách hàng đã được thông báo và có sự đồng ý hợp pháp, nếu pháp luật yêu cầu."
+          ]
+        },
+        "Đối với dữ liệu sức khỏe và dữ liệu cá nhân nhạy cảm khác, HOMI365 áp dụng biện pháp bảo vệ phù hợp và chỉ xử lý trong phạm vi cần thiết, đúng mục đích và theo quy định pháp luật."
+      ]
+    },
+    {
+      "h": "4. CHIA SẺ VÀ CUNG CẤP DỮ LIỆU CÁ NHÂN",
+      "items": [
+        "HOMI365 không bán dữ liệu cá nhân của khách hàng.",
+        "Trong phạm vi cần thiết để cung cấp sản phẩm, dịch vụ, HOMI365 có thể cung cấp hoặc chia sẻ dữ liệu cá nhân với:",
+        {
+          "list": [
+            "Đơn vị cung cấp dịch vụ công nghệ, lưu trữ và vận hành hệ thống;",
+            "Đơn vị thanh toán, giao nhận hoặc đối tác trực tiếp tham gia cung cấp dịch vụ;",
+            "Nhà cung cấp dịch vụ chăm sóc sức khỏe hoặc đối tác thực hiện dịch vụ cho khách hàng;",
+            "Công ty, đơn vị có liên quan trong phạm vi cần thiết và phù hợp với mục đích xử lý;",
+            "Cơ quan nhà nước có thẩm quyền khi pháp luật yêu cầu."
+          ]
+        },
+        "Các bên nhận dữ liệu có trách nhiệm bảo mật và chỉ xử lý dữ liệu trong phạm vi được phép."
+      ]
+    },
+    {
+      "h": "5. THỜI GIAN LƯU TRỮ",
+      "items": [
+        "HOMI365 lưu trữ dữ liệu cá nhân trong thời gian cần thiết để thực hiện mục đích xử lý, cung cấp dịch vụ, thực hiện hợp đồng, giải quyết khiếu nại, tranh chấp hoặc đáp ứng nghĩa vụ lưu trữ theo pháp luật.",
+        "Khi dữ liệu không còn cần thiết và pháp luật không yêu cầu tiếp tục lưu trữ, HOMI365 sẽ xóa, hủy hoặc áp dụng biện pháp xử lý phù hợp."
+      ]
+    },
+    {
+      "h": "6. BẢO MẬT VÀ AN TOÀN DỮ LIỆU",
+      "items": [
+        "HOMI365 áp dụng các biện pháp quản lý, kỹ thuật và tổ chức phù hợp để bảo vệ dữ liệu cá nhân khỏi truy cập, sử dụng, tiết lộ, thay đổi, mất mát hoặc xử lý trái phép.",
+        "Việc truy cập dữ liệu được phân quyền phù hợp với chức năng, nhiệm vụ và nhu cầu công việc. Đối với dữ liệu cá nhân nhạy cảm, HOMI365 áp dụng các biện pháp bảo vệ tăng cường theo quy định pháp luật."
+      ]
+    },
+    {
+      "h": "7. QUYỀN CỦA KHÁCH HÀNG",
+      "items": [
+        "Theo quy định pháp luật, khách hàng có các quyền đối với dữ liệu cá nhân của mình, bao gồm quyền được biết; quyền đồng ý hoặc rút lại sự đồng ý trong trường hợp pháp luật yêu cầu; quyền truy cập, chỉnh sửa, xóa; quyền hạn chế hoặc phản đối việc xử lý trong các trường hợp luật định và các quyền khác theo quy định pháp luật.",
+        "Khách hàng có thể liên hệ HOMI365 theo thông tin tại Mục 9 để thực hiện quyền của mình. HOMI365 tiếp nhận và xử lý yêu cầu theo quy định pháp luật."
+      ]
+    },
+    {
+      "h": "8. DỮ LIỆU CỦA NGƯỜI KHÁC",
+      "items": [
+        "Trường hợp khách hàng cung cấp cho HOMI365 dữ liệu cá nhân của người khác để đăng ký hoặc sử dụng dịch vụ, khách hàng có trách nhiệm bảo đảm việc cung cấp dữ liệu đó phù hợp với quy định pháp luật và quyền của người có dữ liệu."
+      ]
+    },
+    {
+      "h": "9. THÔNG TIN LIÊN HỆ VỀ DỮ LIỆU CÁ NHÂN",
+      "items": [
+        {
+          "list": [
+            "CÔNG TY CỔ PHẦN GIẢI PHÁP VÀ DỊCH VỤ HOMI365",
+            "Giấy chứng nhận đăng ký doanh nghiệp số 0319717698 cấp ngày 21 tháng 09 năm 2026",
+            "Trụ sở chính tại: Số 36 đường 27A, Phường Bình Trưng, Thành Phố Hồ Chí Minh, Việt Nam",
+            "Mã số thuế: 0319717698",
+            "Hotline: 1900 9007",
+            "Email: info@homi365.com.vn"
+          ]
+        },
+        "Khách hàng có thể liên hệ các thông tin trên để yêu cầu hỗ trợ, giải đáp hoặc thực hiện các quyền liên quan đến dữ liệu cá nhân."
+      ]
+    },
+    {
+      "h": "10. CẬP NHẬT CHÍNH SÁCH",
+      "items": [
+        "HOMI365 có thể sửa đổi, bổ sung Chính sách này để phù hợp với hoạt động kinh doanh, sản phẩm, dịch vụ hoặc quy định pháp luật.",
+        "Phiên bản cập nhật sẽ được công bố trên website, ứng dụng hoặc kênh chính thức của HOMI365 và áp dụng kể từ thời điểm được công bố hoặc thời điểm khác được thông báo theo quy định pháp luật.",
+        "Chính sách này được xây dựng trên cơ sở Luật Bảo vệ dữ liệu cá nhân và các văn bản pháp luật có liên quan đang có hiệu lực tại Việt Nam."
+      ]
+    },
+    {
+      "h": "ĐIỀU KIỆN GIAO DỊCH CHUNG HOMI365",
+      "items": [
+        {
+          "list": [
+            "<strong>Phạm vi áp dụng:</strong> Áp dụng đối với khách hàng đăng ký, mua hoặc sử dụng sản phẩm, dịch vụ của HOMI365 trên website, ứng dụng và các kênh chính thức của HOMI365.",
+            "<strong>Thông tin giao dịch:</strong> Khách hàng có trách nhiệm cung cấp thông tin chính xác, đầy đủ và cập nhật. Giá, phí, nội dung và điều kiện dịch vụ được công bố hoặc thỏa thuận tại thời điểm giao dịch.",
+            "<strong>Thanh toán:</strong> Khách hàng thanh toán theo phương thức và thời hạn được HOMI365 thông báo hoặc thỏa thuận.",
+            "<strong>Hủy/đổi/hoàn tiền:</strong> Thực hiện theo chính sách áp dụng cho từng sản phẩm, dịch vụ và quy định pháp luật hiện hành.",
+            "<strong>Trách nhiệm:</strong> HOMI365 cung cấp dịch vụ theo nội dung đã công bố hoặc thỏa thuận; khách hàng có trách nhiệm sử dụng dịch vụ đúng mục đích và tuân thủ hướng dẫn của HOMI365.",
+            "<strong>Khiếu nại và tranh chấp:</strong> Mọi khiếu nại được tiếp nhận và giải quyết trên tinh thần thiện chí, hợp tác và phù hợp với quy định pháp luật Việt Nam.",
+            "<strong>Điều chỉnh:</strong> HOMI365 có quyền cập nhật Điều kiện giao dịch chung để phù hợp với hoạt động và quy định pháp luật. Phiên bản mới được công bố trên các kênh chính thức của HOMI365."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "VẬN CHUYỂN VÀ GIAO NHẬN",
+      "items": [
+        "Chính sách này quy định phạm vi, phí, thời gian giao hàng và trách nhiệm các bên khi khách hàng mua sản phẩm qua website homi365.com.vn.",
+        "<strong>1. Phạm vi và phương thức giao hàng</strong>",
+        "HOMI365 giao hàng toàn quốc, tới địa chỉ nhận hàng khách hàng cung cấp khi đặt hàng, thông qua đơn vị vận chuyển do HOMI365 lựa chọn tại từng thời điểm.",
+        "Đơn hàng chỉ được giao sau khi HOMI365 xác nhận thanh toán. Mã kích hoạt phần mềm được gửi qua email ngay khi đơn hàng được xác nhận, không phụ thuộc thời điểm giao thiết bị.",
+        "<strong>2. Phí giao hàng</strong>",
+        "Số tiền khách hàng thanh toán là Thành tiền hiển thị tại bước thanh toán của đơn hàng. HOMI365 không thu thêm phí giao hàng ngoài số tiền này, trừ trường hợp giao lại theo yêu cầu của khách hàng hoặc gửi trả hàng do thay đổi nhu cầu theo Chính sách đổi trả và hoàn tiền."
+      ]
+    },
+    {
+      "h": "PHƯƠNG THỨC THANH TOÁN",
+      "items": [
+        {
+          "list": [
+            "HOMI365 chỉ áp dụng hình thức chuyển khoản ngân hàng qua mã VietQR. HOMI365 không thu tiền mặt, không áp dụng thanh toán khi nhận hàng (COD), thẻ hay ví điện tử.",
+            "Tại bước thanh toán, khách hàng quét mã VietQR bằng ứng dụng ngân hàng. Thông tin đơn vị thụ hưởng, số tài khoản, ngân hàng, số tiền và nội dung chuyển khoản được hiển thị cùng mã QR.",
+            "Khách hàng chuyển đúng số tiền và giữ nguyên nội dung chuyển khoản do hệ thống tạo (có mã đơn hàng) để HOMI365 đối soát.",
+            "Sau khi chuyển khoản, khách hàng tải ảnh chụp màn hình hoặc biên lai giao dịch lên website. Đơn hàng chuyển sang trạng thái Chờ đối soát.",
+            "HOMI365 chỉ nhận tiền vào tài khoản đơn vị thụ hưởng hiển thị tại bước thanh toán. Khách hàng không chuyển tiền vào tài khoản cá nhân của bất kỳ ai, kể cả Thành viên giới thiệu hoặc người tự xưng là nhân viên HOMI365."
+          ]
+        },
+        "<strong>HOMI365</strong><br>(Ban hành/Phê duyệt bởi người có thẩm quyền)"
+      ]
+    }
+  ]
+}
+);

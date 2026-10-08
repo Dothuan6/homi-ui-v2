@@ -11,13 +11,13 @@
 <link rel="stylesheet" href="../css/tokens.css">
 <link rel="stylesheet" href="../css/responsive.css">
 <script>
-window.__FILES = {"A1": "a1-buy.html", "A2": "a2-register.html", "A3": "a3-dashboard.html", "C1": "c1-login.html", "B1": "b1-admin-login.html", "B2": "b2-members.html", "B3": "b3-withdrawals.html", "B4": "b4-warehouse.html", "B5": "b5-products.html", "B6": "b6-orders.html", "B7": "b7-admin-users.html", "B8": "b8-audit-log.html"};
+window.__FILES = {"A1": "a1-buy.html", "A2": "a2-register.html", "A3": "a3-dashboard.html", "C1": "c1-login.html", "B1": "b1-admin-login.html", "B2": "b2-members.html", "B3": "b3-withdrawals.html", "B4": "b4-warehouse.html", "B5": "b5-products.html", "B6": "b6-orders.html", "B7": "b7-admin-users.html", "B8": "b8-audit-log.html", "B9": "b9-rank-review.html"};
 window.__STATE__ = {"screen": "B2"};
 // dữ liệu mang sang từ màn trước (bấm nút điều hướng)
 try { var c = sessionStorage.getItem('__homi_carry');
       if (c) { Object.assign(window.__STATE__, JSON.parse(c)); sessionStorage.removeItem('__homi_carry'); } } catch (e) {}
 // mở thẳng một trạng thái: b2-members.html#chi-tiet
-var H = {"chi-tiet": {"selectedMemberId": 6}, "duyet": {"selectedMemberId": 6, "actionModal": {"type": "approve", "kind": "member", "id": 6}}, "tu-choi": {"selectedMemberId": 6, "actionModal": {"type": "reject", "kind": "member", "id": 6}}, "cap-nhat-cap": {"selectedMemberId": 2, "rankEditId": 2, "rankEditChoice": "Copper"}, "da-cap-nhat-cap": {"selectedMemberId": 2, "rankOverrides": {"2": "Silver"}, "rankLogs": {"2": [{"label": "Copper → Silver · phiếu PD-2026-014 ngày 16/09/2026 · duyệt: Phùng Thị Thúy Linh · file: PD-2026-014-da-ky.pdf", "time": "16/09/2026 14:20"}]}}, "sua-ho-so": {"selectedMemberId": 2, "profileOpen": true, "profileEdit": true}, "sua-ho-so-doi-email": {"selectedMemberId": 2, "profileOpen": true, "profileEdit": true, "profileDraft": {"email": "cuong.levan@gmail.com"}}}, h = location.hash.slice(1);
+var H = {"chi-tiet": {"selectedMemberId": 6}, "duyet": {"selectedMemberId": 6, "actionModal": {"type": "approve", "kind": "member", "id": 6}}, "tu-choi": {"selectedMemberId": 6, "actionModal": {"type": "reject", "kind": "member", "id": 6}}, "cap-nhat-cap": {"selectedMemberId": 5, "rankEditId": 5, "rankEditChoice": "Diamond", "rankReason": "Đạt doanh số đặc biệt quý 3", "rankRequester": "Hoàng Thị Mỹ Trinh"}, "cho-duyet-bo-nhiem": {"selectedMemberId": 5, "rankPending": {"5": {"from": "Gold", "to": "Diamond", "reason": "Đạt doanh số đặc biệt quý 3", "requester": "Hoàng Thị Mỹ Trinh", "time": "08/10/2026 10:20"}}, "rankLogs": {"5": [{"label": "Đề nghị bổ nhiệm Gold → Diamond · lý do: Đạt doanh số đặc biệt quý 3 · người yêu cầu: Hoàng Thị Mỹ Trinh · đã gửi email anh Phương duyệt", "time": "08/10/2026 10:20"}]}}, "sua-ho-so": {"selectedMemberId": 2, "profileOpen": true, "profileEdit": true}, "sua-ho-so-doi-email": {"selectedMemberId": 2, "profileOpen": true, "profileEdit": true, "profileDraft": {"email": "cuong.levan@gmail.com"}}, "tuyen-tren-hieu-luc": {"selectedMemberId": 4}}, h = location.hash.slice(1);
 if (H[h]) Object.assign(window.__STATE__, H[h]);
 </script>
 <script src="../js/dc-runtime.js"></script>
@@ -90,8 +90,49 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
         <div style="display:flex;flex-direction:column;gap:var(--s7)">
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s5)">
             <div style="font-size:24px;font-weight:700">Yêu cầu đổi điểm</div>
-            <button sc-camel-on-click="{{openPayoutExport}}" style="height:38px;padding:0 var(--s6);background:var(--c6);border:none;border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c12)" style-hover="background:#1B3358">Xuất danh sách chi trả</button>
+            <div style="display:flex;gap:var(--s3);flex-wrap:wrap"><button sc-camel-on-click="{{openPayResult}}" style="height:38px;padding:0 var(--s6);background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c2)" style-hover="background:rgba(154,163,176,.08)">Tải lên kết quả thanh toán</button><button sc-camel-on-click="{{openPayoutExport}}" style="height:38px;padding:0 var(--s6);background:var(--c6);border:none;border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c12)" style-hover="background:#1B3358">Xuất danh sách chi trả</button></div>
 
+            <!-- (26) MODAL: tải lên kết quả thanh toán từ ngân hàng -->
+            <sc-if value="{{showPayResult}}" hint-placeholder-val="{{false}}">
+              <div style="position:fixed;inset:0;background:rgba(43,48,58,.5);display:flex;align-items:center;justify-content:center;z-index:250;padding:var(--s7);align-items:flex-start;overflow-y:auto">
+                <div style="width:100%;max-width:680px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25);margin:var(--s8) 0">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                    <div><div style="font-size:18px;font-weight:700;color:var(--c1)">Tải lên kết quả thanh toán</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1);line-height:1.6">File danh sách lệnh ngân hàng đã chi thành công (Excel / CSV). Hệ thống đối chiếu theo số tài khoản và số tiền với các yêu cầu Đã duyệt.</div></div>
+                    <button sc-camel-on-click="{{closePayResult}}" style="background:none;border:none;font-size:18px;color:var(--c5)">✕</button>
+                  </div>
+                  <label style="border:1px dashed rgba(154,163,176,.6);border-radius:var(--r-md);padding:var(--s6);display:flex;align-items:center;justify-content:center;gap:var(--s3);cursor:pointer;color:var(--c5);font-size:13px;font-weight:600" style-hover="border-color:#1E3A66;color:#1E3A66">
+                    <span style="font-size:18px">⬆</span> Chọn file kết quả thanh toán
+                    <input type="file" accept=".xlsx,.xls,.csv" sc-camel-on-change="{{setPayResultFile}}" style="display:none">
+                  </label>
+                  <button sc-camel-on-click="{{usePayResultSample}}" style="align-self:flex-start;background:none;border:none;font-size:12px;font-weight:600;color:var(--c6);padding:0">Dùng file mẫu (bản demo)</button>
+                  <sc-if value="{{hasPayResult}}" hint-placeholder-val="{{false}}">
+                    <div style="font-size:13px;color:var(--c2)">File: <strong style="font-family:monospace">{{payResultFile}}</strong></div>
+                    <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);overflow:auto">
+                      <div style="display:grid;grid-template-columns:1.2fr 1fr .9fr 1.6fr;min-width:560px;background:rgba(154,163,176,.08);padding:var(--s4) var(--s5);font-size:11px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em">
+                        <div>Thành viên</div><div>Số tài khoản</div><div style="text-align:right">Số tiền</div><div style="text-align:right">Kết quả đối chiếu</div>
+                      </div>
+                      <sc-for list="{{payResultRows}}" as="pr" hint-placeholder-count="2">
+                        <div style="display:grid;grid-template-columns:1.2fr 1fr .9fr 1.6fr;min-width:560px;align-items:center;padding:var(--s4) var(--s5);font-size:13px;color:var(--c1);border-top:1px solid rgba(154,163,176,.2)">
+                          <div style="font-weight:600">{{pr.seller}}</div><div style="font-family:monospace;color:var(--c4)">{{pr.accountNumber}}</div><div style="text-align:right;font-weight:700">{{pr.amount}}</div><div style="text-align:right"><span style="font-size:11px;font-weight:700;padding:var(--s1) var(--s5);border-radius:var(--r-xl);white-space:nowrap;background:{{pr.resultBg}};color:{{pr.resultColor}}">{{pr.resultLabel}}</span></div>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <div style="font-size:12px;color:#965C0A;background:rgba(150,92,10,.12);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">1 dòng trong file không khớp yêu cầu nào nên bị bỏ qua: NGUYEN VAN AN · 0123456789 · 300.000đ.</div>
+                    <div style="font-size:13px;color:var(--c2)"><strong>{{payOkCount}}</strong> thanh toán thành công · <strong>{{payFailCount}}</strong> chi không thành công (không có trong file — sau khi cập nhật, bấm Hoàn điểm cho từng yêu cầu).</div>
+                  </sc-if>
+                  <sc-if value="{{payResultEmpty}}" hint-placeholder-val="{{false}}">
+                    <div style="font-size:13px;color:var(--c5)">Không còn yêu cầu nào ở trạng thái Đã duyệt để đối chiếu.</div>
+                  </sc-if>
+                  <sc-if value="{{payResultApplied}}" hint-placeholder-val="{{false}}">
+                    <div style="font-size:13px;color:#2F7A48;background:rgba(47,122,72,.12);border-radius:var(--r-md);padding:var(--s5)">{{payResultApplied}}</div>
+                  </sc-if>
+                  <div style="display:flex;gap:var(--s3)">
+                    <button sc-camel-on-click="{{closePayResult}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:15px;font-weight:600;font-size:14px">Đóng</button>
+                    <button sc-camel-on-click="{{applyPayResult}}" disabled="{{payApplyDisabled}}" style="{{payApplyStyle}}">Cập nhật trạng thái</button>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
             <!-- (21) MODAL: xuất danh sách chi trả theo kỳ — bổ sung sau UAT 02/10 -->
             <sc-if value="{{showPayoutExport}}" hint-placeholder-val="{{false}}">
               <div style="position:fixed;inset:0;background:rgba(43,48,58,.5);display:flex;align-items:center;justify-content:center;z-index:250;padding:var(--s7)">
@@ -108,7 +149,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
                       </sc-for>
                     </div>
                   </div>
-                  <div style="font-size:12px;color:var(--c4);background:rgba(30,58,102,.07);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">File gồm 5 cột: <strong>Tên chủ tài khoản · Số tài khoản · Ngân hàng · Số điểm · Số tiền</strong>. Chỉ lấy các yêu cầu <strong>đã duyệt đủ 2 bước</strong> và chưa chi của kỳ được chọn.</div>
+                  <div style="font-size:12px;color:var(--c4);background:rgba(30,58,102,.07);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">File gồm 5 cột: <strong>Tên chủ tài khoản · Số tài khoản · Ngân hàng · Số điểm · Số tiền</strong>. Chỉ lấy các yêu cầu <strong>Đã duyệt</strong>, chưa thanh toán, của kỳ được chọn. Ngân hàng chi xong thì tải file kết quả lên bằng nút <strong>Tải lên kết quả thanh toán</strong>.</div>
                   <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);overflow:auto">
                     <div style="display:grid;grid-template-columns:1.3fr 1.1fr 1fr .8fr .9fr;min-width:560px;background:rgba(154,163,176,.08);padding:var(--s4) var(--s5);font-size:11px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em">
                       <div>Tên chủ tài khoản</div><div>Số tài khoản</div><div>Ngân hàng</div><div style="text-align:right">Số điểm</div><div style="text-align:right">Số tiền</div>
@@ -141,14 +182,25 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
               </sc-for>
             </div>
             <input type="text" value="{{withdrawalSearch}}" sc-camel-on-change="{{setWithdrawalSearch}}" placeholder="Tìm theo seller…" style="flex:1;min-width:200px;height:38px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
+          <!-- (26) Duyệt hàng loạt — chỉ yêu cầu Chờ duyệt -->
+          <sc-if value="{{wdHasPending}}" hint-placeholder-val="{{true}}">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s4);font-size:12px;color:var(--c4);background:rgba(30,58,102,.07);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">
+              <div>Đã chọn <strong>{{wdSelCount}}</strong> / {{wdPendingCount}} yêu cầu Chờ duyệt. Duyệt xong điểm bị trừ khỏi số dư thành viên và yêu cầu vào danh sách xuất file chi trả.</div>
+              <div style="display:flex;gap:var(--s3);flex-wrap:wrap">
+                <button sc-camel-on-click="{{openBulkSelected}}" disabled="{{wdSelDisabled}}" style="{{wdSelBtnStyle}}">Duyệt đã chọn ({{wdSelCount}})</button>
+                <button sc-camel-on-click="{{openBulkAll}}" style="height:34px;padding:0 var(--s5);background:var(--c8);color:var(--c12);border:none;border-radius:var(--r-md);font-size:12px;font-weight:600">Duyệt tất cả Chờ duyệt ({{wdPendingCount}})</button>
+              </div>
+            </div>
+          </sc-if>
           </div>
           <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);overflow:auto">
-            <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr .9fr 1.1fr 1fr .9fr .9fr .6fr;min-width:1320px;background:rgba(154,163,176,.08);padding:var(--s5) var(--s6);font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em">
-              <div>Thành viên</div><div>Khoản thưởng hiện tại</div><div>Yêu cầu đổi điểm</div><div>Số dư còn lại</div><div>Ngày yêu cầu</div><div>Số tài khoản nhận</div><div>Tên ngân hàng</div><div>Chi nhánh</div><div>Trạng thái</div><div></div>
+            <div style="display:grid;grid-template-columns:36px 1.2fr 1fr 1fr 1fr .9fr 1.1fr 1fr .9fr .9fr .6fr;min-width:1360px;background:rgba(154,163,176,.08);padding:var(--s5) var(--s6);font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em">
+              <div sc-camel-on-click="{{wdToggleAll}}" style="display:flex;align-items:center;cursor:pointer"><span style="width:16px;height:16px;border:1.5px solid {{wdAllBorder}};border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#FFFFFF;background:{{wdAllBg}}">{{wdAllMark}}</span></div><div>Thành viên</div><div>Khoản thưởng hiện tại</div><div>Yêu cầu đổi điểm</div><div>Số dư còn lại</div><div>Ngày yêu cầu</div><div>Số tài khoản nhận</div><div>Tên ngân hàng</div><div>Chi nhánh</div><div>Trạng thái</div><div></div>
             </div>
-            <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr .9fr 1.1fr 1fr .9fr .9fr .6fr;min-width:1320px;padding:var(--s5) var(--s6);font-size:13px;font-weight:700;color:var(--c1);background:rgba(30,58,102,.06);border-top:1px solid rgba(154,163,176,.2)"><div>TỔNG</div><div>{{sumRewardLabel}}</div><div>{{sumRequestLabel}}</div><div>{{sumRemainLabel}}</div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            <div style="display:grid;grid-template-columns:36px 1.2fr 1fr 1fr 1fr .9fr 1.1fr 1fr .9fr .9fr .6fr;min-width:1360px;padding:var(--s5) var(--s6);font-size:13px;font-weight:700;color:var(--c1);background:rgba(30,58,102,.06);border-top:1px solid rgba(154,163,176,.2)"><div></div><div>TỔNG</div><div>{{sumRewardLabel}}</div><div>{{sumRequestLabel}}</div><div>{{sumRemainLabel}}</div><div></div><div></div><div></div><div></div><div></div><div></div></div>
             <sc-for list="{{withdrawals}}" as="w" hint-placeholder-count="5">
-              <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr .9fr 1.1fr 1fr .9fr .9fr .6fr;min-width:1320px;align-items:center;padding:var(--s5) var(--s6);font-size:13px;color:var(--c1);border-top:1px solid rgba(154,163,176,.2);cursor:pointer" sc-camel-on-click="{{w.onClick}}" style-hover="background:rgba(30,58,102,.05)">
+              <div style="display:grid;grid-template-columns:36px 1.2fr 1fr 1fr 1fr .9fr 1.1fr 1fr .9fr .9fr .6fr;min-width:1360px;align-items:center;padding:var(--s5) var(--s6);font-size:13px;color:var(--c1);border-top:1px solid rgba(154,163,176,.2);cursor:pointer" sc-camel-on-click="{{w.onClick}}" style-hover="background:rgba(30,58,102,.05)">
+                <div sc-camel-on-click="{{w.onToggle}}" style="display:flex;align-items:center;cursor:{{w.boxCursor}}"><sc-if value="{{w.selectable}}" hint-placeholder-val="{{false}}"><span style="width:16px;height:16px;border:1.5px solid {{w.boxBorder}};border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#FFFFFF;background:{{w.boxBg}}">{{w.boxMark}}</span></sc-if></div>
                 <div style="font-weight:600">{{w.seller}}</div>
                 <div style="color:var(--c4)">{{w.rewardLabel}}</div>
                 <div style="font-weight:700">{{w.amount}}</div>
@@ -355,6 +407,52 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
               </tbody>
             </table>
           </div>
+
+          <!-- (28) Hoa hồng theo cấp — tính % trên giá trị gói (mục 23, 21) -->
+          <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s5)">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:var(--s5)">
+              <div><div style="font-size:18px;font-weight:700;color:var(--c1)">Hoa hồng theo cấp</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1);line-height:1.6">Tính theo <strong>phần trăm giá trị gói</strong>, áp dụng cho mọi gói của HOMI365-01. Cột Trực tiếp là phần người bán ở cấp đó nhận khi tự bán.</div></div>
+              <button sc-camel-on-click="{{saveCommission}}" disabled="{{commSaveDisabled}}" style="{{commSaveStyle}}">Lưu cấu hình</button>
+            </div>
+            <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);overflow:auto">
+              <div style="display:grid;grid-template-columns:1.1fr .9fr .9fr 1.1fr 1.1fr;min-width:720px;background:rgba(154,163,176,.08);padding:var(--s4) var(--s5);font-size:11px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em">
+                <div>Cấp</div><div>Trực tiếp (%)</div><div>Chênh lệch (%)</div><div style="text-align:right">Gói 1 năm · 10.000.000đ</div><div style="text-align:right">Gói nửa năm · 6.000.000đ</div>
+              </div>
+              <sc-for list="{{commRows}}" as="c" hint-placeholder-count="6">
+                <div style="display:grid;grid-template-columns:1.1fr .9fr .9fr 1.1fr 1.1fr;min-width:720px;align-items:center;padding:var(--s3) var(--s5);font-size:13px;color:var(--c1);border-top:1px solid rgba(154,163,176,.2)">
+                  <div style="font-weight:600">{{c.rank}}</div>
+                  <div style="display:flex;align-items:center;gap:var(--s2)"><input type="text" inputmode="decimal" value="{{c.pct}}" sc-camel-on-change="{{c.onChange}}" style="width:76px;height:34px;padding:0 var(--s4);border:1px solid {{c.border}};border-radius:var(--r-md);font-size:13px;text-align:right"><span style="color:var(--c5)">%</span></div>
+                  <div>
+                    <sc-if value="{{c.hasDiff}}" hint-placeholder-val="{{true}}">
+                      <div style="display:flex;align-items:center;gap:var(--s2)"><input type="text" inputmode="decimal" value="{{c.diffPct}}" sc-camel-on-change="{{c.onDiffChange}}" style="width:76px;height:34px;padding:0 var(--s4);border:1px solid {{c.diffBorder}};border-radius:var(--r-md);font-size:13px;text-align:right"><span style="color:var(--c5)">%</span></div>
+                    </sc-if>
+                    <sc-if value="{{c.noDiff}}" hint-placeholder-val="{{false}}"><span style="color:var(--c5)">—</span></sc-if>
+                  </div>
+                  <div style="text-align:right">{{c.amt1y}}<div style="font-size:11px;color:var(--c5)">{{c.diff1y}}</div></div>
+                  <div style="text-align:right">{{c.amt6m}}<div style="font-size:11px;color:var(--c5)">{{c.diff6m}}</div></div>
+                </div>
+              </sc-for>
+              <div style="display:grid;grid-template-columns:1.1fr .9fr .9fr 1.1fr 1.1fr;min-width:720px;align-items:center;padding:var(--s3) var(--s5);font-size:13px;color:var(--c5);border-top:1px solid rgba(154,163,176,.2);background:rgba(30,58,102,.04)">
+                <div><div style="font-weight:600;color:var(--c2)">Super Lithium</div><div style="font-size:11px">Tài khoản công ty · không hiển thị với thành viên</div></div>
+                <div>Nhận phần còn lại</div><div>—</div><div style="text-align:right">—</div><div style="text-align:right">—</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1.1fr .9fr .9fr 1.1fr 1.1fr;min-width:720px;align-items:center;padding:var(--s4) var(--s5);font-size:13px;font-weight:700;color:var(--c1);border-top:1px solid rgba(154,163,176,.35);background:rgba(154,163,176,.06)">
+                <div>Tổng phân bổ tối đa / đơn</div><div>{{commMaxPct}}</div><div></div><div style="text-align:right">{{commMax1y}}</div><div style="text-align:right">{{commMax6m}}</div>
+              </div>
+            </div>
+            <sc-if value="{{commWarn}}" hint-placeholder-val="{{false}}">
+              <div style="font-size:12px;color:var(--err);background:rgba(192,57,43,.08);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">{{commWarn}}</div>
+            </sc-if>
+            <div style="display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap;font-size:13px;color:var(--c2)">
+              <label style="font-weight:600">Độ sâu cây tối đa</label>
+              <input type="text" inputmode="numeric" value="{{commDepth}}" sc-camel-on-change="{{setCommDepth}}" style="width:64px;height:34px;padding:0 var(--s4);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;text-align:right">
+              <span style="font-size:12px;color:var(--c5)">cấp tuyến trên được xét khi chia hoa hồng; vượt quá thì phần còn lại về công ty.</span>
+            </div>
+            <div style="font-size:11px;color:var(--c5);line-height:1.6">Phần chênh lệch giữa các cấp cũng tính theo <strong>% giá trị gói</strong> (HOMI365 trả lời H6); số tiền dưới mỗi ô là phần chênh lệch quy đổi theo từng gói. Super Lithium đứng trên cùng, Lithium không thăng lên được.</div>
+            <sc-if value="{{commSaved}}" hint-placeholder-val="{{false}}">
+              <div style="font-size:13px;color:#2F7A48;background:rgba(47,122,72,.12);border-radius:var(--r-md);padding:var(--s4) var(--s5)">{{commSaved}}</div>
+            </sc-if>
+          </div>
         </div>
       </sc-if>
 
@@ -366,7 +464,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
               <button sc-camel-on-click="{{closeProductForm}}" style="background:none;border:none;font-size:18px;color:var(--c5)">&#10005;</button>
             </div>
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Tên sản phẩm (*)</label>
-              <input type="text" value="{{productFormName}}" placeholder="Gói Bác sĩ 24/7 · License 12 tháng" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
+              <input type="text" value="{{productFormName}}" placeholder="HOMI365-01" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
             </div>
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Hình ảnh</label>
               <label style="border:1px dashed rgba(154,163,176,.6);border-radius:var(--r-md);padding:var(--s7);display:flex;flex-direction:column;align-items:center;gap:var(--s2);cursor:pointer;color:var(--c5)" style-hover="border-color:#1E3A66;color:#1E3A66">
@@ -618,6 +716,88 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
         </div>
       </sc-if>
 
+      <!-- B9 XÉT THĂNG / HẠ CẤP (bổ sung sau UAT 02/10 — mục 12, 13, 14, 17, 18) -->
+      <sc-if value="{{isB9}}" hint-placeholder-val="{{false}}">
+        <div style="display:flex;flex-direction:column;gap:var(--s7)">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s5)">
+            <div><div style="font-size:24px;font-weight:700">Xét thăng / hạ cấp</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">Kỳ 09/2026 · danh sách đề xuất lập lúc 00:00 ngày 01/10/2026 · cấp mới chỉ có hiệu lực khi được duyệt</div></div>
+            <button sc-camel-on-click="{{rrRunSel}}" disabled="{{rrSelDisabled}}" style="{{rrRunStyle}}">Chạy lại xét cấp cho nhóm đã chọn ({{rrSelCount}})</button>
+          </div>
+          <div style="font-size:12px;color:var(--c4);background:rgba(30,58,102,.07);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">Đã tắt tự động thăng / hạ cấp. Quy tắc lập đề xuất: <strong>mỗi tháng lên hoặc xuống tối đa 1 cấp</strong>, không nhảy bậc · lên cấp mới thì gói xét cấp <strong>đếm lại từ 0</strong> · gói 1 năm = 1 gói, <strong>gói 6 tháng = 0,5 gói</strong> · trong tháng dưới 1 gói quy đổi thì đề xuất hạ 1 cấp (Copper giữ nguyên), nửa gói lẻ không cộng dồn sang tháng sau. Ngưỡng theo Chính sách ưu đãi thành viên: Silver 10 · Gold 18 · Diamond 24 · Titanium 28 · Lithium 30 gói quy đổi.</div>
+          <sc-if value="{{rrRunNote}}" hint-placeholder-val="{{false}}">
+            <div style="font-size:13px;color:#2F7A48;background:rgba(47,122,72,.12);border-radius:var(--r-md);padding:var(--s4) var(--s5)">{{rrRunNote}}</div>
+          </sc-if>
+          <div style="display:flex;gap:var(--s5);flex-wrap:wrap;align-items:center;justify-content:space-between">
+            <div style="display:flex;gap:var(--s2);flex-wrap:wrap">
+              <sc-for list="{{rrFilters}}" as="f" hint-placeholder-count="4">
+                <button sc-camel-on-click="{{f.onClick}}" style="{{f.style}}">{{f.label}}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:var(--s3);flex-wrap:wrap">
+              <button sc-camel-on-click="{{rrApproveSel}}" disabled="{{rrSelDisabled}}" style="{{rrSelBtnStyle}}">Duyệt đã chọn ({{rrSelCount}})</button>
+              <button sc-camel-on-click="{{rrApproveAll}}" disabled="{{rrNoPending}}" style="{{rrAllBtnStyle}}">Duyệt tất cả ({{rrPendingCount}})</button>
+            </div>
+          </div>
+          <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);overflow:auto">
+            <div style="display:grid;grid-template-columns:30px 1.25fr .7fr .9fr .95fr .8fr 1.9fr 1fr 1.25fr;min-width:1060px;background:rgba(154,163,176,.08);padding:var(--s5) var(--s6);font-size:11px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;align-items:center">
+              <div sc-camel-on-click="{{rrToggleAll}}" style="display:flex;align-items:center;cursor:pointer"><span style="width:16px;height:16px;border:1.5px solid {{rrAllBorder}};border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#FFFFFF;background:{{rrAllBg}}">{{rrAllMark}}</span></div><div>Thành viên</div><div>Cấp hiện tại</div><div>Gói xét cấp</div><div>Tháng này (quy đổi)</div><div>Đề xuất</div><div>Lý do hệ thống đề xuất</div><div>Trạng thái</div><div></div>
+            </div>
+            <sc-for list="{{rrRows}}" as="r" hint-placeholder-count="3">
+              <div style="display:grid;grid-template-columns:30px 1.25fr .7fr .9fr .95fr .8fr 1.9fr 1fr 1.25fr;min-width:1060px;align-items:start;padding:var(--s5) var(--s6);font-size:13px;color:var(--c1);border-top:1px solid rgba(154,163,176,.2)">
+                <div sc-camel-on-click="{{r.onToggle}}" style="display:flex;align-items:center;cursor:{{r.boxCursor}};padding-top:2px"><sc-if value="{{r.canAct}}" hint-placeholder-val="{{true}}"><span style="width:16px;height:16px;border:1.5px solid {{r.boxBorder}};border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#FFFFFF;background:{{r.boxBg}}">{{r.boxMark}}</span></sc-if></div>
+                <div><div style="font-weight:600">{{r.name}}</div><div style="font-size:11px;color:var(--c5);font-family:monospace">{{r.code}}</div></div>
+                <div style="font-weight:600">{{r.from}}</div>
+                <div><div style="font-weight:700">{{r.cum}}</div><div style="font-size:11px;color:var(--c5)">{{r.cumSub}}</div></div>
+                <div><div style="font-weight:600">{{r.month}}</div><div style="font-size:11px;color:var(--c5)">{{r.monthSub}}</div></div>
+                <div><span style="font-size:11px;font-weight:700;padding:var(--s1) var(--s5);border-radius:var(--r-xl);white-space:nowrap;background:{{r.propBg}};color:{{r.propColor}}">{{r.propLabel}}</span></div>
+                <div style="color:var(--c2);line-height:1.55;font-size:12px">{{r.reason}}<sc-if value="{{r.hasNote}}" hint-placeholder-val="{{false}}"><div style="font-size:11px;color:#965C0A;margin-top:var(--s1)">{{r.note}}</div></sc-if></div>
+                <div><span style="font-size:11px;font-weight:700;padding:var(--s1) var(--s5);border-radius:var(--r-xl);white-space:nowrap;background:{{r.stBg}};color:{{r.stColor}}">{{r.stLabel}}</span><div style="font-size:11px;color:var(--c5);margin-top:var(--s1)">{{r.stSub}}</div><sc-if value="{{r.hasDenyReason}}" hint-placeholder-val="{{false}}"><div style="font-size:11px;color:var(--c5);margin-top:var(--s2);line-height:1.5">Lý do: {{r.denyReason}}</div></sc-if></div>
+                <div style="display:flex;gap:var(--s2);justify-content:flex-end;flex-wrap:wrap">
+                  <sc-if value="{{r.canAct}}" hint-placeholder-val="{{true}}">
+                    <button sc-camel-on-click="{{r.onApprove}}" style="height:32px;padding:0 var(--s5);background:var(--c8);color:var(--c12);border:none;border-radius:var(--r-md);font-size:12px;font-weight:600">Duyệt</button>
+                    <button sc-camel-on-click="{{r.onDeny}}" style="height:32px;padding:0 var(--s5);background:var(--c12);color:var(--err);border:1px solid var(--err);border-radius:var(--r-md);font-size:12px;font-weight:600">Từ chối</button>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{rrEmpty}}" hint-placeholder-val="{{false}}">
+              <div style="padding:var(--s9);text-align:center;color:var(--c5);font-size:13px">Không có đề xuất nào khớp bộ lọc.</div>
+            </sc-if>
+          </div>
+        </div>
+
+        <sc-if value="{{isRrDeny}}" hint-placeholder-val="{{false}}">
+          <div style="position:fixed;inset:0;background:rgba(43,48,58,.5);display:flex;align-items:center;justify-content:center;z-index:250;padding:var(--s7)">
+            <div style="width:100%;max-width:400px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25)">
+              <div style="font-size:18px;font-weight:700;color:var(--c1)">Từ chối đề xuất</div>
+              <div style="font-size:13px;color:var(--c5)">{{rrModalName}} · {{rrModalProp}}. Nhập lý do không duyệt (bắt buộc):</div>
+              <textarea placeholder="Nhập lý do…" value="{{rrDenyText}}" sc-camel-on-change="{{setRrDenyText}}" style="min-height:90px;padding:var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;resize:vertical"></textarea>
+              <div style="display:flex;gap:var(--s3)">
+                <button sc-camel-on-click="{{closeRrModal}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Huỷ</button>
+                <button sc-camel-on-click="{{confirmRrDeny}}" disabled="{{rrDenyDisabled}}" style="{{rrDenyStyle}}">Từ chối</button>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{isRrBulk}}" hint-placeholder-val="{{false}}">
+          <div style="position:fixed;inset:0;background:rgba(43,48,58,.5);display:flex;align-items:center;justify-content:center;z-index:250;padding:var(--s7)">
+            <div style="width:100%;max-width:420px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25)">
+              <div style="font-size:18px;font-weight:700;color:var(--c1)">Duyệt {{rrBulkCount}} đề xuất</div>
+              <div style="display:flex;flex-direction:column;gap:var(--s2);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s4) var(--s5)">
+                <sc-for list="{{rrBulkRows}}" as="b" hint-placeholder-count="3">
+                  <div style="display:flex;justify-content:space-between;gap:var(--s4);font-size:13px;color:var(--c2)"><span>{{b.name}}</span><span style="font-weight:600">{{b.from}} → {{b.to}}</span></div>
+                </sc-for>
+              </div>
+              <div style="font-size:12px;color:var(--c4);background:rgba(30,58,102,.07);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">Cấp mới có hiệu lực từ 01/10/2026. Hệ thống gửi email báo thăng / hạ cấp cho từng thành viên và ghi lịch sử thay đổi hạng.</div>
+              <div style="display:flex;gap:var(--s3)">
+                <button sc-camel-on-click="{{closeRrModal}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Đóng</button>
+                <button sc-camel-on-click="{{confirmRrBulk}}" style="flex:1;height:44px;background:var(--c8);color:var(--c12);border:none;border-radius:var(--r-md);font-size:14px;font-weight:600">Duyệt {{rrBulkCount}} đề xuất</button>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </sc-if>
+
       <!-- B4 WAREHOUSE -->
       <sc-if value="{{isB4}}" hint-placeholder-val="{{false}}">
         <div style="display:flex;flex-direction:column;gap:var(--s7)">
@@ -721,10 +901,28 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             <span style="color:var(--c5)">Hạng · Cấp tuyến</span>
             <span style="font-weight:700;color:var(--c1)">{{effRank}} · {{selectedMember.tierLabel}}</span>
           </div>
+          <!-- (27) Gói xét cấp + tuyến trên hiệu lực -->
+          <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px;margin-bottom:var(--s5);border:1px solid rgba(154,163,176,.3);border-radius:var(--r-md);padding:var(--s5)">
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5)">Gói xét cấp (từ lần đổi cấp gần nhất)</span><span style="font-weight:700;color:var(--c1)">{{mRankCount}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5)">Gói tháng này (quy đổi)</span><span style="font-weight:600;color:var(--c2)">{{mRankMonth}}</span></div>
+            <div style="font-size:11px;color:var(--c5);line-height:1.6">Gói 1 năm = 1 · gói 6 tháng = 0,5. Mỗi tháng lên hoặc xuống tối đa 1 cấp; dưới 1 gói quy đổi trong tháng thì bị hạ 1 cấp.</div>
+            <div style="height:1px;background:rgba(154,163,176,.25)"></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5)">Tuyến trên trực tiếp</span><span style="color:var(--c2);text-align:right">{{mUplineDirect}}</span></div>
+            <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5)">Tuyến trên hiệu lực</span><span style="font-weight:700;color:var(--c1);text-align:right">{{mUplineEff}}</span></div>
+            <sc-if value="{{hasUplineNote}}" hint-placeholder-val="{{false}}">
+              <div style="font-size:12px;color:#965C0A;background:rgba(150,92,10,.12);border-radius:var(--r-sm);padding:var(--s4);line-height:1.6">{{mUplineNote}}</div>
+            </sc-if>
+          </div>
+          <sc-if value="{{hasRankPending}}" hint-placeholder-val="{{false}}">
+            <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:12px;color:var(--c2);background:rgba(150,92,10,.12);border:1px solid rgba(150,92,10,.35);border-radius:var(--r-md);padding:var(--s5);margin-bottom:var(--s5);line-height:1.6">
+              <div><strong>Bổ nhiệm đặc biệt đang chờ anh Phương duyệt qua email:</strong> {{rankPendingText}}</div>
+              <button sc-camel-on-click="{{approveRankPending}}" style="align-self:flex-start;height:32px;padding:0 var(--s5);background:var(--c12);border:1px solid #965C0A;border-radius:var(--r-md);font-size:12px;font-weight:600;color:#965C0A">Bản mẫu: mô phỏng anh Phương đã duyệt</button>
+            </div>
+          </sc-if>
 
           <!-- (18) Cập nhật cấp theo phiếu đã duyệt ngoài hệ thống -->
-          <button sc-camel-on-click="{{openRankEdit}}" style="width:100%;height:40px;margin-bottom:var(--s3);background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c6)" style-hover="background:rgba(154,163,176,.08)">Cập nhật cấp</button>
-          <div style="font-size:11px;color:var(--c5);line-height:1.6;margin-bottom:var(--s6)">Việc trình và duyệt làm ngoài hệ thống. Ở đây chỉ ghi nhận cấp đã được duyệt, kèm số phiếu để đối chiếu.</div>
+          <button sc-camel-on-click="{{openRankEdit}}" style="width:100%;height:40px;margin-bottom:var(--s3);background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c6)" style-hover="background:rgba(154,163,176,.08)">Bổ nhiệm đặc biệt</button>
+          <div style="font-size:11px;color:var(--c5);line-height:1.6;margin-bottom:var(--s6)">Admin nhập lý do và người yêu cầu; hệ thống gửi email để anh Phương duyệt, cấp mới có hiệu lực sau khi được duyệt.</div>
 
           <sc-if value="{{hasRankLog}}" hint-placeholder-val="{{false}}">
             <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s4)">Lịch sử điều chỉnh cấp</div>
@@ -799,8 +997,8 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           </div>
           <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử đơn hàng &amp; hoa hồng</div>
           <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px">
-            <div style="display:flex;justify-content:space-between;color:var(--c2)"><span>Đơn #10234 — CN02</span><span style="font-weight:600">+120.000đ</span></div>
-            <div style="display:flex;justify-content:space-between;color:var(--c2)"><span>Đơn #10198 — CN02</span><span style="font-weight:600">+120.000đ</span></div>
+            <div style="display:flex;justify-content:space-between;color:var(--c2)"><span>Đơn #10234 — HOMI365-01</span><span style="font-weight:600">+120.000đ</span></div>
+            <div style="display:flex;justify-content:space-between;color:var(--c2)"><span>Đơn #10198 — HOMI365-01</span><span style="font-weight:600">+120.000đ</span></div>
           </div>
         </div>
       </div>
@@ -903,51 +1101,30 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
     </div>
   </sc-if>
 
-  <!-- MODAL: cập nhật cấp thành viên (bổ sung 17/09) -->
+  <!-- MODAL: bổ nhiệm đặc biệt (17/09, làm lại theo phản hồi KH 08/10) -->
   <sc-if value="{{showRankEdit}}" hint-placeholder-val="{{false}}">
-    <div style="position:fixed;inset:0;background:rgba(43,48,58,.5);display:flex;align-items:flex-start;justify-content:center;z-index:260;padding:var(--s7);overflow-y:auto">
-      <div style="width:100%;max-width:440px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25);margin:var(--s8) 0">
+    <div style="position:fixed;inset:0;background:rgba(31,31,31,.5);display:flex;align-items:flex-start;justify-content:center;z-index:260;padding:var(--s7);overflow-y:auto">
+      <div style="width:100%;max-width:460px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25);margin:var(--s8) 0">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s5)">
           <div>
-            <div style="font-size:18px;font-weight:700;color:var(--c1)">Cập nhật cấp</div>
+            <div style="font-size:18px;font-weight:700;color:var(--c1)">Bổ nhiệm đặc biệt</div>
             <div style="font-size:12px;color:var(--c5);margin-top:var(--s1);line-height:1.6">{{rankEditName}} · đang ở cấp <strong>{{rankEditCurrent}}</strong></div>
           </div>
           <button sc-camel-on-click="{{closeRankEdit}}" style="background:none;border:none;font-size:18px;color:var(--c5);flex:none">&#10005;</button>
         </div>
-
-        <div style="font-size:12px;color:var(--c4);background:rgba(30,58,102,.07);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">Chọn đúng cấp đã được duyệt trong phiếu. Hệ thống không xét duyệt lại — lưu là áp dụng ngay.</div>
-
+        <div style="font-size:12px;color:var(--c4);background:rgba(30,58,102,.07);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">Hệ thống gửi email để <strong>anh Phương</strong> duyệt. Cấp mới chỉ có hiệu lực sau khi được duyệt; email được lưu làm bằng chứng.</div>
         <div style="display:flex;flex-direction:column;gap:var(--s2)">
-          <div style="font-size:13px;font-weight:600;color:var(--c2)">Cấp đã được duyệt</div>
-          <sc-for list="{{rankOptions}}" as="ro" hint-placeholder-count="6">
+          <div style="font-size:13px;font-weight:600;color:var(--c2)">Cấp đề nghị</div>
+          <sc-for list="{{rankOptions}}" as="ro" hint-placeholder-count="7">
             <button sc-camel-on-click="{{ro.onClick}}" disabled="{{ro.disabled}}" style="{{ro.style}}"><span>{{ro.name}}</span><span style="font-size:11px;text-align:right;line-height:1.5">{{ro.note}}</span></button>
           </sc-for>
-          <div style="font-size:11px;color:var(--c5);line-height:1.6">Chỉ đổi cấp của riêng thành viên này — tuyến dưới giữ nguyên. Cấp bị làm mờ là cấp phá vỡ trật tự tuyến; gặp trường hợp này phải trình lại bên ngoài, không tự phá rào.</div>
+          <div style="font-size:11px;color:var(--c5);line-height:1.6">Không chọn được cấp <strong>bằng hoặc cao hơn</strong> tuyến trên hiệu lực ({{rankEditUpLabel}}), cũng không thấp hơn tuyến dưới trực tiếp. Super Lithium là tài khoản công ty.</div>
         </div>
-
-        <div style="display:flex;flex-direction:column;gap:var(--s4)">
-          <div style="font-size:13px;font-weight:600;color:var(--c2)">Minh chứng phê duyệt (bắt buộc)</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s5)">
-            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Số phiếu / mã email</label><input type="text" placeholder="PD-2026-014" value="{{rankDocNo}}" sc-camel-on-change="{{setRankDocNo}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
-            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Ngày duyệt</label><input type="text" placeholder="dd/mm/yyyy" value="{{rankDocDate}}" sc-camel-on-change="{{setRankDocDate}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:12px;color:var(--c5)">Người duyệt</label><input type="text" placeholder="Họ tên người đã duyệt" value="{{rankApprover}}" sc-camel-on-change="{{setRankApprover}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
-          <div style="display:flex;flex-direction:column;gap:var(--s2)">
-            <label style="font-size:12px;color:var(--c5)">File minh chứng (ảnh chụp email / phiếu duyệt đã ký)</label>
-            <label style="border:1px dashed rgba(154,163,176,.6);border-radius:var(--r-md);padding:var(--s6);display:flex;align-items:center;justify-content:center;gap:var(--s3);cursor:pointer;color:var(--c5);font-size:13px;font-weight:600;text-align:center" style-hover="border-color:#1E3A66;color:#1E3A66">
-              <span style="font-size:18px">&#11014;</span> Chọn file từ thiết bị
-              <input type="file" accept="image/*,.pdf,.eml,.msg" sc-camel-on-change="{{setRankDocFile}}" style="display:none">
-            </label>
-            <sc-if value="{{hasRankDocFile}}" hint-placeholder-val="{{false}}">
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--s4);background:rgba(154,163,176,.1);border-radius:var(--r-md);padding:var(--s3) var(--s5);font-size:12px;color:var(--c2)"><span style="font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{rankDocFile}}</span><button sc-camel-on-click="{{clearRankDocFile}}" style="background:none;border:none;color:var(--c5);font-size:14px;flex:none;cursor:pointer">&#10005;</button></div>
-            </sc-if>
-            <div style="font-size:11px;color:var(--c5);line-height:1.6">Ảnh, PDF hoặc file email, tối đa 10MB. Không bắt buộc, nhưng nên có — ba trường phía trên chỉ là số hiệu, file mới là bằng chứng.</div>
-          </div>
-        </div>
-
+        <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:13px;font-weight:600;color:var(--c2)">Lý do (*)</label><textarea placeholder="VD: Đạt doanh số đặc biệt quý 3" value="{{rankReason}}" sc-camel-on-change="{{setRankReason}}" style="min-height:80px;padding:var(--s4) var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;resize:vertical"></textarea></div>
+        <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:13px;font-weight:600;color:var(--c2)">Người yêu cầu (*)</label><input type="text" placeholder="Họ tên người đề nghị bổ nhiệm" value="{{rankRequester}}" sc-camel-on-change="{{setRankRequester}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
         <div style="display:flex;gap:var(--s3)">
           <button sc-camel-on-click="{{closeRankEdit}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Huỷ</button>
-          <button sc-camel-on-click="{{submitRankEdit}}" disabled="{{rankSubmitDisabled}}" style="{{rankSubmitStyle}}">Lưu &amp; áp dụng</button>
+          <button sc-camel-on-click="{{submitRankEdit}}" disabled="{{rankSubmitDisabled}}" style="{{rankSubmitStyle}}">Gửi email đề nghị duyệt</button>
         </div>
       </div>
     </div>
@@ -959,7 +1136,6 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
       <div style="width:100%;max-width:400px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s6);box-shadow:0 8px 30px rgba(0,0,0,.25)">
 
         <sc-if value="{{isApproveModal}}" hint-placeholder-val="{{false}}">
-          <div style="font-size:11px;font-weight:700;color:#1E3A66;text-transform:uppercase;letter-spacing:.04em">{{actionStageLabel}}</div>
           <div style="font-size:18px;font-weight:700;color:var(--c1)">Xác nhận duyệt yêu cầu</div>
           <div style="font-size:14px;color:var(--c2);line-height:1.6">Xác nhận duyệt yêu cầu đổi <strong>{{actionWithdrawal.amount}}</strong> cho <strong>{{actionWithdrawal.seller}}</strong>?</div>
           <sc-if value="{{approveOverBalance}}" hint-placeholder-val="{{false}}">
@@ -999,6 +1175,22 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           <div style="display:flex;gap:var(--s3)">
             <button sc-camel-on-click="{{closeActionModal}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Hủy</button>
             <button sc-camel-on-click="{{confirmReject}}" disabled="{{rejectDisabled}}" style="{{rejectConfirmStyle}}">Từ chối</button>
+          </div>
+        </sc-if>
+
+        <!-- (26) Duyệt hàng loạt -->
+        <sc-if value="{{isBulkModal}}" hint-placeholder-val="{{false}}">
+          <div style="font-size:18px;font-weight:700;color:var(--c1)">Duyệt {{bulkCount}} yêu cầu đổi điểm</div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2);max-height:200px;overflow:auto;border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s4) var(--s5)">
+            <sc-for list="{{bulkRows}}" as="br" hint-placeholder-count="2">
+              <div style="display:flex;justify-content:space-between;gap:var(--s4);font-size:13px;color:var(--c2)"><span>{{br.seller}}</span><span style="font-weight:600">{{br.amount}}</span></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;color:var(--c1)"><span>Tổng</span><span>{{bulkTotal}}</span></div>
+          <div style="font-size:12px;color:var(--c4);background:rgba(30,58,102,.07);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">Sau khi duyệt, các yêu cầu chuyển sang Đã duyệt, điểm bị trừ khỏi số dư của thành viên và sẵn sàng xuất file chi trả.</div>
+          <div style="display:flex;gap:var(--s3)">
+            <button sc-camel-on-click="{{closeActionModal}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Đóng</button>
+            <button sc-camel-on-click="{{confirmBulkApprove}}" style="flex:1;height:44px;background:var(--c8);color:var(--c12);border:none;border-radius:var(--r-md);font-size:14px;font-weight:600">Duyệt {{bulkCount}} yêu cầu</button>
           </div>
         </sc-if>
 
@@ -1109,6 +1301,15 @@ class Component extends DCLogic {
     showPayoutExport: false, payoutPeriod: '08/2026', payoutExported: '',
     // (23) Dòng xác nhận sau khi admin lưu hồ sơ: { id, text }.
     profileSaved: null,
+    // (28) Cấu hình hoa hồng theo % (B5).
+    commPct: null, commDiff: null, commDepth: null, commSaved: '',
+    // (27) Xét cấp (B9) + bổ nhiệm đặc biệt chờ duyệt email.
+    rrStatus: {}, rrSel: {}, rrReason: {}, rrFilter: 'all', rrModal: null, rrDenyText: '', rrRunNote: '',
+    rankReason: '', rankRequester: '', rankPending: {},
+    // (26) Đổi điểm sau phản hồi KH: yêu cầu của chính thành viên (A3),
+    // duyệt hàng loạt và tải kết quả thanh toán (B3).
+    myWd: null, wdPeriodLocked: false, showCancelWd: false,
+    wdSel: {}, showPayResult: false, payResultFile: '', payResultApplied: '',
     ...(window.__STATE__ || {})
   };
 
@@ -1118,9 +1319,9 @@ class Component extends DCLogic {
     ['B1','B1 · Đăng nhập admin'],['B2','B2 · Thành viên'],['B3','B3 · Đổi điểm'],['B4','B4 · Kho hàng']
   ];
 
-  ADMIN_NAV = [['B2','Thành viên'],['B3','Yêu cầu đổi điểm'],['B6','Đơn hàng'],['B4','Kho hàng'],['B5','Sản phẩm'],['B8','Nhật ký hệ thống'],['B7','Tài khoản admin']];
+  ADMIN_NAV = [['B2','Thành viên'],['B9','Xét thăng / hạ cấp'],['B3','Yêu cầu đổi điểm'],['B6','Đơn hàng'],['B4','Kho hàng'],['B5','Sản phẩm'],['B8','Nhật ký hệ thống'],['B7','Tài khoản admin']];
   STOCK_FILTERS = [['all','Tất cả'],['received','Nhập kho'],['available','Sẵn hàng'],['assigned','Đã gán đơn hàng'],['shipped','Xuất kho'],['delivered','Giao hàng thành công']];
-  WITHDRAWAL_FILTERS = [['all','Tất cả'],['pending','Chờ duyệt'],['specialist_approved','Chờ Head'],['approved','Đã duyệt'],['rejected','Từ chối'],['paid','Đã chi trả'],['pay_failed','Chi không thành công'],['refunded','Đã hoàn điểm']];
+  WITHDRAWAL_FILTERS = [['all','Tất cả'],['pending','Chờ duyệt'],['approved','Đã duyệt'],['paid','Thanh toán thành công'],['pay_failed','Chi không thành công'],['refunded','Đã hoàn điểm'],['rejected','Từ chối'],['cancelled','Thành viên đã huỷ']];
   STATUS_ORDER = { pending: 0, specialist_approved: 1, approved: 2, rejected: 3, paid: 4, pay_failed: 5, refunded: 6 };
   PAYOUT_PERIODS = ['09/2026', '08/2026', '07/2026'];
 
@@ -1137,7 +1338,7 @@ class Component extends DCLogic {
   buyCarry(phone) {
     const p = this.BUYER_LAST_ORDER;
     return { buyStep: 'form', buyMode: 'self', buyProfile: { ...p, buyerPhone: phone },
-      buyerPhone: phone, buyerName: p.buyerName, buyerEmail: p.buyerEmail,
+      buyerPhone: phone, buyPhoneInput: phone, buyerName: p.buyerName, buyerEmail: p.buyerEmail,
       buyerCccd: p.buyerCccd, buyerAddress: p.buyerAddress, buyerDob: p.buyerDob,
       buyerBankAccount: p.buyerBankAccount, accountHolder: p.accountHolder };
   }
@@ -1188,6 +1389,15 @@ class Component extends DCLogic {
 
   // (19) Nhật ký hệ thống — bản mẫu dựng sẵn.
   AUDIT = [
+    // (26) Duyệt hàng loạt + tải file kết quả thanh toán — sau phản hồi KH.
+    { time:'03/09/2026 09:30', actor:'Nguyễn Thị Hạnh', role:'Admin',
+      module:'Đổi điểm', target:'Kết quả thanh toán kỳ 08/2026',
+      action:'Tải file lên', before:'2 Đã duyệt', after:'1 thanh toán thành công / 1 chi không thành công',
+      evidence:'sao-ke-chi-tra-HOMI365-2026-08.xlsx', ip:'113.161.46.118' },
+    { time:'01/09/2026 10:15', actor:'Nguyễn Thị Hạnh', role:'Admin',
+      module:'Đổi điểm', target:'Kỳ 08/2026 · 12 yêu cầu',
+      action:'Duyệt', before:'Chờ duyệt', after:'Đã duyệt',
+      evidence:'Duyệt hàng loạt', ip:'113.161.46.118' },
     // (22)(23) Dòng mẫu cho hoàn điểm và admin sửa hồ sơ — sau UAT 02/10.
     { time:'17/09/2026 10:05', actor:'Nguyễn Thị Hạnh', role:'Admin',
       module:'Đổi điểm', target:'YC-2026-0091 · Đỗ Anh Tuấn',
@@ -1211,7 +1421,7 @@ class Component extends DCLogic {
       evidence:'—', ip:'—' },
     { time:'16/09/2026 17:20', actor:'Phùng Thị Thúy Linh', role:'Head',
       module:'Đổi điểm', target:'YC-2026-0088 · Trần Thị Bích',
-      action:'Duyệt', before:'Chờ Head duyệt', after:'Đã duyệt',
+      action:'Duyệt', before:'Chờ duyệt', after:'Đã duyệt',
       evidence:'—', ip:'118.70.12.4' },
     { time:'16/09/2026 16:02', actor:'Nguyễn Thị Hạnh', role:'Admin',
       module:'Kho hàng', target:'Import 120 mã kích hoạt',
@@ -1239,7 +1449,7 @@ class Component extends DCLogic {
       evidence:'—', ip:'171.224.88.9' },
     { time:'15/09/2026 09:03', actor:'Phùng Thị Thúy Linh', role:'Head',
       module:'Đổi điểm', target:'YC-2026-0085 · Vũ Minh Khang',
-      action:'Từ chối', before:'Chờ Head duyệt', after:'Từ chối',
+      action:'Từ chối', before:'Chờ duyệt', after:'Từ chối',
       evidence:'—', ip:'118.70.12.4' },
     { time:'14/09/2026 13:47', actor:'Nguyễn Thị Hạnh', role:'Admin',
       module:'Đơn hàng', target:'DH100511',
@@ -1298,19 +1508,19 @@ class Component extends DCLogic {
     const raw = [
       { id:'DH923983', buyer:'Nguyễn Văn A', phone:'0901111111', email:'nguyenvana@gmail.com',
         address:'12 Nguyễn Huệ, Phường Bến Nghé, TP. Hồ Chí Minh',
-        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Trần Thị Bích', refCode:'TTB4123',
+        pkg:'HOMI365-01 · Gói 1 năm', amountNum:10000000, referrer:'Trần Thị Bích', refCode:'TTB4123',
         date:'03/09/2026 09:12', status:'order_pending', proof:'bill-DH923983.jpg', activationCode:null,
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'03/09/2026 09:12'},
                   {label:'Khách tải ảnh chuyển khoản', actor:'Nguyễn Văn A', time:'03/09/2026 09:20'}] },
       { id:'DH100511', buyer:'Lý Thị Hoa', phone:'0902222222', email:'lythihoa@gmail.com',
         address:'45 Lê Lợi, Phường Bến Thành, TP. Hồ Chí Minh',
-        pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Lê Văn Cường', refCode:'LVC5456',
+        pkg:'HOMI365-01 · Gói nửa năm', amountNum:6000000, referrer:'Lê Văn Cường', refCode:'LVC5456',
         date:'02/09/2026 15:40', status:'order_pending', proof:'bill-DH100511.jpg', activationCode:null,
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'02/09/2026 15:40'},
                   {label:'Khách tải ảnh chuyển khoản', actor:'Lý Thị Hoa', time:'02/09/2026 15:52'}] },
       { id:'DH100234', buyer:'Đỗ Anh Tuấn', phone:'0903333333', email:'doanhtuan@gmail.com',
         address:'88 Trần Hưng Đạo, Phường Cầu Ông Lãnh, TP. Hồ Chí Minh',
-        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Vũ Minh Khang', refCode:'VMK7998',
+        pkg:'HOMI365-01 · Gói 1 năm', amountNum:10000000, referrer:'Vũ Minh Khang', refCode:'VMK7998',
         date:'30/08/2026 08:05', status:'order_paid', proof:'bill-DH100234.jpg', activationCode:'ACT-100481', activatedAt:'30/08/2026',
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'30/08/2026 08:05'},
                   {label:'Khách tải ảnh chuyển khoản', actor:'Đỗ Anh Tuấn', time:'30/08/2026 08:19'},
@@ -1318,13 +1528,13 @@ class Component extends DCLogic {
                   {label:'Head xác nhận & cấp mã kích hoạt ACT-100481', actor:'Head', time:'30/08/2026 10:02'}] },
       { id:'DH100088', buyer:'Ngô Thị Em', phone:'0904444444', email:'ngothiem@gmail.com',
         address:'7 Nguyễn Trãi, Phường Bến Thành, TP. Hồ Chí Minh',
-        pkg:'Gói 1 năm · CN02', amountNum:10000000, referrer:'Lê Văn Cường', refCode:'LVC5456',
+        pkg:'HOMI365-01 · Gói 1 năm', amountNum:10000000, referrer:'Lê Văn Cường', refCode:'LVC5456',
         date:'28/08/2026 11:30', status:'order_paid', proof:'bill-DH100088.jpg', activationCode:'ACT-100337', activatedAt:'28/08/2026',
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'28/08/2026 11:30'},
                   {label:'Head xác nhận & cấp mã kích hoạt ACT-100337', actor:'Head', time:'28/08/2026 14:00'}] },
       { id:'DH100012', buyer:'Phạm Quốc Bảo', phone:'0905555555', email:'pqbao@gmail.com',
         address:'201 Cách Mạng Tháng 8, Phường Hoà Hưng, TP. Hồ Chí Minh',
-        pkg:'Gói nửa năm · CN02-6M', amountNum:6000000, referrer:'Trần Thị Bích', refCode:'TTB4123',
+        pkg:'HOMI365-01 · Gói nửa năm', amountNum:6000000, referrer:'Trần Thị Bích', refCode:'TTB4123',
         date:'26/08/2026 19:12', status:'order_rejected', proof:'bill-DH100012.jpg', activationCode:null,
         auditLog:[{label:'Khách tạo đơn', actor:'Hệ thống', time:'26/08/2026 19:12'},
                   {label:'Từ chối: số tiền chuyển khoản không khớp', actor:'Admin', time:'27/08/2026 09:00'}] }
@@ -1390,8 +1600,34 @@ class Component extends DCLogic {
 
   // 7.3.3 AC: hiển thị số đơn còn thiếu để lên hạng kế tiếp.
   // Ngưỡng Silver = 10 đơn. Copper vừa bán 1 đơn -> còn 9 đơn.
-  RANK_PROGRESS = { new: 'Còn 9 đơn để lên hạng Silver',
-                    active: 'Còn 8 đơn để lên hạng Gold' };
+  // (27) Xét cấp sau phản hồi KH — mục 12–14, 17, 18. Ngưỡng theo Chính sách ưu đãi
+  // thành viên mục 3 (HOMI365 chốt 08/10), đơn vị là gói quy đổi (CR mục 17).
+  // Gói xét cấp đếm từ lần đổi cấp gần nhất; y = gói 1 năm, h = gói 6 tháng,
+  // my / mh = riêng tháng này. Trọng số: 1 năm = 1 gói, 6 tháng = 0,5 gói.
+  RANK_THRESHOLD = { Silver: 10, Gold: 18, Diamond: 24, Titanium: 28, Lithium: 30 };
+  RANK_COUNT = { 1:{y:3,h:2,my:0,mh:1}, 2:{y:8,h:5,my:2,mh:1}, 3:{y:0,h:0,my:0,mh:0},
+                 4:{y:1,h:1,my:0,mh:1}, 5:{y:34,h:12,my:3,mh:2}, 6:{y:0,h:0,my:0,mh:0},
+                 7:{y:2,h:2,my:1,mh:0} };
+  RANK_REVIEW = [
+    { id:2, to:'Silver', dir:'up', reason:'Đủ ngưỡng Silver: 10,5 / 10 gói quy đổi.',
+      note:'Lên Silver là ngang tuyến trên Trần Thị Bích — tuyến trên hiệu lực chuyển lên người kế tiếp có cấp cao hơn.' },
+    { id:1, to:'Copper', dir:'down', reason:'Tháng này chỉ 0,5 gói quy đổi (1 gói 6 tháng) — dưới 1 gói. Nửa gói lẻ không cộng dồn sang tháng sau.', note:'' },
+    { id:5, to:'Diamond', dir:'up', reason:'Đủ ngưỡng Diamond: 40 / 24 gói quy đổi. Không nhảy bậc — bán bao nhiêu trong tháng cũng chỉ lên 1 cấp.',
+      note:'Lên Diamond thì gói xét cấp về 0, 16 gói dư không chuyển sang. Muốn lên Titanium phải bán thêm đủ 28 gói.' }
+  ];
+  // (28) Hoa hồng % theo cấp (trực tiếp) + chênh lệch % (H6, 08/10) — mặc định
+  // quy từ số tiền cũ trên gói 1 năm 10tr: Silver 1tr = 10% … Lithium 50k = 0,5%.
+  COMM_DEFAULT = { Copper: 20, Silver: 30, Gold: 35, Diamond: 37, Titanium: 38, Lithium: 38.5 };
+  COMM_DIFF_DEFAULT = { Silver: 10, Gold: 5, Diamond: 2, Titanium: 1, Lithium: 0.5 };
+  pkgCount(c) { return c.y + c.h * 0.5; }
+  nfmt(x) { return Number(x).toLocaleString('vi-VN'); }
+  nextRank(r) { const i = this.RANKS.indexOf(r); return i >= 0 && i < this.RANKS.length - 1 ? this.RANKS[i + 1] : null; }
+
+  // 7.3.3 AC (làm lại sau phản hồi KH): hiển thị gói xét cấp đã quy đổi.
+  RANK_PROGRESS = { new: 'Gói xét cấp 1 / 10 · còn 9 gói để lên Silver',
+                    active: 'Gói xét cấp 6,5 / 18 · còn 11,5 gói để lên Gold' };
+  RANK_MONTH_NOTE = { new: 'Tháng này 1 gói · gói 6 tháng tính 0,5 · lên cấp mới đếm lại từ 0',
+                      active: 'Tháng này 1,5 gói (1 gói 1 năm + 1 gói 6 tháng) · đủ giữ hạng' };
 
   RANK_HISTORY = {
     1: [{ label:'Thăng hạng Copper → Silver', time:'01/09/2026' },
@@ -1406,7 +1642,7 @@ class Component extends DCLogic {
   // 1 sản phẩm pilot duy nhất theo 6.1.C-3. Gói license (1 năm / nửa năm) và
   // giá KHÔNG quản ở màn này — chốt 09/09.
   PRODUCTS = [
-    { id: 'CN02', sku: 'CN02', name: 'Gói Bác sĩ 24/7 · kèm đồng hồ HW01',
+    { id: 'CN02', sku: 'CN02', name: 'HOMI365-01',
       imageLabel: 'cn02.png',
       desc: 'Gói chăm sóc sức khoẻ từ xa: 01 đồng hồ thông minh HW01 theo dõi nhịp tim / SOS giao tận nơi, kèm phần mềm Bác sĩ 24/7 (mã kích hoạt gửi qua SMS).' }
   ];
@@ -1442,11 +1678,12 @@ class Component extends DCLogic {
     const map = {
       active: ['rgba(47,122,72,.14)', '#2F7A48', 'Đang hoạt động'],
       locked: ['rgba(154,163,176,.18)', '#5B6472', 'Đã khóa'],
-      pending: ['rgba(150,92,10,.15)', '#965C0A', 'Chờ duyệt (0/2)'],
+      pending: ['rgba(150,92,10,.15)', '#965C0A', 'Chờ duyệt'],
       specialist_approved: ['rgba(150,92,10,.15)', '#965C0A', 'Chờ Head (1/2)'],
-      approved: ['rgba(15,127,150,.14)', '#0F7F96', 'Đã duyệt (2/2)'],
+      approved: ['rgba(15,127,150,.14)', '#0F7F96', 'Đã duyệt'],
+      cancelled: ['rgba(154,163,176,.18)', '#5B6472', 'Thành viên đã huỷ'],
       rejected: ['rgba(192,57,43,.12)', '#C0392B', 'Từ chối'],
-      paid: ['rgba(47,122,72,.14)', '#2F7A48', 'Đã chi trả'],
+      paid: ['rgba(47,122,72,.14)', '#2F7A48', 'Thanh toán thành công'],
       pay_failed: ['rgba(192,57,43,.12)', '#C0392B', 'Chi không thành công'],
       refunded: ['rgba(154,163,176,.18)', '#5B6472', 'Đã hoàn điểm'],
       available: ['rgba(47,122,72,.14)', '#2F7A48', 'Sẵn hàng'],
@@ -1487,12 +1724,24 @@ class Component extends DCLogic {
       { id:4, seller:'Phạm Thị Dung', amountNum:300000, date:'20/08/2026', accountNumber:'0331234567', bankName:'ACB', branch:'CN TP.HCM', accountHolder:'PHAM THI DUNG', status:'rejected', reason:'Thông tin tài khoản không khớp CCCD.', auditLog:[{label:'Tạo yêu cầu', actor:'Phạm Thị Dung', time:'20/08/2026 08:00'},{label:'Từ chối yêu cầu', actor:'Admin', time:'20/08/2026 11:00'}] },
       { id:5, seller:'Ngô Thị Em', amountNum:1200000, date:'15/08/2026', accountNumber:'0221234567', bankName:'MB Bank', branch:'CN TP.HCM', accountHolder:'NGO THI EM', status:'paid', paidNote:'FT26081512345', auditLog:[{label:'Tạo yêu cầu', actor:'Ngô Thị Em', time:'15/08/2026 08:00'},{label:'Admin duyệt (chờ Head)', actor:'Admin', time:'15/08/2026 09:00'},{label:'Head xác nhận duyệt', actor:'Head', time:'15/08/2026 10:00'},{label:'Đánh dấu đã chi trả', actor:'Head', time:'16/08/2026 09:00'}] }
     ];
+    // (26) KH chốt duyệt 1 lớp: dữ liệu mẫu cũ bỏ bước "chờ Head".
+    raw.forEach(w => {
+      if (w.status === 'specialist_approved') w.status = 'pending';
+      w.auditLog = w.auditLog.filter(l => !/chờ Head/.test(l.label))
+        .map(l => /Head xác nhận duyệt/.test(l.label) ? { ...l, label: 'Admin duyệt', actor: 'Admin' } : l);
+    });
+    raw.push(
+      { id:8, seller:'Trương Thanh Bình', amountNum:700000, date:'29/08/2026', accountNumber:'0123456789012', bankName:'VietinBank', branch:'CN TP.HCM', accountHolder:'TRUONG THANH BINH', status:'approved',
+        auditLog:[{label:'Tạo yêu cầu', actor:'Trương Thanh Bình', time:'29/08/2026 20:05'},{label:'Admin duyệt (duyệt hàng loạt)', actor:'Admin', time:'01/09/2026 10:15'}] },
+      { id:9, seller:'Ngô Thị Em', amountNum:500000, date:'02/09/2026', accountNumber:'0221234567', bankName:'MB Bank', branch:'CN TP.HCM', accountHolder:'NGO THI EM', status:'cancelled',
+        auditLog:[{label:'Tạo yêu cầu', actor:'Ngô Thị Em', time:'02/09/2026 08:40'},{label:'Thành viên tự huỷ yêu cầu', actor:'Ngô Thị Em', time:'03/09/2026 21:12'}] }
+    );
     // (22) Hai dòng mẫu cho luồng ngân hàng chi không thành công.
     raw.push(
       { id:6, seller:'Đỗ Anh Tuấn', amountNum:1500000, date:'22/08/2026', accountNumber:'0451000987654', bankName:'Vietcombank', branch:'CN Bình Dương', accountHolder:'DO ANH TUAN', status:'pay_failed', failNote:'Số tài khoản không tồn tại.',
-        auditLog:[{label:'Tạo yêu cầu', actor:'Đỗ Anh Tuấn', time:'22/08/2026 09:14'},{label:'Admin duyệt (chờ Head)', actor:'Admin', time:'23/08/2026 10:02'},{label:'Head xác nhận duyệt', actor:'Head', time:'24/08/2026 08:40'},{label:'Ngân hàng chi không thành công', actor:'Admin', time:'03/09/2026 09:30'}] },
+        auditLog:[{label:'Tạo yêu cầu', actor:'Đỗ Anh Tuấn', time:'22/08/2026 09:14'},{label:'Admin duyệt', actor:'Admin', time:'23/08/2026 10:02'},{label:'Chi không thành công (không có trong file kết quả thanh toán)', actor:'Admin', time:'03/09/2026 09:30'}] },
       { id:7, seller:'Trần Thị Bích', amountNum:1000000, date:'18/07/2026', accountNumber:'0071001234567', bankName:'Vietcombank', branch:'CN TP.HCM', accountHolder:'TRAN THI BICH', status:'refunded', failNote:'Tên chủ tài khoản không khớp.', refundReason:'Ngân hàng trả về do sai tên chủ tài khoản; thành viên đã được báo cập nhật lại.',
-        auditLog:[{label:'Tạo yêu cầu', actor:'Trần Thị Bích', time:'18/07/2026 14:20'},{label:'Head xác nhận duyệt', actor:'Head', time:'20/07/2026 09:00'},{label:'Ngân hàng chi không thành công', actor:'Admin', time:'04/08/2026 10:10'},{label:'Hoàn điểm: sai tên chủ tài khoản', actor:'Admin', time:'04/08/2026 10:25'},{label:'Gửi email báo tài khoản nhận tiền có vấn đề', actor:'Hệ thống', time:'04/08/2026 10:25'}] }
+        auditLog:[{label:'Tạo yêu cầu', actor:'Trần Thị Bích', time:'18/07/2026 14:20'},{label:'Admin duyệt', actor:'Admin', time:'20/07/2026 09:00'},{label:'Chi không thành công (không có trong file kết quả thanh toán)', actor:'Admin', time:'04/08/2026 10:10'},{label:'Hoàn điểm: sai tên chủ tài khoản', actor:'Admin', time:'04/08/2026 10:25'},{label:'Gửi email báo tài khoản nhận tiền có vấn đề', actor:'Hệ thống', time:'04/08/2026 10:25'}] }
     );
     return raw.map(w => ({ ...w, amount: w.amountNum.toLocaleString('vi-VN') + 'đ' }));
   }
@@ -1543,7 +1792,7 @@ class Component extends DCLogic {
         (s.screen === id ? 'rgba(30,58,102,.1)' : 'transparent') + ';color:' + (s.screen === id ? '#1E3A66' : 'var(--c5)')
     }));
 
-    const adminOn = ['B2','B3','B4','B5','B6','B7','B8'].includes(s.screen);
+    const adminOn = ['B2','B3','B4','B5','B6','B7','B8','B9'].includes(s.screen);
     const adminNav = this.ADMIN_NAV
       .filter(([id]) => id !== 'B7' || s.adminRole !== 'specialist')
       .map(([id, label]) => ({
@@ -1595,8 +1844,13 @@ class Component extends DCLogic {
       style: 'font-size:12px;font-weight:600;padding:6px 14px;border-radius:30px;border:1px solid ' +
         ((s.chartRange || '7d') === id ? '#1E3A66;background:rgba(30,58,102,.08);color:#1E3A66' : 'rgba(154,163,176,.4);background:transparent;color:var(--c5)')
     }));
-    const hasActiveThisMonth = false;
-    const withdrawButtonDisabled = hasActiveThisMonth;
+    // (26) Mục 8 — mỗi kỳ 1 yêu cầu; đang có yêu cầu Chờ duyệt / Đã duyệt thì
+    // khoá nút tạo mới, muốn đổi số điểm thì huỷ rồi tạo lại trước khoá sổ.
+    const myWd = s.myWd;
+    const myWdOpen = !!(myWd && ['pending', 'approved'].includes(myWd.status));
+    const hasActiveThisMonth = myWdOpen;
+    // (08/10) Qua hạn gửi (ngày cuối tháng đã khoá sổ) thì cũng khoá nút tạo mới.
+    const withdrawButtonDisabled = hasActiveThisMonth || !!s.wdPeriodLocked;
     const withdrawButtonStyle = 'height:44px;border:none;border-radius:5px;font-size:14px;font-weight:600;color:#FFFFFF;background:' + (withdrawButtonDisabled ? 'rgba(154,163,176,.5)' : 'var(--c6)') + ';cursor:' + (withdrawButtonDisabled ? 'not-allowed' : 'pointer');
 
     // withdraw form
@@ -1656,6 +1910,34 @@ class Component extends DCLogic {
           onClick: () => this.setState({ selectedWithdrawalId: w.id }) };
       });
     const withdrawalsEmpty = withdrawals.length === 0;
+
+    // (26) Duyệt hàng loạt — chỉ yêu cầu Chờ duyệt mới chọn được.
+    const wdSel = s.wdSel || {};
+    const wdPendingAll = withdrawalsData.filter(w => w.status === 'pending');
+    withdrawals.forEach(w => {
+      const on = !!wdSel[w.id], can = w.status === 'pending';
+      Object.assign(w, { selectable: can, boxMark: on ? '✓' : '',
+        boxBg: on ? '#1E3A66' : '#FFFFFF', boxBorder: on ? '#1E3A66' : 'rgba(154,163,176,.8)',
+        boxCursor: can ? 'pointer' : 'default',
+        onToggle: (e) => { if (e) e.stopPropagation(); if (!can) return;
+          this.setState({ wdSel: { ...wdSel, [w.id]: !on } }); } });
+    });
+    const wdSelIds = wdPendingAll.filter(w => wdSel[w.id]).map(w => w.id);
+    const wdAllOn = wdPendingAll.length > 0 && wdSelIds.length === wdPendingAll.length;
+    const bulkIds = (s.actionModal && s.actionModal.type === 'bulk') ? (s.actionModal.ids || []) : [];
+    const bulkRows = withdrawalsData.filter(w => bulkIds.includes(w.id));
+
+    // (26) Đối chiếu file kết quả thanh toán với các yêu cầu Đã duyệt. Bản mẫu:
+    // mọi yêu cầu đều khớp file, trừ yêu cầu của Trương Thanh Bình (id 8) — để
+    // thấy được nhánh chi không thành công.
+    const payResultRows = withdrawalsData.filter(w => w.status === 'approved').map(w => {
+      const ok = w.id !== 8;
+      return { ...w, ok,
+        resultLabel: ok ? 'Khớp · Thanh toán thành công' : 'Không có trong file · Chi không thành công',
+        resultBg: ok ? 'rgba(47,122,72,.14)' : 'rgba(192,57,43,.12)',
+        resultColor: ok ? '#2F7A48' : '#C0392B' };
+    });
+    const payApplyDisabled = !s.payResultFile || !!s.payResultApplied || !payResultRows.length;
     const sumReward = withdrawals.reduce((t, w) => t + w.rewardNum, 0);
     const sumRequest = withdrawals.reduce((t, w) => t + w.amountNum, 0);
 
@@ -1757,15 +2039,27 @@ class Component extends DCLogic {
     const rankOf = (m) => s.rankOverrides[m.id]
       || this.RANK_LABEL[m.rank] || m.rank;
     const rankIdx = (r) => this.RANKS.indexOf(r);
+    // (27) Tuyến trên HIỆU LỰC: đi ngược lên tới người đầu tiên có cấp cao
+    // hơn mình; không có ai thì là công ty (Super Lithium) — trả về null.
+    const effUp = (m) => { const me = rankIdx(rankOf(m)); let cur = m;
+      for (let k = 0; k < 12; k++) {
+        const u = this.MEMBERS.find(x => x.name === cur.upline);
+        if (!u) return null;
+        if (rankIdx(rankOf(u)) > me) return u;
+        cur = u;
+      }
+      return null; };
     let rankEditName = '', rankEditCurrent = '', rankOptions = [];
+    let rankEditUp = null;
     const rankTarget = s.rankEditId
       ? this.MEMBERS.find(m => m.id === s.rankEditId) : null;
     if (rankTarget) {
       rankEditName = rankTarget.name;
       rankEditCurrent = rankOf(rankTarget);
-      // Trần: không được cao hơn người giới thiệu trực tiếp.
-      const up = this.MEMBERS.find(x => x.name === rankTarget.upline);
-      const ceil = up ? rankIdx(rankOf(up)) : this.RANKS.length - 1;
+      // (27) Trần theo tuyến trên HIỆU LỰC và KHÔNG được bằng tuyến trên (H3).
+      const up = effUp(rankTarget);
+      rankEditUp = up;
+      const ceil = up ? rankIdx(rankOf(up)) - 1 : this.RANKS.length - 1;
       // Sàn: cũng không được thấp hơn tuyến dưới trực tiếp, nếu không
       // chính nước đi này lại làm tuyến dưới vượt tuyến trên.
       const kids = (rankTarget.tree || [])
@@ -1779,7 +2073,7 @@ class Component extends DCLogic {
         const on = s.rankEditChoice === r;
         return {
           name: r, disabled: off,
-          note: tooHigh ? 'Cao hơn tuyến trên (' + rankOf(up) + ')'
+          note: tooHigh ? (i === ceil + 1 ? 'Bằng' : 'Cao hơn') + ' tuyến trên ' + up.name + ' (' + rankOf(up) + ')'
             : tooLow ? 'Thấp hơn tuyến dưới (' + this.RANKS[floor] + ')'
             : (r === rankEditCurrent ? 'Cấp hiện tại' : ''),
           style: 'display:flex;justify-content:space-between;'
@@ -1801,11 +2095,86 @@ class Component extends DCLogic {
     // Phải chọn cấp khác cấp hiện tại VÀ nhập đủ ba trường minh chứng.
     // Thiếu minh chứng thì sau này không nối được số liệu trong hệ thống
     // với quyết định đã duyệt bên ngoài.
+    // (27) Mục 21 — Super Lithium là tài khoản công ty: hiện cho admin thấy
+    // nhưng không gán được cho thành viên.
+    if (rankTarget) rankOptions.push({ name: 'Super Lithium', disabled: true,
+      note: 'Tài khoản công ty — không gán cho thành viên', style: 'display:flex;justify-content:space-between;align-items:center;gap:var(--s4);width:100%;min-height:42px;padding:var(--s3) var(--s5);border-radius:var(--r-md);font-size:13px;text-align:left;border:1px dashed rgba(154,163,176,.5);background:transparent;color:rgba(154,163,176,.9);cursor:not-allowed',
+      onClick: () => {} });
+    // (27) Mục 15 — bỏ minh chứng phiếu; bắt buộc Lý do + Người yêu cầu.
     const rankReady = !!s.rankEditChoice
       && s.rankEditChoice !== rankEditCurrent
-      && s.rankDocNo.trim().length > 0
-      && s.rankDocDate.trim().length > 0
-      && s.rankApprover.trim().length > 0;
+      && (s.rankReason || '').trim().length > 0
+      && (s.rankRequester || '').trim().length > 0;
+
+    // (27) Màn Xét thăng / hạ cấp (B9).
+    const rrStatus = s.rrStatus || {}, rrSel = s.rrSel || {}, rrReasons = s.rrReason || {};
+    const rrAllRows = this.RANK_REVIEW.map(r => {
+      const m = this.MEMBERS.find(x => x.id === r.id);
+      const from = this.RANK_LABEL[m.rank] || m.rank;
+      const c = this.RANK_COUNT[r.id], nr = this.nextRank(from);
+      const st = rrStatus[r.id] || 'pending', can = st === 'pending', on = can && !!rrSel[r.id];
+      return { ...r, name: m.name, code: ALIAS[m.id], from,
+        cum: this.nfmt(this.pkgCount(c)) + (nr ? ' / ' + this.RANK_THRESHOLD[nr] : ''),
+        cumSub: c.y + ' gói 1 năm + ' + c.h + ' gói 6 tháng',
+        month: this.nfmt(c.my + c.mh * 0.5) + ' gói', monthSub: c.my + ' × 1 năm + ' + c.mh + ' × 6 tháng',
+        propLabel: (r.dir === 'up' ? '↑ ' : '↓ ') + r.to,
+        propBg: r.dir === 'up' ? 'rgba(47,122,72,.14)' : 'rgba(192,57,43,.12)',
+        propColor: r.dir === 'up' ? '#2F7A48' : '#C0392B',
+        hasNote: !!r.note, st, canAct: can,
+        stLabel: st === 'approved' ? 'Đã duyệt' : st === 'denied' ? 'Từ chối' : 'Chờ duyệt',
+        stSub: st === 'approved' ? 'Hiệu lực 01/10/2026 · đã gửi email' : '',
+        stBg: st === 'approved' ? 'rgba(47,122,72,.14)' : st === 'denied' ? 'rgba(192,57,43,.12)' : 'rgba(150,92,10,.15)',
+        stColor: st === 'approved' ? '#2F7A48' : st === 'denied' ? '#C0392B' : '#965C0A',
+        hasDenyReason: st === 'denied' && !!rrReasons[r.id], denyReason: rrReasons[r.id] || '',
+        boxMark: on ? '✓' : '', boxBg: on ? '#1E3A66' : '#FFFFFF',
+        boxBorder: on ? '#1E3A66' : 'rgba(154,163,176,.8)', boxCursor: can ? 'pointer' : 'default',
+        onToggle: (e) => { if (e) e.stopPropagation(); if (!can) return;
+          this.setState({ rrSel: { ...rrSel, [r.id]: !on } }); },
+        onApprove: () => this.setState({ rrStatus: { ...rrStatus, [r.id]: 'approved' },
+          rrSel: { ...rrSel, [r.id]: false } }),
+        onDeny: () => this.setState({ rrModal: { type: 'deny', id: r.id }, rrDenyText: '' }) };
+    });
+    const rrRows = rrAllRows.filter(r => (s.rrFilter || 'all') === 'all' || r.st === s.rrFilter);
+    const rrPending = rrAllRows.filter(r => r.st === 'pending');
+    const rrSelIds = rrPending.filter(r => rrSel[r.id]).map(r => r.id);
+    const rrAllOn = rrPending.length > 0 && rrSelIds.length === rrPending.length;
+    const rrModal = s.rrModal || null;
+    const rrDenyRow = rrModal && rrModal.type === 'deny' ? rrAllRows.find(r => r.id === rrModal.id) : null;
+    const rrBulkRows = rrModal && rrModal.type === 'bulk' ? rrAllRows.filter(r => (rrModal.ids || []).includes(r.id)) : [];
+    const rrDenyDisabled = !(s.rrDenyText || '').trim();
+    const rrBtn = (on, solid) => 'height:34px;padding:0 var(--s5);border-radius:var(--r-md);font-size:12px;font-weight:600;'
+      + (!on ? 'background:transparent;color:rgba(154,163,176,.9);border:1px dashed rgba(154,163,176,.6);cursor:not-allowed'
+         : solid ? 'background:var(--c8);color:var(--c12);border:none;cursor:pointer'
+         : 'background:var(--c12);color:var(--c8);border:1px solid var(--c8);cursor:pointer');
+
+    // (27) Thông tin xét cấp + tuyến trên hiệu lực của thành viên đang mở.
+    const mRc = selectedMember ? this.RANK_COUNT[selectedMember.id] : null;
+    const mRank = selectedMember ? rankOf(selectedMember) : '';
+    const mNext = this.nextRank(mRank);
+    const mUpDirect = selectedMember ? this.MEMBERS.find(x => x.name === selectedMember.upline) : null;
+    const mUpEff = selectedMember ? effUp(selectedMember) : null;
+
+    // (28) Hoa hồng theo % giá trị gói (mục 23). Mặc định quy từ bảng tiền cũ
+    // của gói 1 năm 10tr: Copper 2tr = 20% … Lithium 3,85tr = 38,5%.
+    const commPct = s.commPct || this.COMM_DEFAULT;
+    const pctNum = (v) => { const n = parseFloat(String(v).replace(',', '.')); return isNaN(n) ? NaN : n; };
+    const commBad = {};
+    let commWarn = '';
+    this.RANKS.forEach((r, i) => {
+      const v = pctNum(commPct[r]);
+      if (isNaN(v) || v < 0 || v > 100) { commBad[r] = true; commWarn = commWarn || ('Tỷ lệ của ' + r + ' phải là số từ 0 đến 100.'); }
+      else if (i > 0 && v < pctNum(commPct[this.RANKS[i - 1]])) { commBad[r] = true;
+        commWarn = commWarn || ('Tỷ lệ của ' + r + ' không được thấp hơn cấp dưới (' + this.RANKS[i - 1] + ').'); }
+    });
+    // (H6, 08/10) Chênh lệch cũng theo % giá trị gói. Copper thấp nhất nên không có.
+    const commDiff = s.commDiff || this.COMM_DIFF_DEFAULT;
+    const diffBad = {};
+    this.RANKS.slice(1).forEach(r => { const v = pctNum(commDiff[r]);
+      if (isNaN(v) || v < 0 || v > 100) { diffBad[r] = true;
+        commWarn = commWarn || ('Chênh lệch của ' + r + ' phải là số từ 0 đến 100.'); } });
+    const commMax = pctNum(commPct.Lithium);
+    if (!commWarn && commMax > 100) commWarn = 'Tổng phân bổ tối đa vượt 100% giá trị gói.';
+    const vnd = (x) => isNaN(x) ? '—' : Math.round(x).toLocaleString('vi-VN') + 'đ';
 
     const selectedStockRaw = s.selectedStockId ? stockData.find(p => p.id === s.selectedStockId) : null;
     let selectedStock = null;
@@ -1826,6 +2195,23 @@ class Component extends DCLogic {
         approveButtonLabel: isSpecialist ? 'Duyệt (Admin)' : 'Duyệt (Head)',
         approvalStageNote: selectedWithdrawalRaw.status === 'pending' ? 'Đang chờ Admin duyệt (bước 1/2).' : selectedWithdrawalRaw.status === 'specialist_approved' ? 'Đã qua Admin — đang chờ Head xác nhận (bước 2/2).' : selectedWithdrawalRaw.status === 'approved' ? 'Đã duyệt đủ 2 cấp — chờ chi trả.' : null,
         hasReason: !!selectedWithdrawalRaw.reason, hasPaidNote: !!selectedWithdrawalRaw.paidNote };
+    }
+
+    // (26) KH chốt: duyệt đổi điểm còn 1 lớp (Admin). Không còn "Chờ Head",
+    // không đánh dấu đã chi trả bằng tay — trạng thái thanh toán cập nhật từ
+    // file kết quả ngân hàng.
+    if (selectedWithdrawal) {
+      const st0 = selectedWithdrawal.status;
+      Object.assign(selectedWithdrawal, {
+        canApprove: st0 === 'pending', canReject: st0 === 'pending', canMarkPaid: false,
+        approveButtonLabel: 'Duyệt',
+        approvalStageNote: ({
+          pending: 'Đang chờ Admin duyệt. Duyệt xong điểm bị trừ khỏi số dư và yêu cầu vào danh sách xuất file chi trả.',
+          approved: 'Đã duyệt — chờ xuất file chi trả và tải lên kết quả thanh toán từ ngân hàng.',
+          paid: 'Thanh toán thành công (cập nhật từ file kết quả ngân hàng).',
+          cancelled: 'Thành viên đã tự huỷ yêu cầu trước ngày khoá sổ.'
+        })[st0] || selectedWithdrawal.approvalStageNote
+      });
     }
 
     // (22) Ngân hàng chi không thành công -> hoàn điểm thủ công.
@@ -1917,9 +2303,17 @@ class Component extends DCLogic {
 
     return {
       nav, adminNav,
-      isA1: s.screen === 'A1' && s.buyStep === 'form',
-      // (20) Bước 0 — nhập SĐT trước form mua hàng.
-      isA1Phone: s.screen === 'A1' && s.buyStep !== 'form',
+      isA1: s.screen === 'A1',
+      // (20) KH điều chỉnh: form luôn hiện nhưng khoá tới khi xác định xong SĐT
+      // ở ô đầu trang.
+      buyLocked: s.buyStep !== 'form', buyUnlocked: s.buyStep === 'form',
+      buyLockCss: s.buyStep === 'form' ? ''
+        : 'opacity:.45;pointer-events:none;user-select:none;filter:grayscale(.25)',
+      buyBarBorder: s.buyStep === 'form' ? 'rgba(154,163,176,.35)' : '#1E3A66',
+      buyBarShadow: s.buyStep === 'form' ? 'none' : '0 4px 18px rgba(30,58,102,.12)',
+      buyBarPhone: s.buyerPhone || s.buyPhoneInput || '—',
+      buyChangePhone: () => this.setState({ buyStep: 'phone', buyPhoneInput: '',
+        buyPhoneFound: false, buyPhoneError: '', buyMode: '' }),
       buyPhoneInput: s.buyPhoneInput,
       setBuyPhoneInput: (e) => this.setState({
         buyPhoneInput: (e.target.value || '').replace(/\D/g, '').slice(0, 10),
@@ -1962,6 +2356,7 @@ class Component extends DCLogic {
       isA2: s.screen === 'A2', isA3: s.screen === 'A3',
       isC1: s.screen === 'C1', isB1: s.screen === 'B1', isB2: s.screen === 'B2', isB3: s.screen === 'B3', isB4: s.screen === 'B4', isB5: s.screen === 'B5', isB6: s.screen === 'B6', isB7: s.screen === 'B7',
       isB8: s.screen === 'B8',
+      isB9: s.screen === 'B9',
       // (19) Nhật ký hệ thống
       isAuditChanges: s.auditTab === 'changes',
       isAuditFiles: s.auditTab === 'files',
@@ -2050,7 +2445,7 @@ class Component extends DCLogic {
             orderId: order.orderId, buyerName: order.buyerName, phone,
             email: order.buyerEmail, cccd: order.buyerCccd,
             address: order.buyerAddress, dob: order.buyerDob,
-            pkg: 'Gói 1 năm · CN02', amount: '10.000.000đ', date: '03/09/2026',
+            pkg: 'HOMI365-01 · Gói 1 năm', amount: '10.000.000đ', date: '03/09/2026',
             referrer: (agent && agent.name) || '—',
             statusLabel: 'Đã thanh toán',
             badgeBg: 'rgba(47,122,72,.14)', badgeColor: '#2F7A48'
@@ -2098,6 +2493,28 @@ class Component extends DCLogic {
       // có 1 đơn đang chờ duyệt nên điểm chưa vào số dư.
       hasPendingOrders: s.agentStage !== 'active', pendingOrderCount: 1,
       hasActiveThisMonth, nextWithdrawDate: '01/10/2026',
+      wdOpenNote: hasActiveThisMonth && !s.wdPeriodLocked,
+      wdClosedNote: !!s.wdPeriodLocked && !hasActiveThisMonth,
+      // (26) Kỳ hiện tại và hạn gửi / huỷ yêu cầu. Chính sách ưu đãi thành viên
+      // mục 4 (HOMI365 chốt 08/10): gửi TRƯỚC ngày cuối cùng của tháng → hạn là
+      // 23:59 ngày liền trước ngày cuối tháng; ngày cuối tháng đã khoá sổ.
+      wdPeriod: '09/2026', wdLockLabel: '23:59 ngày 29/09/2026',
+      hasMyWd: !!myWd, myWdAmount: myWd ? myWd.amount : '', myWdDate: myWd ? myWd.date : '',
+      myWdStatusLabel: !myWd ? '' : myWd.status === 'cancelled' ? 'Đã huỷ'
+        : myWd.status === 'approved' ? 'Đã duyệt'
+        : s.wdPeriodLocked ? 'Đã khoá sổ · chờ duyệt' : 'Chờ duyệt',
+      myWdBadgeBg: !myWd || myWd.status === 'cancelled' ? 'rgba(154,163,176,.18)'
+        : myWd.status === 'approved' ? 'rgba(15,127,150,.14)' : 'rgba(150,92,10,.15)',
+      myWdBadgeColor: !myWd || myWd.status === 'cancelled' ? '#5B6472'
+        : myWd.status === 'approved' ? '#0F7F96' : '#965C0A',
+      canCancelWd: !!(myWd && myWd.status === 'pending' && !s.wdPeriodLocked),
+      wdLockedNote: !!(myWdOpen && s.wdPeriodLocked),
+      myWdCancelled: !!(myWd && myWd.status === 'cancelled'),
+      showCancelWd: s.showCancelWd,
+      openCancelWd: () => this.setState({ showCancelWd: true }),
+      closeCancelWd: () => this.setState({ showCancelWd: false }),
+      confirmCancelWd: () => this.setState({ showCancelWd: false,
+        myWd: { ...s.myWd, status: 'cancelled' } }),
       openWithdrawForm: () => this.setState({ showWithdrawForm: true, withdrawAmount: '' }),
       withdrawButtonDisabled, withdrawButtonStyle,
       noF1: true,
@@ -2105,7 +2522,9 @@ class Component extends DCLogic {
       showWithdrawForm: s.showWithdrawForm, closeWithdrawForm: () => this.setState({ showWithdrawForm: false }),
       withdrawAmount: s.withdrawAmount, setWithdrawAmount: (e) => this.setState({ withdrawAmount: e.target.value }),
       withdrawAmountError, withdrawSubmitDisabled, withdrawSubmitStyle,
-      submitWithdrawForm: () => this.setState({ showWithdrawForm: false, showWithdrawSuccess: true }),
+      submitWithdrawForm: () => this.setState({ showWithdrawForm: false, showWithdrawSuccess: true,
+        myWd: { amount: withdrawAmountNum.toLocaleString('vi-VN') + 'đ',
+                date: this.nowStamp().slice(0, 10), status: 'pending' } }),
       showWithdrawSuccess: s.showWithdrawSuccess, closeWithdrawSuccess: () => this.setState({ showWithdrawSuccess: false }),
 
       isAgentLoginStep: s.agentLoginStep === 'login', isAgentOtpStep: s.agentLoginStep === 'otp',
@@ -2165,7 +2584,7 @@ class Component extends DCLogic {
               orderId: o.orderId, buyerName: o.buyerName, phone: ph,
               email: o.buyerEmail, cccd: o.buyerCccd,
               address: o.buyerAddress, dob: o.buyerDob,
-              pkg: 'Gói 1 năm · CN02', amount: '10.000.000đ', date: '03/09/2026',
+              pkg: 'HOMI365-01 · Gói 1 năm', amount: '10.000.000đ', date: '03/09/2026',
               referrer: (ag && ag.name) || '—',
               statusLabel: 'Đã thanh toán',
               badgeBg: 'rgba(47,122,72,.14)', badgeColor: '#2F7A48'
@@ -2268,6 +2687,107 @@ class Component extends DCLogic {
         });
       },
 
+      // (27) Xét thăng / hạ cấp (B9).
+      rrRows, rrEmpty: rrRows.length === 0,
+      rrFilters: [['all','Tất cả'],['pending','Chờ duyệt'],['approved','Đã duyệt'],['denied','Từ chối']].map(([id, label]) => ({
+        label, onClick: () => this.setState({ rrFilter: id }),
+        style: 'height:34px;padding:0 14px;border-radius:30px;font-size:12px;font-weight:600;border:1px solid '
+          + ((s.rrFilter || 'all') === id ? '#1E3A66;background:rgba(30,58,102,.08);color:#1E3A66'
+                                          : 'rgba(154,163,176,.4);background:transparent;color:var(--c5)') })),
+      rrPendingCount: rrPending.length, rrNoPending: rrPending.length === 0,
+      rrSelCount: rrSelIds.length, rrSelDisabled: rrSelIds.length === 0,
+      rrSelBtnStyle: rrBtn(rrSelIds.length > 0, false), rrAllBtnStyle: rrBtn(rrPending.length > 0, true),
+      rrRunStyle: 'height:38px;padding:0 var(--s6);border-radius:var(--r-md);font-size:13px;font-weight:600;'
+        + (rrSelIds.length ? 'background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);cursor:pointer'
+                           : 'background:transparent;color:rgba(154,163,176,.9);border:1px dashed rgba(154,163,176,.6);cursor:not-allowed'),
+      rrAllMark: rrAllOn ? '✓' : '', rrAllBg: rrAllOn ? '#1E3A66' : '#FFFFFF',
+      rrAllBorder: rrAllOn ? '#1E3A66' : 'rgba(154,163,176,.8)',
+      rrToggleAll: () => this.setState({ rrSel: rrAllOn ? {} : Object.fromEntries(rrPending.map(r => [r.id, true])) }),
+      rrApproveSel: () => rrSelIds.length && this.setState({ rrModal: { type: 'bulk', ids: rrSelIds } }),
+      rrApproveAll: () => rrPending.length && this.setState({ rrModal: { type: 'bulk', ids: rrPending.map(r => r.id) } }),
+      rrRunSel: () => rrSelIds.length && this.setState({ rrRunNote: 'Đã chạy lại xét cấp cho '
+        + rrSelIds.length + ' thành viên đã chọn lúc ' + this.nowStamp() + ' — đề xuất không thay đổi.' }),
+      rrRunNote: s.rrRunNote || '',
+      isRrDeny: !!rrDenyRow, isRrBulk: rrBulkRows.length > 0,
+      rrModalName: rrDenyRow ? rrDenyRow.name : '', rrModalProp: rrDenyRow ? rrDenyRow.from + ' → ' + rrDenyRow.to : '',
+      rrBulkRows, rrBulkCount: rrBulkRows.length,
+      rrDenyText: s.rrDenyText || '', setRrDenyText: (e) => this.setState({ rrDenyText: e.target.value }),
+      rrDenyDisabled,
+      rrDenyStyle: 'flex:1;height:44px;border:none;border-radius:var(--r-md);font-size:14px;font-weight:600;color:#FFFFFF;background:'
+        + (rrDenyDisabled ? 'rgba(154,163,176,.5)' : 'var(--err)') + ';cursor:' + (rrDenyDisabled ? 'not-allowed' : 'pointer'),
+      closeRrModal: () => this.setState({ rrModal: null, rrDenyText: '' }),
+      confirmRrDeny: () => { if (rrDenyDisabled || !rrDenyRow) return;
+        this.setState({ rrStatus: { ...rrStatus, [rrDenyRow.id]: 'denied' },
+          rrReason: { ...rrReasons, [rrDenyRow.id]: s.rrDenyText.trim() },
+          rrSel: { ...rrSel, [rrDenyRow.id]: false }, rrModal: null, rrDenyText: '' }); },
+      confirmRrBulk: () => { const st = { ...rrStatus };
+        rrBulkRows.forEach(r => { st[r.id] = 'approved'; });
+        this.setState({ rrStatus: st, rrSel: {}, rrModal: null }); },
+
+      // (27) Ngăn chi tiết thành viên: gói xét cấp + tuyến trên hiệu lực.
+      mRankCount: mRc ? this.nfmt(this.pkgCount(mRc)) + (mNext ? ' / ' + this.RANK_THRESHOLD[mNext] + ' (lên ' + mNext + ')' : '') : '—',
+      mRankMonth: mRc ? this.nfmt(mRc.my + mRc.mh * 0.5) + ' gói (' + mRc.my + ' × 1 năm + ' + mRc.mh + ' × 6 tháng)' : '—',
+      mUplineDirect: mUpDirect ? mUpDirect.name + ' · ' + rankOf(mUpDirect) : 'Không có (thành viên gốc)',
+      mUplineEff: mUpEff ? mUpEff.name + ' · ' + rankOf(mUpEff) : 'Công ty · Super Lithium',
+      hasUplineNote: !!(selectedMember && (mUpDirect ? mUpDirect !== mUpEff : false)),
+      mUplineNote: (selectedMember && mUpDirect && mUpDirect !== mUpEff)
+        ? 'Đồng cấp với tuyến trên trực tiếp ' + mUpDirect.name + ' (' + rankOf(mUpDirect) + ') nên bám lên '
+          + (mUpEff ? mUpEff.name + ' (' + rankOf(mUpEff) + ')' : 'Công ty (Super Lithium)') + ' — người kế tiếp có cấp cao hơn.'
+        : '',
+
+      // (27) Bổ nhiệm đặc biệt (mục 15) — ghi đè các hàm cùng tên ở trên.
+      rankEditUpLabel: rankEditUp ? rankEditUp.name + ' · ' + rankOf(rankEditUp) : 'Công ty',
+      rankReason: s.rankReason || '', setRankReason: (e) => this.setState({ rankReason: e.target.value }),
+      rankRequester: s.rankRequester || '', setRankRequester: (e) => this.setState({ rankRequester: e.target.value }),
+      openRankEdit: () => selectedMember && this.setState({ rankEditId: selectedMember.id,
+        rankEditChoice: rankOf(selectedMember), rankReason: '', rankRequester: '' }),
+      closeRankEdit: () => this.setState({ rankEditId: null, rankEditChoice: null, rankReason: '', rankRequester: '' }),
+      submitRankEdit: () => {
+        if (!rankReady || !rankTarget) return;
+        const id = rankTarget.id, now = this.nowStamp();
+        const log = (s.rankLogs[id] || []).slice();
+        log.unshift({ label: 'Đề nghị bổ nhiệm ' + rankEditCurrent + ' → ' + s.rankEditChoice
+          + ' · lý do: ' + s.rankReason.trim() + ' · người yêu cầu: ' + s.rankRequester.trim()
+          + ' · đã gửi email anh Phương duyệt', time: now });
+        this.setState({ rankPending: { ...(s.rankPending || {}), [id]: { from: rankEditCurrent, to: s.rankEditChoice,
+            reason: s.rankReason.trim(), requester: s.rankRequester.trim(), time: now } },
+          rankLogs: { ...s.rankLogs, [id]: log },
+          rankEditId: null, rankEditChoice: null, rankReason: '', rankRequester: '' });
+      },
+      hasRankPending: !!(selectedMember && (s.rankPending || {})[selectedMember.id]),
+      rankPendingText: (() => { const p = selectedMember && (s.rankPending || {})[selectedMember.id];
+        return p ? p.from + ' → ' + p.to + ' · lý do: ' + p.reason + ' · người yêu cầu: ' + p.requester + ' · gửi lúc ' + p.time : ''; })(),
+      approveRankPending: () => { if (!selectedMember) return;
+        const id = selectedMember.id, p = (s.rankPending || {})[id]; if (!p) return;
+        const pend = { ...(s.rankPending || {}) }; delete pend[id];
+        const log = (s.rankLogs[id] || []).slice();
+        log.unshift({ label: 'Anh Phương đã duyệt qua email — ' + p.from + ' → ' + p.to + ' có hiệu lực, đã gửi email báo thành viên', time: this.nowStamp() });
+        this.setState({ rankOverrides: { ...s.rankOverrides, [id]: p.to }, rankLogs: { ...s.rankLogs, [id]: log }, rankPending: pend });
+      },
+
+      // (28) Hoa hồng theo %.
+      commRows: this.RANKS.map(r => { const v = pctNum(commPct[r]); return {
+        rank: r, pct: String(commPct[r]), border: commBad[r] ? '#C0392B' : 'rgba(154,163,176,.6)',
+        amt1y: vnd(10000000 * v / 100), amt6m: vnd(6000000 * v / 100),
+        hasDiff: r !== this.RANKS[0], noDiff: r === this.RANKS[0],
+        diffPct: r === this.RANKS[0] ? '' : String(commDiff[r]),
+        diffBorder: diffBad[r] ? '#C0392B' : 'rgba(154,163,176,.6)',
+        diff1y: r === this.RANKS[0] ? '' : 'chênh lệch ' + vnd(10000000 * pctNum(commDiff[r]) / 100),
+        diff6m: r === this.RANKS[0] ? '' : 'chênh lệch ' + vnd(6000000 * pctNum(commDiff[r]) / 100),
+        onDiffChange: (e) => this.setState({ commDiff: { ...commDiff, [r]: e.target.value }, commSaved: '' }),
+        onChange: (e) => this.setState({ commPct: { ...commPct, [r]: e.target.value }, commSaved: '' }) }; }),
+      commMaxPct: isNaN(commMax) ? '—' : commMax.toLocaleString('vi-VN') + '%',
+      commMax1y: vnd(10000000 * commMax / 100), commMax6m: vnd(6000000 * commMax / 100),
+      commWarn,
+      commDepth: s.commDepth == null ? '10' : String(s.commDepth),
+      setCommDepth: (e) => this.setState({ commDepth: (e.target.value || '').replace(/\D/g, '').slice(0, 2), commSaved: '' }),
+      commSaved: s.commSaved || '',
+      commSaveDisabled: !!commWarn,
+      commSaveStyle: 'height:38px;padding:0 var(--s6);border:none;border-radius:var(--r-md);font-size:13px;font-weight:600;color:#FFFFFF;background:'
+        + (commWarn ? 'rgba(154,163,176,.5)' : 'var(--c6)') + ';cursor:' + (commWarn ? 'not-allowed' : 'pointer'),
+      saveCommission: () => !commWarn && this.setState({ commSaved: 'Đã lưu cấu hình lúc ' + this.nowStamp()
+        + ' · áp dụng cho đơn được duyệt từ thời điểm này, đơn cũ giữ cách tính cũ.' }),
+
       openApproveMemberModal: () => this.setState({ actionModal: { type: 'approve', kind: 'member', id: s.selectedMemberId } }),
       openRejectMemberModal: () => this.setState({ actionModal: { type: 'reject', kind: 'member', id: s.selectedMemberId }, rejectReason: '' }),
 
@@ -2306,6 +2826,64 @@ class Component extends DCLogic {
                 { label: 'Hoàn điểm: ' + s.rejectReason.trim(), actor, time: now },
                 { label: 'Gửi email báo tài khoản nhận tiền có vấn đề', actor: 'Hệ thống', time: now }] }
           : w), actionModal: null, rejectReason: '' });
+      },
+      // (26) Duyệt hàng loạt.
+      wdHasPending: wdPendingAll.length > 0, wdPendingCount: wdPendingAll.length,
+      wdSelCount: wdSelIds.length, wdSelDisabled: wdSelIds.length === 0,
+      wdSelBtnStyle: 'height:34px;padding:0 var(--s5);border-radius:var(--r-md);font-size:12px;font-weight:600;'
+        + (wdSelIds.length ? 'background:var(--c12);color:var(--c8);border:1px solid var(--c8);cursor:pointer'
+                           : 'background:transparent;color:rgba(154,163,176,.9);border:1px dashed rgba(154,163,176,.6);cursor:not-allowed'),
+      wdAllMark: wdAllOn ? '✓' : '', wdAllBg: wdAllOn ? '#1E3A66' : '#FFFFFF',
+      wdAllBorder: wdAllOn ? '#1E3A66' : 'rgba(154,163,176,.8)',
+      wdToggleAll: () => this.setState({ wdSel: wdAllOn ? {}
+        : Object.fromEntries(wdPendingAll.map(w => [w.id, true])) }),
+      openBulkSelected: () => wdSelIds.length && this.setState({
+        actionModal: { type: 'bulk', kind: 'withdrawal', ids: wdSelIds } }),
+      openBulkAll: () => this.setState({
+        actionModal: { type: 'bulk', kind: 'withdrawal', ids: wdPendingAll.map(w => w.id) } }),
+      isBulkModal: !!(s.actionModal && s.actionModal.type === 'bulk'),
+      bulkRows, bulkCount: bulkRows.length,
+      bulkTotal: bulkRows.reduce((t, w) => t + w.amountNum, 0).toLocaleString('vi-VN') + 'đ',
+      confirmBulkApprove: () => {
+        const now = '01/09/2026 10:15';
+        const actor = s.adminRole === 'specialist' ? 'Admin' : 'Head';
+        this.setState({ withdrawalsData: withdrawalsData.map(w => bulkIds.includes(w.id) && w.status === 'pending'
+          ? { ...w, status: 'approved', auditLog: [...w.auditLog, { label: actor + ' duyệt (duyệt hàng loạt)', actor, time: now }] }
+          : w), actionModal: null, wdSel: {} });
+      },
+      // (26) Tải lên kết quả thanh toán.
+      showPayResult: s.showPayResult,
+      openPayResult: () => this.setState({ showPayResult: true, payResultFile: '', payResultApplied: '' }),
+      closePayResult: () => this.setState({ showPayResult: false, payResultFile: '', payResultApplied: '' }),
+      setPayResultFile: (e) => this.setState({ payResultApplied: '',
+        payResultFile: (e.target.files && e.target.files[0]) ? e.target.files[0].name : '' }),
+      usePayResultSample: () => this.setState({ payResultFile: 'sao-ke-chi-tra-HOMI365-2026-08.xlsx', payResultApplied: '' }),
+      payResultFile: s.payResultFile,
+      hasPayResult: !!s.payResultFile && payResultRows.length > 0 && !s.payResultApplied,
+      payResultEmpty: !!s.payResultFile && !payResultRows.length && !s.payResultApplied,
+      payResultRows,
+      payOkCount: payResultRows.filter(r => r.ok).length,
+      payFailCount: payResultRows.filter(r => !r.ok).length,
+      payResultApplied: s.payResultApplied,
+      payApplyDisabled,
+      payApplyStyle: 'flex:1;height:44px;border:none;border-radius:var(--r-md);font-size:14px;font-weight:600;color:#FFFFFF;background:'
+        + (payApplyDisabled ? 'rgba(154,163,176,.5)' : 'var(--c6)') + ';cursor:' + (payApplyDisabled ? 'not-allowed' : 'pointer'),
+      applyPayResult: () => {
+        if (payApplyDisabled) return;
+        const now = '03/09/2026 09:30', file = s.payResultFile;
+        const okIds = payResultRows.filter(r => r.ok).map(r => r.id);
+        const failIds = payResultRows.filter(r => !r.ok).map(r => r.id);
+        this.setState({
+          withdrawalsData: withdrawalsData.map(w => okIds.includes(w.id)
+            ? { ...w, status: 'paid', paidNote: 'Theo file ' + file,
+                auditLog: [...w.auditLog, { label: 'Thanh toán thành công (file ' + file + ')', actor: 'Admin', time: now }] }
+            : failIds.includes(w.id)
+              ? { ...w, status: 'pay_failed', failNote: 'Không có trong file kết quả thanh toán ' + file + '.',
+                  auditLog: [...w.auditLog, { label: 'Chi không thành công (không có trong file ' + file + ')', actor: 'Admin', time: now }] }
+              : w),
+          payResultApplied: 'Đã cập nhật: ' + okIds.length + ' thanh toán thành công, ' + failIds.length
+            + ' chi không thành công. Vào từng yêu cầu Chi không thành công để Hoàn điểm.'
+        });
       },
       // (21) Xuất danh sách chi trả.
       showPayoutExport: s.showPayoutExport,
@@ -2485,6 +3063,7 @@ class Component extends DCLogic {
 
       // 7.3.3 — còn thiếu bao nhiêu đơn để lên hạng kế tiếp
       rankProgress: this.RANK_PROGRESS[s.agentStage === 'active' ? 'active' : 'new'],
+      rankMonthNote: this.RANK_MONTH_NOTE[s.agentStage === 'active' ? 'active' : 'new'],
 
       // 7.3.2 — lọc số đơn theo khoảng thời gian, có cả khoảng ngày tuỳ chỉnh
       isCustomRange: s.orderRange === 'custom',
@@ -2645,8 +3224,9 @@ class Component extends DCLogic {
           });
           return;
         }
-        const nextStatus = isSpecialist ? 'specialist_approved' : 'approved';
-        const label = isSpecialist ? 'Admin duyệt (chờ Head)' : 'Head xác nhận duyệt';
+        // (26) KH chốt: duyệt đổi điểm còn 1 lớp — duyệt là xong.
+        const nextStatus = 'approved';
+        const label = isSpecialist ? 'Admin duyệt' : 'Head duyệt';
         const actor = isSpecialist ? 'Admin' : 'Head';
         this.setState({ withdrawalsData: withdrawalsData.map(w => w.id === id ? { ...w, status: nextStatus, auditLog: [...w.auditLog, { label, actor, time: now }] } : w), actionModal: null });
       },
