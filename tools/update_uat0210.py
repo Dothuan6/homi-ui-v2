@@ -358,7 +358,8 @@ B2_PF_EDIT_BTN_NEW = (
 MARKUP = [
     # --- A1 ---
     (_A1_OPEN_OLD, _A1_OPEN_NEW),
-    (_A1_TITLE, _A1_TITLE + "\n" + A1_AUTOFILL_NOTE),
+    # (08/10) Bỏ dòng "Đã điền theo đơn…" + nút "Mua cho người khác": không có
+    # trong yêu cầu KH (mục 2 chỉ cần tự điền theo đơn trước).
     (_A1_DOB_OLD, _A1_DOB_NEW, ("A1",)),
     ('>Tỉnh/Thành phố (*)</label>\n              <div style="position:relative">\n'
      '                <input type="text" value="{{provinceQuery}}"',
@@ -907,8 +908,6 @@ def patch_screens(screens):
          {"buyStep": "form", "buyerPhone": "0900000000"}),
         ("form-tu-dien", "Form tự điền theo đơn gần nhất (sau đăng nhập)",
          dict(filled, buyStep="form", buyMode="self", buyProfile=prof)),
-        ("mua-cho-nguoi-khac", "Form — mua cho người khác",
-         {"buyStep": "form", "buyMode": "other", "buyProfile": prof}),
         ("loi-tuoi", "Form — ngày sinh ngoài 18–100 tuổi",
          {"buyStep": "form", "buyerPhone": "0900000000", "buyerDob": "15/03/2015",
           "buyTcChecked": True}),
@@ -1081,10 +1080,9 @@ DIFF = [
     "mới vào thẳng form, điền sẵn số vừa nhập. Hệ thống chỉ trả lời có hay chưa có "
     "tài khoản. Đăng nhập đi qua C1 rồi **quay lại form mua hàng** (đã chốt). | "
     "`a1-buy.html`, `#sdt-da-co`, `#form`, `c1-login.html#tu-mua-hang` |",
-    "| 2 | A1 | Sau đăng nhập form **tự điền theo đơn gần nhất**, có dòng \"Đã "
-    "điền theo đơn ngày …\", sửa trực tiếp được. Nút **Mua cho người khác** xoá "
-    "phần tự điền; có nút dùng lại thông tin cũ. | `#form-tu-dien`, "
-    "`#mua-cho-nguoi-khac` |",
+    "| 2 | A1 | Sau đăng nhập form **tự điền theo đơn gần nhất**, sửa trực tiếp được. "
+    "(08/10: bỏ dòng nhắc \"Đã điền theo đơn…\" và nút Mua cho người khác — không có "
+    "trong yêu cầu KH.) | `#form-tu-dien` |",
     "| 3 | A1 | Ô Ngày sinh kiểm tra tuổi **18–100**, báo lỗi ngay dưới ô và khoá "
     "nút Thanh toán. Chỉ xét khi đã gõ đủ `dd/mm/yyyy`. | `#loi-tuoi` |",
     "| 4 | A1 | Bỏ dấu (*) ở Tỉnh/Thành phố và Phường/Xã. Nút Thanh toán vốn "

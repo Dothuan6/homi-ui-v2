@@ -384,7 +384,7 @@ Nguồn: sheet `Plan Update` trong Google Sheet `[Homi] - Change Request`. Đợ
 | Mục | Màn | Thay đổi | Xem thử |
 |---|---|---|---|
 | 1 | A1, C1 | Thêm **bước nhập số điện thoại** trước form mua hàng. Số đã có tài khoản thì hiện khối gợi ý với hai nút Đăng nhập / Bỏ qua và tự điền; số mới vào thẳng form, điền sẵn số vừa nhập. Hệ thống chỉ trả lời có hay chưa có tài khoản. Đăng nhập đi qua C1 rồi **quay lại form mua hàng** (đã chốt). | `a1-buy.html`, `#sdt-da-co`, `#form`, `c1-login.html#tu-mua-hang` |
-| 2 | A1 | Sau đăng nhập form **tự điền theo đơn gần nhất**, có dòng "Đã điền theo đơn ngày …", sửa trực tiếp được. Nút **Mua cho người khác** xoá phần tự điền; có nút dùng lại thông tin cũ. | `#form-tu-dien`, `#mua-cho-nguoi-khac` |
+| 2 | A1 | Sau đăng nhập form **tự điền theo đơn gần nhất**, sửa trực tiếp được. (08/10: bỏ dòng nhắc "Đã điền theo đơn…" và nút Mua cho người khác — không có trong yêu cầu KH.) | `#form-tu-dien` |
 | 3 | A1 | Ô Ngày sinh kiểm tra tuổi **18–100**, báo lỗi ngay dưới ô và khoá nút Thanh toán. Chỉ xét khi đã gõ đủ `dd/mm/yyyy`. | `#loi-tuoi` |
 | 4 | A1 | Bỏ dấu (*) ở Tỉnh/Thành phố và Phường/Xã. Nút Thanh toán vốn không phụ thuộc hai ô này nên không có điều kiện nào phải gỡ. Bổ sung cùng ngày: ba ô **Ngân hàng, Số tài khoản, Tên chủ tài khoản** ở form mua hàng cũng bỏ dấu (*) — vẫn giữ ô, chỉ không bắt buộc nhập. Form đăng ký thành viên A2 giữ nguyên bắt buộc. | `#form` |
 | 5 | A1 | Ô đồng ý chính sách **mờ và khoá**, bấm một trong hai link chính sách thì mở. Hai link đổi sang mở tab mới — trước đây mở cùng tab, bấm là mất dữ liệu đang nhập. Dùng lại cơ chế của A2 bước 4 trong `js/otp.js`. | `#form` |
