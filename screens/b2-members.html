@@ -17,7 +17,7 @@ window.__STATE__ = {"screen": "B2"};
 try { var c = sessionStorage.getItem('__homi_carry');
       if (c) { Object.assign(window.__STATE__, JSON.parse(c)); sessionStorage.removeItem('__homi_carry'); } } catch (e) {}
 // mở thẳng một trạng thái: b2-members.html#chi-tiet
-var H = {"chi-tiet": {"selectedMemberId": 6}, "duyet": {"selectedMemberId": 6, "actionModal": {"type": "approve", "kind": "member", "id": 6}}, "tu-choi": {"selectedMemberId": 6, "actionModal": {"type": "reject", "kind": "member", "id": 6}}, "cap-nhat-cap": {"selectedMemberId": 5, "rankEditId": 5, "rankEditChoice": "Diamond", "rankReason": "Đạt doanh số đặc biệt quý 3", "rankRequester": "Hoàng Thị Mỹ Trinh"}, "cho-duyet-bo-nhiem": {"selectedMemberId": 5, "rankPending": {"5": {"from": "Gold", "to": "Diamond", "reason": "Đạt doanh số đặc biệt quý 3", "requester": "Hoàng Thị Mỹ Trinh", "time": "08/10/2026 10:20"}}, "rankLogs": {"5": [{"label": "Đề nghị bổ nhiệm Gold → Diamond · lý do: Đạt doanh số đặc biệt quý 3 · người yêu cầu: Hoàng Thị Mỹ Trinh · đã gửi email anh Phương duyệt", "time": "08/10/2026 10:20"}]}}, "sua-ho-so": {"selectedMemberId": 2, "profileOpen": true, "profileEdit": true}, "sua-ho-so-doi-email": {"selectedMemberId": 2, "profileOpen": true, "profileEdit": true, "profileDraft": {"email": "cuong.levan@gmail.com"}}, "tuyen-tren-hieu-luc": {"selectedMemberId": 4}}, h = location.hash.slice(1);
+var H = {"chi-tiet": {"selectedMemberId": 6}, "duyet": {"selectedMemberId": 6, "actionModal": {"type": "approve", "kind": "member", "id": 6}}, "tu-choi": {"selectedMemberId": 6, "actionModal": {"type": "reject", "kind": "member", "id": 6}}, "cap-nhat-cap": {"selectedMemberId": 5, "rankEditId": 5, "rankEditChoice": "Diamond", "rankReason": "Đạt doanh số đặc biệt quý 3", "rankRequester": "Hoàng Thị Mỹ Trinh"}, "da-bo-nhiem": {"selectedMemberId": 5, "rankOverrides": {"5": "Diamond"}, "rankSaved": "Đã bổ nhiệm Gold → Diamond, có hiệu lực ngay. Đã gửi email cho anh Phương và email báo thành viên.", "rankLogs": {"5": [{"label": "Bổ nhiệm đặc biệt Gold → Diamond · lý do: Đạt doanh số đặc biệt quý 3 · người yêu cầu: Hoàng Thị Mỹ Trinh · admin xác nhận (đã duyệt ngoài hệ thống) · đã gửi email anh Phương", "time": "08/10/2026 10:20"}]}}, "sua-ho-so": {"selectedMemberId": 2, "profileOpen": true, "profileEdit": true}, "sua-ho-so-doi-email": {"selectedMemberId": 2, "profileOpen": true, "profileEdit": true, "profileDraft": {"email": "cuong.levan@gmail.com"}}, "tuyen-tren-hieu-luc": {"selectedMemberId": 4}}, h = location.hash.slice(1);
 if (H[h]) Object.assign(window.__STATE__, H[h]);
 </script>
 <script src="../js/dc-runtime.js"></script>
@@ -913,16 +913,13 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
               <div style="font-size:12px;color:#965C0A;background:rgba(150,92,10,.12);border-radius:var(--r-sm);padding:var(--s4);line-height:1.6">{{mUplineNote}}</div>
             </sc-if>
           </div>
-          <sc-if value="{{hasRankPending}}" hint-placeholder-val="{{false}}">
-            <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:12px;color:var(--c2);background:rgba(150,92,10,.12);border:1px solid rgba(150,92,10,.35);border-radius:var(--r-md);padding:var(--s5);margin-bottom:var(--s5);line-height:1.6">
-              <div><strong>Bổ nhiệm đặc biệt đang chờ anh Phương duyệt qua email:</strong> {{rankPendingText}}</div>
-              <button sc-camel-on-click="{{approveRankPending}}" style="align-self:flex-start;height:32px;padding:0 var(--s5);background:var(--c12);border:1px solid #965C0A;border-radius:var(--r-md);font-size:12px;font-weight:600;color:#965C0A">Bản mẫu: mô phỏng anh Phương đã duyệt</button>
-            </div>
+          <sc-if value="{{hasRankSaved}}" hint-placeholder-val="{{false}}">
+            <div style="font-size:12px;color:#2F7A48;background:rgba(47,122,72,.12);border-radius:var(--r-md);padding:var(--s4) var(--s5);margin-bottom:var(--s5);line-height:1.6">{{rankSavedText}}</div>
           </sc-if>
 
           <!-- (18) Cập nhật cấp theo phiếu đã duyệt ngoài hệ thống -->
           <button sc-camel-on-click="{{openRankEdit}}" style="width:100%;height:40px;margin-bottom:var(--s3);background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--c6)" style-hover="background:rgba(154,163,176,.08)">Bổ nhiệm đặc biệt</button>
-          <div style="font-size:11px;color:var(--c5);line-height:1.6;margin-bottom:var(--s6)">Admin nhập lý do và người yêu cầu; hệ thống gửi email để anh Phương duyệt, cấp mới có hiệu lực sau khi được duyệt.</div>
+          <div style="font-size:11px;color:var(--c5);line-height:1.6;margin-bottom:var(--s6)">Duyệt làm ngoài hệ thống. Admin nhập lý do và người yêu cầu rồi xác nhận — cấp mới có hiệu lực ngay, hệ thống gửi email cho anh Phương.</div>
 
           <sc-if value="{{hasRankLog}}" hint-placeholder-val="{{false}}">
             <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s4)">Lịch sử điều chỉnh cấp</div>
@@ -1112,7 +1109,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           </div>
           <button sc-camel-on-click="{{closeRankEdit}}" style="background:none;border:none;font-size:18px;color:var(--c5);flex:none">&#10005;</button>
         </div>
-        <div style="font-size:12px;color:var(--c4);background:rgba(30,58,102,.07);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">Hệ thống gửi email để <strong>anh Phương</strong> duyệt. Cấp mới chỉ có hiệu lực sau khi được duyệt; email được lưu làm bằng chứng.</div>
+        <div style="font-size:12px;color:var(--c4);background:rgba(30,58,102,.07);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">Việc duyệt làm <strong>ngoài hệ thống</strong>. Admin chỉ xác nhận bổ nhiệm sau khi đã được duyệt — cấp mới <strong>có hiệu lực ngay khi lưu</strong>. Hệ thống gửi email cho <strong>anh Phương</strong> và lưu email làm bằng chứng.</div>
         <div style="display:flex;flex-direction:column;gap:var(--s2)">
           <div style="font-size:13px;font-weight:600;color:var(--c2)">Cấp đề nghị</div>
           <sc-for list="{{rankOptions}}" as="ro" hint-placeholder-count="7">
@@ -1124,7 +1121,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
         <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:13px;font-weight:600;color:var(--c2)">Người yêu cầu (*)</label><input type="text" placeholder="Họ tên người đề nghị bổ nhiệm" value="{{rankRequester}}" sc-camel-on-change="{{setRankRequester}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
         <div style="display:flex;gap:var(--s3)">
           <button sc-camel-on-click="{{closeRankEdit}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Huỷ</button>
-          <button sc-camel-on-click="{{submitRankEdit}}" disabled="{{rankSubmitDisabled}}" style="{{rankSubmitStyle}}">Gửi email đề nghị duyệt</button>
+          <button sc-camel-on-click="{{submitRankEdit}}" disabled="{{rankSubmitDisabled}}" style="{{rankSubmitStyle}}">Xác nhận bổ nhiệm &amp; gửi email</button>
         </div>
       </div>
     </div>
@@ -1303,9 +1300,9 @@ class Component extends DCLogic {
     profileSaved: null,
     // (28) Cấu hình hoa hồng theo % (B5).
     commPct: null, commDiff: null, commDepth: null, commSaved: '',
-    // (27) Xét cấp (B9) + bổ nhiệm đặc biệt chờ duyệt email.
+    // (27) Xét cấp (B9) + bổ nhiệm đặc biệt (duyệt ngoài, admin xác nhận).
     rrStatus: {}, rrSel: {}, rrReason: {}, rrFilter: 'all', rrModal: null, rrDenyText: '', rrRunNote: '',
-    rankReason: '', rankRequester: '', rankPending: {},
+    rankReason: '', rankRequester: '', rankSaved: '',
     // (26) Đổi điểm sau phản hồi KH: yêu cầu của chính thành viên (A3),
     // duyệt hàng loạt và tải kết quả thanh toán (B3).
     myWd: null, wdPeriodLocked: false, showCancelWd: false,
@@ -2746,24 +2743,17 @@ class Component extends DCLogic {
         if (!rankReady || !rankTarget) return;
         const id = rankTarget.id, now = this.nowStamp();
         const log = (s.rankLogs[id] || []).slice();
-        log.unshift({ label: 'Đề nghị bổ nhiệm ' + rankEditCurrent + ' → ' + s.rankEditChoice
+        // (08/10) Duyệt ngoài hệ thống — admin xác nhận là có hiệu lực ngay.
+        log.unshift({ label: 'Bổ nhiệm đặc biệt ' + rankEditCurrent + ' → ' + s.rankEditChoice
           + ' · lý do: ' + s.rankReason.trim() + ' · người yêu cầu: ' + s.rankRequester.trim()
-          + ' · đã gửi email anh Phương duyệt', time: now });
-        this.setState({ rankPending: { ...(s.rankPending || {}), [id]: { from: rankEditCurrent, to: s.rankEditChoice,
-            reason: s.rankReason.trim(), requester: s.rankRequester.trim(), time: now } },
+          + ' · admin xác nhận (đã duyệt ngoài hệ thống) · đã gửi email anh Phương', time: now });
+        this.setState({ rankOverrides: { ...s.rankOverrides, [id]: s.rankEditChoice },
+          rankSaved: 'Đã bổ nhiệm ' + rankEditCurrent + ' → ' + s.rankEditChoice
+            + ', có hiệu lực ngay. Đã gửi email cho anh Phương và email báo thành viên.',
           rankLogs: { ...s.rankLogs, [id]: log },
           rankEditId: null, rankEditChoice: null, rankReason: '', rankRequester: '' });
       },
-      hasRankPending: !!(selectedMember && (s.rankPending || {})[selectedMember.id]),
-      rankPendingText: (() => { const p = selectedMember && (s.rankPending || {})[selectedMember.id];
-        return p ? p.from + ' → ' + p.to + ' · lý do: ' + p.reason + ' · người yêu cầu: ' + p.requester + ' · gửi lúc ' + p.time : ''; })(),
-      approveRankPending: () => { if (!selectedMember) return;
-        const id = selectedMember.id, p = (s.rankPending || {})[id]; if (!p) return;
-        const pend = { ...(s.rankPending || {}) }; delete pend[id];
-        const log = (s.rankLogs[id] || []).slice();
-        log.unshift({ label: 'Anh Phương đã duyệt qua email — ' + p.from + ' → ' + p.to + ' có hiệu lực, đã gửi email báo thành viên', time: this.nowStamp() });
-        this.setState({ rankOverrides: { ...s.rankOverrides, [id]: p.to }, rankLogs: { ...s.rankLogs, [id]: log }, rankPending: pend });
-      },
+      hasRankSaved: !!(selectedMember && s.rankSaved), rankSavedText: s.rankSaved || '',
 
       // (28) Hoa hồng theo %.
       commRows: this.RANKS.map(r => { const v = pctNum(commPct[r]); return {

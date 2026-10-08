@@ -978,18 +978,17 @@ def patch_screens(screens):
     st2 = []
     for h, lb, st in b2["states"]:
         if h == "cap-nhat-cap":
-            st2.append(("cap-nhat-cap", "Modal bổ nhiệm đặc biệt — gửi email anh Phương duyệt",
+            st2.append(("cap-nhat-cap", "Modal bổ nhiệm đặc biệt — admin xác nhận, gửi email anh Phương",
                         {"selectedMemberId": 5, "rankEditId": 5, "rankEditChoice": "Diamond",
                          "rankReason": "Đạt doanh số đặc biệt quý 3",
                          "rankRequester": "Hoàng Thị Mỹ Trinh"}))
         elif h == "da-cap-nhat-cap":
-            st2.append(("cho-duyet-bo-nhiem", "Bổ nhiệm đặc biệt đang chờ anh Phương duyệt",
-                        {"selectedMemberId": 5,
-                         "rankPending": {"5": {"from": "Gold", "to": "Diamond",
-                                               "reason": "Đạt doanh số đặc biệt quý 3",
-                                               "requester": "Hoàng Thị Mỹ Trinh",
-                                               "time": "08/10/2026 10:20"}},
-                         "rankLogs": {"5": [{"label": "Đề nghị bổ nhiệm Gold → Diamond · lý do: Đạt doanh số đặc biệt quý 3 · người yêu cầu: Hoàng Thị Mỹ Trinh · đã gửi email anh Phương duyệt",
+            # (08/10) KH: anh Phương duyệt NGOÀI hệ thống; admin vào xác nhận là
+            # cấp có hiệu lực ngay, hệ thống chỉ cần gửi email cho anh Phương.
+            st2.append(("da-bo-nhiem", "Đã bổ nhiệm đặc biệt — có hiệu lực ngay, đã gửi email anh Phương",
+                        {"selectedMemberId": 5, "rankOverrides": {"5": "Diamond"},
+                         "rankSaved": "Đã bổ nhiệm Gold → Diamond, có hiệu lực ngay. Đã gửi email cho anh Phương và email báo thành viên.",
+                         "rankLogs": {"5": [{"label": "Bổ nhiệm đặc biệt Gold → Diamond · lý do: Đạt doanh số đặc biệt quý 3 · người yêu cầu: Hoàng Thị Mỹ Trinh · admin xác nhận (đã duyệt ngoài hệ thống) · đã gửi email anh Phương",
                                              "time": "08/10/2026 10:20"}]}}))
         else:
             st2.append((h, lb, st))
@@ -1553,11 +1552,8 @@ B2_RANK_ROWS = """          <!-- (27) Gói xét cấp + tuyến trên hiệu l�
               <div style="font-size:12px;color:#965C0A;background:rgba(150,92,10,.12);border-radius:var(--r-sm);padding:var(--s4);line-height:1.6">{{mUplineNote}}</div>
             </sc-if>
           </div>
-          <sc-if value="{{hasRankPending}}" hint-placeholder-val="{{false}}">
-            <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:12px;color:var(--c2);background:rgba(150,92,10,.12);border:1px solid rgba(150,92,10,.35);border-radius:var(--r-md);padding:var(--s5);margin-bottom:var(--s5);line-height:1.6">
-              <div><strong>Bổ nhiệm đặc biệt đang chờ anh Phương duyệt qua email:</strong> {{rankPendingText}}</div>
-              <button sc-camel-on-click="{{approveRankPending}}" style="align-self:flex-start;height:32px;padding:0 var(--s5);background:var(--c12);border:1px solid #965C0A;border-radius:var(--r-md);font-size:12px;font-weight:600;color:#965C0A">Bản mẫu: mô phỏng anh Phương đã duyệt</button>
-            </div>
+          <sc-if value="{{hasRankSaved}}" hint-placeholder-val="{{false}}">
+            <div style="font-size:12px;color:#2F7A48;background:rgba(47,122,72,.12);border-radius:var(--r-md);padding:var(--s4) var(--s5);margin-bottom:var(--s5);line-height:1.6">{{rankSavedText}}</div>
           </sc-if>
 """
 
@@ -1572,7 +1568,7 @@ RANK_MODAL_NEW = """  <!-- MODAL: bổ nhiệm đặc biệt (17/09, làm lại 
           </div>
           <button sc-camel-on-click="{{closeRankEdit}}" style="background:none;border:none;font-size:18px;color:var(--c5);flex:none">&#10005;</button>
         </div>
-        <div style=\"""" + _INFO + """\">Hệ thống gửi email để <strong>anh Phương</strong> duyệt. Cấp mới chỉ có hiệu lực sau khi được duyệt; email được lưu làm bằng chứng.</div>
+        <div style=\"""" + _INFO + """\">Việc duyệt làm <strong>ngoài hệ thống</strong>. Admin chỉ xác nhận bổ nhiệm sau khi đã được duyệt — cấp mới <strong>có hiệu lực ngay khi lưu</strong>. Hệ thống gửi email cho <strong>anh Phương</strong> và lưu email làm bằng chứng.</div>
         <div style="display:flex;flex-direction:column;gap:var(--s2)">
           <div style="font-size:13px;font-weight:600;color:var(--c2)">Cấp đề nghị</div>
           <sc-for list="{{rankOptions}}" as="ro" hint-placeholder-count="7">
@@ -1584,7 +1580,7 @@ RANK_MODAL_NEW = """  <!-- MODAL: bổ nhiệm đặc biệt (17/09, làm lại 
         <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:13px;font-weight:600;color:var(--c2)">Người yêu cầu (*)</label><input type="text" placeholder="Họ tên người đề nghị bổ nhiệm" value="{{rankRequester}}" sc-camel-on-change="{{setRankRequester}}" style="height:40px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px" style-focus=\"""" + _FOCUS + """\"></div>
         <div style="display:flex;gap:var(--s3)">
           <button sc-camel-on-click="{{closeRankEdit}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Huỷ</button>
-          <button sc-camel-on-click="{{submitRankEdit}}" disabled="{{rankSubmitDisabled}}" style="{{rankSubmitStyle}}">Gửi email đề nghị duyệt</button>
+          <button sc-camel-on-click="{{submitRankEdit}}" disabled="{{rankSubmitDisabled}}" style="{{rankSubmitStyle}}">Xác nhận bổ nhiệm &amp; gửi email</button>
         </div>
       </div>
     </div>
@@ -1687,7 +1683,7 @@ MARKUP_0810 += [
      '          </div>\n' + B2_RANK_ROWS),
     ('>Cập nhật cấp</button>', '>Bổ nhiệm đặc biệt</button>'),
     ('Việc trình và duyệt làm ngoài hệ thống. Ở đây chỉ ghi nhận cấp đã được duyệt, kèm số phiếu để đối chiếu.',
-     'Admin nhập lý do và người yêu cầu; hệ thống gửi email để anh Phương duyệt, cấp mới có hiệu lực sau khi được duyệt.'),
+     'Duyệt làm ngoài hệ thống. Admin nhập lý do và người yêu cầu rồi xác nhận — cấp mới có hiệu lực ngay, hệ thống gửi email cho anh Phương.'),
     ('      <!-- B4 WAREHOUSE -->', B9_SCREEN + '      <!-- B4 WAREHOUSE -->'),
     ('line-height:1.5">{{rankProgress}}</div>',
      'line-height:1.5">{{rankProgress}}</div><div style="font-size:10px;color:var(--c5);line-height:1.5;margin-top:2px">{{rankMonthNote}}</div>'),
@@ -1827,24 +1823,17 @@ _JS_RR_RETURN = """      // (27) Xét thăng / hạ cấp (B9).
         if (!rankReady || !rankTarget) return;
         const id = rankTarget.id, now = this.nowStamp();
         const log = (s.rankLogs[id] || []).slice();
-        log.unshift({ label: 'Đề nghị bổ nhiệm ' + rankEditCurrent + ' → ' + s.rankEditChoice
+        // (08/10) Duyệt ngoài hệ thống — admin xác nhận là có hiệu lực ngay.
+        log.unshift({ label: 'Bổ nhiệm đặc biệt ' + rankEditCurrent + ' → ' + s.rankEditChoice
           + ' · lý do: ' + s.rankReason.trim() + ' · người yêu cầu: ' + s.rankRequester.trim()
-          + ' · đã gửi email anh Phương duyệt', time: now });
-        this.setState({ rankPending: { ...(s.rankPending || {}), [id]: { from: rankEditCurrent, to: s.rankEditChoice,
-            reason: s.rankReason.trim(), requester: s.rankRequester.trim(), time: now } },
+          + ' · admin xác nhận (đã duyệt ngoài hệ thống) · đã gửi email anh Phương', time: now });
+        this.setState({ rankOverrides: { ...s.rankOverrides, [id]: s.rankEditChoice },
+          rankSaved: 'Đã bổ nhiệm ' + rankEditCurrent + ' → ' + s.rankEditChoice
+            + ', có hiệu lực ngay. Đã gửi email cho anh Phương và email báo thành viên.',
           rankLogs: { ...s.rankLogs, [id]: log },
           rankEditId: null, rankEditChoice: null, rankReason: '', rankRequester: '' });
       },
-      hasRankPending: !!(selectedMember && (s.rankPending || {})[selectedMember.id]),
-      rankPendingText: (() => { const p = selectedMember && (s.rankPending || {})[selectedMember.id];
-        return p ? p.from + ' → ' + p.to + ' · lý do: ' + p.reason + ' · người yêu cầu: ' + p.requester + ' · gửi lúc ' + p.time : ''; })(),
-      approveRankPending: () => { if (!selectedMember) return;
-        const id = selectedMember.id, p = (s.rankPending || {})[id]; if (!p) return;
-        const pend = { ...(s.rankPending || {}) }; delete pend[id];
-        const log = (s.rankLogs[id] || []).slice();
-        log.unshift({ label: 'Anh Phương đã duyệt qua email — ' + p.from + ' → ' + p.to + ' có hiệu lực, đã gửi email báo thành viên', time: this.nowStamp() });
-        this.setState({ rankOverrides: { ...s.rankOverrides, [id]: p.to }, rankLogs: { ...s.rankLogs, [id]: log }, rankPending: pend });
-      },
+      hasRankSaved: !!(selectedMember && s.rankSaved), rankSavedText: s.rankSaved || '',
 
 """
 
@@ -1856,9 +1845,9 @@ JS_0810 += [
     ("      isB8: s.screen === 'B8',", "      isB8: s.screen === 'B8',\n      isB9: s.screen === 'B9',"),
     ("    profileSaved: null,\n",
      "    profileSaved: null,\n"
-     "    // (27) Xét cấp (B9) + bổ nhiệm đặc biệt chờ duyệt email.\n"
+     "    // (27) Xét cấp (B9) + bổ nhiệm đặc biệt (duyệt ngoài, admin xác nhận).\n"
      "    rrStatus: {}, rrSel: {}, rrReason: {}, rrFilter: 'all', rrModal: null, rrDenyText: '', rrRunNote: '',\n"
-     "    rankReason: '', rankRequester: '', rankPending: {},\n"),
+     "    rankReason: '', rankRequester: '', rankSaved: '',\n"),
     ("  RANK_PROGRESS = { new: 'Còn 9 đơn để lên hạng Silver',\n"
      "                    active: 'Còn 8 đơn để lên hạng Gold' };",
      _JS_RR_CLASS),
@@ -2076,9 +2065,10 @@ DIFF_0810 = [
     "`b2-members.html#chi-tiet` |",
     "| 15 | B2 | **Bổ nhiệm đặc biệt** thay cho Cập nhật cấp: bỏ số phiếu, ngày duyệt, "
     "người duyệt, file minh chứng; thêm **Lý do** và **Người yêu cầu** (bắt buộc). "
-    "Gửi xong thì **chờ anh Phương duyệt qua email**, cấp mới chỉ có hiệu lực sau khi "
-    "duyệt (bản mẫu có nút mô phỏng duyệt). **Không cho chọn cấp bằng tuyến trên** "
-    "(H3). | `#cap-nhat-cap`, `#cho-duyet-bo-nhiem` |",
+    "Duyệt làm **ngoài hệ thống** (chốt 08/10): admin bấm **Xác nhận bổ nhiệm & gửi "
+    "email** là cấp mới có hiệu lực ngay, hệ thống gửi email cho anh Phương (lưu làm bằng "
+    "chứng) và email báo thành viên. **Không cho chọn cấp bằng tuyến trên** (H3). | "
+    "`#cap-nhat-cap`, `#da-bo-nhiem` |",
     "| 20 | B2 | Hiện **tuyến trên trực tiếp** và **tuyến trên hiệu lực** (đi ngược lên "
     "tới người đầu tiên có cấp cao hơn, không có thì là công ty) kèm ghi chú khi khác "
     "nhau. Trần của bổ nhiệm đặc biệt tính theo tuyến trên hiệu lực. | "
@@ -2094,9 +2084,8 @@ DIFF_0810 = [
     "| 24 | A1, B5, B6 | Đổi **tên hiển thị** gói thành **HOMI365-01**. Mã CN02 trong "
     "SKU kho và mã gói giữ nguyên. | — |", "",
     "**Giả định của bản mẫu — cần xác nhận:**", "",
-    "1. **Bổ nhiệm đặc biệt (15)**: chọn cách cấp mới **chờ anh Phương duyệt** mới có "
-    "hiệu lực (KH ghi \"gửi email về anh Phương duyệt\"). Nếu KH muốn áp dụng ngay khi "
-    "lưu thì bỏ bước chờ.",
+    "1. **Bổ nhiệm đặc biệt (15)** — đã chốt 08/10: anh Phương duyệt ngoài hệ thống, "
+    "admin vào xác nhận là có hiệu lực ngay; hệ thống chỉ cần gửi email cho anh Phương.",
     "2. **Ngưỡng số gói từng cấp** — đã chốt 08/10 theo Chính sách ưu đãi thành viên: "
     "Silver 10, Gold 18, Diamond 24, Titanium 28, Lithium 30 (xem mục 21).",
     "3. **Hoa hồng % mặc định** quy từ bảng tiền cũ của gói 1 năm (Copper 20% … "

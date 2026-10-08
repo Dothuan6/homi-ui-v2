@@ -270,9 +270,9 @@ class Component extends DCLogic {
     profileSaved: null,
     // (28) Cấu hình hoa hồng theo % (B5).
     commPct: null, commDiff: null, commDepth: null, commSaved: '',
-    // (27) Xét cấp (B9) + bổ nhiệm đặc biệt chờ duyệt email.
+    // (27) Xét cấp (B9) + bổ nhiệm đặc biệt (duyệt ngoài, admin xác nhận).
     rrStatus: {}, rrSel: {}, rrReason: {}, rrFilter: 'all', rrModal: null, rrDenyText: '', rrRunNote: '',
-    rankReason: '', rankRequester: '', rankPending: {},
+    rankReason: '', rankRequester: '', rankSaved: '',
     // (26) Đổi điểm sau phản hồi KH: yêu cầu của chính thành viên (A3),
     // duyệt hàng loạt và tải kết quả thanh toán (B3).
     myWd: null, wdPeriodLocked: false, showCancelWd: false,
@@ -1713,24 +1713,17 @@ class Component extends DCLogic {
         if (!rankReady || !rankTarget) return;
         const id = rankTarget.id, now = this.nowStamp();
         const log = (s.rankLogs[id] || []).slice();
-        log.unshift({ label: 'Đề nghị bổ nhiệm ' + rankEditCurrent + ' → ' + s.rankEditChoice
+        // (08/10) Duyệt ngoài hệ thống — admin xác nhận là có hiệu lực ngay.
+        log.unshift({ label: 'Bổ nhiệm đặc biệt ' + rankEditCurrent + ' → ' + s.rankEditChoice
           + ' · lý do: ' + s.rankReason.trim() + ' · người yêu cầu: ' + s.rankRequester.trim()
-          + ' · đã gửi email anh Phương duyệt', time: now });
-        this.setState({ rankPending: { ...(s.rankPending || {}), [id]: { from: rankEditCurrent, to: s.rankEditChoice,
-            reason: s.rankReason.trim(), requester: s.rankRequester.trim(), time: now } },
+          + ' · admin xác nhận (đã duyệt ngoài hệ thống) · đã gửi email anh Phương', time: now });
+        this.setState({ rankOverrides: { ...s.rankOverrides, [id]: s.rankEditChoice },
+          rankSaved: 'Đã bổ nhiệm ' + rankEditCurrent + ' → ' + s.rankEditChoice
+            + ', có hiệu lực ngay. Đã gửi email cho anh Phương và email báo thành viên.',
           rankLogs: { ...s.rankLogs, [id]: log },
           rankEditId: null, rankEditChoice: null, rankReason: '', rankRequester: '' });
       },
-      hasRankPending: !!(selectedMember && (s.rankPending || {})[selectedMember.id]),
-      rankPendingText: (() => { const p = selectedMember && (s.rankPending || {})[selectedMember.id];
-        return p ? p.from + ' → ' + p.to + ' · lý do: ' + p.reason + ' · người yêu cầu: ' + p.requester + ' · gửi lúc ' + p.time : ''; })(),
-      approveRankPending: () => { if (!selectedMember) return;
-        const id = selectedMember.id, p = (s.rankPending || {})[id]; if (!p) return;
-        const pend = { ...(s.rankPending || {}) }; delete pend[id];
-        const log = (s.rankLogs[id] || []).slice();
-        log.unshift({ label: 'Anh Phương đã duyệt qua email — ' + p.from + ' → ' + p.to + ' có hiệu lực, đã gửi email báo thành viên', time: this.nowStamp() });
-        this.setState({ rankOverrides: { ...s.rankOverrides, [id]: p.to }, rankLogs: { ...s.rankLogs, [id]: log }, rankPending: pend });
-      },
+      hasRankSaved: !!(selectedMember && s.rankSaved), rankSavedText: s.rankSaved || '',
 
       // (28) Hoa hồng theo %.
       commRows: this.RANKS.map(r => { const v = pctNum(commPct[r]); return {
