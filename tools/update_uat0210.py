@@ -55,43 +55,41 @@ _A1_OPEN_OLD = (
     '  <sc-if value="{{isA1}}" hint-placeholder-val="{{true}}">\n'
     '  <div style="display:flex;justify-content:center;padding:var(--s8) var(--s7) var(--s10);background:var(--warm-50)">\n'
     '    <div style="width:100%;max-width:1160px;display:grid;grid-template-columns:1fr 380px;gap:var(--s8);align-items:start">')
-A1_PHONE_BAR = """    <!-- (20) Ô nhập SĐT đầu trang — form bên dưới khoá tới khi xác định xong SĐT -->
-    <div style="width:100%;max-width:1160px;background:var(--c12);border:1px solid {{buyBarBorder}};border-radius:var(--r-lg);padding:var(--s7) var(--s8);display:flex;flex-direction:column;gap:var(--s5);box-shadow:{{buyBarShadow}}">
-      <sc-if value="{{buyLocked}}" hint-placeholder-val="{{true}}">
-        <div style="display:flex;flex-wrap:wrap;gap:var(--s7);align-items:flex-start;justify-content:space-between">
-          <div style="flex:1;min-width:260px"><div style="font-size:18px;font-weight:700;color:var(--c1)">Bắt đầu mua HOMI365-01</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2);line-height:1.6">Nhập số điện thoại để mở form bên dưới. Nếu bạn đã có tài khoản HOMI365, đăng nhập để form tự điền theo đơn gần nhất.</div></div>
-          <div style="display:flex;gap:var(--s3);align-items:flex-start;flex-wrap:wrap">
-            <div style="display:flex;flex-direction:column;gap:var(--s2);width:240px;max-width:100%">
-              <input type="text" inputmode="numeric" maxlength="10" placeholder="Số điện thoại (090xxxxxxx)" value="{{buyPhoneInput}}" sc-camel-on-change="{{setBuyPhoneInput}}" style="height:44px;padding:0 var(--s5);border:1px solid {{buyPhoneBorder}};border-radius:var(--r-md);font-size:16px" style-focus=\"""" + _FOCUS + """\">
-              <sc-if value="{{buyPhoneError}}" hint-placeholder-val="{{false}}">
-                <div style="font-size:12px;color:var(--err)">{{buyPhoneError}}</div>
-              </sc-if>
-            </div>
-            <sc-if value="{{buyPhoneAsk}}" hint-placeholder-val="{{true}}">
-              <button sc-camel-on-click="{{submitBuyPhone}}" style=\"""" + _BTN_P + """;padding:0 var(--s7);box-shadow:var(--sh)" style-hover=\"""" + _HOVER_P + """\">Tiếp tục</button>
-            </sc-if>
-          </div>
-        </div>
-        <sc-if value="{{buyPhoneFound}}" hint-placeholder-val="{{false}}">
-          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s5);border:1px solid rgba(30,58,102,.3);background:rgba(30,58,102,.06);border-radius:var(--r-md);padding:var(--s5) var(--s6)">
-            <div style="flex:1;min-width:240px"><div style="font-size:14px;font-weight:700;color:var(--c1)">Số điện thoại này đã có tài khoản HOMI365</div><div style="font-size:13px;color:var(--c2);margin-top:var(--s1);line-height:1.6">Đăng nhập để form tự điền theo đơn gần nhất, hoặc bỏ qua và tự điền.</div></div>
-            <div style="display:flex;gap:var(--s3);flex-wrap:wrap;align-items:center">
-              <button sc-camel-on-click="{{buyGoLogin}}" style=\"""" + _BTN_P + """;padding:0 var(--s7)" style-hover=\"""" + _HOVER_P + """\">Đăng nhập</button>
-              <button sc-camel-on-click="{{buySkipLogin}}" style=\"""" + _BTN_G + """;padding:0 var(--s6)" style-hover=\"""" + _HOVER_G + """\">Bỏ qua và tự điền</button>
-              <button sc-camel-on-click="{{buyResetPhone}}" style="background:none;border:none;font-size:13px;font-weight:600;color:var(--c6);padding:var(--s2)">Dùng số khác</button>
-            </div>
-          </div>
-        </sc-if>
-      </sc-if>
-      <sc-if value="{{buyUnlocked}}" hint-placeholder-val="{{false}}">
-        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s4);font-size:14px;color:var(--c2)"><span>Đang mua hàng với số điện thoại <strong>{{buyBarPhone}}</strong></span><button sc-camel-on-click="{{buyChangePhone}}" style="background:none;border:none;font-size:13px;font-weight:600;color:var(--c6);padding:var(--s2)">Đổi số điện thoại</button></div>
-      </sc-if>
-    </div>
-"""
+# (08/10, lần 2) KH: ô SĐT nằm NGAY TRÊN THANH HEADER, không thêm hàng nào —
+# chỉ ô số điện thoại + nút Tiếp tục (thay nút "Đăng nhập thành viên" ở A1).
+# Lỗi nhập hiện ngay dưới ô; SĐT đã có tài khoản thì bật khung gợi ý thả xuống
+# dưới ô (không chiếm hàng). Đã mở form thì ô hiện số đang dùng + nút Đổi số.
+# build-v3.py dựng thanh trên riêng cho A1 bằng A1_HEADER_PHONE.
+A1_HEADER_PHONE = (
+    '<div class="homi-buyphone" style="margin-left:auto;position:relative;display:flex;gap:var(--s3);align-items:center;flex:none">'
+    '<div style="position:relative">'
+    '<input type="text" inputmode="numeric" maxlength="10" placeholder="Số điện thoại (090xxxxxxx)" '
+    'value="{{buyHeaderPhone}}" disabled="{{buyUnlocked}}" sc-camel-on-change="{{setBuyPhoneInput}}" '
+    'style="width:240px;max-width:100%;height:40px;padding:0 var(--s5);border:1px solid {{buyPhoneBorder}};'
+    'border-radius:var(--r-md);font-size:15px;background:var(--c12)" style-focus="' + _FOCUS + '">'
+    '<sc-if value="{{buyPhoneError}}" hint-placeholder-val="{{false}}">'
+    '<div style="position:absolute;top:100%;left:0;margin-top:4px;white-space:nowrap;font-size:12px;color:var(--err)">{{buyPhoneError}}</div>'
+    '</sc-if></div>'
+    '<sc-if value="{{buyHeaderAsk}}" hint-placeholder-val="{{true}}">'
+    '<button sc-camel-on-click="{{submitBuyPhone}}" style="' + _BTN_P + ';height:40px;padding:0 var(--s7)" style-hover="' + _HOVER_P + '">Tiếp tục</button>'
+    '</sc-if>'
+    '<sc-if value="{{buyUnlocked}}" hint-placeholder-val="{{false}}">'
+    '<button sc-camel-on-click="{{buyChangePhone}}" style="' + _BTN_G + ';height:40px;padding:0 var(--s6)" style-hover="' + _HOVER_G + '">Đổi số</button>'
+    '</sc-if>'
+    '<sc-if value="{{buyPhoneFound}}" hint-placeholder-val="{{false}}">'
+    '<div class="homi-buyphone-pop" style="position:absolute;top:calc(100% + 10px);right:0;width:380px;max-width:calc(100vw - 32px);'
+    'background:var(--c12);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);box-shadow:0 8px 28px rgba(30,58,102,.18);'
+    'padding:var(--s5) var(--s6);display:flex;flex-direction:column;gap:var(--s4);z-index:60">'
+    '<div><div style="font-size:14px;font-weight:700;color:var(--c1)">Số điện thoại này đã có tài khoản HOMI365</div>'
+    '<div style="font-size:13px;color:var(--c2);margin-top:var(--s1);line-height:1.6">Đăng nhập để form tự điền theo đơn gần nhất, hoặc bỏ qua và tự điền.</div></div>'
+    '<div style="display:flex;gap:var(--s3);flex-wrap:wrap;align-items:center">'
+    '<button sc-camel-on-click="{{buyGoLogin}}" style="' + _BTN_P + ';height:38px;padding:0 var(--s6)" style-hover="' + _HOVER_P + '">Đăng nhập</button>'
+    '<button sc-camel-on-click="{{buySkipLogin}}" style="' + _BTN_G + ';height:38px;padding:0 var(--s5)" style-hover="' + _HOVER_G + '">Bỏ qua và tự điền</button>'
+    '<button sc-camel-on-click="{{buyResetPhone}}" style="background:none;border:none;font-size:13px;font-weight:600;color:var(--c6);padding:var(--s2)">Dùng số khác</button>'
+    '</div></div></sc-if></div>')
 _A1_OPEN_NEW = (
     '  <sc-if value="{{isA1}}" hint-placeholder-val="{{true}}">\n'
     '  <div style="display:flex;flex-direction:column;align-items:center;gap:var(--s7);padding:var(--s8) var(--s7) var(--s10);background:var(--warm-50)">\n'
-    + A1_PHONE_BAR +
     '    <div style="width:100%;max-width:1160px;display:grid;grid-template-columns:1fr 380px;gap:var(--s8);align-items:start;{{buyLockCss}}">')
 
 # ---- Mục 2: dòng nhắc tự điền + "Mua cho người khác" (A1) -----------------
@@ -152,8 +150,8 @@ A1_POLICY_BOX = (
     '<div style="margin-top:var(--s4);padding-top:var(--s3);border-top:1px solid rgba(154,163,176,.3);font-size:11px;color:var(--c5)">'
     'Hết nội dung. Xem bản đầy đủ ở trang riêng: '
     '<a href="policy.html?s=chinh-sach-mua-hang" target="_blank" style="color:#1E3A66;font-weight:600">Chính sách mua hàng &amp; bảo mật dữ liệu</a></div>'
-    '</div>'
-    '<div class="tnc-hint" style="font-size:11px;color:#965C0A">Kéo xuống đọc hết nội dung chính sách để đánh dấu đồng ý.</div>')
+    '</div>')
+# (08/10) KH bỏ dòng nhắc "Kéo xuống đọc hết…" — ô đồng ý mờ sẵn là đủ.
 _A1_TC_NEW = (
     '<input type="checkbox" class="tnc-agree" disabled checked="{{buyTcChecked}}" '
     'sc-camel-on-change="{{toggleBuyTc}}" '
@@ -652,6 +650,9 @@ _JS_ISA1_NEW = """      isA1: s.screen === 'A1',
       buyBarBorder: s.buyStep === 'form' ? 'rgba(154,163,176,.35)' : '#1E3A66',
       buyBarShadow: s.buyStep === 'form' ? 'none' : '0 4px 18px rgba(30,58,102,.12)',
       buyBarPhone: s.buyerPhone || s.buyPhoneInput || '—',
+      // Ô SĐT trên header: đã mở form thì hiện số đang dùng (khoá), nút Đổi số.
+      buyHeaderPhone: s.buyStep === 'form' ? (s.buyerPhone || s.buyPhoneInput || '') : (s.buyPhoneInput || ''),
+      buyHeaderAsk: s.buyStep !== 'form' && !s.buyPhoneFound,
       buyChangePhone: () => this.setState({ buyStep: 'phone', buyPhoneInput: '',
         buyPhoneFound: false, buyPhoneError: '', buyMode: '' }),
       buyPhoneInput: s.buyPhoneInput,

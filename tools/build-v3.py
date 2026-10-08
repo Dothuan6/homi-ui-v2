@@ -540,6 +540,11 @@ img { max-width: 100%; }
     padding: var(--s3) var(--s5) !important;
     text-align: center;
   }
+  /* (08/10) A1: ô SĐT trên header xuống hàng, chiếm trọn bề ngang. */
+  .homi-buyphone { margin-left: 0 !important; width: 100%; }
+  .homi-buyphone > div:first-child { flex: 1; }
+  .homi-buyphone input { width: 100% !important; }
+  .homi-buyphone-pop { left: 0; right: auto !important; }
 }
 @media (max-width: 420px) {
   .homi-logo img { height: 34px !important; }
@@ -3669,6 +3674,8 @@ def main():
     # đệm ngang var(--s7)=16px -> logo dùng đúng khung đó thì mép trái trùng nhau.
     TOPBAR_WEB = make_topbar("var(--s7)", CONTENT_MAX)
     TOPBAR_PUBLIC = make_topbar("var(--s7)", CONTENT_MAX, LOGIN_BTN)
+    # (08/10) A1: ô SĐT + nút Tiếp tục nằm ngay trên thanh trên, thay nút đăng nhập.
+    TOPBAR_A1 = make_topbar("var(--s7)", CONTENT_MAX, uat.A1_HEADER_PHONE)
     # Màn quản trị: bố cục tràn màn hình, sidebar đệm ngang var(--s5)=12px
     # -> logo canh theo mép trái của các mục sidebar.
     TOPBAR_ADMIN = make_topbar("var(--s5)")
@@ -3686,6 +3693,7 @@ def main():
     # --- đổi màu toàn bộ ---------------------------------------------------
     TOPBAR_WEB = recolor(TOPBAR_WEB)
     TOPBAR_PUBLIC = recolor(TOPBAR_PUBLIC)
+    TOPBAR_A1 = recolor(TOPBAR_A1)
     TOPBAR_ADMIN = recolor(TOPBAR_ADMIN)
     script = recolor(script)
     # (UAT 02/10) Bản vá JS đợt 06/10 — chạy sau cùng, neo chặt.
@@ -3780,7 +3788,8 @@ def main():
             "%s\n\n%s\n\n%s\n%s\n</div>\n</x-dc>\n%s\n</body>\n</html>\n"
             % (sc["title"], head_js, root_open,
                TOPBAR_ADMIN if sc["code"] in ADMIN_CODES
-               else TOPBAR_PUBLIC if sc["code"] in ("A1", "A2")
+               else TOPBAR_A1 if sc["code"] == "A1"
+               else TOPBAR_PUBLIC if sc["code"] == "A2"
                else TOPBAR_WEB,
                body, foot, script)
         )

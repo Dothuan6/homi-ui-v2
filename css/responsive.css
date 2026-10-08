@@ -27,6 +27,11 @@ img { max-width: 100%; }
     padding: var(--s3) var(--s5) !important;
     text-align: center;
   }
+  /* (08/10) A1: ô SĐT trên header xuống hàng, chiếm trọn bề ngang. */
+  .homi-buyphone { margin-left: 0 !important; width: 100%; }
+  .homi-buyphone > div:first-child { flex: 1; }
+  .homi-buyphone input { width: 100% !important; }
+  .homi-buyphone-pop { left: 0; right: auto !important; }
 }
 @media (max-width: 420px) {
   .homi-logo img { height: 34px !important; }

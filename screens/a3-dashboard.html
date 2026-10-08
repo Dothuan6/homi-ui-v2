@@ -1284,6 +1284,9 @@ class Component extends DCLogic {
       buyBarBorder: s.buyStep === 'form' ? 'rgba(154,163,176,.35)' : '#1E3A66',
       buyBarShadow: s.buyStep === 'form' ? 'none' : '0 4px 18px rgba(30,58,102,.12)',
       buyBarPhone: s.buyerPhone || s.buyPhoneInput || '—',
+      // Ô SĐT trên header: đã mở form thì hiện số đang dùng (khoá), nút Đổi số.
+      buyHeaderPhone: s.buyStep === 'form' ? (s.buyerPhone || s.buyPhoneInput || '') : (s.buyPhoneInput || ''),
+      buyHeaderAsk: s.buyStep !== 'form' && !s.buyPhoneFound,
       buyChangePhone: () => this.setState({ buyStep: 'phone', buyPhoneInput: '',
         buyPhoneFound: false, buyPhoneError: '', buyMode: '' }),
       buyPhoneInput: s.buyPhoneInput,
