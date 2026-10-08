@@ -56,12 +56,13 @@ _A1_OPEN_OLD = (
     '  <div style="display:flex;justify-content:center;padding:var(--s8) var(--s7) var(--s10);background:var(--warm-50)">\n'
     '    <div style="width:100%;max-width:1160px;display:grid;grid-template-columns:1fr 380px;gap:var(--s8);align-items:start">')
 # (08/10, lần 2) KH: ô SĐT nằm NGAY TRÊN THANH HEADER, không thêm hàng nào —
-# chỉ ô số điện thoại + nút Tiếp tục (thay nút "Đăng nhập thành viên" ở A1).
+# chỉ ô số điện thoại + nút Tiếp tục, đặt sát bên phải logo; nút "Đăng nhập
+# thành viên HOMI365" vẫn giữ ở góc phải.
 # Lỗi nhập hiện ngay dưới ô; SĐT đã có tài khoản thì bật khung gợi ý thả xuống
 # dưới ô (không chiếm hàng). Đã mở form thì ô hiện số đang dùng + nút Đổi số.
 # build-v3.py dựng thanh trên riêng cho A1 bằng A1_HEADER_PHONE.
 A1_HEADER_PHONE = (
-    '<div class="homi-buyphone" style="margin-left:auto;position:relative;display:flex;gap:var(--s3);align-items:center;flex:none">'
+    '<div class="homi-buyphone" style="margin-left:var(--s9);position:relative;display:flex;gap:var(--s3);align-items:center;flex:none">'
     '<div style="position:relative">'
     '<input type="text" inputmode="numeric" maxlength="10" placeholder="Số điện thoại (090xxxxxxx)" '
     'value="{{buyHeaderPhone}}" disabled="{{buyUnlocked}}" sc-camel-on-change="{{setBuyPhoneInput}}" '
@@ -77,7 +78,7 @@ A1_HEADER_PHONE = (
     '<button sc-camel-on-click="{{buyChangePhone}}" style="' + _BTN_G + ';height:40px;padding:0 var(--s6)" style-hover="' + _HOVER_G + '">Đổi số</button>'
     '</sc-if>'
     '<sc-if value="{{buyPhoneFound}}" hint-placeholder-val="{{false}}">'
-    '<div class="homi-buyphone-pop" style="position:absolute;top:calc(100% + 10px);right:0;width:380px;max-width:calc(100vw - 32px);'
+    '<div class="homi-buyphone-pop" style="position:absolute;top:calc(100% + 10px);left:0;width:380px;max-width:calc(100vw - 32px);'
     'background:var(--c12);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);box-shadow:0 8px 28px rgba(30,58,102,.18);'
     'padding:var(--s5) var(--s6);display:flex;flex-direction:column;gap:var(--s4);z-index:60">'
     '<div><div style="font-size:14px;font-weight:700;color:var(--c1)">Số điện thoại này đã có tài khoản HOMI365</div>'

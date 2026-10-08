@@ -544,7 +544,6 @@ img { max-width: 100%; }
   .homi-buyphone { margin-left: 0 !important; width: 100%; }
   .homi-buyphone > div:first-child { flex: 1; }
   .homi-buyphone input { width: 100% !important; }
-  .homi-buyphone-pop { left: 0; right: auto !important; }
 }
 @media (max-width: 420px) {
   .homi-logo img { height: 34px !important; }
@@ -3674,8 +3673,9 @@ def main():
     # đệm ngang var(--s7)=16px -> logo dùng đúng khung đó thì mép trái trùng nhau.
     TOPBAR_WEB = make_topbar("var(--s7)", CONTENT_MAX)
     TOPBAR_PUBLIC = make_topbar("var(--s7)", CONTENT_MAX, LOGIN_BTN)
-    # (08/10) A1: ô SĐT + nút Tiếp tục nằm ngay trên thanh trên, thay nút đăng nhập.
-    TOPBAR_A1 = make_topbar("var(--s7)", CONTENT_MAX, uat.A1_HEADER_PHONE)
+    # (08/10) A1: ô SĐT + nút Tiếp tục nằm ngay trên thanh trên, sát logo;
+    # nút đăng nhập thành viên vẫn ở góc phải.
+    TOPBAR_A1 = make_topbar("var(--s7)", CONTENT_MAX, uat.A1_HEADER_PHONE + LOGIN_BTN)
     # Màn quản trị: bố cục tràn màn hình, sidebar đệm ngang var(--s5)=12px
     # -> logo canh theo mép trái của các mục sidebar.
     TOPBAR_ADMIN = make_topbar("var(--s5)")

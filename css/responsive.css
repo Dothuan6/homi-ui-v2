@@ -31,7 +31,6 @@ img { max-width: 100%; }
   .homi-buyphone { margin-left: 0 !important; width: 100%; }
   .homi-buyphone > div:first-child { flex: 1; }
   .homi-buyphone input { width: 100% !important; }
-  .homi-buyphone-pop { left: 0; right: auto !important; }
 }
 @media (max-width: 420px) {
   .homi-logo img { height: 34px !important; }
