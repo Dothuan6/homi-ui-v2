@@ -374,6 +374,8 @@ MARKUP = [
     # người chỉ mua, không làm thành viên thì chưa cần khai tài khoản. Form
     # đăng ký thành viên (A2) vẫn bắt buộc vì đó là nơi nhận chi trả.
     ('>Ngân hàng (*)</label>', '>Ngân hàng</label>', ("A1",)),
+    # (09/10) KH: ô Địa chỉ ở form mua hàng cũng không bắt buộc.
+    ('>Địa chỉ (*)</label>', '>Địa chỉ</label>', ("A1",)),
     ('>Số tài khoản (*)</label><input type="text" placeholder="Nhập số tài khoản" '
      'value="{{buyerBankAccount}}"',
      '>Số tài khoản</label><input type="text" placeholder="Nhập số tài khoản" '
@@ -1013,8 +1015,8 @@ def patch_screens(screens):
     # (28) B5 — cấu hình hoa hồng theo %; một trạng thái nhập sai để thấy cảnh báo.
     by["B5"]["states"].append(
         ("hoa-hong-loi", "Hoa hồng % — nhập sai, cảnh báo và khoá nút lưu",
-         {"commPct": {"Copper": 20, "Silver": 30, "Gold": 35, "Diamond": 34,
-                      "Titanium": 38, "Lithium": 38.5}}))
+         {"commCfg": {"y": {"pct": {"Copper": 20, "Silver": 30, "Gold": 35, "Diamond": 34,
+                                    "Titanium": 38, "Lithium": 38.5}}}}))
 
     # Mục 7 — đổi chữ ở tên màn và nhãn trạng thái.
     for sc in screens:
@@ -1599,7 +1601,7 @@ B9_SCREEN = """      <!-- B9 XÉT THĂNG / HẠ CẤP (bổ sung sau UAT 02/10 �
             <div><div style="font-size:24px;font-weight:700">Xét thăng / hạ cấp</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">Kỳ 09/2026 · danh sách đề xuất lập lúc 00:00 ngày 01/10/2026 · cấp mới chỉ có hiệu lực khi được duyệt</div></div>
             <button sc-camel-on-click="{{rrRunSel}}" disabled="{{rrSelDisabled}}" style="{{rrRunStyle}}">Chạy lại xét cấp cho nhóm đã chọn ({{rrSelCount}})</button>
           </div>
-          <div style=\"""" + _INFO + """\">Đã tắt tự động thăng / hạ cấp. Quy tắc lập đề xuất: <strong>mỗi tháng lên hoặc xuống tối đa 1 cấp</strong>, không nhảy bậc · lên cấp mới thì gói xét cấp <strong>đếm lại từ 0</strong> · gói 1 năm = 1 gói, <strong>gói 6 tháng = 0,5 gói</strong> · trong tháng dưới 1 gói quy đổi thì đề xuất hạ 1 cấp (Copper giữ nguyên), nửa gói lẻ không cộng dồn sang tháng sau. Số gói cần cho mỗi bậc (theo ngưỡng Chính sách ưu đãi thành viên 10 / 18 / 24 / 28 / 30, đếm lại từ 0 sau mỗi lần lên cấp): Copper → Silver <strong>10</strong> · Silver → Gold <strong>8</strong> · Gold → Diamond <strong>6</strong> · Diamond → Titanium <strong>4</strong> · Titanium → Lithium <strong>2</strong> gói quy đổi.</div>
+          <div style=\"""" + _INFO + """\">Mỗi tháng lên/xuống tối đa <strong>1 cấp</strong> · lên cấp thì gói xét cấp <strong>về 0</strong> · gói 1 năm = 1, gói 6 tháng = 0,5 · cần lên cấp: Silver <strong>10</strong> · Gold <strong>8</strong> · Diamond <strong>6</strong> · Titanium <strong>4</strong> · Lithium <strong>2</strong> gói · tháng dưới 1 gói thì hạ 1 cấp.</div>
           <sc-if value="{{rrRunNote}}" hint-placeholder-val="{{false}}">
             <div style="font-size:13px;color:#2F7A48;background:rgba(47,122,72,.12);border-radius:var(--r-md);padding:var(--s4) var(--s5)">{{rrRunNote}}</div>
           </sc-if>
@@ -1910,12 +1912,18 @@ B5_COMMISSION = """
           <!-- (28) Hoa hồng theo cấp — tính % trên giá trị gói (mục 23, 21) -->
           <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s5)">
             <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:var(--s5)">
-              <div><div style="font-size:18px;font-weight:700;color:var(--c1)">Hoa hồng theo cấp</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1);line-height:1.6">Tính theo <strong>phần trăm giá trị gói</strong>, áp dụng cho mọi gói của HOMI365-01. Cột Trực tiếp là phần người bán ở cấp đó nhận khi tự bán.</div></div>
+              <div><div style="font-size:18px;font-weight:700;color:var(--c1)">Hoa hồng theo cấp</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1);line-height:1.6">Tính theo <strong>phần trăm giá trị gói</strong>, <strong>cấu hình riêng cho từng gói</strong> (gói 1 năm và gói nửa năm tách nhau). Cột Trực tiếp là phần người bán ở cấp đó nhận khi tự bán.</div></div>
               <button sc-camel-on-click="{{saveCommission}}" disabled="{{commSaveDisabled}}" style="{{commSaveStyle}}">Lưu cấu hình</button>
+            </div>
+            <!-- (09/10) KH: % của gói 6tr tách riêng với gói 10tr — chọn gói để cấu hình -->
+            <div style="display:flex;gap:var(--s3);flex-wrap:wrap">
+              <sc-for list="{{commPkgTabs}}" as="t" hint-placeholder-count="2">
+                <button sc-camel-on-click="{{t.onClick}}" style="{{t.style}}">{{t.label}}<span style="display:block;font-size:11px;font-weight:500;opacity:.85">{{t.sub}}</span></button>
+              </sc-for>
             </div>
             <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);overflow:auto">
               <div style="display:grid;grid-template-columns:""" + _CM_COLS + """;min-width:720px;background:rgba(154,163,176,.08);padding:var(--s4) var(--s5);font-size:11px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em">
-                <div>Cấp</div><div>Trực tiếp (%)</div><div>Chênh lệch (%)</div><div style="text-align:right">Gói 1 năm · 10.000.000đ</div><div style="text-align:right">Gói nửa năm · 6.000.000đ</div>
+                <div>Cấp · {{commPkgName}}</div><div>Trực tiếp (%)</div><div>Chênh lệch (%)</div><div style="text-align:right">Trực tiếp (đ)</div><div style="text-align:right">Chênh lệch (đ)</div>
               </div>
               <sc-for list="{{commRows}}" as="c" hint-placeholder-count="6">
                 <div style="display:grid;grid-template-columns:""" + _CM_COLS + """;min-width:720px;align-items:center;padding:var(--s3) var(--s5);font-size:13px;color:var(--c1);border-top:1px solid rgba(154,163,176,.2)">
@@ -1927,8 +1935,8 @@ B5_COMMISSION = """
                     </sc-if>
                     <sc-if value="{{c.noDiff}}" hint-placeholder-val="{{false}}"><span style="color:var(--c5)">—</span></sc-if>
                   </div>
-                  <div style="text-align:right">{{c.amt1y}}<div style="font-size:11px;color:var(--c5)">{{c.diff1y}}</div></div>
-                  <div style="text-align:right">{{c.amt6m}}<div style="font-size:11px;color:var(--c5)">{{c.diff6m}}</div></div>
+                  <div style="text-align:right">{{c.amt}}</div>
+                  <div style="text-align:right;color:var(--c4)">{{c.diffAmt}}</div>
                 </div>
               </sc-for>
               <div style="display:grid;grid-template-columns:""" + _CM_COLS + """;min-width:720px;align-items:center;padding:var(--s3) var(--s5);font-size:13px;color:var(--c5);border-top:1px solid rgba(154,163,176,.2);background:rgba(30,58,102,.04)">
@@ -1936,7 +1944,7 @@ B5_COMMISSION = """
                 <div>Nhận phần còn lại</div><div>—</div><div style="text-align:right">—</div><div style="text-align:right">—</div>
               </div>
               <div style="display:grid;grid-template-columns:""" + _CM_COLS + """;min-width:720px;align-items:center;padding:var(--s4) var(--s5);font-size:13px;font-weight:700;color:var(--c1);border-top:1px solid rgba(154,163,176,.35);background:rgba(154,163,176,.06)">
-                <div>Tổng phân bổ tối đa / đơn</div><div>{{commMaxPct}}</div><div></div><div style="text-align:right">{{commMax1y}}</div><div style="text-align:right">{{commMax6m}}</div>
+                <div>Tổng phân bổ tối đa / đơn</div><div>{{commMaxPct}}</div><div></div><div style="text-align:right">{{commMaxAmt}}</div><div></div>
               </div>
             </div>
             <sc-if value="{{commWarn}}" hint-placeholder-val="{{false}}">
@@ -1947,7 +1955,7 @@ B5_COMMISSION = """
               <input type="text" inputmode="numeric" value="{{commDepth}}" sc-camel-on-change="{{setCommDepth}}" style="width:64px;height:34px;padding:0 var(--s4);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;text-align:right">
               <span style="font-size:12px;color:var(--c5)">cấp tuyến trên được xét khi chia hoa hồng; vượt quá thì phần còn lại về công ty.</span>
             </div>
-            <div style="font-size:11px;color:var(--c5);line-height:1.6">Phần chênh lệch giữa các cấp cũng tính theo <strong>% giá trị gói</strong> (HOMI365 trả lời H6); số tiền dưới mỗi ô là phần chênh lệch quy đổi theo từng gói. Super Lithium đứng trên cùng, Lithium không thăng lên được.</div>
+            <div style="font-size:11px;color:var(--c5);line-height:1.6">Phần chênh lệch giữa các cấp cũng tính theo <strong>% giá trị gói</strong> (HOMI365 trả lời H6). Mỗi gói có bộ % riêng; số tiền quy đổi theo giá của gói đang chọn. Super Lithium đứng trên cùng, Lithium không thăng lên được.</div>
             <sc-if value="{{commSaved}}" hint-placeholder-val="{{false}}">
               <div style="font-size:13px;color:#2F7A48;background:rgba(47,122,72,.12);border-radius:var(--r-md);padding:var(--s4) var(--s5)">{{commSaved}}</div>
             </sc-if>
@@ -1960,43 +1968,54 @@ MARKUP_0810 += [
      + '        </div>\n      </sc-if>\n\n      <sc-if value="{{showProductForm}}"'),
 ]
 
-_JS_COMM_CONSTS = """    // (28) Hoa hồng theo % giá trị gói (mục 23). Mặc định quy từ bảng tiền cũ
-    // của gói 1 năm 10tr: Copper 2tr = 20% … Lithium 3,85tr = 38,5%.
-    const commPct = s.commPct || this.COMM_DEFAULT;
+_JS_COMM_CONSTS = """    // (28) Hoa hồng theo % giá trị gói (mục 23, H6). (09/10) KH: mỗi gói một bộ %
+    // riêng — gói 1 năm (y, 10tr) và gói nửa năm (h, 6tr) không tính chung.
     const pctNum = (v) => { const n = parseFloat(String(v).replace(',', '.')); return isNaN(n) ? NaN : n; };
-    const commBad = {};
+    const commCfgAll = s.commCfg || {};
+    const commCfgOf = (k) => ({ pct: (commCfgAll[k] || {}).pct || this.COMM_DEFAULT,
+                                diff: (commCfgAll[k] || {}).diff || this.COMM_DIFF_DEFAULT });
+    const commPkg = s.commPkg || 'y';
+    const commPkgPrice = this.COMM_PKGS[commPkg].price;
     let commWarn = '';
-    this.RANKS.forEach((r, i) => {
-      const v = pctNum(commPct[r]);
-      if (isNaN(v) || v < 0 || v > 100) { commBad[r] = true; commWarn = commWarn || ('Tỷ lệ của ' + r + ' phải là số từ 0 đến 100.'); }
-      else if (i > 0 && v < pctNum(commPct[this.RANKS[i - 1]])) { commBad[r] = true;
-        commWarn = commWarn || ('Tỷ lệ của ' + r + ' không được thấp hơn cấp dưới (' + this.RANKS[i - 1] + ').'); }
+    const commBadAll = {};
+    Object.keys(this.COMM_PKGS).forEach(k => {
+      const { pct, diff } = commCfgOf(k), nm = this.COMM_PKGS[k].name, bad = commBadAll[k] = { pct: {}, diff: {} };
+      this.RANKS.forEach((r, i) => {
+        const v = pctNum(pct[r]);
+        if (isNaN(v) || v < 0 || v > 100) { bad.pct[r] = true; commWarn = commWarn || (nm + ': tỷ lệ của ' + r + ' phải là số từ 0 đến 100.'); }
+        else if (i > 0 && v < pctNum(pct[this.RANKS[i - 1]])) { bad.pct[r] = true;
+          commWarn = commWarn || (nm + ': tỷ lệ của ' + r + ' không được thấp hơn cấp dưới (' + this.RANKS[i - 1] + ').'); }
+        if (i > 0) { const d = pctNum(diff[r]);
+          if (isNaN(d) || d < 0 || d > 100) { bad.diff[r] = true; commWarn = commWarn || (nm + ': chênh lệch của ' + r + ' phải là số từ 0 đến 100.'); } }
+      });
     });
-    // (H6, 08/10) Chênh lệch cũng theo % giá trị gói. Copper thấp nhất nên không có.
-    const commDiff = s.commDiff || this.COMM_DIFF_DEFAULT;
-    const diffBad = {};
-    this.RANKS.slice(1).forEach(r => { const v = pctNum(commDiff[r]);
-      if (isNaN(v) || v < 0 || v > 100) { diffBad[r] = true;
-        commWarn = commWarn || ('Chênh lệch của ' + r + ' phải là số từ 0 đến 100.'); } });
+    const { pct: commPct, diff: commDiff } = commCfgOf(commPkg);
+    const commBad = commBadAll[commPkg].pct, diffBad = commBadAll[commPkg].diff;
     const commMax = pctNum(commPct.Lithium);
-    if (!commWarn && commMax > 100) commWarn = 'Tổng phân bổ tối đa vượt 100% giá trị gói.';
     const vnd = (x) => isNaN(x) ? '—' : Math.round(x).toLocaleString('vi-VN') + 'đ';
+    const commSet = (field, r, val) => this.setState({ commSaved: '', commCfg: { ...commCfgAll,
+      [commPkg]: { ...commCfgOf(commPkg), [field]: { ...commCfgOf(commPkg)[field], [r]: val } } } });
 
 """
 
-_JS_COMM_RETURN = """      // (28) Hoa hồng theo %.
-      commRows: this.RANKS.map(r => { const v = pctNum(commPct[r]); return {
+_JS_COMM_RETURN = """      // (28) Hoa hồng theo % — theo gói đang chọn.
+      commPkgTabs: Object.keys(this.COMM_PKGS).map(k => { const on = k === commPkg, bad = Object.keys(commBadAll[k].pct).length + Object.keys(commBadAll[k].diff).length > 0; return {
+        label: this.COMM_PKGS[k].name, sub: this.COMM_PKGS[k].price.toLocaleString('vi-VN') + 'đ' + (bad ? ' · có lỗi' : ''),
+        style: 'height:auto;padding:var(--s3) var(--s6);border-radius:var(--r-md);font-size:13px;font-weight:700;text-align:left;cursor:pointer;'
+          + (on ? 'background:#1E3A66;color:#FFFFFF;border:1px solid #1E3A66' : 'background:var(--c12);color:' + (bad ? '#C0392B' : 'var(--c2)') + ';border:1px solid ' + (bad ? '#C0392B' : 'rgba(154,163,176,.6)')),
+        onClick: () => this.setState({ commPkg: k }) }; }),
+      commPkgName: this.COMM_PKGS[commPkg].name,
+      commRows: this.RANKS.map(r => { const v = pctNum(commPct[r]), first = r === this.RANKS[0]; return {
         rank: r, pct: String(commPct[r]), border: commBad[r] ? '#C0392B' : 'rgba(154,163,176,.6)',
-        amt1y: vnd(10000000 * v / 100), amt6m: vnd(6000000 * v / 100),
-        hasDiff: r !== this.RANKS[0], noDiff: r === this.RANKS[0],
-        diffPct: r === this.RANKS[0] ? '' : String(commDiff[r]),
+        amt: vnd(commPkgPrice * v / 100),
+        hasDiff: !first, noDiff: first,
+        diffPct: first ? '' : String(commDiff[r]),
         diffBorder: diffBad[r] ? '#C0392B' : 'rgba(154,163,176,.6)',
-        diff1y: r === this.RANKS[0] ? '' : 'chênh lệch ' + vnd(10000000 * pctNum(commDiff[r]) / 100),
-        diff6m: r === this.RANKS[0] ? '' : 'chênh lệch ' + vnd(6000000 * pctNum(commDiff[r]) / 100),
-        onDiffChange: (e) => this.setState({ commDiff: { ...commDiff, [r]: e.target.value }, commSaved: '' }),
-        onChange: (e) => this.setState({ commPct: { ...commPct, [r]: e.target.value }, commSaved: '' }) }; }),
+        diffAmt: first ? '—' : vnd(commPkgPrice * pctNum(commDiff[r]) / 100),
+        onDiffChange: (e) => commSet('diff', r, e.target.value),
+        onChange: (e) => commSet('pct', r, e.target.value) }; }),
       commMaxPct: isNaN(commMax) ? '—' : commMax.toLocaleString('vi-VN') + '%',
-      commMax1y: vnd(10000000 * commMax / 100), commMax6m: vnd(6000000 * commMax / 100),
+      commMaxAmt: vnd(commPkgPrice * commMax / 100),
       commWarn,
       commDepth: s.commDepth == null ? '10' : String(s.commDepth),
       setCommDepth: (e) => this.setState({ commDepth: (e.target.value || '').replace(/\\D/g, '').slice(0, 2), commSaved: '' }),
@@ -2013,12 +2032,15 @@ JS_0810 += [
     ("    profileSaved: null,\n",
      "    profileSaved: null,\n"
      "    // (28) Cấu hình hoa hồng theo % (B5).\n"
-     "    commPct: null, commDiff: null, commDepth: null, commSaved: '',\n"),
+     "    commCfg: null, commPkg: 'y', commDepth: null, commSaved: '',\n"),
     ("  pkgCount(c) { return c.y + c.h * 0.5; }",
      "  // (28) Hoa hồng % theo cấp (trực tiếp) + chênh lệch % (H6, 08/10) — mặc định\n"
      "  // quy từ số tiền cũ trên gói 1 năm 10tr: Silver 1tr = 10% … Lithium 50k = 0,5%.\n"
      "  COMM_DEFAULT = { Copper: 20, Silver: 30, Gold: 35, Diamond: 37, Titanium: 38, Lithium: 38.5 };\n"
      "  COMM_DIFF_DEFAULT = { Silver: 10, Gold: 5, Diamond: 2, Titanium: 1, Lithium: 0.5 };\n"
+     "  // (09/10) Mỗi gói một bộ % riêng. Mặc định gói nửa năm lấy cùng số với gói 1 năm\n"
+     "  // để admin chỉnh; bản thật đọc từ cấu hình đã lưu của từng gói.\n"
+     "  COMM_PKGS = { y: { name: 'Gói 1 năm', price: 10000000 }, h: { name: 'Gói nửa năm', price: 6000000 } };\n"
      "  pkgCount(c) { return c.y + c.h * 0.5; }"),
     ("    const selectedStockRaw = s.selectedStockId",
      _JS_COMM_CONSTS + "    const selectedStockRaw = s.selectedStockId"),
@@ -2083,8 +2105,10 @@ DIFF_0810 = [
     "| 23 | B5 | Khối **Hoa hồng theo cấp**: mỗi cấp nhập **% trên giá trị gói**, tự quy "
     "ra tiền cho gói 1 năm và nửa năm, dòng tổng phân bổ tối đa, cảnh báo khi ngoài "
     "0–100% hoặc cấp trên thấp hơn cấp dưới. Cột **chênh lệch cũng nhập %** (H6 trả lời "
-    "08/10), mặc định quy từ số tiền cũ trên gói 1 năm (Silver 10% … Lithium 0,5%), hiện kèm "
-    "số tiền chênh lệch của từng gói. | `#hoa-hong-loi` |",
+    "08/10), mặc định quy từ số tiền cũ trên gói 1 năm (Silver 10% … Lithium 0,5%). "
+    "**09/10: mỗi gói một bộ % riêng** — chọn tab Gói 1 năm (10tr) / Gói nửa năm (6tr) để "
+    "cấu hình, số tiền quy theo giá gói đang chọn; mặc định gói nửa năm lấy cùng số với gói "
+    "1 năm để admin chỉnh. | `b5-products.html`, `#hoa-hong-loi` |",
     "| 24 | A1, B5, B6 | Đổi **tên hiển thị** gói thành **HOMI365-01**. Mã CN02 trong "
     "SKU kho và mã gói giữ nguyên. | — |", "",
     "**Giả định của bản mẫu — cần xác nhận:**", "",

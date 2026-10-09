@@ -269,7 +269,7 @@ class Component extends DCLogic {
     // (23) Dòng xác nhận sau khi admin lưu hồ sơ: { id, text }.
     profileSaved: null,
     // (28) Cấu hình hoa hồng theo % (B5).
-    commPct: null, commDiff: null, commDepth: null, commSaved: '',
+    commCfg: null, commPkg: 'y', commDepth: null, commSaved: '',
     // (27) Xét cấp (B9) + bổ nhiệm đặc biệt (duyệt ngoài, admin xác nhận).
     rrStatus: {}, rrSel: {}, rrReason: {}, rrFilter: 'all', rrModal: null, rrDenyText: '', rrRunNote: '',
     rankReason: '', rankRequester: '', rankSaved: '',
@@ -591,6 +591,9 @@ class Component extends DCLogic {
   // quy từ số tiền cũ trên gói 1 năm 10tr: Silver 1tr = 10% … Lithium 50k = 0,5%.
   COMM_DEFAULT = { Copper: 20, Silver: 30, Gold: 35, Diamond: 37, Titanium: 38, Lithium: 38.5 };
   COMM_DIFF_DEFAULT = { Silver: 10, Gold: 5, Diamond: 2, Titanium: 1, Lithium: 0.5 };
+  // (09/10) Mỗi gói một bộ % riêng. Mặc định gói nửa năm lấy cùng số với gói 1 năm
+  // để admin chỉnh; bản thật đọc từ cấu hình đã lưu của từng gói.
+  COMM_PKGS = { y: { name: 'Gói 1 năm', price: 10000000 }, h: { name: 'Gói nửa năm', price: 6000000 } };
   pkgCount(c) { return c.y + c.h * 0.5; }
   nfmt(x) { return Number(x).toLocaleString('vi-VN'); }
   nextRank(r) { const i = this.RANKS.indexOf(r); return i >= 0 && i < this.RANKS.length - 1 ? this.RANKS[i + 1] : null; }
@@ -1126,27 +1129,33 @@ class Component extends DCLogic {
     const mUpDirect = selectedMember ? this.MEMBERS.find(x => x.name === selectedMember.upline) : null;
     const mUpEff = selectedMember ? effUp(selectedMember) : null;
 
-    // (28) Hoa hồng theo % giá trị gói (mục 23). Mặc định quy từ bảng tiền cũ
-    // của gói 1 năm 10tr: Copper 2tr = 20% … Lithium 3,85tr = 38,5%.
-    const commPct = s.commPct || this.COMM_DEFAULT;
+    // (28) Hoa hồng theo % giá trị gói (mục 23, H6). (09/10) KH: mỗi gói một bộ %
+    // riêng — gói 1 năm (y, 10tr) và gói nửa năm (h, 6tr) không tính chung.
     const pctNum = (v) => { const n = parseFloat(String(v).replace(',', '.')); return isNaN(n) ? NaN : n; };
-    const commBad = {};
+    const commCfgAll = s.commCfg || {};
+    const commCfgOf = (k) => ({ pct: (commCfgAll[k] || {}).pct || this.COMM_DEFAULT,
+                                diff: (commCfgAll[k] || {}).diff || this.COMM_DIFF_DEFAULT });
+    const commPkg = s.commPkg || 'y';
+    const commPkgPrice = this.COMM_PKGS[commPkg].price;
     let commWarn = '';
-    this.RANKS.forEach((r, i) => {
-      const v = pctNum(commPct[r]);
-      if (isNaN(v) || v < 0 || v > 100) { commBad[r] = true; commWarn = commWarn || ('Tỷ lệ của ' + r + ' phải là số từ 0 đến 100.'); }
-      else if (i > 0 && v < pctNum(commPct[this.RANKS[i - 1]])) { commBad[r] = true;
-        commWarn = commWarn || ('Tỷ lệ của ' + r + ' không được thấp hơn cấp dưới (' + this.RANKS[i - 1] + ').'); }
+    const commBadAll = {};
+    Object.keys(this.COMM_PKGS).forEach(k => {
+      const { pct, diff } = commCfgOf(k), nm = this.COMM_PKGS[k].name, bad = commBadAll[k] = { pct: {}, diff: {} };
+      this.RANKS.forEach((r, i) => {
+        const v = pctNum(pct[r]);
+        if (isNaN(v) || v < 0 || v > 100) { bad.pct[r] = true; commWarn = commWarn || (nm + ': tỷ lệ của ' + r + ' phải là số từ 0 đến 100.'); }
+        else if (i > 0 && v < pctNum(pct[this.RANKS[i - 1]])) { bad.pct[r] = true;
+          commWarn = commWarn || (nm + ': tỷ lệ của ' + r + ' không được thấp hơn cấp dưới (' + this.RANKS[i - 1] + ').'); }
+        if (i > 0) { const d = pctNum(diff[r]);
+          if (isNaN(d) || d < 0 || d > 100) { bad.diff[r] = true; commWarn = commWarn || (nm + ': chênh lệch của ' + r + ' phải là số từ 0 đến 100.'); } }
+      });
     });
-    // (H6, 08/10) Chênh lệch cũng theo % giá trị gói. Copper thấp nhất nên không có.
-    const commDiff = s.commDiff || this.COMM_DIFF_DEFAULT;
-    const diffBad = {};
-    this.RANKS.slice(1).forEach(r => { const v = pctNum(commDiff[r]);
-      if (isNaN(v) || v < 0 || v > 100) { diffBad[r] = true;
-        commWarn = commWarn || ('Chênh lệch của ' + r + ' phải là số từ 0 đến 100.'); } });
+    const { pct: commPct, diff: commDiff } = commCfgOf(commPkg);
+    const commBad = commBadAll[commPkg].pct, diffBad = commBadAll[commPkg].diff;
     const commMax = pctNum(commPct.Lithium);
-    if (!commWarn && commMax > 100) commWarn = 'Tổng phân bổ tối đa vượt 100% giá trị gói.';
     const vnd = (x) => isNaN(x) ? '—' : Math.round(x).toLocaleString('vi-VN') + 'đ';
+    const commSet = (field, r, val) => this.setState({ commSaved: '', commCfg: { ...commCfgAll,
+      [commPkg]: { ...commCfgOf(commPkg), [field]: { ...commCfgOf(commPkg)[field], [r]: val } } } });
 
     const selectedStockRaw = s.selectedStockId ? stockData.find(p => p.id === s.selectedStockId) : null;
     let selectedStock = null;
@@ -1733,19 +1742,24 @@ class Component extends DCLogic {
       },
       hasRankSaved: !!(selectedMember && s.rankSaved), rankSavedText: s.rankSaved || '',
 
-      // (28) Hoa hồng theo %.
-      commRows: this.RANKS.map(r => { const v = pctNum(commPct[r]); return {
+      // (28) Hoa hồng theo % — theo gói đang chọn.
+      commPkgTabs: Object.keys(this.COMM_PKGS).map(k => { const on = k === commPkg, bad = Object.keys(commBadAll[k].pct).length + Object.keys(commBadAll[k].diff).length > 0; return {
+        label: this.COMM_PKGS[k].name, sub: this.COMM_PKGS[k].price.toLocaleString('vi-VN') + 'đ' + (bad ? ' · có lỗi' : ''),
+        style: 'height:auto;padding:var(--s3) var(--s6);border-radius:var(--r-md);font-size:13px;font-weight:700;text-align:left;cursor:pointer;'
+          + (on ? 'background:#1E3A66;color:#FFFFFF;border:1px solid #1E3A66' : 'background:var(--c12);color:' + (bad ? '#C0392B' : 'var(--c2)') + ';border:1px solid ' + (bad ? '#C0392B' : 'rgba(154,163,176,.6)')),
+        onClick: () => this.setState({ commPkg: k }) }; }),
+      commPkgName: this.COMM_PKGS[commPkg].name,
+      commRows: this.RANKS.map(r => { const v = pctNum(commPct[r]), first = r === this.RANKS[0]; return {
         rank: r, pct: String(commPct[r]), border: commBad[r] ? '#C0392B' : 'rgba(154,163,176,.6)',
-        amt1y: vnd(10000000 * v / 100), amt6m: vnd(6000000 * v / 100),
-        hasDiff: r !== this.RANKS[0], noDiff: r === this.RANKS[0],
-        diffPct: r === this.RANKS[0] ? '' : String(commDiff[r]),
+        amt: vnd(commPkgPrice * v / 100),
+        hasDiff: !first, noDiff: first,
+        diffPct: first ? '' : String(commDiff[r]),
         diffBorder: diffBad[r] ? '#C0392B' : 'rgba(154,163,176,.6)',
-        diff1y: r === this.RANKS[0] ? '' : 'chênh lệch ' + vnd(10000000 * pctNum(commDiff[r]) / 100),
-        diff6m: r === this.RANKS[0] ? '' : 'chênh lệch ' + vnd(6000000 * pctNum(commDiff[r]) / 100),
-        onDiffChange: (e) => this.setState({ commDiff: { ...commDiff, [r]: e.target.value }, commSaved: '' }),
-        onChange: (e) => this.setState({ commPct: { ...commPct, [r]: e.target.value }, commSaved: '' }) }; }),
+        diffAmt: first ? '—' : vnd(commPkgPrice * pctNum(commDiff[r]) / 100),
+        onDiffChange: (e) => commSet('diff', r, e.target.value),
+        onChange: (e) => commSet('pct', r, e.target.value) }; }),
       commMaxPct: isNaN(commMax) ? '—' : commMax.toLocaleString('vi-VN') + '%',
-      commMax1y: vnd(10000000 * commMax / 100), commMax6m: vnd(6000000 * commMax / 100),
+      commMaxAmt: vnd(commPkgPrice * commMax / 100),
       commWarn,
       commDepth: s.commDepth == null ? '10' : String(s.commDepth),
       setCommDepth: (e) => this.setState({ commDepth: (e.target.value || '').replace(/\D/g, '').slice(0, 2), commSaved: '' }),
