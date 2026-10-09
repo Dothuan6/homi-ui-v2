@@ -1960,11 +1960,6 @@ B5_COMMISSION = """
             <sc-if value="{{commWarn}}" hint-placeholder-val="{{false}}">
               <div style="font-size:12px;color:var(--err);background:rgba(192,57,43,.08);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">{{commWarn}}</div>
             </sc-if>
-            <div style="display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap;font-size:13px;color:var(--c2)">
-              <label style="font-weight:600">Độ sâu cây tối đa</label>
-              <input type="text" inputmode="numeric" value="{{commDepth}}" sc-camel-on-change="{{setCommDepth}}" style="width:64px;height:34px;padding:0 var(--s4);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;text-align:right">
-              <span style="font-size:12px;color:var(--c5)">cấp tuyến trên được xét khi chia hoa hồng; vượt quá thì phần còn lại về công ty.</span>
-            </div>
             <div style="font-size:11px;color:var(--c5);line-height:1.6">Phần chênh lệch giữa các cấp cũng tính theo <strong>% giá trị gói</strong> (HOMI365 trả lời H6). Mỗi gói có bộ % riêng; số tiền quy đổi theo giá của gói đang chọn. Super Lithium đứng trên cùng, Lithium không thăng lên được.</div>
             <sc-if value="{{commSaved}}" hint-placeholder-val="{{false}}">
               <div style="font-size:13px;color:#2F7A48;background:rgba(47,122,72,.12);border-radius:var(--r-md);padding:var(--s4) var(--s5)">{{commSaved}}</div>
@@ -2027,8 +2022,6 @@ _JS_COMM_RETURN = """      // (28) Hoa hồng theo % — theo gói đang chọn.
       commMaxPct: isNaN(commMax) ? '—' : commMax.toLocaleString('vi-VN') + '%',
       commMaxAmt: vnd(commPkgPrice * commMax / 100),
       commWarn,
-      commDepth: s.commDepth == null ? '10' : String(s.commDepth),
-      setCommDepth: (e) => this.setState({ commDepth: (e.target.value || '').replace(/\\D/g, '').slice(0, 2), commSaved: '' }),
       commSaved: s.commSaved || '',
       commSaveDisabled: !!commWarn,
       commSaveStyle: 'height:38px;padding:0 var(--s6);border:none;border-radius:var(--r-md);font-size:13px;font-weight:600;color:#FFFFFF;background:'
@@ -2042,7 +2035,7 @@ JS_0810 += [
     ("    profileSaved: null,\n",
      "    profileSaved: null,\n"
      "    // (28) Cấu hình hoa hồng theo % (B5).\n"
-     "    commCfg: null, commPkg: 'y', commDepth: null, commSaved: '',\n"),
+     "    commCfg: null, commPkg: 'y', commSaved: '',\n"),
     ("  pkgCount(c) { return c.y + c.h * 0.5; }",
      "  // (28) Hoa hồng % theo cấp (trực tiếp) + chênh lệch % (H6, 08/10) — mặc định\n"
      "  // quy từ số tiền cũ trên gói 1 năm 10tr: Silver 1tr = 10% … Lithium 50k = 0,5%.\n"
@@ -2111,7 +2104,8 @@ DIFF_0810 = [
     "`#tuyen-tren-hieu-luc` |",
     "| 21 | B2, B5 | **Super Lithium** hiện trong danh sách cấp nhưng không chọn được "
     "(tài khoản công ty), có dòng riêng trong bảng hoa hồng; A3 không bao giờ hiện. "
-    "Thêm cấu hình **độ sâu cây tối đa**. | `b5-products.html` |",
+    "Giới hạn số tầng tuyến trên khi chia ưu đãi KHÔNG làm thành cấu hình trên giao diện "
+    "(bỏ 09/10) — dev tự xử lý trong logic tính. | `b5-products.html` |",
     "| 23 | B5 | Khối **Hoa hồng theo cấp**: mỗi cấp nhập **% trên giá trị gói**, tự quy "
     "ra tiền cho gói 1 năm và nửa năm, dòng tổng phân bổ tối đa, cảnh báo khi ngoài "
     "0–100% hoặc cấp trên thấp hơn cấp dưới. Cột **chênh lệch cũng nhập %** (H6 trả lời "

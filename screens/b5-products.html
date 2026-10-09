@@ -449,11 +449,6 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             <sc-if value="{{commWarn}}" hint-placeholder-val="{{false}}">
               <div style="font-size:12px;color:var(--err);background:rgba(192,57,43,.08);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">{{commWarn}}</div>
             </sc-if>
-            <div style="display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap;font-size:13px;color:var(--c2)">
-              <label style="font-weight:600">Độ sâu cây tối đa</label>
-              <input type="text" inputmode="numeric" value="{{commDepth}}" sc-camel-on-change="{{setCommDepth}}" style="width:64px;height:34px;padding:0 var(--s4);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;text-align:right">
-              <span style="font-size:12px;color:var(--c5)">cấp tuyến trên được xét khi chia hoa hồng; vượt quá thì phần còn lại về công ty.</span>
-            </div>
             <div style="font-size:11px;color:var(--c5);line-height:1.6">Phần chênh lệch giữa các cấp cũng tính theo <strong>% giá trị gói</strong> (HOMI365 trả lời H6). Mỗi gói có bộ % riêng; số tiền quy đổi theo giá của gói đang chọn. Super Lithium đứng trên cùng, Lithium không thăng lên được.</div>
             <sc-if value="{{commSaved}}" hint-placeholder-val="{{false}}">
               <div style="font-size:13px;color:#2F7A48;background:rgba(47,122,72,.12);border-radius:var(--r-md);padding:var(--s4) var(--s5)">{{commSaved}}</div>
@@ -1305,7 +1300,7 @@ class Component extends DCLogic {
     // (23) Dòng xác nhận sau khi admin lưu hồ sơ: { id, text }.
     profileSaved: null,
     // (28) Cấu hình hoa hồng theo % (B5).
-    commCfg: null, commPkg: 'y', commDepth: null, commSaved: '',
+    commCfg: null, commPkg: 'y', commSaved: '',
     // (27) Xét cấp (B9) + bổ nhiệm đặc biệt (duyệt ngoài, admin xác nhận).
     rrStatus: {}, rrSel: {}, rrReason: {}, rrFilter: 'all', rrModal: null, rrDenyText: '', rrRunNote: '',
     rankReason: '', rankRequester: '', rankSaved: '',
@@ -2807,8 +2802,6 @@ class Component extends DCLogic {
       commMaxPct: isNaN(commMax) ? '—' : commMax.toLocaleString('vi-VN') + '%',
       commMaxAmt: vnd(commPkgPrice * commMax / 100),
       commWarn,
-      commDepth: s.commDepth == null ? '10' : String(s.commDepth),
-      setCommDepth: (e) => this.setState({ commDepth: (e.target.value || '').replace(/\D/g, '').slice(0, 2), commSaved: '' }),
       commSaved: s.commSaved || '',
       commSaveDisabled: !!commWarn,
       commSaveStyle: 'height:38px;padding:0 var(--s6);border:none;border-radius:var(--r-md);font-size:13px;font-weight:600;color:#FFFFFF;background:'
