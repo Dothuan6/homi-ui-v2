@@ -1599,7 +1599,7 @@ B9_SCREEN = """      <!-- B9 XÉT THĂNG / HẠ CẤP (bổ sung sau UAT 02/10 �
             <div><div style="font-size:24px;font-weight:700">Xét thăng / hạ cấp</div><div style="font-size:12px;color:var(--c5);margin-top:var(--s1)">Kỳ 09/2026 · danh sách đề xuất lập lúc 00:00 ngày 01/10/2026 · cấp mới chỉ có hiệu lực khi được duyệt</div></div>
             <button sc-camel-on-click="{{rrRunSel}}" disabled="{{rrSelDisabled}}" style="{{rrRunStyle}}">Chạy lại xét cấp cho nhóm đã chọn ({{rrSelCount}})</button>
           </div>
-          <div style=\"""" + _INFO + """\">Đã tắt tự động thăng / hạ cấp. Quy tắc lập đề xuất: <strong>mỗi tháng lên hoặc xuống tối đa 1 cấp</strong>, không nhảy bậc · lên cấp mới thì gói xét cấp <strong>đếm lại từ 0</strong> · gói 1 năm = 1 gói, <strong>gói 6 tháng = 0,5 gói</strong> · trong tháng dưới 1 gói quy đổi thì đề xuất hạ 1 cấp (Copper giữ nguyên), nửa gói lẻ không cộng dồn sang tháng sau. Ngưỡng theo Chính sách ưu đãi thành viên: Silver 10 · Gold 18 · Diamond 24 · Titanium 28 · Lithium 30 gói quy đổi.</div>
+          <div style=\"""" + _INFO + """\">Đã tắt tự động thăng / hạ cấp. Quy tắc lập đề xuất: <strong>mỗi tháng lên hoặc xuống tối đa 1 cấp</strong>, không nhảy bậc · lên cấp mới thì gói xét cấp <strong>đếm lại từ 0</strong> · gói 1 năm = 1 gói, <strong>gói 6 tháng = 0,5 gói</strong> · trong tháng dưới 1 gói quy đổi thì đề xuất hạ 1 cấp (Copper giữ nguyên), nửa gói lẻ không cộng dồn sang tháng sau. Số gói cần cho mỗi bậc (theo ngưỡng Chính sách ưu đãi thành viên 10 / 18 / 24 / 28 / 30, đếm lại từ 0 sau mỗi lần lên cấp): Copper → Silver <strong>10</strong> · Silver → Gold <strong>8</strong> · Gold → Diamond <strong>6</strong> · Diamond → Titanium <strong>4</strong> · Titanium → Lithium <strong>2</strong> gói quy đổi.</div>
           <sc-if value="{{rrRunNote}}" hint-placeholder-val="{{false}}">
             <div style="font-size:13px;color:#2F7A48;background:rgba(47,122,72,.12);border-radius:var(--r-md);padding:var(--s4) var(--s5)">{{rrRunNote}}</div>
           </sc-if>
@@ -1685,8 +1685,7 @@ MARKUP_0810 += [
     ('Việc trình và duyệt làm ngoài hệ thống. Ở đây chỉ ghi nhận cấp đã được duyệt, kèm số phiếu để đối chiếu.',
      'Duyệt làm ngoài hệ thống. Admin nhập lý do và người yêu cầu rồi xác nhận — cấp mới có hiệu lực ngay, hệ thống gửi email cho anh Phương.'),
     ('      <!-- B4 WAREHOUSE -->', B9_SCREEN + '      <!-- B4 WAREHOUSE -->'),
-    ('line-height:1.5">{{rankProgress}}</div>',
-     'line-height:1.5">{{rankProgress}}</div><div style="font-size:10px;color:var(--c5);line-height:1.5;margin-top:2px">{{rankMonthNote}}</div>'),
+    # (09/10) KH: A3 chỉ 1 dòng "Gói xét cấp x / y · còn z gói để lên …", bỏ dòng tháng này.
 ]
 
 _JS_RR_CLASS = """  // (27) Xét cấp sau phản hồi KH — mục 12–14, 17, 18. Ngưỡng theo Chính sách ưu đãi
@@ -1694,15 +1693,20 @@ _JS_RR_CLASS = """  // (27) Xét cấp sau phản hồi KH — mục 12–14, 17
   // Gói xét cấp đếm từ lần đổi cấp gần nhất; y = gói 1 năm, h = gói 6 tháng,
   // my / mh = riêng tháng này. Trọng số: 1 năm = 1 gói, 6 tháng = 0,5 gói.
   RANK_THRESHOLD = { Silver: 10, Gold: 18, Diamond: 24, Titanium: 28, Lithium: 30 };
+  // (09/10) Lên cấp thì đếm lại từ 0 → số gói cần cho MỖI BẬC = ngưỡng cấp đích
+  // trừ ngưỡng cấp hiện tại: Copper→Silver 10 · Silver→Gold 8 · Gold→Diamond 6 ·
+  // Diamond→Titanium 4 · Titanium→Lithium 2 (KH xác nhận: Silver lên Gold cần 8 gói).
+  rankStep(to) { const i = this.RANKS.indexOf(to); if (i <= 0) return null;
+    const prev = this.RANKS[i - 1]; return this.RANK_THRESHOLD[to] - (this.RANK_THRESHOLD[prev] || 0); }
   RANK_COUNT = { 1:{y:3,h:2,my:0,mh:1}, 2:{y:8,h:5,my:2,mh:1}, 3:{y:0,h:0,my:0,mh:0},
-                 4:{y:1,h:1,my:0,mh:1}, 5:{y:34,h:12,my:3,mh:2}, 6:{y:0,h:0,my:0,mh:0},
+                 4:{y:1,h:1,my:0,mh:1}, 5:{y:7,h:4,my:3,mh:2}, 6:{y:0,h:0,my:0,mh:0},
                  7:{y:2,h:2,my:1,mh:0} };
   RANK_REVIEW = [
-    { id:2, to:'Silver', dir:'up', reason:'Đủ ngưỡng Silver: 10,5 / 10 gói quy đổi.',
+    { id:2, to:'Silver', dir:'up', reason:'Đủ ngưỡng Copper → Silver: 10,5 / 10 gói quy đổi.',
       note:'Lên Silver là ngang tuyến trên Trần Thị Bích — tuyến trên hiệu lực chuyển lên người kế tiếp có cấp cao hơn.' },
     { id:1, to:'Copper', dir:'down', reason:'Tháng này chỉ 0,5 gói quy đổi (1 gói 6 tháng) — dưới 1 gói. Nửa gói lẻ không cộng dồn sang tháng sau.', note:'' },
-    { id:5, to:'Diamond', dir:'up', reason:'Đủ ngưỡng Diamond: 40 / 24 gói quy đổi. Không nhảy bậc — bán bao nhiêu trong tháng cũng chỉ lên 1 cấp.',
-      note:'Lên Diamond thì gói xét cấp về 0, 16 gói dư không chuyển sang. Muốn lên Titanium phải bán thêm đủ 28 gói.' }
+    { id:5, to:'Diamond', dir:'up', reason:'Đủ ngưỡng Gold → Diamond: 9 / 6 gói quy đổi. Không nhảy bậc — bán bao nhiêu trong tháng cũng chỉ lên 1 cấp.',
+      note:'Lên Diamond thì gói xét cấp về 0, 3 gói dư không chuyển sang. Muốn lên Titanium phải bán thêm đủ 4 gói.' }
   ];
   pkgCount(c) { return c.y + c.h * 0.5; }
   nfmt(x) { return Number(x).toLocaleString('vi-VN'); }
@@ -1710,7 +1714,7 @@ _JS_RR_CLASS = """  // (27) Xét cấp sau phản hồi KH — mục 12–14, 17
 
   // 7.3.3 AC (làm lại sau phản hồi KH): hiển thị gói xét cấp đã quy đổi.
   RANK_PROGRESS = { new: 'Gói xét cấp 1 / 10 · còn 9 gói để lên Silver',
-                    active: 'Gói xét cấp 6,5 / 18 · còn 11,5 gói để lên Gold' };
+                    active: 'Gói xét cấp 1,5 / 8 · còn 6,5 gói để lên Gold' };
   RANK_MONTH_NOTE = { new: 'Tháng này 1 gói · gói 6 tháng tính 0,5 · lên cấp mới đếm lại từ 0',
                       active: 'Tháng này 1,5 gói (1 gói 1 năm + 1 gói 6 tháng) · đủ giữ hạng' };"""
 
@@ -1722,7 +1726,7 @@ _JS_RR_CONSTS = """    // (27) Màn Xét thăng / hạ cấp (B9).
       const c = this.RANK_COUNT[r.id], nr = this.nextRank(from);
       const st = rrStatus[r.id] || 'pending', can = st === 'pending', on = can && !!rrSel[r.id];
       return { ...r, name: m.name, code: ALIAS[m.id], from,
-        cum: this.nfmt(this.pkgCount(c)) + (nr ? ' / ' + this.RANK_THRESHOLD[nr] : ''),
+        cum: this.nfmt(this.pkgCount(c)) + (nr ? ' / ' + this.rankStep(nr) : ''),
         cumSub: c.y + ' gói 1 năm + ' + c.h + ' gói 6 tháng',
         month: this.nfmt(c.my + c.mh * 0.5) + ' gói', monthSub: c.my + ' × 1 năm + ' + c.mh + ' × 6 tháng',
         propLabel: (r.dir === 'up' ? '↑ ' : '↓ ') + r.to,
@@ -1802,7 +1806,7 @@ _JS_RR_RETURN = """      // (27) Xét thăng / hạ cấp (B9).
         this.setState({ rrStatus: st, rrSel: {}, rrModal: null }); },
 
       // (27) Ngăn chi tiết thành viên: gói xét cấp + tuyến trên hiệu lực.
-      mRankCount: mRc ? this.nfmt(this.pkgCount(mRc)) + (mNext ? ' / ' + this.RANK_THRESHOLD[mNext] + ' (lên ' + mNext + ')' : '') : '—',
+      mRankCount: mRc ? this.nfmt(this.pkgCount(mRc)) + (mNext ? ' / ' + this.rankStep(mNext) + ' (lên ' + mNext + ')' : '') : '—',
       mRankMonth: mRc ? this.nfmt(mRc.my + mRc.mh * 0.5) + ' gói (' + mRc.my + ' × 1 năm + ' + mRc.mh + ' × 6 tháng)' : '—',
       mUplineDirect: mUpDirect ? mUpDirect.name + ' · ' + rankOf(mUpDirect) : 'Không có (thành viên gốc)',
       mUplineEff: mUpEff ? mUpEff.name + ' · ' + rankOf(mUpEff) : 'Công ty · Super Lithium',
@@ -2131,8 +2135,11 @@ DIFF_POLICY = [
     "Diamond 24, Titanium 28, Lithium 30 — đã thay số minh hoạ ở B9/A3/B2. Đơn vị vẫn là "
     "*gói quy đổi* (gói 1 năm = 1, gói 6 tháng = 0,5 — Change Request mục 17) và lên cấp "
     "thì đếm lại từ 0, không nhảy bậc (mục 14) — HOMI365 xác nhận lại 08/10: Copper bán 12 "
-    "gói thì tháng sau lên Silver, từ Silver đếm từ 0 đủ 18 mới lên Gold, từ Gold đếm từ 0 "
-    "đủ 24 mới lên Diamond; bán bao nhiêu trong tháng cũng chỉ lên 1 cấp, phần dư bỏ. Văn bản ghi \"số đơn giao dịch hợp lệ "
+    "gói thì tháng sau lên Silver, từ Silver đếm lại từ 0; bán bao nhiêu trong tháng cũng "
+    "chỉ lên 1 cấp, phần dư bỏ. **Chốt 09/10:** số gói cần cho mỗi bậc = ngưỡng cấp đích "
+    "trừ ngưỡng cấp hiện tại — Copper→Silver 10, Silver→Gold 8, Gold→Diamond 6, "
+    "Diamond→Titanium 4, Titanium→Lithium 2 (ví dụ KH: Silver bán 1 gói 1 năm + 1 gói 6 "
+    "tháng → \"Gói xét cấp 1,5 / 8 · còn 6,5 gói để lên Gold\"). A3 chỉ hiện đúng 1 dòng này. Văn bản ghi \"số đơn giao dịch hợp lệ "
     "lũy kế\", chưa nêu trọng số gói 6 tháng và việc đếm lại — nên đề nghị HOMI365 bổ "
     "sung câu chữ cho khớp.",
     "2. **Hạ hạng — ĐÃ CHỐT 08/10: giữ logic prototype.** Trong tháng phải đạt "
