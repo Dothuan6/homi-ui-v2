@@ -2190,5 +2190,17 @@ JS_0810 += [
      "      wdClosedNote: !!s.wdPeriodLocked && !hasActiveThisMonth,"),
 ]
 
+# (09/10) Điểm tích lũy = 1 điểm / 1đ ưu đãi ĐÃ GHI NHẬN (DoD US-17, Chính sách
+# ưu đãi thành viên mục 2). Số 1.240 cũ là số mẫu gõ cứng từ mockup KH.
+MARKUP_0810 += [
+    ('>{{metricPoints}}</div></div>',
+     '>{{metricPoints}}</div><div style="font-size:11px;color:var(--c5);line-height:1.5">'
+     '1 điểm = 1đ ưu đãi đã ghi nhận</div></div>'),
+]
+JS_0810 += [
+    ("      metricPoints: s.agentStage === 'active' ? '1.240' : '0',",
+     "      metricPoints: s.agentStage === 'active' ? '6.000.000' : '0',"),
+]
+
 MARKUP.extend(MARKUP_0810)
 JS.extend(JS_0810)
