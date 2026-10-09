@@ -17,7 +17,7 @@ window.__STATE__ = {"screen": "B2"};
 try { var c = sessionStorage.getItem('__homi_carry');
       if (c) { Object.assign(window.__STATE__, JSON.parse(c)); sessionStorage.removeItem('__homi_carry'); } } catch (e) {}
 // mở thẳng một trạng thái: b2-members.html#chi-tiet
-var H = {"chi-tiet": {"selectedMemberId": 6}, "duyet": {"selectedMemberId": 6, "actionModal": {"type": "approve", "kind": "member", "id": 6}}, "tu-choi": {"selectedMemberId": 6, "actionModal": {"type": "reject", "kind": "member", "id": 6}}, "cap-nhat-cap": {"selectedMemberId": 5, "rankEditId": 5, "rankEditChoice": "Diamond", "rankReason": "Đạt doanh số đặc biệt quý 3", "rankRequester": "Hoàng Thị Mỹ Trinh"}, "da-bo-nhiem": {"selectedMemberId": 5, "rankOverrides": {"5": "Diamond"}, "rankSaved": "Đã bổ nhiệm Gold → Diamond, có hiệu lực ngay. Đã gửi email cho anh Phương và email báo thành viên.", "rankLogs": {"5": [{"label": "Bổ nhiệm đặc biệt Gold → Diamond · lý do: Đạt doanh số đặc biệt quý 3 · người yêu cầu: Hoàng Thị Mỹ Trinh · admin xác nhận (đã duyệt ngoài hệ thống) · đã gửi email anh Phương", "time": "08/10/2026 10:20"}]}}, "sua-ho-so": {"selectedMemberId": 2, "profileOpen": true, "profileEdit": true}, "sua-ho-so-doi-email": {"selectedMemberId": 2, "profileOpen": true, "profileEdit": true, "profileDraft": {"email": "cuong.levan@gmail.com"}}, "tuyen-tren-hieu-luc": {"selectedMemberId": 4}}, h = location.hash.slice(1);
+var H = {"chi-tiet": {"selectedMemberId": 6}, "duyet": {"selectedMemberId": 6, "actionModal": {"type": "approve", "kind": "member", "id": 6}, "adminRole": "head"}, "tu-choi": {"selectedMemberId": 6, "actionModal": {"type": "reject", "kind": "member", "id": 6}, "adminRole": "head"}, "cap-nhat-cap": {"selectedMemberId": 5, "rankEditId": 5, "rankEditChoice": "Diamond", "rankReason": "Đạt doanh số đặc biệt quý 3", "rankRequester": "Hoàng Thị Mỹ Trinh"}, "da-bo-nhiem": {"selectedMemberId": 5, "rankOverrides": {"5": "Diamond"}, "rankSaved": "Đã bổ nhiệm Gold → Diamond, có hiệu lực ngay. Đã gửi email cho anh Phương và email báo thành viên.", "rankLogs": {"5": [{"label": "Bổ nhiệm đặc biệt Gold → Diamond · lý do: Đạt doanh số đặc biệt quý 3 · người yêu cầu: Hoàng Thị Mỹ Trinh · admin xác nhận (đã duyệt ngoài hệ thống) · đã gửi email anh Phương", "time": "08/10/2026 10:20"}]}}, "sua-ho-so": {"selectedMemberId": 2, "profileOpen": true, "profileEdit": true}, "sua-ho-so-doi-email": {"selectedMemberId": 2, "profileOpen": true, "profileEdit": true, "profileDraft": {"email": "cuong.levan@gmail.com"}}, "tuyen-tren-hieu-luc": {"selectedMemberId": 4}}, h = location.hash.slice(1);
 if (H[h]) Object.assign(window.__STATE__, H[h]);
 </script>
 <script src="../js/dc-runtime.js"></script>
@@ -195,7 +195,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           </div>
           <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);overflow:auto">
             <div style="display:grid;grid-template-columns:36px 1.2fr 1fr 1fr 1fr .9fr 1.1fr 1fr .9fr .9fr .6fr;min-width:1360px;background:rgba(154,163,176,.08);padding:var(--s5) var(--s6);font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em">
-              <div sc-camel-on-click="{{wdToggleAll}}" style="display:flex;align-items:center;cursor:pointer"><span style="width:16px;height:16px;border:1.5px solid {{wdAllBorder}};border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#FFFFFF;background:{{wdAllBg}}">{{wdAllMark}}</span></div><div>Thành viên</div><div>Khoản thưởng hiện tại</div><div>Yêu cầu đổi điểm</div><div>Số dư còn lại</div><div>Ngày yêu cầu</div><div>Số tài khoản nhận</div><div>Tên ngân hàng</div><div>Chi nhánh</div><div>Trạng thái</div><div></div>
+              <div sc-camel-on-click="{{wdToggleAll}}" style="display:flex;align-items:center;cursor:pointer"><span style="width:16px;height:16px;border:1.5px solid {{wdAllBorder}};border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#FFFFFF;background:{{wdAllBg}}">{{wdAllMark}}</span></div><div>Thành viên</div><div>Số dư khả dụng</div><div>Yêu cầu đổi điểm</div><div>Số dư còn lại</div><div>Ngày yêu cầu</div><div>Số tài khoản nhận</div><div>Tên ngân hàng</div><div>Chi nhánh</div><div>Trạng thái</div><div></div>
             </div>
             <div style="display:grid;grid-template-columns:36px 1.2fr 1fr 1fr 1fr .9fr 1.1fr 1fr .9fr .9fr .6fr;min-width:1360px;padding:var(--s5) var(--s6);font-size:13px;font-weight:700;color:var(--c1);background:rgba(30,58,102,.06);border-top:1px solid rgba(154,163,176,.2)"><div></div><div>TỔNG</div><div>{{sumRewardLabel}}</div><div>{{sumRequestLabel}}</div><div>{{sumRemainLabel}}</div><div></div><div></div><div></div><div></div><div></div><div></div></div>
             <sc-for list="{{withdrawals}}" as="w" hint-placeholder-count="5">
@@ -268,7 +268,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
                     <td style="padding:var(--s5)"><div style="font-weight:600;color:var(--c1);white-space:nowrap">{{o.buyer}}</div><div style="font-size:12px;color:var(--c5)">{{o.phone}}</div></td>
                     <td style="padding:var(--s5);color:var(--c2);white-space:nowrap">{{o.pkg}}</td>
                     <td style="padding:var(--s5);font-weight:600;color:var(--c1);white-space:nowrap">{{o.amount}}</td>
-                    <td style="padding:var(--s5);color:var(--c2);font-family:monospace;font-size:12px">{{o.transferNote}}</td>
+                    <td style="padding:var(--s5);color:var(--c2);font-family:monospace;font-size:12px"><div title="{{o.transferNote}}" style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{o.transferNote}}</div></td>
                     <td style="padding:var(--s5)"><span style="display:inline-block;padding:4px 10px;border-radius:var(--r-xl);font-size:11px;font-weight:600;background:{{o.proofBg}};color:{{o.proofColor}};white-space:nowrap">{{o.proofLabel}}</span></td>
                     <td style="padding:var(--s5);color:var(--c2);white-space:nowrap"><div>{{o.referrer}}</div><div style="font-size:11px;color:var(--c5);font-family:monospace">{{o.refCode}}</div></td>
                     <td style="padding:var(--s5);color:var(--c5);white-space:nowrap">{{o.date}}</td>
@@ -449,11 +449,6 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             <sc-if value="{{commWarn}}" hint-placeholder-val="{{false}}">
               <div style="font-size:12px;color:var(--err);background:rgba(192,57,43,.08);border-radius:var(--r-md);padding:var(--s4) var(--s5);line-height:1.6">{{commWarn}}</div>
             </sc-if>
-            <div style="display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap;font-size:13px;color:var(--c2)">
-              <label style="font-weight:600">Độ sâu cây tối đa</label>
-              <input type="text" inputmode="numeric" value="{{commDepth}}" sc-camel-on-change="{{setCommDepth}}" style="width:64px;height:34px;padding:0 var(--s4);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:13px;text-align:right">
-              <span style="font-size:12px;color:var(--c5)">cấp tuyến trên được xét khi chia hoa hồng; vượt quá thì phần còn lại về công ty.</span>
-            </div>
             <div style="font-size:11px;color:var(--c5);line-height:1.6">Phần chênh lệch giữa các cấp cũng tính theo <strong>% giá trị gói</strong> (HOMI365 trả lời H6). Mỗi gói có bộ % riêng; số tiền quy đổi theo giá của gói đang chọn. Super Lithium đứng trên cùng, Lithium không thăng lên được.</div>
             <sc-if value="{{commSaved}}" hint-placeholder-val="{{false}}">
               <div style="font-size:13px;color:#2F7A48;background:rgba(47,122,72,.12);border-radius:var(--r-md);padding:var(--s4) var(--s5)">{{commSaved}}</div>
@@ -688,8 +683,8 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           </div>
 
           <div style="font-size:12px;color:var(--c5);line-height:1.7;background:rgba(154,163,176,.05);border-radius:var(--r-md);padding:var(--s6)">
-            <strong style="color:var(--c2)">Admin</strong> làm bước 1 của mọi quy trình duyệt 2 lớp: xác nhận tiền về của đơn hàng, duyệt hồ sơ thành viên, duyệt yêu cầu đổi điểm.<br>
-            <strong style="color:var(--c2)">Head</strong> làm bước 2 và là người duy nhất được kích hoạt tài khoản, cấp mã kích hoạt, đánh dấu đã chi trả, và quản lý chính màn này.
+            <strong style="color:var(--c2)">Admin</strong> xác nhận tiền về của đơn hàng (bước 1) và duyệt yêu cầu đổi điểm.<br>
+            <strong style="color:var(--c2)">Head</strong> xác nhận đơn và cấp mã kích hoạt, duyệt hồ sơ thành viên (không chặn thành viên dùng link bán hàng), và quản lý chính màn này.
           </div>
         </div>
       </sc-if>
@@ -998,10 +993,10 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
               <div style="display:flex;justify-content:space-between;gap:var(--s5);color:var(--c2)"><span>{{rh.label}}</span><span style="color:var(--c5);flex:none">{{rh.time}}</span></div>
             </sc-for>
           </div>
-          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử đơn hàng &amp; hoa hồng</div>
+          <div style="font-size:12px;font-weight:700;color:var(--c5);text-transform:uppercase;letter-spacing:.03em;margin-bottom:var(--s5)">Lịch sử đơn hàng &amp; ưu đãi</div>
           <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px">
-            <div style="display:flex;justify-content:space-between;color:var(--c2)"><span>Đơn #10234 — HOMI365-01</span><span style="font-weight:600">+120.000đ</span></div>
-            <div style="display:flex;justify-content:space-between;color:var(--c2)"><span>Đơn #10198 — HOMI365-01</span><span style="font-weight:600">+120.000đ</span></div>
+            <div style="display:flex;justify-content:space-between;color:var(--c2)"><span>Đơn #10234 — HOMI365-01 · Gói 1 năm · {{mHistPctY}}</span><span style="font-weight:600">{{mHistY}}</span></div>
+            <div style="display:flex;justify-content:space-between;color:var(--c2)"><span>Đơn #10198 — HOMI365-01 · Gói nửa năm · {{mHistPctH}}</span><span style="font-weight:600">{{mHistH}}</span></div>
           </div>
         </div>
       </div>
@@ -1164,7 +1159,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           <div style="font-size:11px;font-weight:700;color:#1E3A66;text-transform:uppercase;letter-spacing:.04em">{{actionStageLabel}}</div>
           <div style="font-size:18px;font-weight:700;color:var(--c1)">Xác nhận duyệt đăng ký thành viên</div>
           <div style="font-size:14px;color:var(--c2);line-height:1.6">Xác nhận duyệt hồ sơ đăng ký của <strong>{{actionMember.name}}</strong> ({{actionMember.affId}})?</div>
-          <div style="font-size:12px;color:var(--c2);background:rgba(47,122,72,.12);border-radius:var(--r-md);padding:var(--s5);line-height:1.7">Đủ 2 lượt duyệt là tài khoản được kích hoạt: toàn bộ <strong>hoa hồng đang tạm giữ</strong> và <strong>điểm tích luỹ</strong> của thành viên được <strong>cộng dồn về quá khứ</strong> — tính từ đơn đầu tiên, không phải từ thời điểm kích hoạt — và mở khoá cho đổi điểm.</div>
+          <div style="font-size:12px;color:var(--c2);background:rgba(47,122,72,.12);border-radius:var(--r-md);padding:var(--s5);line-height:1.7">Head xác nhận thông tin hồ sơ (CCCD, tài khoản nhận ưu đãi) là đúng. Duyệt hay chưa duyệt <strong>không ảnh hưởng</strong> link bán hàng, điểm tích luỹ và quyền đổi điểm của thành viên — các chức năng này dùng được ngay từ khi đăng ký.</div>
           <div style="display:flex;gap:var(--s3)">
             <button sc-camel-on-click="{{closeActionModal}}" style="flex:1;height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;font-weight:600">Đóng</button>
             <button sc-camel-on-click="{{confirmApprove}}" style="flex:1;height:44px;background:var(--c8);color:var(--c12);border:none;border-radius:var(--r-md);font-size:14px;font-weight:600" style-hover="background:#2F7A48">Xác nhận</button>
@@ -1283,9 +1278,9 @@ class Component extends DCLogic {
     orderActivationCode: '', orderCodeError: '',
     copyPersonalLabel: 'Copy link',
     banks: null, provinceData: null,
-    bankQuery: 'Vietcombank', bankOpen: false,
-    provinceQuery: 'Thành phố Hồ Chí Minh', provinceOpen: false,
-    wardQuery: 'Phường Bến Thành', wardOpen: false,
+    bankQuery: '', bankOpen: false,
+    provinceQuery: '', provinceOpen: false,
+    wardQuery: '', wardOpen: false,
     accountHolder: '', buyTcChecked: false,
     cccdIssueDate: '', cccdIssuePlace: '', lookupResult: null,
     loginPhoneChecked: false, loginPhoneEmpty: false, loginNotEligible: false,
@@ -1305,7 +1300,7 @@ class Component extends DCLogic {
     // (23) Dòng xác nhận sau khi admin lưu hồ sơ: { id, text }.
     profileSaved: null,
     // (28) Cấu hình hoa hồng theo % (B5).
-    commCfg: null, commPkg: 'y', commDepth: null, commSaved: '',
+    commCfg: null, commPkg: 'y', commSaved: '',
     // (27) Xét cấp (B9) + bổ nhiệm đặc biệt (duyệt ngoài, admin xác nhận).
     rrStatus: {}, rrSel: {}, rrReason: {}, rrFilter: 'all', rrModal: null, rrDenyText: '', rrRunNote: '',
     rankReason: '', rankRequester: '', rankSaved: '',
@@ -1317,7 +1312,7 @@ class Component extends DCLogic {
   };
 
   NAV = [
-    ['A1','A1 · Thông tin nhận hàng'],['A2','A2 · Đăng ký Agent'],['A3','A3 · Dashboard'],
+    ['A1','A1 · Thông tin nhận hàng'],['A2','A2 · Đăng ký thành viên'],['A3','A3 · Dashboard'],
     ['C1','C1 · Đăng nhập Agent'],
     ['B1','B1 · Đăng nhập admin'],['B2','B2 · Thành viên'],['B3','B3 · Đổi điểm'],['B4','B4 · Kho hàng']
   ];
@@ -1343,7 +1338,8 @@ class Component extends DCLogic {
     return { buyStep: 'form', buyMode: 'self', buyProfile: { ...p, buyerPhone: phone },
       buyerPhone: phone, buyPhoneInput: phone, buyerName: p.buyerName, buyerEmail: p.buyerEmail,
       buyerCccd: p.buyerCccd, buyerAddress: p.buyerAddress, buyerDob: p.buyerDob,
-      buyerBankAccount: p.buyerBankAccount, accountHolder: p.accountHolder };
+      buyerBankAccount: p.buyerBankAccount, accountHolder: p.accountHolder,
+      provinceQuery: 'Thành phố Hồ Chí Minh', wardQuery: 'Phường Bình Trưng', bankQuery: 'Vietcombank' };
   }
 
   // (20) Mục 3 — người mua phải từ 18 đến 100 tuổi. Chỉ xét khi đã gõ đủ
@@ -1462,7 +1458,7 @@ class Component extends DCLogic {
 
   AUDIT_FILES = [
     { name:'PD-2026-014-da-ky.pdf', kind:'PDF', module:'Thành viên',
-      linkedTo:'Cập nhật cấp · Lê Văn Cường', by:'Nguyễn Thị Hạnh',
+      linkedTo:'Bổ nhiệm đặc biệt · Lê Văn Cường', by:'Nguyễn Thị Hạnh',
       time:'17/09/2026 09:12', size:'412 KB' },
     { name:'kho-nhap-1609.xlsx', kind:'Excel / CSV', module:'Kho hàng',
       linkedTo:'Import 120 mã kích hoạt', by:'Nguyễn Thị Hạnh',
@@ -1589,7 +1585,8 @@ class Component extends DCLogic {
 
   // Trạng thái hồ sơ thành viên (khác vòng duyệt 2 lượt của đổi điểm).
   MEMBER_STATUS_LABEL = {
-    pending: 'Chờ xác nhận thanh toán',
+    // (09/10) Duyệt hồ sơ còn 1 bước Head; không chặn thành viên dùng link.
+    pending: 'Chờ Head duyệt',
     specialist_approved: 'Chờ Head duyệt',
     active: 'Đang hoạt động',
     locked: 'Đã khoá',
@@ -1868,7 +1865,10 @@ class Component extends DCLogic {
     const withdrawAmountNum = parseInt((s.withdrawAmount || '').replace(/\D/g, ''), 10) || 0;
     // (20) Mục 6 — thành viên mới dùng được ngay; số dư là số thật,
     // chưa có đơn nào được duyệt thì bằng 0.
-    const availableBalance = s.agentStage === 'active' ? 4000000 : 0;
+    // (09/10) Yêu cầu đổi điểm đang mở giữ điểm lại: trừ khỏi số dư khả dụng,
+    // hiện ở ô Đang chờ duyệt — hai ô luôn khớp số tiền của yêu cầu.
+    const pendingWdNum = myWdOpen ? +String(myWd.amount).replace(/\D/g, '') : 0;
+    const availableBalance = s.agentStage === 'active' ? 4000000 - pendingWdNum : 0;
     const withdrawAmountError = s.withdrawAmount && (withdrawAmountNum <= 0 ? 'Vui lòng nhập số điểm hợp lệ.' : (withdrawAmountNum > availableBalance ? 'Số điểm vượt quá số dư khả dụng.' : ''));
     const withdrawSubmitDisabled = !s.withdrawAmount || !!withdrawAmountError;
     const withdrawSubmitStyle = 'height:46px;border:none;border-radius:5px;font-size:16px;font-weight:600;color:#FFFFFF;background:' + (withdrawSubmitDisabled ? 'rgba(154,163,176,.5)' : 'var(--c6)') + ';cursor:' + (withdrawSubmitDisabled ? 'not-allowed' : 'pointer');
@@ -2027,14 +2027,12 @@ class Component extends DCLogic {
                time: selectedMemberRaw.joined }],
         needsApproval: ['pending', 'specialist_approved'].includes(effStatus),
         isActiveOrLocked: ['active', 'locked'].includes(effStatus),
-        canApproveMember: !isSpecialist && effStatus === 'specialist_approved',
-        canRejectMember: !isSpecialist && effStatus === 'specialist_approved',
-        approveMemberButtonLabel: 'Xác nhận, kích hoạt Thành viên hoạt động (Head)',
-        approvalStageNote: effStatus === 'pending'
-          ? 'Chưa xác nhận thanh toán. Vào màn Đơn hàng xác nhận tiền về trước, hồ sơ này mới duyệt được.'
-          : effStatus === 'specialist_approved'
-            ? 'Đơn hàng đã được xác nhận thanh toán. Manager duyệt để thành viên nhận điểm và ưu đãi đang tạm giữ.'
-            : (effStatus === 'rejected' ? 'Hồ sơ đã bị từ chối.' : null)
+        canApproveMember: !isSpecialist && ['pending', 'specialist_approved'].includes(effStatus),
+        canRejectMember: !isSpecialist && ['pending', 'specialist_approved'].includes(effStatus),
+        approveMemberButtonLabel: 'Duyệt hồ sơ (Head)',
+        approvalStageNote: ['pending', 'specialist_approved'].includes(effStatus)
+          ? 'Chờ Head duyệt hồ sơ. Thành viên vẫn dùng link bán hàng, nhận điểm và đổi điểm bình thường — duyệt chỉ để xác nhận thông tin hồ sơ là đúng.'
+          : (effStatus === 'rejected' ? 'Hồ sơ đã bị từ chối.' : null)
       };
     }
     const isLocked = selectedMember ? selectedMember.status === 'locked' : false;
@@ -2159,8 +2157,12 @@ class Component extends DCLogic {
          : 'background:var(--c12);color:var(--c8);border:1px solid var(--c8);cursor:pointer');
 
     // (27) Thông tin xét cấp + tuyến trên hiệu lực của thành viên đang mở.
-    const mRc = selectedMember ? this.RANK_COUNT[selectedMember.id] : null;
+    const mRc0 = selectedMember ? this.RANK_COUNT[selectedMember.id] : null;
+    // (09/10) Vừa bổ nhiệm đặc biệt = đã đổi cấp -> gói xét cấp đếm lại từ 0.
+    const mRc = mRc0 && (s.rankOverrides || {})[selectedMember.id] ? { ...mRc0, y: 0, h: 0 } : mRc0;
     const mRank = selectedMember ? rankOf(selectedMember) : '';
+    // (09/10) Lịch sử đơn hàng & ưu đãi: % ưu đãi theo cấp và theo từng gói (B5).
+    const mPct = (k) => ((((s.commCfg || {})[k] || {}).pct || this.COMM_DEFAULT)[mRank] || 0);
     const mNext = this.nextRank(mRank);
     const mUpDirect = selectedMember ? this.MEMBERS.find(x => x.name === selectedMember.upline) : null;
     const mUpEff = selectedMember ? effUp(selectedMember) : null;
@@ -2260,7 +2262,7 @@ class Component extends DCLogic {
     const approveOverBalance = !!(actionWithdrawalRaw && actionWithdrawalRaw.amountNum > sellerBalance);
     const actionWithdrawal = actionWithdrawalRaw ? { ...actionWithdrawalRaw, sellerBalanceLabel: sellerBalance.toLocaleString('vi-VN') + 'đ' } : null;
     const actionMember = (s.actionModal && s.actionModal.kind === 'member') ? this.MEMBERS.find(m => m.id === s.actionModal.id) : null;
-    const actionStageLabel = s.adminRole === 'specialist' ? 'Bước 1/2 · Admin duyệt' : 'Bước 2/2 · Head xác nhận';
+    const actionStageLabel = 'Head duyệt hồ sơ';
     const rejectDisabled = !s.rejectReason || !s.rejectReason.trim();
     const rejectConfirmStyle = 'flex:1;height:44px;border:none;border-radius:5px;font-size:14px;font-weight:600;color:#FFFFFF;background:' + (rejectDisabled ? 'rgba(154,163,176,.5)' : 'var(--err)') + ';cursor:' + (rejectDisabled ? 'not-allowed' : 'pointer');
 
@@ -2506,8 +2508,8 @@ class Component extends DCLogic {
       metricRank: s.agentStage === 'active' ? 'Silver' : 'Copper',
       metricWithdrawn: s.agentStage === 'active' ? '1.200.000đ' : '0đ',
       chartTitle, chartRanges, chartBars,
-      availableBalanceLabel: s.agentStage === 'active' ? '4.000.000đ' : '0đ',
-      pendingBalanceLabel: s.agentStage === 'active' ? '800.000đ' : '0đ',
+      availableBalanceLabel: availableBalance.toLocaleString('vi-VN') + 'đ',
+      pendingBalanceLabel: pendingWdNum.toLocaleString('vi-VN') + 'đ',
       earnedBalanceLabel: s.agentStage === 'active' ? '6.000.000đ' : '0đ',
       // H1 đã chốt: điểm ghi nhận SAU KHI admin duyệt đơn. Thành viên mới
       // có 1 đơn đang chờ duyệt nên điểm chưa vào số dư.
@@ -2746,6 +2748,9 @@ class Component extends DCLogic {
 
       // (27) Ngăn chi tiết thành viên: gói xét cấp + tuyến trên hiệu lực.
       mRankCount: mRc ? this.nfmt(this.pkgCount(mRc)) + (mNext ? ' / ' + this.rankStep(mNext) + ' (lên ' + mNext + ')' : '') : '—',
+      mHistY: '+' + this.nfmt(this.COMM_PKGS.y.price * mPct('y') / 100) + 'đ',
+      mHistH: '+' + this.nfmt(this.COMM_PKGS.h.price * mPct('h') / 100) + 'đ',
+      mHistPctY: this.nfmt(mPct('y')) + '%', mHistPctH: this.nfmt(mPct('h')) + '%',
       mRankMonth: mRc ? this.nfmt(mRc.my + mRc.mh * 0.5) + ' gói (' + mRc.my + ' × 1 năm + ' + mRc.mh + ' × 6 tháng)' : '—',
       mUplineDirect: mUpDirect ? mUpDirect.name + ' · ' + rankOf(mUpDirect) : 'Không có (thành viên gốc)',
       mUplineEff: mUpEff ? mUpEff.name + ' · ' + rankOf(mUpEff) : 'Công ty · Super Lithium',
@@ -2797,8 +2802,6 @@ class Component extends DCLogic {
       commMaxPct: isNaN(commMax) ? '—' : commMax.toLocaleString('vi-VN') + '%',
       commMaxAmt: vnd(commPkgPrice * commMax / 100),
       commWarn,
-      commDepth: s.commDepth == null ? '10' : String(s.commDepth),
-      setCommDepth: (e) => this.setState({ commDepth: (e.target.value || '').replace(/\D/g, '').slice(0, 2), commSaved: '' }),
       commSaved: s.commSaved || '',
       commSaveDisabled: !!commWarn,
       commSaveStyle: 'height:38px;padding:0 var(--s6);border:none;border-radius:var(--r-md);font-size:13px;font-weight:600;color:#FFFFFF;background:'
@@ -3041,7 +3044,7 @@ class Component extends DCLogic {
       provinceOptions: provList.filter(p => norm(p.name).includes(norm(s.provinceQuery)) || s.provinceQuery === p.name)
         .slice(0, 80).map(p => ({ label: p.name,
           onPick: () => this.setState({ provinceQuery: p.name, provinceOpen: false,
-            wardQuery: (p.wards && p.wards[0]) || '' }) })),
+            wardQuery: '' }) })),
       provinceEmpty: provList.filter(p => norm(p.name).includes(norm(s.provinceQuery))).length === 0,
 
       wardQuery: s.wardQuery, wardOpen: s.wardOpen,
@@ -3233,7 +3236,7 @@ class Component extends DCLogic {
         const isSpecialist = s.adminRole === 'specialist';
         if (kind === 'member') {
           const nextStatus = 'active';
-          const label = 'Head duyệt thành viên — mở khoá điểm và ưu đãi đang tạm giữ';
+          const label = 'Head duyệt hồ sơ thành viên';
           const actor = 'Head';
           this.setState({
             memberStatusOverrides: { ...s.memberStatusOverrides, [id]: nextStatus },

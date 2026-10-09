@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>A2 · Đăng ký Agent · HOMI365</title>
+<title>A2 · Đăng ký thành viên · HOMI365</title>
 <link rel="icon" href="../assets/Icon_viewweb_final.jpg">
 <meta name="theme-color" content="#1E3A66">
 <link rel="stylesheet" href="../css/fonts.css">
@@ -12,12 +12,12 @@
 <link rel="stylesheet" href="../css/responsive.css">
 <script>
 window.__FILES = {"A1": "a1-buy.html", "A2": "a2-register.html", "A3": "a3-dashboard.html", "C1": "c1-login.html", "B1": "b1-admin-login.html", "B2": "b2-members.html", "B3": "b3-withdrawals.html", "B4": "b4-warehouse.html", "B5": "b5-products.html", "B6": "b6-orders.html", "B7": "b7-admin-users.html", "B8": "b8-audit-log.html", "B9": "b9-rank-review.html"};
-window.__STATE__ = {"regStep": 1, "screen": "A2"};
+window.__STATE__ = {"buyerPhone": "0977000111", "buyerEmail": "an.nv@gmail.com", "regStep": 1, "screen": "A2"};
 // dữ liệu mang sang từ màn trước (bấm nút điều hướng)
 try { var c = sessionStorage.getItem('__homi_carry');
       if (c) { Object.assign(window.__STATE__, JSON.parse(c)); sessionStorage.removeItem('__homi_carry'); } } catch (e) {}
 // mở thẳng một trạng thái: a2-register.html#buoc-2
-var H = {"buoc-2": {"regStep": 2}, "buoc-3": {"regStep": 3}, "buoc-4": {"regStep": 4}, "buoc-5": {"regStep": 5}}, h = location.hash.slice(1);
+var H = {"buoc-2": {"buyerPhone": "0977000111", "buyerEmail": "an.nv@gmail.com", "regStep": 2}, "buoc-3": {"buyerPhone": "0977000111", "buyerEmail": "an.nv@gmail.com", "regStep": 3}, "buoc-4": {"buyerPhone": "0977000111", "buyerEmail": "an.nv@gmail.com", "regStep": 4}, "buoc-5": {"buyerPhone": "0977000111", "buyerEmail": "an.nv@gmail.com", "regStep": 5}}, h = location.hash.slice(1);
 if (H[h]) Object.assign(window.__STATE__, H[h]);
 </script>
 <script src="../js/dc-runtime.js"></script>
@@ -51,16 +51,16 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
 
           <div><div style="font-size:24px;font-weight:700">Thông tin đăng ký</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s1)">Bước 1/5 · Thông tin cá nhân &amp; nhận ưu đãi</div></div>
           <div style="border:1px solid rgba(30,58,102,.3);background:rgba(30,58,102,.06);border-radius:var(--r-md);padding:var(--s6);display:flex;flex-direction:column;gap:var(--s3);font-size:13px"><div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5)">Người giới thiệu</span><span style="font-weight:700;color:var(--c1);text-align:right">HOÀNG THỊ MỸ TRINH</span></div><div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5)">Mã giới thiệu</span><span style="font-weight:700;color:var(--c6);font-family:monospace">HTMT0083</span></div></div>
-          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Họ và tên (*)</label><input type="text" placeholder="Nguyễn Văn A" value="{{buyerName}}" sc-camel-on-change="{{setBuyerName}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Họ và tên (*)</label><input type="text" placeholder="VD: Nguyễn Văn A" value="{{buyerName}}" sc-camel-on-change="{{setBuyerName}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số điện thoại (*)</label><input type="text" value="{{buyerPhone}}" readonly="{{true}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px;background:rgba(154,163,176,.08);color:var(--c4);cursor:not-allowed" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Email (*)</label><input type="text" value="{{buyerEmail}}" readonly="{{true}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px;background:rgba(154,163,176,.08);color:var(--c4);cursor:not-allowed" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số CCCD (*)</label><input type="text" placeholder="Nhập số CCCD" value="{{buyerCccd}}" sc-camel-on-change="{{setBuyerCccd}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)"><div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngày cấp (*)</label><input type="text" placeholder="22/01/2021" inputmode="numeric" maxlength="10" value="{{cccdIssueDate}}" sc-camel-on-change="{{setCccdIssueDate}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div><div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Nơi cấp (*)</label><input type="text" placeholder="Cục Cảnh sát QLHC về TTXH" value="{{cccdIssuePlace}}" sc-camel-on-change="{{setCccdIssuePlace}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div></div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s7)"><div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngày cấp (*)</label><input type="text" placeholder="dd/mm/yyyy" inputmode="numeric" maxlength="10" value="{{cccdIssueDate}}" sc-camel-on-change="{{setCccdIssueDate}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div><div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Nơi cấp (*)</label><input type="text" placeholder="VD: Cục Cảnh sát QLHC về TTXH" value="{{cccdIssuePlace}}" sc-camel-on-change="{{setCccdIssuePlace}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div></div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Địa chỉ (*)</label><input type="text" placeholder="Nhập địa chỉ" value="{{buyerAddress}}" sc-camel-on-change="{{setBuyerAddress}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)">
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Tỉnh/Thành phố (*)</label>
               <div style="position:relative">
-                <input type="text" value="{{provinceQuery}}" sc-camel-on-change="{{setProvinceQuery}}" sc-camel-on-click="{{toggleProvince}}" placeholder="Gõ để tìm tỉnh/thành…" style="width:100%;height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
+                <input type="text" value="{{provinceQuery}}" sc-camel-on-change="{{setProvinceQuery}}" sc-camel-on-click="{{toggleProvince}}" placeholder="Chọn tỉnh/thành phố" style="width:100%;height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
                 <sc-if value="{{provinceOpen}}" hint-placeholder-val="{{false}}">
                   <div style="position:absolute;left:0;right:0;top:48px;z-index:60;background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:260px;overflow-y:auto">
                     <sc-for list="{{provinceOptions}}" as="o" hint-placeholder-count="6">
@@ -75,7 +75,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             </div>
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Phường/Xã (*)</label>
               <div style="position:relative">
-                <input type="text" value="{{wardQuery}}" sc-camel-on-change="{{setWardQuery}}" sc-camel-on-click="{{toggleWard}}" placeholder="Gõ để tìm phường/xã…" style="width:100%;height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
+                <input type="text" value="{{wardQuery}}" sc-camel-on-change="{{setWardQuery}}" sc-camel-on-click="{{toggleWard}}" placeholder="Chọn phường/xã" style="width:100%;height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
                 <sc-if value="{{wardOpen}}" hint-placeholder-val="{{false}}">
                   <div style="position:absolute;left:0;right:0;top:48px;z-index:60;background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:260px;overflow-y:auto">
                     <sc-for list="{{wardOptions}}" as="o" hint-placeholder-count="6">
@@ -90,16 +90,16 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             </div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)">
-            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngày sinh (*)</label><input type="text" placeholder="22/01/1991" inputmode="numeric" maxlength="10" value="{{buyerDob}}" sc-camel-on-change="{{setBuyerDob}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngày sinh (*)</label><input type="text" placeholder="dd/mm/yyyy" inputmode="numeric" maxlength="10" value="{{buyerDob}}" sc-camel-on-change="{{setBuyerDob}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Giới tính</label>
-              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option>Nam</option><option>Nữ</option><option>Khác</option></sc-raw-select>
+              <sc-raw-select style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;color:var(--c2);background:var(--c12)"><option value="">Chọn giới tính</option><option>Nam</option><option>Nữ</option><option>Khác</option></sc-raw-select>
             </div>
           </div>
           <div style="height:1px;background:rgba(154,163,176,.25);margin:var(--s2) 0"></div>
           <div style="font-size:14px;font-weight:700;color:var(--c1)">Thông tin nhận ưu đãi (khi đạt điều kiện)</div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngân hàng (*)</label>
             <div style="position:relative">
-                <input type="text" value="{{bankQuery}}" sc-camel-on-change="{{setBankQuery}}" sc-camel-on-click="{{toggleBank}}" placeholder="Gõ để tìm ngân hàng…" style="width:100%;height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
+                <input type="text" value="{{bankQuery}}" sc-camel-on-change="{{setBankQuery}}" sc-camel-on-click="{{toggleBank}}" placeholder="Chọn ngân hàng" style="width:100%;height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
                 <sc-if value="{{bankOpen}}" hint-placeholder-val="{{false}}">
                   <div style="position:absolute;left:0;right:0;top:48px;z-index:60;background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:260px;overflow-y:auto">
                     <sc-for list="{{bankOptions}}" as="o" hint-placeholder-count="6">
@@ -112,8 +112,8 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
                 </sc-if>
               </div>
           </div>
-          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số tài khoản nhận hoa hồng (*)</label><input type="text" placeholder="Số tài khoản ngân hàng" value="{{buyerBankAccount}}" sc-camel-on-change="{{setBuyerBankAccount}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"><div style="font-size:11px;color:var(--c5)">Chỉ hiển thị đầy đủ trong khu vực quản trị nội bộ.</div></div>
-          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Tên chủ tài khoản (*)</label><input type="text" placeholder="NGUYEN VAN AN" value="{{accountHolder}}" sc-camel-on-change="{{setAccountHolder}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px;text-transform:uppercase" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"><div style="font-size:11px;color:var(--c5);line-height:1.5">Viết hoa, không dấu — hệ thống tự chuẩn hoá khi bạn gõ.</div></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số tài khoản nhận ưu đãi (*)</label><input type="text" placeholder="Số tài khoản ngân hàng" value="{{buyerBankAccount}}" sc-camel-on-change="{{setBuyerBankAccount}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"><div style="font-size:11px;color:var(--c5)">Chỉ hiển thị đầy đủ trong khu vực quản trị nội bộ.</div></div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Tên chủ tài khoản (*)</label><input type="text" placeholder="VD: NGUYEN VAN AN" value="{{accountHolder}}" sc-camel-on-change="{{setAccountHolder}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px;text-transform:uppercase" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"><div style="font-size:11px;color:var(--c5);line-height:1.5">Viết hoa, không dấu — hệ thống tự chuẩn hoá khi bạn gõ.</div></div>
           <div style="height:1px;background:rgba(154,163,176,.25);margin:var(--s2) 0"></div>
           <div style="font-size:14px;font-weight:700;color:var(--c1)">Đính kèm tệp</div>
           <div style="font-size:12px;color:var(--c2);line-height:1.7">Chụp ảnh CCCD từ <strong>bản gốc</strong>, đủ mặt trước và mặt sau: không mất góc, không chói loá, không che khuất thông tin.</div>
@@ -263,9 +263,9 @@ class Component extends DCLogic {
     orderActivationCode: '', orderCodeError: '',
     copyPersonalLabel: 'Copy link',
     banks: null, provinceData: null,
-    bankQuery: 'Vietcombank', bankOpen: false,
-    provinceQuery: 'Thành phố Hồ Chí Minh', provinceOpen: false,
-    wardQuery: 'Phường Bến Thành', wardOpen: false,
+    bankQuery: '', bankOpen: false,
+    provinceQuery: '', provinceOpen: false,
+    wardQuery: '', wardOpen: false,
     accountHolder: '', buyTcChecked: false,
     cccdIssueDate: '', cccdIssuePlace: '', lookupResult: null,
     loginPhoneChecked: false, loginPhoneEmpty: false, loginNotEligible: false,
@@ -285,7 +285,7 @@ class Component extends DCLogic {
     // (23) Dòng xác nhận sau khi admin lưu hồ sơ: { id, text }.
     profileSaved: null,
     // (28) Cấu hình hoa hồng theo % (B5).
-    commCfg: null, commPkg: 'y', commDepth: null, commSaved: '',
+    commCfg: null, commPkg: 'y', commSaved: '',
     // (27) Xét cấp (B9) + bổ nhiệm đặc biệt (duyệt ngoài, admin xác nhận).
     rrStatus: {}, rrSel: {}, rrReason: {}, rrFilter: 'all', rrModal: null, rrDenyText: '', rrRunNote: '',
     rankReason: '', rankRequester: '', rankSaved: '',
@@ -297,7 +297,7 @@ class Component extends DCLogic {
   };
 
   NAV = [
-    ['A1','A1 · Thông tin nhận hàng'],['A2','A2 · Đăng ký Agent'],['A3','A3 · Dashboard'],
+    ['A1','A1 · Thông tin nhận hàng'],['A2','A2 · Đăng ký thành viên'],['A3','A3 · Dashboard'],
     ['C1','C1 · Đăng nhập Agent'],
     ['B1','B1 · Đăng nhập admin'],['B2','B2 · Thành viên'],['B3','B3 · Đổi điểm'],['B4','B4 · Kho hàng']
   ];
@@ -323,7 +323,8 @@ class Component extends DCLogic {
     return { buyStep: 'form', buyMode: 'self', buyProfile: { ...p, buyerPhone: phone },
       buyerPhone: phone, buyPhoneInput: phone, buyerName: p.buyerName, buyerEmail: p.buyerEmail,
       buyerCccd: p.buyerCccd, buyerAddress: p.buyerAddress, buyerDob: p.buyerDob,
-      buyerBankAccount: p.buyerBankAccount, accountHolder: p.accountHolder };
+      buyerBankAccount: p.buyerBankAccount, accountHolder: p.accountHolder,
+      provinceQuery: 'Thành phố Hồ Chí Minh', wardQuery: 'Phường Bình Trưng', bankQuery: 'Vietcombank' };
   }
 
   // (20) Mục 3 — người mua phải từ 18 đến 100 tuổi. Chỉ xét khi đã gõ đủ
@@ -442,7 +443,7 @@ class Component extends DCLogic {
 
   AUDIT_FILES = [
     { name:'PD-2026-014-da-ky.pdf', kind:'PDF', module:'Thành viên',
-      linkedTo:'Cập nhật cấp · Lê Văn Cường', by:'Nguyễn Thị Hạnh',
+      linkedTo:'Bổ nhiệm đặc biệt · Lê Văn Cường', by:'Nguyễn Thị Hạnh',
       time:'17/09/2026 09:12', size:'412 KB' },
     { name:'kho-nhap-1609.xlsx', kind:'Excel / CSV', module:'Kho hàng',
       linkedTo:'Import 120 mã kích hoạt', by:'Nguyễn Thị Hạnh',
@@ -569,7 +570,8 @@ class Component extends DCLogic {
 
   // Trạng thái hồ sơ thành viên (khác vòng duyệt 2 lượt của đổi điểm).
   MEMBER_STATUS_LABEL = {
-    pending: 'Chờ xác nhận thanh toán',
+    // (09/10) Duyệt hồ sơ còn 1 bước Head; không chặn thành viên dùng link.
+    pending: 'Chờ Head duyệt',
     specialist_approved: 'Chờ Head duyệt',
     active: 'Đang hoạt động',
     locked: 'Đã khoá',
@@ -848,7 +850,10 @@ class Component extends DCLogic {
     const withdrawAmountNum = parseInt((s.withdrawAmount || '').replace(/\D/g, ''), 10) || 0;
     // (20) Mục 6 — thành viên mới dùng được ngay; số dư là số thật,
     // chưa có đơn nào được duyệt thì bằng 0.
-    const availableBalance = s.agentStage === 'active' ? 4000000 : 0;
+    // (09/10) Yêu cầu đổi điểm đang mở giữ điểm lại: trừ khỏi số dư khả dụng,
+    // hiện ở ô Đang chờ duyệt — hai ô luôn khớp số tiền của yêu cầu.
+    const pendingWdNum = myWdOpen ? +String(myWd.amount).replace(/\D/g, '') : 0;
+    const availableBalance = s.agentStage === 'active' ? 4000000 - pendingWdNum : 0;
     const withdrawAmountError = s.withdrawAmount && (withdrawAmountNum <= 0 ? 'Vui lòng nhập số điểm hợp lệ.' : (withdrawAmountNum > availableBalance ? 'Số điểm vượt quá số dư khả dụng.' : ''));
     const withdrawSubmitDisabled = !s.withdrawAmount || !!withdrawAmountError;
     const withdrawSubmitStyle = 'height:46px;border:none;border-radius:5px;font-size:16px;font-weight:600;color:#FFFFFF;background:' + (withdrawSubmitDisabled ? 'rgba(154,163,176,.5)' : 'var(--c6)') + ';cursor:' + (withdrawSubmitDisabled ? 'not-allowed' : 'pointer');
@@ -1007,14 +1012,12 @@ class Component extends DCLogic {
                time: selectedMemberRaw.joined }],
         needsApproval: ['pending', 'specialist_approved'].includes(effStatus),
         isActiveOrLocked: ['active', 'locked'].includes(effStatus),
-        canApproveMember: !isSpecialist && effStatus === 'specialist_approved',
-        canRejectMember: !isSpecialist && effStatus === 'specialist_approved',
-        approveMemberButtonLabel: 'Xác nhận, kích hoạt Thành viên hoạt động (Head)',
-        approvalStageNote: effStatus === 'pending'
-          ? 'Chưa xác nhận thanh toán. Vào màn Đơn hàng xác nhận tiền về trước, hồ sơ này mới duyệt được.'
-          : effStatus === 'specialist_approved'
-            ? 'Đơn hàng đã được xác nhận thanh toán. Manager duyệt để thành viên nhận điểm và ưu đãi đang tạm giữ.'
-            : (effStatus === 'rejected' ? 'Hồ sơ đã bị từ chối.' : null)
+        canApproveMember: !isSpecialist && ['pending', 'specialist_approved'].includes(effStatus),
+        canRejectMember: !isSpecialist && ['pending', 'specialist_approved'].includes(effStatus),
+        approveMemberButtonLabel: 'Duyệt hồ sơ (Head)',
+        approvalStageNote: ['pending', 'specialist_approved'].includes(effStatus)
+          ? 'Chờ Head duyệt hồ sơ. Thành viên vẫn dùng link bán hàng, nhận điểm và đổi điểm bình thường — duyệt chỉ để xác nhận thông tin hồ sơ là đúng.'
+          : (effStatus === 'rejected' ? 'Hồ sơ đã bị từ chối.' : null)
       };
     }
     const isLocked = selectedMember ? selectedMember.status === 'locked' : false;
@@ -1139,8 +1142,12 @@ class Component extends DCLogic {
          : 'background:var(--c12);color:var(--c8);border:1px solid var(--c8);cursor:pointer');
 
     // (27) Thông tin xét cấp + tuyến trên hiệu lực của thành viên đang mở.
-    const mRc = selectedMember ? this.RANK_COUNT[selectedMember.id] : null;
+    const mRc0 = selectedMember ? this.RANK_COUNT[selectedMember.id] : null;
+    // (09/10) Vừa bổ nhiệm đặc biệt = đã đổi cấp -> gói xét cấp đếm lại từ 0.
+    const mRc = mRc0 && (s.rankOverrides || {})[selectedMember.id] ? { ...mRc0, y: 0, h: 0 } : mRc0;
     const mRank = selectedMember ? rankOf(selectedMember) : '';
+    // (09/10) Lịch sử đơn hàng & ưu đãi: % ưu đãi theo cấp và theo từng gói (B5).
+    const mPct = (k) => ((((s.commCfg || {})[k] || {}).pct || this.COMM_DEFAULT)[mRank] || 0);
     const mNext = this.nextRank(mRank);
     const mUpDirect = selectedMember ? this.MEMBERS.find(x => x.name === selectedMember.upline) : null;
     const mUpEff = selectedMember ? effUp(selectedMember) : null;
@@ -1240,7 +1247,7 @@ class Component extends DCLogic {
     const approveOverBalance = !!(actionWithdrawalRaw && actionWithdrawalRaw.amountNum > sellerBalance);
     const actionWithdrawal = actionWithdrawalRaw ? { ...actionWithdrawalRaw, sellerBalanceLabel: sellerBalance.toLocaleString('vi-VN') + 'đ' } : null;
     const actionMember = (s.actionModal && s.actionModal.kind === 'member') ? this.MEMBERS.find(m => m.id === s.actionModal.id) : null;
-    const actionStageLabel = s.adminRole === 'specialist' ? 'Bước 1/2 · Admin duyệt' : 'Bước 2/2 · Head xác nhận';
+    const actionStageLabel = 'Head duyệt hồ sơ';
     const rejectDisabled = !s.rejectReason || !s.rejectReason.trim();
     const rejectConfirmStyle = 'flex:1;height:44px;border:none;border-radius:5px;font-size:14px;font-weight:600;color:#FFFFFF;background:' + (rejectDisabled ? 'rgba(154,163,176,.5)' : 'var(--err)') + ';cursor:' + (rejectDisabled ? 'not-allowed' : 'pointer');
 
@@ -1486,8 +1493,8 @@ class Component extends DCLogic {
       metricRank: s.agentStage === 'active' ? 'Silver' : 'Copper',
       metricWithdrawn: s.agentStage === 'active' ? '1.200.000đ' : '0đ',
       chartTitle, chartRanges, chartBars,
-      availableBalanceLabel: s.agentStage === 'active' ? '4.000.000đ' : '0đ',
-      pendingBalanceLabel: s.agentStage === 'active' ? '800.000đ' : '0đ',
+      availableBalanceLabel: availableBalance.toLocaleString('vi-VN') + 'đ',
+      pendingBalanceLabel: pendingWdNum.toLocaleString('vi-VN') + 'đ',
       earnedBalanceLabel: s.agentStage === 'active' ? '6.000.000đ' : '0đ',
       // H1 đã chốt: điểm ghi nhận SAU KHI admin duyệt đơn. Thành viên mới
       // có 1 đơn đang chờ duyệt nên điểm chưa vào số dư.
@@ -1726,6 +1733,9 @@ class Component extends DCLogic {
 
       // (27) Ngăn chi tiết thành viên: gói xét cấp + tuyến trên hiệu lực.
       mRankCount: mRc ? this.nfmt(this.pkgCount(mRc)) + (mNext ? ' / ' + this.rankStep(mNext) + ' (lên ' + mNext + ')' : '') : '—',
+      mHistY: '+' + this.nfmt(this.COMM_PKGS.y.price * mPct('y') / 100) + 'đ',
+      mHistH: '+' + this.nfmt(this.COMM_PKGS.h.price * mPct('h') / 100) + 'đ',
+      mHistPctY: this.nfmt(mPct('y')) + '%', mHistPctH: this.nfmt(mPct('h')) + '%',
       mRankMonth: mRc ? this.nfmt(mRc.my + mRc.mh * 0.5) + ' gói (' + mRc.my + ' × 1 năm + ' + mRc.mh + ' × 6 tháng)' : '—',
       mUplineDirect: mUpDirect ? mUpDirect.name + ' · ' + rankOf(mUpDirect) : 'Không có (thành viên gốc)',
       mUplineEff: mUpEff ? mUpEff.name + ' · ' + rankOf(mUpEff) : 'Công ty · Super Lithium',
@@ -1777,8 +1787,6 @@ class Component extends DCLogic {
       commMaxPct: isNaN(commMax) ? '—' : commMax.toLocaleString('vi-VN') + '%',
       commMaxAmt: vnd(commPkgPrice * commMax / 100),
       commWarn,
-      commDepth: s.commDepth == null ? '10' : String(s.commDepth),
-      setCommDepth: (e) => this.setState({ commDepth: (e.target.value || '').replace(/\D/g, '').slice(0, 2), commSaved: '' }),
       commSaved: s.commSaved || '',
       commSaveDisabled: !!commWarn,
       commSaveStyle: 'height:38px;padding:0 var(--s6);border:none;border-radius:var(--r-md);font-size:13px;font-weight:600;color:#FFFFFF;background:'
@@ -2021,7 +2029,7 @@ class Component extends DCLogic {
       provinceOptions: provList.filter(p => norm(p.name).includes(norm(s.provinceQuery)) || s.provinceQuery === p.name)
         .slice(0, 80).map(p => ({ label: p.name,
           onPick: () => this.setState({ provinceQuery: p.name, provinceOpen: false,
-            wardQuery: (p.wards && p.wards[0]) || '' }) })),
+            wardQuery: '' }) })),
       provinceEmpty: provList.filter(p => norm(p.name).includes(norm(s.provinceQuery))).length === 0,
 
       wardQuery: s.wardQuery, wardOpen: s.wardOpen,
@@ -2213,7 +2221,7 @@ class Component extends DCLogic {
         const isSpecialist = s.adminRole === 'specialist';
         if (kind === 'member') {
           const nextStatus = 'active';
-          const label = 'Head duyệt thành viên — mở khoá điểm và ưu đãi đang tạm giữ';
+          const label = 'Head duyệt hồ sơ thành viên';
           const actor = 'Head';
           this.setState({
             memberStatusOverrides: { ...s.memberStatusOverrides, [id]: nextStatus },

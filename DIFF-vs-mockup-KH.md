@@ -436,7 +436,7 @@ KH đã trả lời các câu hỏi H1–H5 và chốt từng mục; đợt này
 | 14, 17 | A3, B2 | A3: dòng tiến độ đổi sang **gói xét cấp đã quy đổi** + dòng tháng này. B2: thêm khối Gói xét cấp / Gói tháng này. | `a3-dashboard.html`, `b2-members.html#chi-tiet` |
 | 15 | B2 | **Bổ nhiệm đặc biệt** thay cho Cập nhật cấp: bỏ số phiếu, ngày duyệt, người duyệt, file minh chứng; thêm **Lý do** và **Người yêu cầu** (bắt buộc). Duyệt làm **ngoài hệ thống** (chốt 08/10): admin bấm **Xác nhận bổ nhiệm & gửi email** là cấp mới có hiệu lực ngay, hệ thống gửi email cho anh Phương (lưu làm bằng chứng) và email báo thành viên. **Không cho chọn cấp bằng tuyến trên** (H3). | `#cap-nhat-cap`, `#da-bo-nhiem` |
 | 20 | B2 | Hiện **tuyến trên trực tiếp** và **tuyến trên hiệu lực** (đi ngược lên tới người đầu tiên có cấp cao hơn, không có thì là công ty) kèm ghi chú khi khác nhau. Trần của bổ nhiệm đặc biệt tính theo tuyến trên hiệu lực. | `#tuyen-tren-hieu-luc` |
-| 21 | B2, B5 | **Super Lithium** hiện trong danh sách cấp nhưng không chọn được (tài khoản công ty), có dòng riêng trong bảng hoa hồng; A3 không bao giờ hiện. Thêm cấu hình **độ sâu cây tối đa**. | `b5-products.html` |
+| 21 | B2, B5 | **Super Lithium** hiện trong danh sách cấp nhưng không chọn được (tài khoản công ty), có dòng riêng trong bảng hoa hồng; A3 không bao giờ hiện. Giới hạn số tầng tuyến trên khi chia ưu đãi KHÔNG làm thành cấu hình trên giao diện (bỏ 09/10) — dev tự xử lý trong logic tính. | `b5-products.html` |
 | 23 | B5 | Khối **Hoa hồng theo cấp**: mỗi cấp nhập **% trên giá trị gói**, tự quy ra tiền cho gói 1 năm và nửa năm, dòng tổng phân bổ tối đa, cảnh báo khi ngoài 0–100% hoặc cấp trên thấp hơn cấp dưới. Cột **chênh lệch cũng nhập %** (H6 trả lời 08/10), mặc định quy từ số tiền cũ trên gói 1 năm (Silver 10% … Lithium 0,5%). **09/10: mỗi gói một bộ % riêng** — chọn tab Gói 1 năm (10tr) / Gói nửa năm (6tr) để cấu hình, số tiền quy theo giá gói đang chọn; mặc định gói nửa năm lấy cùng số với gói 1 năm để admin chỉnh. | `b5-products.html`, `#hoa-hong-loi` |
 | 24 | A1, B5, B6 | Đổi **tên hiển thị** gói thành **HOMI365-01**. Mã CN02 trong SKU kho và mã gói giữ nguyên. | — |
 
@@ -470,6 +470,21 @@ Cả A1 và A2: ô đồng ý chỉ mở khi **kéo đọc hết** khung; bấm 
 2. **Hạ hạng — ĐÃ CHỐT 08/10: giữ logic prototype.** Trong tháng phải đạt tối thiểu 1 gói quy đổi mới giữ hạng: gói 1 năm = 1 gói, gói 6 tháng = 0,5 gói, nên cần 2 gói 6 tháng (hoặc 1 gói 1 năm). Tháng chỉ có 1 đơn gói 6 tháng vẫn bị đề xuất hạ 1 cấp. Văn bản mục 3 ("ít nhất 01 đơn mới trong mỗi tháng") đang lệch với quy tắc này — cần HOMI365 sửa câu chữ trong văn bản.
 3. **Hạn gửi yêu cầu đổi điểm — ĐÃ CHỐT 08/10: theo văn bản.** Gửi và huỷ được tới 23:59 ngày liền trước ngày cuối tháng (kỳ 09/2026: 23:59 ngày 29/09); ngày cuối tháng khoá sổ. A3 đã sửa mốc, thêm trạng thái `#het-han-gui` (chưa có yêu cầu, qua hạn → nút tạo mờ, hẹn kỳ sau).
 4. Văn bản không nhắc tới Super Lithium, bổ nhiệm đặc biệt, tỷ lệ hoa hồng % theo gói — giữ nguyên trên prototype.
+
+## 22. Rà soát bản deploy — đợt 09/10
+
+| Màn | Thay đổi |
+|---|---|
+| B2 duyệt hồ sơ | Còn **1 bước Head duyệt**; hồ sơ mới ở trạng thái "Chờ Head duyệt". Duyệt hay chưa **không chặn** thành viên dùng link bán hàng, nhận điểm, đổi điểm. Bỏ chữ "kích hoạt / tạm giữ / 2 lượt duyệt" trong modal. Vai Admin chỉ xem, không có nút duyệt. |
+| B2 bổ nhiệm | Bổ nhiệm xong thì gói xét cấp về 0 (VD: 0 / 4 lên Titanium). |
+| B2 chi tiết | "Lịch sử đơn hàng & ưu đãi"; số tiền = giá gói × % ưu đãi của cấp, tính riêng từng gói (Copper: gói 1 năm 2.000.000đ, gói nửa năm 1.200.000đ). |
+| A2 | Tên màn "Đăng ký thành viên"; "Số tài khoản nhận ưu đãi"; SĐT + email tự điền từ đơn mua (chỉ đọc). |
+| A1, A2 | Tỉnh/Phường/Ngân hàng/Giới tính để trống, không chọn sẵn; placeholder mẫu: dd/mm/yyyy, VD: NGUYEN VAN AN, VD: Nguyễn Văn A, VD: Cục Cảnh sát QLHC về TTXH. |
+| A3 | Có yêu cầu đổi điểm đang mở thì số đó hiện ở "Đang chờ duyệt" và trừ khỏi "Số dư khả dụng"; không có yêu cầu thì "Đang chờ duyệt" = 0đ. |
+| B3 | Cột "Khoản thưởng hiện tại" → "Số dư khả dụng". |
+| B6 | Cột Nội dung 1 dòng, cắt chữ, rê chuột xem đủ. |
+| B7 | Mở mặc định với vai Head; thêm trạng thái vai Admin (không có quyền). Sửa mô tả vai trò. |
+| B8 | Tab File: "Bổ nhiệm đặc biệt · Lê Văn Cường". |
 
 ## Ghi chú
 

@@ -627,13 +627,16 @@ _JS_CONSTS_NEW = """    // (20) A1 sau UAT 02/10 — tuổi người mua + đi�
 _JS_BAL_OLD = "    const availableBalance = 4000000;"
 _JS_BAL_NEW = ("    // (20) Mục 6 — thành viên mới dùng được ngay; số dư là số thật,\n"
                "    // chưa có đơn nào được duyệt thì bằng 0.\n"
-               "    const availableBalance = s.agentStage === 'active' ? 4000000 : 0;")
+               "    // (09/10) Yêu cầu đổi điểm đang mở giữ điểm lại: trừ khỏi số dư khả dụng,\n"
+               "    // hiện ở ô Đang chờ duyệt — hai ô luôn khớp số tiền của yêu cầu.\n"
+               "    const pendingWdNum = myWdOpen ? +String(myWd.amount).replace(/\\D/g, '') : 0;\n"
+               "    const availableBalance = s.agentStage === 'active' ? 4000000 - pendingWdNum : 0;")
 
 _JS_BAL_LBL_OLD = ("      availableBalanceLabel: '4.000.000đ', pendingBalanceLabel: '800.000đ', "
                    "earnedBalanceLabel: '6.000.000đ',")
 _JS_BAL_LBL_NEW = (
-    "      availableBalanceLabel: s.agentStage === 'active' ? '4.000.000đ' : '0đ',\n"
-    "      pendingBalanceLabel: s.agentStage === 'active' ? '800.000đ' : '0đ',\n"
+    "      availableBalanceLabel: availableBalance.toLocaleString('vi-VN') + 'đ',\n"
+    "      pendingBalanceLabel: pendingWdNum.toLocaleString('vi-VN') + 'đ',\n"
     "      earnedBalanceLabel: s.agentStage === 'active' ? '6.000.000đ' : '0đ',\n"
     "      // H1 đã chốt: điểm ghi nhận SAU KHI admin duyệt đơn. Thành viên mới\n"
     "      // có 1 đơn đang chờ duyệt nên điểm chưa vào số dư.\n"
@@ -1309,7 +1312,7 @@ MARKUP_0810 += [
     ('<div>Thành viên</div><div>Khoản thưởng hiện tại</div>',
      '<div sc-camel-on-click="{{wdToggleAll}}" style="display:flex;align-items:center;cursor:pointer">'
      '<span style="' + (_CHK % ('wdAllBorder', 'wdAllBg')) + '">{{wdAllMark}}</span></div>'
-     '<div>Thành viên</div><div>Khoản thưởng hiện tại</div>'),
+     '<div>Thành viên</div><div>Số dư khả dụng</div>'),
     ('"><div>TỔNG</div><div>{{sumRewardLabel}}</div>',
      '"><div></div><div>TỔNG</div><div>{{sumRewardLabel}}</div>'),
     ('\n                <div style="font-weight:600">{{w.seller}}</div>',
@@ -1762,8 +1765,12 @@ _JS_RR_CONSTS = """    // (27) Màn Xét thăng / hạ cấp (B9).
          : 'background:var(--c12);color:var(--c8);border:1px solid var(--c8);cursor:pointer');
 
     // (27) Thông tin xét cấp + tuyến trên hiệu lực của thành viên đang mở.
-    const mRc = selectedMember ? this.RANK_COUNT[selectedMember.id] : null;
+    const mRc0 = selectedMember ? this.RANK_COUNT[selectedMember.id] : null;
+    // (09/10) Vừa bổ nhiệm đặc biệt = đã đổi cấp -> gói xét cấp đếm lại từ 0.
+    const mRc = mRc0 && (s.rankOverrides || {})[selectedMember.id] ? { ...mRc0, y: 0, h: 0 } : mRc0;
     const mRank = selectedMember ? rankOf(selectedMember) : '';
+    // (09/10) Lịch sử đơn hàng & ưu đãi: % ưu đãi theo cấp và theo từng gói (B5).
+    const mPct = (k) => ((((s.commCfg || {})[k] || {}).pct || this.COMM_DEFAULT)[mRank] || 0);
     const mNext = this.nextRank(mRank);
     const mUpDirect = selectedMember ? this.MEMBERS.find(x => x.name === selectedMember.upline) : null;
     const mUpEff = selectedMember ? effUp(selectedMember) : null;
@@ -1809,6 +1816,9 @@ _JS_RR_RETURN = """      // (27) Xét thăng / hạ cấp (B9).
 
       // (27) Ngăn chi tiết thành viên: gói xét cấp + tuyến trên hiệu lực.
       mRankCount: mRc ? this.nfmt(this.pkgCount(mRc)) + (mNext ? ' / ' + this.rankStep(mNext) + ' (lên ' + mNext + ')' : '') : '—',
+      mHistY: '+' + this.nfmt(this.COMM_PKGS.y.price * mPct('y') / 100) + 'đ',
+      mHistH: '+' + this.nfmt(this.COMM_PKGS.h.price * mPct('h') / 100) + 'đ',
+      mHistPctY: this.nfmt(mPct('y')) + '%', mHistPctH: this.nfmt(mPct('h')) + '%',
       mRankMonth: mRc ? this.nfmt(mRc.my + mRc.mh * 0.5) + ' gói (' + mRc.my + ' × 1 năm + ' + mRc.mh + ' × 6 tháng)' : '—',
       mUplineDirect: mUpDirect ? mUpDirect.name + ' · ' + rankOf(mUpDirect) : 'Không có (thành viên gốc)',
       mUplineEff: mUpEff ? mUpEff.name + ' · ' + rankOf(mUpEff) : 'Công ty · Super Lithium',
@@ -2228,3 +2238,162 @@ JS_0810 += [
 
 MARKUP.extend(MARKUP_0810)
 JS.extend(JS_0810)
+
+
+# ===========================================================================
+# (09/10) Rà soát bản deploy — các mục HOMI365 duyệt sau báo cáo QA.
+# ===========================================================================
+MARKUP_0910 = [
+    # B2 — duyệt hồ sơ thành viên: 1 bước Head, KHÔNG chặn thành viên dùng link.
+    ('Đủ 2 lượt duyệt là tài khoản được kích hoạt: toàn bộ <strong>hoa hồng đang tạm giữ'
+     '</strong> và <strong>điểm tích luỹ</strong> của thành viên được <strong>cộng dồn về '
+     'quá khứ</strong> — tính từ đơn đầu tiên, không phải từ thời điểm kích hoạt — và mở '
+     'khoá cho rút tiền.',
+     'Head xác nhận thông tin hồ sơ (CCCD, tài khoản nhận ưu đãi) là đúng. Duyệt hay chưa '
+     'duyệt <strong>không ảnh hưởng</strong> link bán hàng, điểm tích luỹ và quyền đổi điểm '
+     'của thành viên — các chức năng này dùng được ngay từ khi đăng ký.'),
+    # B7 — mô tả vai trò theo luồng duyệt hiện tại.
+    ('làm bước 1 của mọi quy trình duyệt 2 lớp: xác nhận tiền về của đơn hàng, duyệt hồ sơ '
+     'thành viên, duyệt yêu cầu ',
+     'xác nhận tiền về của đơn hàng (bước 1) và duyệt yêu cầu '),
+    ('làm bước 2 và là người duy nhất được kích hoạt tài khoản, cấp mã kích hoạt, đánh dấu '
+     'đã chi trả, và quản lý chính màn này.',
+     'xác nhận đơn và cấp mã kích hoạt, duyệt hồ sơ thành viên (không chặn thành viên dùng '
+     'link bán hàng), và quản lý chính màn này.'),
+    # B2 chi tiết — lịch sử đơn: đổi chữ + số theo % ưu đãi của cấp, từng gói.
+    ('Lịch sử đơn hàng &amp; hoa hồng', 'Lịch sử đơn hàng &amp; ưu đãi'),
+    ('<span>Đơn #10234 — CN02</span><span style="font-weight:600">+120.000đ</span>',
+     '<span>Đơn #10234 — HOMI365-01 · Gói 1 năm · {{mHistPctY}}</span>'
+     '<span style="font-weight:600">{{mHistY}}</span>'),
+    ('<span>Đơn #10198 — CN02</span><span style="font-weight:600">+120.000đ</span>',
+     '<span>Đơn #10198 — HOMI365-01 · Gói nửa năm · {{mHistPctH}}</span>'
+     '<span style="font-weight:600">{{mHistH}}</span>'),
+    # A2 bước 1.
+    ('Số tài khoản nhận hoa hồng (*)', 'Số tài khoản nhận ưu đãi (*)'),
+    # A1 + A2 — không chọn sẵn, placeholder dạng mẫu.
+    ('placeholder="Gõ để tìm tỉnh/thành…"', 'placeholder="Chọn tỉnh/thành phố"', None, 'all'),
+    ('placeholder="Gõ để tìm phường/xã…"', 'placeholder="Chọn phường/xã"', None, 'all'),
+    ('placeholder="Gõ để tìm ngân hàng…"', 'placeholder="Chọn ngân hàng"', None, 'all'),
+    ('<option>Nam</option><option>Nữ</option><option>Khác</option>',
+     '<option value="">Chọn giới tính</option><option>Nam</option><option>Nữ</option>'
+     '<option>Khác</option>', None, 'all'),
+    ('placeholder="22/01/1991"', 'placeholder="dd/mm/yyyy"', None, 'all'),
+    ('placeholder="22/01/2021"', 'placeholder="dd/mm/yyyy"', None, 'all'),
+    ('placeholder="NGUYEN VAN AN"', 'placeholder="VD: NGUYEN VAN AN"', None, 'all'),
+    ('placeholder="Cục Cảnh sát QLHC về TTXH"', 'placeholder="VD: Cục Cảnh sát QLHC về TTXH"'),
+    ('placeholder="Nguyễn Văn A"', 'placeholder="VD: Nguyễn Văn A"'),
+    # A2 — hàng Ngày cấp / Nơi cấp tràn khỏi khung (lỗi cũ): cột co được.
+    ('<div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)"><div style="display:flex;'
+     'flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">'
+     'Ngày cấp (*)',
+     '<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s7)"><div style="display:flex;'
+     'flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">'
+     'Ngày cấp (*)'),
+    # B6 — cột Nội dung: 1 dòng, cắt chữ, rê chuột xem đủ.
+    ('<td style="padding:var(--s5);color:var(--c2);font-family:monospace;font-size:12px">'
+     '{{o.transferNote}}</td>',
+     '<td style="padding:var(--s5);color:var(--c2);font-family:monospace;font-size:12px">'
+     '<div title="{{o.transferNote}}" style="max-width:200px;white-space:nowrap;overflow:hidden;'
+     'text-overflow:ellipsis">{{o.transferNote}}</div></td>'),
+]
+
+JS_0910 = [
+    ("    pending: 'Chờ xác nhận thanh toán',\n    specialist_approved: 'Chờ Head duyệt',",
+     "    // (09/10) Duyệt hồ sơ còn 1 bước Head; không chặn thành viên dùng link.\n"
+     "    pending: 'Chờ Head duyệt',\n    specialist_approved: 'Chờ Head duyệt',"),
+    ("        canApproveMember: !isSpecialist && effStatus === 'specialist_approved',\n"
+     "        canRejectMember: !isSpecialist && effStatus === 'specialist_approved',\n"
+     "        approveMemberButtonLabel: 'Xác nhận, kích hoạt Thành viên hoạt động (Head)',",
+     "        canApproveMember: !isSpecialist && ['pending', 'specialist_approved'].includes(effStatus),\n"
+     "        canRejectMember: !isSpecialist && ['pending', 'specialist_approved'].includes(effStatus),\n"
+     "        approveMemberButtonLabel: 'Duyệt hồ sơ (Head)',"),
+    ("        approvalStageNote: effStatus === 'pending'\n"
+     "          ? 'Chưa xác nhận thanh toán. Vào màn Đơn hàng xác nhận tiền về trước, hồ sơ này mới duyệt được.'\n"
+     "          : effStatus === 'specialist_approved'\n"
+     "            ? 'Đơn hàng đã được xác nhận thanh toán. Manager duyệt để thành viên nhận điểm và ưu đãi đang tạm giữ.'\n"
+     "            : (effStatus === 'rejected' ? 'Hồ sơ đã bị từ chối.' : null)",
+     "        approvalStageNote: ['pending', 'specialist_approved'].includes(effStatus)\n"
+     "          ? 'Chờ Head duyệt hồ sơ. Thành viên vẫn dùng link bán hàng, nhận điểm và đổi điểm bình thường — duyệt chỉ để xác nhận thông tin hồ sơ là đúng.'\n"
+     "          : (effStatus === 'rejected' ? 'Hồ sơ đã bị từ chối.' : null)"),
+    ("'Head duyệt thành viên — mở khoá điểm và ưu đãi đang tạm giữ'", "'Head duyệt hồ sơ thành viên'"),
+    ("    const actionStageLabel = s.adminRole === 'specialist' ? 'Bước 1/2 · Admin duyệt' : 'Bước 2/2 · Head xác nhận';",
+     "    const actionStageLabel = 'Head duyệt hồ sơ';"),
+    # Tên màn A2.
+    ("['A2','A2 · Đăng ký Agent']", "['A2','A2 · Đăng ký thành viên']"),
+    # A1 + A2 — Tỉnh / Phường / Ngân hàng để trống, người dùng tự chọn.
+    ("    bankQuery: 'Vietcombank', bankOpen: false,\n"
+     "    provinceQuery: 'Thành phố Hồ Chí Minh', provinceOpen: false,\n"
+     "    wardQuery: 'Phường Bến Thành', wardOpen: false,",
+     "    bankQuery: '', bankOpen: false,\n"
+     "    provinceQuery: '', provinceOpen: false,\n"
+     "    wardQuery: '', wardOpen: false,"),
+    ("            wardQuery: (p.wards && p.wards[0]) || '' }) })),",
+     "            wardQuery: '' }) })),"),
+    # Tự điền theo đơn gần nhất thì điền luôn tỉnh / phường / ngân hàng.
+    ("      buyerBankAccount: p.buyerBankAccount, accountHolder: p.accountHolder };",
+     "      buyerBankAccount: p.buyerBankAccount, accountHolder: p.accountHolder,\n"
+     "      provinceQuery: 'Thành phố Hồ Chí Minh', wardQuery: 'Phường Bình Trưng', bankQuery: 'Vietcombank' };"),
+    # B8 tab File.
+    ("linkedTo:'Cập nhật cấp · Lê Văn Cường'", "linkedTo:'Bổ nhiệm đặc biệt · Lê Văn Cường'"),
+]
+
+# A3 — yêu cầu đang mở 800.000đ, khớp ô "Đang chờ duyệt".
+MY_WD = {"amount": "800.000đ", "date": "05/09/2026", "status": "pending"}
+
+_patch_screens_0810 = patch_screens
+
+
+def patch_screens(screens):  # noqa: F811
+    screens = _patch_screens_0810(screens)
+    by = {sc["code"]: sc for sc in screens}
+    # A2 — đổi tên màn; SĐT + email tự điền từ đơn mua (US-22), chỉ đọc.
+    a2 = by["A2"]
+    a2["title"] = "A2 · Đăng ký thành viên"
+    a2["states"] = [(h, lb, dict({"buyerPhone": "0977000111", "buyerEmail": "an.nv@gmail.com"}, **st))
+                    for h, lb, st in a2["states"]]
+    # A1 tự điền theo đơn gần nhất: có cả tỉnh / phường / ngân hàng.
+    by["A1"]["states"] = [
+        (h, lb, dict(st, provinceQuery="Thành phố Hồ Chí Minh", wardQuery="Phường Bình Trưng",
+                     bankQuery="Vietcombank") if h == "form-tu-dien" else st)
+        for h, lb, st in by["A1"]["states"]]
+    # B2 — duyệt / từ chối hồ sơ là việc của Head.
+    by["B2"]["states"] = [
+        (h, lb, dict(st, adminRole="head") if h in ("duyet", "tu-choi") else st)
+        for h, lb, st in by["B2"]["states"]]
+    # B7 — mặc định vai Head để thấy danh sách; vai Admin xem trạng thái riêng.
+    by["B7"]["states"] = [(h, lb, dict(st, adminRole="head")) for h, lb, st in by["B7"]["states"]] + [
+        ("vai-admin", "Vai Admin — không có quyền vào màn này", {"adminRole": "specialist"})]
+    return screens
+
+
+DIFF_0910 = [
+    "## 22. Rà soát bản deploy — đợt 09/10", "",
+    "| Màn | Thay đổi |",
+    "|---|---|",
+    "| B2 duyệt hồ sơ | Còn **1 bước Head duyệt**; hồ sơ mới ở trạng thái \"Chờ Head duyệt\". "
+    "Duyệt hay chưa **không chặn** thành viên dùng link bán hàng, nhận điểm, đổi điểm. Bỏ chữ "
+    "\"kích hoạt / tạm giữ / 2 lượt duyệt\" trong modal. Vai Admin chỉ xem, không có nút duyệt. |",
+    "| B2 bổ nhiệm | Bổ nhiệm xong thì gói xét cấp về 0 (VD: 0 / 4 lên Titanium). |",
+    "| B2 chi tiết | \"Lịch sử đơn hàng & ưu đãi\"; số tiền = giá gói × % ưu đãi của cấp, tính "
+    "riêng từng gói (Copper: gói 1 năm 2.000.000đ, gói nửa năm 1.200.000đ). |",
+    "| A2 | Tên màn \"Đăng ký thành viên\"; \"Số tài khoản nhận ưu đãi\"; SĐT + email tự điền "
+    "từ đơn mua (chỉ đọc). |",
+    "| A1, A2 | Tỉnh/Phường/Ngân hàng/Giới tính để trống, không chọn sẵn; placeholder mẫu: "
+    "dd/mm/yyyy, VD: NGUYEN VAN AN, VD: Nguyễn Văn A, VD: Cục Cảnh sát QLHC về TTXH. |",
+    "| A3 | Có yêu cầu đổi điểm đang mở thì số đó hiện ở \"Đang chờ duyệt\" và trừ khỏi "
+    "\"Số dư khả dụng\"; không có yêu cầu thì \"Đang chờ duyệt\" = 0đ. |",
+    "| B3 | Cột \"Khoản thưởng hiện tại\" → \"Số dư khả dụng\". |",
+    "| B6 | Cột Nội dung 1 dòng, cắt chữ, rê chuột xem đủ. |",
+    "| B7 | Mở mặc định với vai Head; thêm trạng thái vai Admin (không có quyền). Sửa mô tả vai trò. |",
+    "| B8 | Tab File: \"Bổ nhiệm đặc biệt · Lê Văn Cường\". |",
+    "",
+]
+
+
+def patch_diff(diff):  # noqa: F811 — thêm mục 22
+    i = diff.index("## Ghi chú")
+    return diff[:i] + DIFF + DIFF_0810 + DIFF_POLICY + DIFF_0910 + diff[i:]
+
+
+MARKUP.extend(MARKUP_0910)
+JS.extend(JS_0910)
