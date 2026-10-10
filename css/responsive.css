@@ -28,8 +28,10 @@ img { max-width: 100%; }
     text-align: center;
   }
   /* (08/10) A1: ô SĐT trên header xuống hàng, chiếm trọn bề ngang. */
-  .homi-buyphone { margin-left: 0 !important; width: 100%; }
-  .homi-buyphone > div:first-child { flex: 1; }
+  .homi-buyphone { margin-left: 0 !important; width: 100%; flex-wrap: wrap; }
+  .homi-buyphone-lbl { max-width: none !important; width: 100%; margin-right: 0 !important; }
+  .homi-buyphone-ok { white-space: normal !important; position: static !important; }
+  .homi-buyphone > .homi-buyphone-in { flex: 1; }
   .homi-buyphone input { width: 100% !important; }
 }
 @media (max-width: 420px) {

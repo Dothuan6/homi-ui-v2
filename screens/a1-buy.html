@@ -17,7 +17,7 @@ window.__STATE__ = {"buyStep": "phone", "screen": "A1"};
 try { var c = sessionStorage.getItem('__homi_carry');
       if (c) { Object.assign(window.__STATE__, JSON.parse(c)); sessionStorage.removeItem('__homi_carry'); } } catch (e) {}
 // mở thẳng một trạng thái: a1-buy.html#sdt-da-co
-var H = {"sdt-da-co": {"buyStep": "phone", "buyPhoneInput": "0901234567", "buyPhoneFound": true}, "form": {"buyStep": "form", "buyerPhone": "0900000000"}, "form-tu-dien": {"buyerName": "Hoàng Thị Mỹ Trinh", "buyerPhone": "0901234567", "buyerEmail": "trinh.htm@gmail.com", "buyerCccd": "079191000083", "buyerAddress": "Số 36 đường 27A", "buyerDob": "22/01/1991", "buyerBankAccount": "0071001234567", "accountHolder": "HOANG THI MY TRINH", "buyStep": "form", "buyMode": "self", "buyProfile": {"orderId": "DH100077", "orderDate": "12/08/2026", "buyerName": "Hoàng Thị Mỹ Trinh", "buyerPhone": "0901234567", "buyerEmail": "trinh.htm@gmail.com", "buyerCccd": "079191000083", "buyerAddress": "Số 36 đường 27A", "buyerDob": "22/01/1991", "buyerBankAccount": "0071001234567", "accountHolder": "HOANG THI MY TRINH"}, "provinceQuery": "Thành phố Hồ Chí Minh", "wardQuery": "Phường Bình Trưng", "bankQuery": "Vietcombank"}, "loi-tuoi": {"buyStep": "form", "buyerPhone": "0900000000", "buyerDob": "15/03/2015", "buyTcChecked": true}, "qr": {"showQRPayment": true, "buyStep": "form"}, "thanh-toan-ok": {"showPaymentSuccess": true, "buyStep": "form"}, "loi-duong-truyen": {"buyTcChecked": true, "payStage": "timeout", "buyStep": "form"}}, h = location.hash.slice(1);
+var H = {"sdt-da-co": {"buyStep": "phone", "buyPhoneInput": "0901234567", "buyPhoneFound": true}, "form": {"buyStep": "form", "buyerPhone": "0900000000", "buyPhoneInput": "0900000000", "buyPhoneNew": true}, "form-tu-dien": {"buyerName": "Hoàng Thị Mỹ Trinh", "buyerPhone": "0901234567", "buyerEmail": "trinh.htm@gmail.com", "buyerCccd": "079191000083", "buyerAddress": "Số 36 đường 27A", "buyerDob": "22/01/1991", "buyerBankAccount": "0071001234567", "accountHolder": "HOANG THI MY TRINH", "buyStep": "form", "buyMode": "self", "buyProfile": {"orderId": "DH100077", "orderDate": "12/08/2026", "buyerName": "Hoàng Thị Mỹ Trinh", "buyerPhone": "0901234567", "buyerEmail": "trinh.htm@gmail.com", "buyerCccd": "079191000083", "buyerAddress": "Số 36 đường 27A", "buyerDob": "22/01/1991", "buyerBankAccount": "0071001234567", "accountHolder": "HOANG THI MY TRINH"}, "provinceQuery": "Thành phố Hồ Chí Minh", "wardQuery": "Phường Bình Trưng", "bankQuery": "NGOAI THUONG VN (VCB)"}, "loi-tuoi": {"buyStep": "form", "buyerPhone": "0900000000", "buyerDob": "15/03/2015", "buyTcChecked": true}, "qr": {"showQRPayment": true, "buyStep": "form"}, "thanh-toan-ok": {"showPaymentSuccess": true, "buyStep": "form"}, "loi-duong-truyen": {"buyTcChecked": true, "payStage": "timeout", "buyStep": "form"}, "ngan-hang-nhap-tay": {"buyStep": "form", "buyerPhone": "0900000000", "bankManual": true, "bankManualText": "QUY TDCS PHUONG 1 — TP Cao Lanh"}, "suc-khoe": {"buyStep": "form", "buyerPhone": "0900000000", "buyHealth": {"0": "no", "1": "yes", "2": "no", "3": "no"}}}, h = location.hash.slice(1);
 if (H[h]) Object.assign(window.__STATE__, H[h]);
 </script>
 <script src="../js/dc-runtime.js"></script>
@@ -31,7 +31,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
   <div class="homi-topbar" style="position:sticky;top:0;z-index:50;background:var(--c12);border-bottom:1px solid rgba(154,163,176,.35);display:flex;align-items:center;gap:var(--s7);padding:16px var(--s7);flex-wrap:wrap">
     <div class="homi-topbar-in" style="width:100%;max-width:1160px;margin:0 auto;display:flex;align-items:center">
       <a href="../index.html" title="Danh sách màn hình" class="homi-logo" style="display:flex;align-items:center;text-decoration:none"><img src="../assets/logo homi-01.png" alt="HOMI365" style="height:71px;width:auto;display:block"></a>
-      <div class="homi-buyphone" style="margin-left:var(--s9);position:relative;display:flex;gap:var(--s3);align-items:center;flex:none"><div style="position:relative"><input type="text" inputmode="numeric" maxlength="10" placeholder="Số điện thoại (090xxxxxxx)" value="{{buyHeaderPhone}}" disabled="{{buyUnlocked}}" sc-camel-on-change="{{setBuyPhoneInput}}" style="width:240px;max-width:100%;height:40px;padding:0 var(--s5);border:1px solid {{buyPhoneBorder}};border-radius:var(--r-md);font-size:15px;background:var(--c12)" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"><sc-if value="{{buyPhoneError}}" hint-placeholder-val="{{false}}"><div style="position:absolute;top:100%;left:0;margin-top:4px;white-space:nowrap;font-size:12px;color:var(--err)">{{buyPhoneError}}</div></sc-if></div><sc-if value="{{buyHeaderAsk}}" hint-placeholder-val="{{true}}"><button sc-camel-on-click="{{submitBuyPhone}}" style="height:44px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:600;height:40px;padding:0 var(--s7)" style-hover="background:#1B3358">Tiếp tục</button></sc-if><sc-if value="{{buyUnlocked}}" hint-placeholder-val="{{false}}"><button sc-camel-on-click="{{buyChangePhone}}" style="height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:15px;font-weight:600;height:40px;padding:0 var(--s6)" style-hover="background:rgba(154,163,176,.08)">Đổi số</button></sc-if><sc-if value="{{buyPhoneFound}}" hint-placeholder-val="{{false}}"><div class="homi-buyphone-pop" style="position:absolute;top:calc(100% + 10px);left:0;width:380px;max-width:calc(100vw - 32px);background:var(--c12);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);box-shadow:0 8px 28px rgba(30,58,102,.18);padding:var(--s5) var(--s6);display:flex;flex-direction:column;gap:var(--s4);z-index:60"><div><div style="font-size:14px;font-weight:700;color:var(--c1)">Số điện thoại này đã có tài khoản HOMI365</div><div style="font-size:13px;color:var(--c2);margin-top:var(--s1);line-height:1.6">Đăng nhập để form tự điền theo đơn gần nhất, hoặc bỏ qua và tự điền.</div></div><div style="display:flex;gap:var(--s3);flex-wrap:wrap;align-items:center"><button sc-camel-on-click="{{buyGoLogin}}" style="height:44px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:600;height:38px;padding:0 var(--s6)" style-hover="background:#1B3358">Đăng nhập</button><button sc-camel-on-click="{{buySkipLogin}}" style="height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:15px;font-weight:600;height:38px;padding:0 var(--s5)" style-hover="background:rgba(154,163,176,.08)">Bỏ qua và tự điền</button><button sc-camel-on-click="{{buyResetPhone}}" style="background:none;border:none;font-size:13px;font-weight:600;color:var(--c6);padding:var(--s2)">Dùng số khác</button></div></div></sc-if></div><a href="c1-login.html" class="homi-login" style="margin-left:auto;flex:none;white-space:nowrap;display:inline-flex;align-items:center;gap:var(--s3);height:38px;padding:0 var(--s6);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);color:var(--c6);background:var(--c12);font-size:14px;font-weight:600;text-decoration:none" style-hover="background:rgba(154,163,176,.08)">Đăng nhập thành viên HOMI365</a>
+      <div class="homi-buyphone" style="margin-left:var(--s9);position:relative;display:flex;gap:var(--s3);align-items:center;flex:none"><div class="homi-buyphone-lbl" style="max-width:200px;font-size:13px;line-height:1.4;color:var(--c2);margin-right:var(--s2)">Vui lòng nhập số điện thoại để kiểm tra tài khoản</div><div class="homi-buyphone-in" style="position:relative"><input type="text" inputmode="numeric" maxlength="10" placeholder="Số điện thoại (090xxxxxxx)" value="{{buyHeaderPhone}}" disabled="{{buyUnlocked}}" sc-camel-on-change="{{setBuyPhoneInput}}" style="width:240px;max-width:100%;height:40px;padding:0 var(--s5);border:1px solid {{buyPhoneBorder}};border-radius:var(--r-md);font-size:15px;background:var(--c12)" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"><sc-if value="{{buyPhoneError}}" hint-placeholder-val="{{false}}"><div style="position:absolute;top:100%;left:0;margin-top:4px;white-space:nowrap;font-size:12px;color:var(--err)">{{buyPhoneError}}</div></sc-if><sc-if value="{{buyPhoneNewNote}}" hint-placeholder-val="{{false}}"><div class="homi-buyphone-ok" style="position:absolute;top:100%;left:0;margin-top:4px;white-space:nowrap;font-size:12px;font-weight:600;color:#2F7A48">Anh chị chưa có tài khoản, vui lòng nhập thông tin để mua hàng</div></sc-if></div><sc-if value="{{buyHeaderAsk}}" hint-placeholder-val="{{true}}"><button sc-camel-on-click="{{submitBuyPhone}}" style="height:44px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:600;height:40px;padding:0 var(--s7)" style-hover="background:#1B3358">Tiếp tục</button></sc-if><sc-if value="{{buyUnlocked}}" hint-placeholder-val="{{false}}"><button sc-camel-on-click="{{buyChangePhone}}" style="height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:15px;font-weight:600;height:40px;padding:0 var(--s6)" style-hover="background:rgba(154,163,176,.08)">Đổi số</button></sc-if><sc-if value="{{buyPhoneFound}}" hint-placeholder-val="{{false}}"><div class="homi-buyphone-pop" style="position:absolute;top:calc(100% + 10px);left:0;width:380px;max-width:calc(100vw - 32px);background:var(--c12);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);box-shadow:0 8px 28px rgba(30,58,102,.18);padding:var(--s5) var(--s6);display:flex;flex-direction:column;gap:var(--s4);z-index:60"><div><div style="font-size:13px;color:var(--c2);line-height:1.6">Đăng nhập để form tự điền theo đơn gần nhất, hoặc bỏ qua và tự điền.</div></div><div style="display:flex;gap:var(--s3);flex-wrap:wrap;align-items:center"><button sc-camel-on-click="{{buyGoLogin}}" style="height:44px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:600;height:38px;padding:0 var(--s6)" style-hover="background:#1B3358">Đăng nhập</button><button sc-camel-on-click="{{buySkipLogin}}" style="height:44px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:15px;font-weight:600;height:38px;padding:0 var(--s5)" style-hover="background:rgba(154,163,176,.08)">Bỏ qua và tự điền</button><button sc-camel-on-click="{{buyResetPhone}}" style="background:none;border:none;font-size:13px;font-weight:600;color:var(--c6);padding:var(--s2)">Dùng số khác</button></div></div></sc-if></div><a href="c1-login.html" class="homi-login" style="margin-left:auto;flex:none;white-space:nowrap;display:inline-flex;align-items:center;gap:var(--s3);height:38px;padding:0 var(--s6);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);color:var(--c6);background:var(--c12);font-size:14px;font-weight:600;text-decoration:none" style-hover="background:rgba(154,163,176,.08)">Đăng nhập thành viên HOMI365</a>
     </div>
   </div>
 
@@ -97,7 +97,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           <div style="font-size:14px;font-weight:700;color:var(--c1)">Thông tin nhận ưu đãi (khi đạt điều kiện)</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s7)">
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngân hàng</label>
-              <div style="position:relative">
+              <sc-if value="{{bankPick}}" hint-placeholder-val="{{true}}"><div style="position:relative">
                 <input type="text" value="{{bankQuery}}" sc-camel-on-change="{{setBankQuery}}" sc-camel-on-click="{{toggleBank}}" placeholder="Chọn ngân hàng" style="width:100%;height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
                 <sc-if value="{{bankOpen}}" hint-placeholder-val="{{false}}">
                   <div style="position:absolute;left:0;right:0;top:48px;z-index:60;background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:260px;overflow-y:auto">
@@ -109,7 +109,9 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
                     </sc-if>
                   </div>
                 </sc-if>
-              </div>
+              </div></sc-if>
+              <sc-if value="{{bankManual}}" hint-placeholder-val="{{false}}"><input type="text" placeholder="VD: NH TMCP ABC — CN Quận 1, TP.HCM" value="{{bankManualText}}" sc-camel-on-change="{{setBankManualText}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;width:100%"></sc-if>
+              <div style="font-size:12px;color:var(--c5)">{{bankModeHint}} <span sc-camel-on-click="{{toggleBankManual}}" style="color:var(--c6);font-weight:600;cursor:pointer;text-decoration:underline">{{bankModeLink}}</span></div>
             </div>
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số tài khoản</label><input type="text" placeholder="Nhập số tài khoản" value="{{buyerBankAccount}}" sc-camel-on-change="{{setBuyerBankAccount}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"></div>
             <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Tên chủ tài khoản</label><input type="text" placeholder="VD: NGUYEN VAN AN" value="{{accountHolder}}" sc-camel-on-change="{{setAccountHolder}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;text-transform:uppercase" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"><div style="font-size:11px;color:var(--c5);line-height:1.5">Viết hoa, không dấu — hệ thống tự chuẩn hoá khi bạn gõ.</div></div>
@@ -138,6 +140,13 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
               </span>
               <span style="font-size:14px;color:var(--c1);font-weight:700">{{pkg.price}}</span>
             </label>
+          </sc-for>
+        </div>
+        <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s4)">
+          <div style="font-size:16px;font-weight:700;color:var(--c1)">Thông tin sức khỏe cá nhân</div>
+          <div style="display:grid;grid-template-columns:22px 1fr 46px 30px;gap:var(--s3);align-items:center;font-size:12px;font-weight:700;color:var(--c5);padding-bottom:var(--s2);border-bottom:1px solid rgba(154,163,176,.3)"><div>TT</div><div>Nội dung</div><div style="text-align:center">Không</div><div style="text-align:center">Có</div></div>
+          <sc-for list="{{healthRows}}" as="h" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:22px 1fr 46px 30px;gap:var(--s3);align-items:center;font-size:13px;color:var(--c2);line-height:1.5;padding-bottom:var(--s3);border-bottom:1px solid rgba(154,163,176,.15)"><div style="font-weight:700;color:var(--c1)">{{h.no}}</div><div>{{h.q}}</div><div style="text-align:center"><span class="health-no" sc-camel-on-click="{{h.onNo}}" style="width:18px;height:18px;border:1.5px solid {{h.noBorder}};border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#FFFFFF;background:{{h.noBg}};cursor:pointer">{{h.noMark}}</span></div><div style="text-align:center"><span class="health-yes" sc-camel-on-click="{{h.onYes}}" style="width:18px;height:18px;border:1.5px solid {{h.yesBorder}};border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#FFFFFF;background:{{h.yesBg}};cursor:pointer">{{h.yesMark}}</span></div></div>
           </sc-for>
         </div>
 
@@ -182,7 +191,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
             <span style="font-size:12px;font-weight:700;color:#00A19A">napas<span style="color:#003DA5">247</span></span>
           </div>
         </div>
-        <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s5);display:flex;flex-direction:column;gap:var(--s2);text-align:center;background:rgba(154,163,176,.05)"><div style="font-size:11px;color:var(--c5);text-transform:uppercase;letter-spacing:.04em">Đơn vị thụ hưởng</div><div style="font-size:12px;font-weight:700;color:var(--c1);line-height:1.5">CONG TY CO PHAN GIAI PHAP VA DICH VU HOMI365</div><div style="font-size:13px;font-weight:700;color:var(--c6);font-family:monospace;letter-spacing:.02em">TECHCOMBANK - 0009383764899</div></div>
+        <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s5);display:flex;flex-direction:column;gap:var(--s2);text-align:center;background:rgba(154,163,176,.05)"><div style="font-size:11px;color:var(--c5);text-transform:uppercase;letter-spacing:.04em">Đơn vị thụ hưởng</div><div style="font-size:12px;font-weight:700;color:var(--c1);line-height:1.5">CONG TY CO PHAN GIAI PHAP VA DICH VU HOMI365</div><div style="font-size:13px;font-weight:700;color:var(--c6);font-family:monospace;letter-spacing:.02em">TECHCOMBANK - 79365</div></div>
         <div style="text-align:center;font-size:11px;color:var(--c5);font-family:monospace">Đơn hàng #{{orderId}} · {{cn02PackagePrice}}</div>
 
         <div style="border:1px solid rgba(154,163,176,.35);border-radius:var(--r-md);padding:var(--s6);display:flex;flex-direction:column;gap:var(--s4);text-align:left;font-size:13px">
@@ -271,7 +280,7 @@ class Component extends DCLogic {
     orderActivationCode: '', orderCodeError: '',
     copyPersonalLabel: 'Copy link',
     banks: null, provinceData: null,
-    bankQuery: '', bankOpen: false,
+    bankQuery: '', bankOpen: false, bankManual: false, bankManualText: '', buyHealth: {},
     provinceQuery: '', provinceOpen: false,
     wardQuery: '', wardOpen: false,
     accountHolder: '', buyTcChecked: false,
@@ -332,7 +341,7 @@ class Component extends DCLogic {
       buyerPhone: phone, buyPhoneInput: phone, buyerName: p.buyerName, buyerEmail: p.buyerEmail,
       buyerCccd: p.buyerCccd, buyerAddress: p.buyerAddress, buyerDob: p.buyerDob,
       buyerBankAccount: p.buyerBankAccount, accountHolder: p.accountHolder,
-      provinceQuery: 'Thành phố Hồ Chí Minh', wardQuery: 'Phường Bình Trưng', bankQuery: 'Vietcombank' };
+      provinceQuery: 'Thành phố Hồ Chí Minh', wardQuery: 'Phường Bình Trưng', bankQuery: 'NGOAI THUONG VN (VCB)' };
   }
 
   // (20) Mục 3 — người mua phải từ 18 đến 100 tuổi. Chỉ xét khi đã gõ đủ
@@ -496,6 +505,10 @@ class Component extends DCLogic {
 
   ORDER_FILTERS = [['all','Tất cả'],['order_pending','Chờ đối soát'],['order_paid','Đã thanh toán'],['order_rejected','Từ chối']];
 
+  // (10/10) Thông tin sức khỏe cá nhân khách khai lúc mua (A1), lưu theo đơn.
+  HEALTH_Q = ["Người bị bệnh tâm thần, bệnh phong, bệnh ung thư;", "Người bị tàn tật hoặc thương tật vĩnh viễn từ 50% trở lên;", "Người đang trong thời gian điều trị nội trú ốm đau, bệnh tật, tai nạn;", "Người mất năng lực hoặc bị hạn chế năng lực hành vi dân sự."];
+  ORDER_HEALTH = { DH923983: ['no','no','no','no'], DH100511: ['no','yes','no','no'],
+                   DH100234: ['no','no','no','no'], DH100088: ['no','no','no','no'] };
   makeOrders() {
     const raw = [
       { id:'DH923983', buyer:'Nguyễn Văn A', phone:'0901111111', email:'nguyenvana@gmail.com',
@@ -537,7 +550,8 @@ class Component extends DCLogic {
   // --- Danh sách ngân hàng & địa giới hành chính -------------------------
   // Nạp từ API công khai lúc khởi động; hỏng mạng thì rơi về danh sách rút gọn
   // bên dưới để prototype vẫn mở được bằng file://.
-  BANKS_FALLBACK = ['Vietcombank — NH TMCP Ngoại thương Việt Nam','Techcombank — NH TMCP Kỹ thương Việt Nam','BIDV — NH Đầu tư và Phát triển Việt Nam','VietinBank — NH TMCP Công thương Việt Nam','Agribank — NH NN&PTNT Việt Nam','MB Bank — NH TMCP Quân đội','ACB — NH TMCP Á Châu','VPBank — NH TMCP Việt Nam Thịnh Vượng','Sacombank — NH TMCP Sài Gòn Thương Tín','TPBank — NH TMCP Tiên Phong','HDBank — NH TMCP Phát triển TP.HCM','SHB — NH TMCP Sài Gòn – Hà Nội','VIB — NH TMCP Quốc tế Việt Nam','MSB — NH TMCP Hàng Hải','OCB — NH TMCP Phương Đông','SeABank — NH TMCP Đông Nam Á','Eximbank — NH TMCP Xuất Nhập khẩu','LPBank — NH TMCP Lộc Phát Việt Nam','Nam A Bank — NH TMCP Nam Á','BVBank — NH TMCP Bản Việt'];
+  // (10/10) Theo DomesticBeneficiaryBank.xlsx (Techcombank) — xem tools/banks_tcb.py
+  BANKS_FALLBACK = ["NH TMCP KY THUONG VN", "A CHAU (ACB)", "AGRICULTURAL BANK OF CHINA LIMITED CN HA NOI", "AN BINH (AB BANK)", "ANZ VN", "BAC A (NASB)", "BAN VIET (VIETCAPITALBANK)", "BANGKOK BANK CN HA NOI", "BANGKOK BANK TP HO CHI MINH", "BANK OF CHINA", "BANK OF COMMUNICATIONS", "BANK OF INDIA CN TP HO CHI MINH", "BAO VIET (BAOVIETBANK)", "BNP PARIBAS CN HA NOI", "BNP PARIBAS CN HCM", "BPCEIOM", "BUSAN CN TP HO CHI MINH", "LOC PHAT VIET NAM (LPB)", "CATHAY", "CHINA CONSTRUCTION CORPORATION", "CHINA TRUST COMMERCIAL (CTBC)", "CHINH SACH XA HOI (VBSP)", "CIMB VIET NAM", "CITIBANK HA NOI", "CITIBANK HO CHI MINH", "CONG THUONG VN (VIETINBANK)", "NGAN HANG iM CN TP HO CHI MINH", "DAI CHUNG VN (PVCOMBANK)", "NGAN HANG TNHH MTV VIET NAM HIEN DAI (MBV)", "DAU KHI TOAN CAU (GPBANK)", "DAU TU VA PHAT TRIEN VN ( BIDV)", "DBS BANK LTD", "DEUTSCHE", "VIKKI BANK (VIKKI)", "DONG NAM A (SEA BANK)", "DT VA PT CAMPUCHIA (BIDC) CN HN", "DT VA PT CAMPUCHIA (BIDC) CN HCM", "E.SUN CN DONG NAI", "FIRST COMMERCIAL BANK CN HA NOI", "FIRST COMMERCIAL BANK CN HCM", "HANG HAI (MARITIMEBANK-MSB)", "HONG LEONG VIET NAM", "HOP TAC (CO-OPBANK)", "HSBC", "HUA NAN COMMERCIAL", "ICBC HA NOI", "INDOVINA", "INDUSTRIAL BANK OF KOREA HA NOI (IBK)", "INDUSTRIAL BANK OF KOREA HO CHI MINH (IBK)", "JP Morgan Chase", "KEB HANA CN HA NOI", "KEB HANA CN TP HCM", "KIEN LONG (KIENLONGBANK)", "KOOKMIN CHI NHANH HA NOI", "KOOKMIN CN TP HO CHI MINH", "LD VIET NGA (VRB)", "MAY BANK HO CHI MINH", "MAY BANK HA NOI", "MEGA ICBC", "MIZUHO CN HA NOI", "MIZUHO CN HO CHI MINH", "MUFG Bank Ltd CN HA NOI", "MUFG Bank Ltd CN HCM", "NAM A", "NGOAI THUONG VN (VCB)", "NONG NGHIEP VA PTNT VN (AGRIBANK)", "NH DAI CHUNG TNHH KASIKORNBANK CN TP HCM", "PHAT TRIEN VIET NAM (VDB)", "PHAT TRIEN TP HCM (HDBANK)", "QUAN DOI (MB)", "QUOC TE (VIB)", "VIET NAM THINH VUONG (VPBANK)", "NONG HYUP CN HA NOI", "OVERSEA-CHINESE (OCBC)", "PHUONG DONG (OCB)", "PUBLIC VIET NAM", "QUOC DAN (NCB)", "SAI GON - HA NOI (SHB)", "SAI GON (SCB)", "SAI GON CONG THUONG", "SAI GON THUONG TIN (SACOMBANK)", "SHINHAN VIET NAM", "SINOPAC", "STANDARD CHARTERED", "TAIPEI FUBON CN BINH DUONG", "TAIPEI FUBON CN HA NOI", "TAIPEI FUBON CN HCM", "THE SHANGHAI COMMERCIAL AND SAVING", "THE SIAM COMMERCIAL BANK PUBLIC", "TIEN PHONG (TPBANK)", "UNITED OVERSEAS BANK VIET NAM", "VIET A (VIETABANK)", "VIET HOA", "VIET NAM THUONG TIN (VIETBANK)", "WOORI VIET NAM", "NGAN HANG TMCP THINH VUONG VA PHAT TRIEN (PGBANK)", "NGOAI THUONG CONG NGHE SO (VCBNEO)", "XUAT NHAP KHAU (EXIMBANK)", "NGAN HANG SO CAKE BY VPBANK", "NGAN HANG SO UBANK BY VPBANK", "NGAN HANG SO TIMO BY BAN VIET Bank", "NGAN HANG SO UMEE BY KIENLONGBANK", "TRUNG TAM DICH VU TAI CHINH SO VNPT", "Viettel Money", "CONG TY TAI CHINH TNHH MTV MIRAE ASSET", "NGAN HANG SO LIOBANK BY OCB", "KENH SO HOA VIKKI TRUC THUOC HDBANK", "CONG TY TAI CHINH TNHH MTV SHINHAN VIET NAM", "SUMITOMO MITSUI BANKING CORP HCM", "SUMITOMO MITSUI CN HA NOI", "PVCOMBANK PAY"];
 
   PROVINCES_FALLBACK = [
     { name: 'Thành phố Hồ Chí Minh', wards: ['Phường Bến Thành','Phường Sài Gòn','Phường Cầu Ông Lãnh','Phường Bàn Cờ','Phường Chợ Lớn','Phường Bình Trưng','Phường An Khánh','Phường Thủ Đức','Phường Hoà Hưng','Phường Tân Sơn Nhất'] },
@@ -655,11 +669,7 @@ class Component extends DCLogic {
     // Nạp danh sách ngân hàng và địa giới hành chính từ API công khai.
     // Lỗi mạng thì giữ nguyên danh sách rút gọn, prototype vẫn dùng được.
     try {
-      fetch('https://api.vietqr.io/v2/banks')
-        .then(r => r.json())
-        .then(j => { const b = (j && j.data || []).map(x => x.shortName + ' — ' + x.name);
-                     if (b.length) this.setState({ banks: b }); })
-        .catch(() => {});
+      // (10/10) Ngân hàng lấy theo file Techcombank (BANKS_FALLBACK), không gọi API.
       fetch('https://provinces.open-api.vn/api/v2/?depth=2')
         .then(r => r.json())
         .then(j => { const p = (j || []).map(x => ({ name: x.name,
@@ -1303,6 +1313,13 @@ class Component extends DCLogic {
       const canRejectO = selOrderRaw.status === 'order_pending';
       selectedOrder = { ...selOrderRaw, badgeBg: obg, badgeColor: ocolor, statusLabel: olabel,
         activationCodeLabel: selOrderRaw.activationCode || '— chưa cấp —',
+        healthRows: this.HEALTH_Q.map((q, i) => { const v = (this.ORDER_HEALTH[selOrderRaw.id] || [])[i];
+          return { no: i + 1, q, label: v === 'yes' ? 'Có' : v === 'no' ? 'Không' : 'Chưa đánh dấu',
+            color: v === 'yes' ? '#C0392B' : v === 'no' ? 'var(--c1)' : 'var(--c5)' }; }),
+        // (10/10) Lưu vết chấp thuận Chính sách mua hàng khi khách đặt đơn.
+        tncDoc: 'Chính sách mua hàng & bảo mật dữ liệu', tncVersion: 'v1.0',
+        tncAt: selOrderRaw.date + ':04', tncIp: '113.161.' + (40 + selOrderRaw.id.length) + '.' + (+selOrderRaw.id.slice(-3) % 250),
+        tncUser: selOrderRaw.id + ' · ' + selOrderRaw.phone,
         canConfirm: canConfirmO, canReject: canRejectO, canAct: canConfirmO || canRejectO,
         needsCodePick: canConfirmO,
         isRejected: selOrderRaw.status === 'order_rejected',
@@ -1328,7 +1345,8 @@ class Component extends DCLogic {
       buyHeaderPhone: s.buyStep === 'form' ? (s.buyerPhone || s.buyPhoneInput || '') : (s.buyPhoneInput || ''),
       buyHeaderAsk: s.buyStep !== 'form' && !s.buyPhoneFound,
       buyChangePhone: () => this.setState({ buyStep: 'phone', buyPhoneInput: '',
-        buyPhoneFound: false, buyPhoneError: '', buyMode: '' }),
+        buyPhoneFound: false, buyPhoneError: '', buyMode: '', buyPhoneNew: false }),
+      buyPhoneNewNote: s.buyStep === 'form' && !!s.buyPhoneNew,
       buyPhoneInput: s.buyPhoneInput,
       setBuyPhoneInput: (e) => this.setState({
         buyPhoneInput: (e.target.value || '').replace(/\D/g, '').slice(0, 10),
@@ -1343,7 +1361,7 @@ class Component extends DCLogic {
         if (!ph) { this.setState({ buyPhoneError: 'Vui lòng nhập số điện thoại.' }); return; }
         if (!/^0\d{9}$/.test(ph)) { this.setState({ buyPhoneError: 'Số điện thoại gồm 10 chữ số, bắt đầu bằng 0.' }); return; }
         if (this.REGISTERED_PHONES.includes(ph)) { this.setState({ buyPhoneFound: true, buyPhoneError: '' }); return; }
-        this.setState({ buyStep: 'form', buyerPhone: ph, buyMode: '' });
+        this.setState({ buyStep: 'form', buyerPhone: ph, buyMode: '', buyPhoneNew: true });
       },
       buyGoLogin: () => GO('C1', { agentLoginStep: 'login', agentPhone: s.buyPhoneInput,
         loginPhoneChecked: true, returnTo: 'A1' }),
@@ -2023,10 +2041,23 @@ class Component extends DCLogic {
 
       // --- Dropdown có tìm kiếm: ngân hàng / tỉnh thành / phường xã --------
       bankQuery: s.bankQuery, bankOpen: s.bankOpen,
+      // (10/10) Không có trong danh sách -> nhập tay tên ngân hàng + chi nhánh.
+      bankPick: !s.bankManual, bankManual: !!s.bankManual, bankManualText: s.bankManualText || '',
+      setBankManualText: (e) => this.setState({ bankManualText: e.target.value }),
+      toggleBankManual: () => this.setState({ bankManual: !s.bankManual, bankOpen: false }),
+      bankModeHint: s.bankManual ? 'Nhập đúng tên ngân hàng và chi nhánh.' : 'Không tìm thấy ngân hàng?',
+      bankModeLink: s.bankManual ? 'Chọn từ danh sách' : 'Nhập tay',
+      // (10/10) Thông tin sức khỏe: mỗi mục chọn Không hoặc Có (bấm lại để bỏ chọn).
+      healthRows: this.HEALTH_Q.map((q, i) => { const v = (s.buyHealth || {})[i];
+        const set = (x) => this.setState({ buyHealth: { ...(s.buyHealth || {}), [i]: v === x ? undefined : x } });
+        const box = (on) => on ? ['#1E3A66', '#1E3A66', '✓'] : ['rgba(154,163,176,.8)', 'transparent', ''];
+        const [nb, nbg, nm] = box(v === 'no'), [yb, ybg, ym] = box(v === 'yes');
+        return { no: i + 1, q, onNo: () => set('no'), onYes: () => set('yes'),
+          noBorder: nb, noBg: nbg, noMark: nm, yesBorder: yb, yesBg: ybg, yesMark: ym }; }),
       toggleBank: () => this.setState({ bankOpen: !s.bankOpen }),
       setBankQuery: (e) => this.setState({ bankQuery: e.target.value, bankOpen: true }),
       bankOptions: bankList.filter(b => norm(b).includes(norm(s.bankQuery)) || s.bankQuery === b)
-        .slice(0, 60).map(b => ({ label: b,
+        .slice(0, 200).map(b => ({ label: b,
           onPick: () => this.setState({ bankQuery: b, bankOpen: false }) })),
       bankEmpty: bankList.filter(b => norm(b).includes(norm(s.bankQuery))).length === 0,
       bankCount: bankList.length,

@@ -63,13 +63,21 @@ _A1_OPEN_OLD = (
 # build-v3.py dựng thanh trên riêng cho A1 bằng A1_HEADER_PHONE.
 A1_HEADER_PHONE = (
     '<div class="homi-buyphone" style="margin-left:var(--s9);position:relative;display:flex;gap:var(--s3);align-items:center;flex:none">'
-    '<div style="position:relative">'
+    # (10/10) KH: câu hướng dẫn đặt ngay trước ô SĐT.
+    '<div class="homi-buyphone-lbl" style="max-width:200px;font-size:13px;line-height:1.4;color:var(--c2);margin-right:var(--s2)">'
+    'Vui lòng nhập số điện thoại để kiểm tra tài khoản</div>'
+    '<div class="homi-buyphone-in" style="position:relative">'
     '<input type="text" inputmode="numeric" maxlength="10" placeholder="Số điện thoại (090xxxxxxx)" '
     'value="{{buyHeaderPhone}}" disabled="{{buyUnlocked}}" sc-camel-on-change="{{setBuyPhoneInput}}" '
     'style="width:240px;max-width:100%;height:40px;padding:0 var(--s5);border:1px solid {{buyPhoneBorder}};'
     'border-radius:var(--r-md);font-size:15px;background:var(--c12)" style-focus="' + _FOCUS + '">'
     '<sc-if value="{{buyPhoneError}}" hint-placeholder-val="{{false}}">'
     '<div style="position:absolute;top:100%;left:0;margin-top:4px;white-space:nowrap;font-size:12px;color:var(--err)">{{buyPhoneError}}</div>'
+    '</sc-if>'
+    # (10/10) SĐT chưa có tài khoản -> báo ngay dưới ô, form mở để nhập.
+    '<sc-if value="{{buyPhoneNewNote}}" hint-placeholder-val="{{false}}">'
+    '<div class="homi-buyphone-ok" style="position:absolute;top:100%;left:0;margin-top:4px;white-space:nowrap;font-size:12px;font-weight:600;color:#2F7A48">'
+    'Anh chị chưa có tài khoản, vui lòng nhập thông tin để mua hàng</div>'
     '</sc-if></div>'
     '<sc-if value="{{buyHeaderAsk}}" hint-placeholder-val="{{true}}">'
     '<button sc-camel-on-click="{{submitBuyPhone}}" style="' + _BTN_P + ';height:40px;padding:0 var(--s7)" style-hover="' + _HOVER_P + '">Tiếp tục</button>'
@@ -81,8 +89,9 @@ A1_HEADER_PHONE = (
     '<div class="homi-buyphone-pop" style="position:absolute;top:calc(100% + 10px);left:0;width:380px;max-width:calc(100vw - 32px);'
     'background:var(--c12);border:1px solid rgba(30,58,102,.3);border-radius:var(--r-md);box-shadow:0 8px 28px rgba(30,58,102,.18);'
     'padding:var(--s5) var(--s6);display:flex;flex-direction:column;gap:var(--s4);z-index:60">'
-    '<div><div style="font-size:14px;font-weight:700;color:var(--c1)">Số điện thoại này đã có tài khoản HOMI365</div>'
-    '<div style="font-size:13px;color:var(--c2);margin-top:var(--s1);line-height:1.6">Đăng nhập để form tự điền theo đơn gần nhất, hoặc bỏ qua và tự điền.</div></div>'
+    # (10/10, lần 2) KH bỏ tiêu đề "Anh chị đã có tài khoản" — chỉ giữ hướng dẫn + nút.
+    '<div>'
+    '<div style="font-size:13px;color:var(--c2);line-height:1.6">Đăng nhập để form tự điền theo đơn gần nhất, hoặc bỏ qua và tự điền.</div></div>'
     '<div style="display:flex;gap:var(--s3);flex-wrap:wrap;align-items:center">'
     '<button sc-camel-on-click="{{buyGoLogin}}" style="' + _BTN_P + ';height:38px;padding:0 var(--s6)" style-hover="' + _HOVER_P + '">Đăng nhập</button>'
     '<button sc-camel-on-click="{{buySkipLogin}}" style="' + _BTN_G + ';height:38px;padding:0 var(--s5)" style-hover="' + _HOVER_G + '">Bỏ qua và tự điền</button>'
@@ -661,7 +670,8 @@ _JS_ISA1_NEW = """      isA1: s.screen === 'A1',
       buyHeaderPhone: s.buyStep === 'form' ? (s.buyerPhone || s.buyPhoneInput || '') : (s.buyPhoneInput || ''),
       buyHeaderAsk: s.buyStep !== 'form' && !s.buyPhoneFound,
       buyChangePhone: () => this.setState({ buyStep: 'phone', buyPhoneInput: '',
-        buyPhoneFound: false, buyPhoneError: '', buyMode: '' }),
+        buyPhoneFound: false, buyPhoneError: '', buyMode: '', buyPhoneNew: false }),
+      buyPhoneNewNote: s.buyStep === 'form' && !!s.buyPhoneNew,
       buyPhoneInput: s.buyPhoneInput,
       setBuyPhoneInput: (e) => this.setState({
         buyPhoneInput: (e.target.value || '').replace(/\\D/g, '').slice(0, 10),
@@ -676,7 +686,7 @@ _JS_ISA1_NEW = """      isA1: s.screen === 'A1',
         if (!ph) { this.setState({ buyPhoneError: 'Vui lòng nhập số điện thoại.' }); return; }
         if (!/^0\\d{9}$/.test(ph)) { this.setState({ buyPhoneError: 'Số điện thoại gồm 10 chữ số, bắt đầu bằng 0.' }); return; }
         if (this.REGISTERED_PHONES.includes(ph)) { this.setState({ buyPhoneFound: true, buyPhoneError: '' }); return; }
-        this.setState({ buyStep: 'form', buyerPhone: ph, buyMode: '' });
+        this.setState({ buyStep: 'form', buyerPhone: ph, buyMode: '', buyPhoneNew: true });
       },
       buyGoLogin: () => GO('C1', { agentLoginStep: 'login', agentPhone: s.buyPhoneInput,
         loginPhoneChecked: true, returnTo: 'A1' }),
@@ -909,8 +919,9 @@ def patch_screens(screens):
         ("", "Bước 0 — nhập số điện thoại", {"buyStep": "phone"}),
         ("sdt-da-co", "SĐT đã có tài khoản — gợi ý đăng nhập",
          {"buyStep": "phone", "buyPhoneInput": "0901234567", "buyPhoneFound": True}),
-        ("form", "Form mua hàng — khách mới hoặc bỏ qua đăng nhập",
-         {"buyStep": "form", "buyerPhone": "0900000000"}),
+        ("form", "Form mua hàng — SĐT chưa có tài khoản, nhập thông tin",
+         {"buyStep": "form", "buyerPhone": "0900000000", "buyPhoneInput": "0900000000",
+          "buyPhoneNew": True}),
         ("form-tu-dien", "Form tự điền theo đơn gần nhất (sau đăng nhập)",
          dict(filled, buyStep="form", buyMode="self", buyProfile=prof)),
         ("loi-tuoi", "Form — ngày sinh ngoài 18–100 tuổi",
@@ -2376,6 +2387,9 @@ DIFF_0910 = [
     "dd/mm/yyyy, VD: NGUYEN VAN AN, VD: Nguyễn Văn A, VD: Cục Cảnh sát QLHC về TTXH. |",
     "| A3 | Có yêu cầu đổi điểm đang mở thì số đó hiện ở \"Đang chờ duyệt\" và trừ khỏi "
     "\"Số dư khả dụng\"; không có yêu cầu thì \"Đang chờ duyệt\" = 0đ. |",
+    "| A1 header | Trước ô SĐT có câu \"Vui lòng nhập số điện thoại để kiểm tra tài khoản\". "
+    "SĐT mới → dưới ô "
+    "báo \"Anh chị chưa có tài khoản, vui lòng nhập thông tin để mua hàng\" và mở form (10/10). |",
     "| B3 | Cột \"Khoản thưởng hiện tại\" → \"Số dư khả dụng\". |",
     "| B6 | Cột Nội dung 1 dòng, cắt chữ, rê chuột xem đủ. |",
     "| B7 | Mở mặc định với vai Head; thêm trạng thái vai Admin (không có quyền). Sửa mô tả vai trò. |",
@@ -2391,3 +2405,211 @@ def patch_diff(diff):  # noqa: F811 — thêm mục 22
 
 MARKUP.extend(MARKUP_0910)
 JS.extend(JS_0910)
+
+
+# ===========================================================================
+# (10/10) Danh sách ngân hàng theo file Techcombank KH gửi + ô nhập tay.
+# ===========================================================================
+import json as _json
+import re as _re
+import banks_tcb as _banks
+
+_BANK_STATE = ("    bankQuery: '', bankOpen: false,",
+               "    bankQuery: '', bankOpen: false, bankManual: false, bankManualText: '',")
+_BANK_INPUT = ('height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);'
+               'border-radius:var(--r-md);font-size:14px;width:100%')
+MARKUP_1010 = [
+    ('<div style="position:relative">\n                <input type="text" value="{{bankQuery}}"',
+     '<sc-if value="{{bankPick}}" hint-placeholder-val="{{true}}">'
+     '<div style="position:relative">\n                <input type="text" value="{{bankQuery}}"',
+     None, 'all'),
+    ('<sc-if value="{{bankEmpty}}" hint-placeholder-val="{{false}}">\n'
+     '                      <div style="padding:var(--s5);font-size:13px;color:var(--c5)">Không tìm thấy kết quả phù hợp</div>\n'
+     '                    </sc-if>\n                  </div>\n                </sc-if>\n              </div>',
+     '<sc-if value="{{bankEmpty}}" hint-placeholder-val="{{false}}">\n'
+     '                      <div style="padding:var(--s5);font-size:13px;color:var(--c5)">Không tìm thấy kết quả phù hợp</div>\n'
+     '                    </sc-if>\n                  </div>\n                </sc-if>\n              </div></sc-if>\n'
+     '              <sc-if value="{{bankManual}}" hint-placeholder-val="{{false}}">'
+     '<input type="text" placeholder="VD: NH TMCP ABC — CN Quận 1, TP.HCM" value="{{bankManualText}}" '
+     'sc-camel-on-change="{{setBankManualText}}" style="' + _BANK_INPUT + '"></sc-if>\n'
+     '              <div style="font-size:12px;color:var(--c5)">{{bankModeHint}} '
+     '<span sc-camel-on-click="{{toggleBankManual}}" style="color:var(--c6);font-weight:600;cursor:pointer;'
+     'text-decoration:underline">{{bankModeLink}}</span></div>',
+     None, 'all'),
+]
+JS_1010 = [
+    (_BANK_STATE[0], _BANK_STATE[1]),
+    # 111 ngân hàng — hiện đủ, không cắt 60 như trước.
+    (".slice(0, 60).map(b => ({ label: b,", ".slice(0, 200).map(b => ({ label: b,"),
+    ("      bankQuery: s.bankQuery, bankOpen: s.bankOpen,",
+     "      bankQuery: s.bankQuery, bankOpen: s.bankOpen,\n"
+     "      // (10/10) Không có trong danh sách -> nhập tay tên ngân hàng + chi nhánh.\n"
+     "      bankPick: !s.bankManual, bankManual: !!s.bankManual, bankManualText: s.bankManualText || '',\n"
+     "      setBankManualText: (e) => this.setState({ bankManualText: e.target.value }),\n"
+     "      toggleBankManual: () => this.setState({ bankManual: !s.bankManual, bankOpen: false }),\n"
+     "      bankModeHint: s.bankManual ? 'Nhập đúng tên ngân hàng và chi nhánh.' : 'Không tìm thấy ngân hàng?',\n"
+     "      bankModeLink: s.bankManual ? 'Chọn từ danh sách' : 'Nhập tay',"),
+    # Bỏ nạp danh sách từ API VietQR — dùng danh sách theo file Techcombank.
+    ("      fetch('https://api.vietqr.io/v2/banks')\n"
+     "        .then(r => r.json())\n"
+     "        .then(j => { const b = (j && j.data || []).map(x => x.shortName + ' — ' + x.name);\n"
+     "                     if (b.length) this.setState({ banks: b }); })\n"
+     "        .catch(() => {});\n",
+     "      // (10/10) Ngân hàng lấy theo file Techcombank (BANKS_FALLBACK), không gọi API.\n"),
+    ("provinceQuery: 'Thành phố Hồ Chí Minh', wardQuery: 'Phường Bình Trưng', bankQuery: 'Vietcombank' };",
+     "provinceQuery: 'Thành phố Hồ Chí Minh', wardQuery: 'Phường Bình Trưng', bankQuery: 'NGOAI THUONG VN (VCB)' };"),
+]
+_patch_script_0910 = patch_script
+
+
+def patch_script(script, die):  # noqa: F811
+    script = _patch_script_0910(script, die)
+    pat = _re.compile(r"^  BANKS_FALLBACK = \[.*\];$", _re.M)
+    if len(pat.findall(script)) != 1:
+        die("không tìm thấy đúng 1 dòng BANKS_FALLBACK")
+    return pat.sub(lambda m: "  // (10/10) Theo DomesticBeneficiaryBank.xlsx (Techcombank) — xem tools/banks_tcb.py\n"
+                   "  BANKS_FALLBACK = " + _json.dumps(_banks.BANKS, ensure_ascii=False) + ";", script)
+
+
+_patch_screens_0910 = patch_screens
+
+
+def patch_screens(screens):  # noqa: F811
+    screens = _patch_screens_0910(screens)
+    for sc in screens:
+        if sc["code"] == "A1":
+            sc["states"] = [(h, lb, dict(st, bankQuery="NGOAI THUONG VN (VCB)") if st.get("bankQuery") else st)
+                            for h, lb, st in sc["states"]]
+            sc["states"].append(("ngan-hang-nhap-tay", "Ngân hàng không có trong danh sách — nhập tay",
+                                 {"buyStep": "form", "buyerPhone": "0900000000", "bankManual": True,
+                                  "bankManualText": "QUY TDCS PHUONG 1 — TP Cao Lanh"}))
+    return screens
+
+
+
+# (10/10) Thông tin sức khỏe cá nhân — bảng dưới khung Thanh toán (A1);
+# khách tick Không / Có từng mục, đơn hàng lưu lại, admin xem ở chi tiết đơn (B6).
+HEALTH_Q = [
+    "Người bị bệnh tâm thần, bệnh phong, bệnh ung thư;",
+    "Người bị tàn tật hoặc thương tật vĩnh viễn từ 50% trở lên;",
+    "Người đang trong thời gian điều trị nội trú ốm đau, bệnh tật, tai nạn;",
+    "Người mất năng lực hoặc bị hạn chế năng lực hành vi dân sự.",
+]
+_HBOX = ('width:18px;height:18px;border:1.5px solid {{h.%sBorder}};border-radius:3px;display:inline-flex;'
+         'align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#FFFFFF;'
+         'background:{{h.%sBg}};cursor:pointer')
+_HGRID = 'display:grid;grid-template-columns:22px 1fr 46px 30px;gap:var(--s3);align-items:center'
+A1_HEALTH = (
+    '\n        <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);'
+    'padding:var(--s7);display:flex;flex-direction:column;gap:var(--s4)">\n'
+    '          <div style="font-size:16px;font-weight:700;color:var(--c1)">Thông tin sức khỏe cá nhân</div>\n'
+    '          <div style="' + _HGRID + ';font-size:12px;font-weight:700;color:var(--c5);padding-bottom:var(--s2);'
+    'border-bottom:1px solid rgba(154,163,176,.3)"><div>TT</div><div>Nội dung</div>'
+    '<div style="text-align:center">Không</div><div style="text-align:center">Có</div></div>\n'
+    '          <sc-for list="{{healthRows}}" as="h" hint-placeholder-count="4">\n'
+    '            <div style="' + _HGRID + ';font-size:13px;color:var(--c2);line-height:1.5;padding-bottom:var(--s3);'
+    'border-bottom:1px solid rgba(154,163,176,.15)"><div style="font-weight:700;color:var(--c1)">{{h.no}}</div>'
+    '<div>{{h.q}}</div>'
+    '<div style="text-align:center"><span class="health-no" sc-camel-on-click="{{h.onNo}}" style="' + (_HBOX % ('no', 'no')) + '">{{h.noMark}}</span></div>'
+    '<div style="text-align:center"><span class="health-yes" sc-camel-on-click="{{h.onYes}}" style="' + (_HBOX % ('yes', 'yes')) + '">{{h.yesMark}}</span></div>'
+    '</div>\n'
+    '          </sc-for>\n'
+    '        </div>')
+_B6_HEALTH = (
+    '\n            <div style="height:1px;background:rgba(154,163,176,.25)"></div>\n\n'
+    '            <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px">\n'
+    '              <div style="font-size:12px;color:var(--c5);text-transform:uppercase;letter-spacing:.04em">Thông tin sức khỏe cá nhân (khách khai)</div>\n'
+    '              <sc-for list="{{selectedOrder.healthRows}}" as="h" hint-placeholder-count="4">\n'
+    '                <div style="display:grid;grid-template-columns:18px 1fr auto;gap:var(--s3);align-items:start;line-height:1.5">'
+    '<span style="color:var(--c5)">{{h.no}}</span><span style="color:var(--c2)">{{h.q}}</span>'
+    '<span style="font-weight:700;color:{{h.color}};white-space:nowrap">{{h.label}}</span></div>\n'
+    '              </sc-for>\n'
+    '            </div>\n'
+    # Chấp thuận điều khoản của ĐƠN HÀNG — giống khung ở hồ sơ thành viên.
+    '\n            <div style="height:1px;background:rgba(154,163,176,.25)"></div>\n\n'
+    '            <div style="display:flex;flex-direction:column;gap:var(--s3);font-size:13px">\n'
+    '              <div style="font-size:12px;color:var(--c5);text-transform:uppercase;letter-spacing:.04em">Chấp thuận điều khoản</div>\n'
+    '              <div style="border:1px solid rgba(47,122,72,.35);background:rgba(47,122,72,.08);border-radius:var(--r-md);'
+    'padding:var(--s5);display:flex;flex-direction:column;gap:var(--s3)">\n'
+    + ''.join('                <div style="display:flex;justify-content:space-between;gap:var(--s5)"><span style="color:var(--c5);flex:none">%s</span>'
+              '<span style="%s">{{selectedOrder.%s}}</span></div>\n' % row for row in [
+                  ("Văn bản", "color:var(--c2);text-align:right", "tncDoc"),
+                  ("Phiên bản HOMI365", "font-weight:600;font-family:monospace", "tncVersion"),
+                  ("Thời điểm đồng ý", "font-weight:600;font-family:monospace", "tncAt"),
+                  ("Địa chỉ IP", "font-weight:600;font-family:monospace", "tncIp"),
+                  ("Định danh", "color:var(--c2);text-align:right;font-family:monospace", "tncUser")]) +
+    '                <div style="font-size:11px;color:var(--c5);line-height:1.6">Bằng chứng khách chấp thuận khi mua gói '
+    '(gồm cả quyền lợi bảo hiểm kèm gói), phục vụ đối chiếu khi khách khiếu nại hoặc cơ quan chức năng kiểm tra.</div>\n'
+    '              </div>\n'
+    '            </div>\n')
+MARKUP_1010 += [
+    ('>Phiên bản T&amp;C</span>', '>Phiên bản HOMI365</span>', None, 'all'),
+    ('TECHCOMBANK - 0009383764899', 'TECHCOMBANK - 79365'),
+    # KH (10/10, lần 2): đặt ngay dưới khung gói HOMI365-01, trên khung Thanh toán.
+    ('{{pkg.price}}</span>\n            </label>\n          </sc-for>\n        </div>',
+     '{{pkg.price}}</span>\n            </label>\n          </sc-for>\n        </div>' + A1_HEALTH),
+    ('{{selectedOrder.address}}</span></div>\n            </div>\n',
+     '{{selectedOrder.address}}</span></div>\n            </div>\n' + _B6_HEALTH),
+]
+_HQ_JS = _json.dumps(HEALTH_Q, ensure_ascii=False)
+JS_1010 += [
+    ("    bankQuery: '', bankOpen: false, bankManual: false, bankManualText: '',",
+     "    bankQuery: '', bankOpen: false, bankManual: false, bankManualText: '', buyHealth: {},"),
+    ("      bankModeLink: s.bankManual ? 'Chọn từ danh sách' : 'Nhập tay',",
+     "      bankModeLink: s.bankManual ? 'Chọn từ danh sách' : 'Nhập tay',\n"
+     "      // (10/10) Thông tin sức khỏe: mỗi mục chọn Không hoặc Có (bấm lại để bỏ chọn).\n"
+     "      healthRows: this.HEALTH_Q.map((q, i) => { const v = (s.buyHealth || {})[i];\n"
+     "        const set = (x) => this.setState({ buyHealth: { ...(s.buyHealth || {}), [i]: v === x ? undefined : x } });\n"
+     "        const box = (on) => on ? ['#1E3A66', '#1E3A66', '✓'] : ['rgba(154,163,176,.8)', 'transparent', ''];\n"
+     "        const [nb, nbg, nm] = box(v === 'no'), [yb, ybg, ym] = box(v === 'yes');\n"
+     "        return { no: i + 1, q, onNo: () => set('no'), onYes: () => set('yes'),\n"
+     "          noBorder: nb, noBg: nbg, noMark: nm, yesBorder: yb, yesBg: ybg, yesMark: ym }; }),"),
+    ("  makeOrders() {",
+     "  // (10/10) Thông tin sức khỏe cá nhân khách khai lúc mua (A1), lưu theo đơn.\n"
+     "  HEALTH_Q = " + _HQ_JS + ";\n"
+     "  ORDER_HEALTH = { DH923983: ['no','no','no','no'], DH100511: ['no','yes','no','no'],\n"
+     "                   DH100234: ['no','no','no','no'], DH100088: ['no','no','no','no'] };\n"
+     "  makeOrders() {"),
+    ("        activationCodeLabel: selOrderRaw.activationCode || '— chưa cấp —',",
+     "        activationCodeLabel: selOrderRaw.activationCode || '— chưa cấp —',\n"
+     "        healthRows: this.HEALTH_Q.map((q, i) => { const v = (this.ORDER_HEALTH[selOrderRaw.id] || [])[i];\n"
+     "          return { no: i + 1, q, label: v === 'yes' ? 'Có' : v === 'no' ? 'Không' : 'Chưa đánh dấu',\n"
+     "            color: v === 'yes' ? '#C0392B' : v === 'no' ? 'var(--c1)' : 'var(--c5)' }; }),\n"
+     "        // (10/10) Lưu vết chấp thuận Chính sách mua hàng khi khách đặt đơn.\n"
+     "        tncDoc: 'Chính sách mua hàng & bảo mật dữ liệu', tncVersion: 'v1.0',\n"
+     "        tncAt: selOrderRaw.date + ':04', tncIp: '113.161.' + (40 + selOrderRaw.id.length) + '.' + (+selOrderRaw.id.slice(-3) % 250),\n"
+     "        tncUser: selOrderRaw.id + ' · ' + selOrderRaw.phone,"),
+]
+_patch_screens_1010a = patch_screens
+
+
+def patch_screens(screens):  # noqa: F811
+    screens = _patch_screens_1010a(screens)
+    for sc in screens:
+        if sc["code"] == "A1":
+            sc["states"].append(("suc-khoe", "Thông tin sức khỏe — khách đã đánh dấu",
+                                 {"buyStep": "form", "buyerPhone": "0900000000",
+                                  "buyHealth": {"0": "no", "1": "yes", "2": "no", "3": "no"}}))
+    return screens
+
+
+
+# Ghi chú DIFF cho đợt 10/10 (chèn trước dòng trống cuối bảng mục 22).
+DIFF_0910[-1:-1] = [
+    "| A1 header (10/10) | Bỏ tiêu đề \"Anh chị đã có tài khoản\" ở khung gợi ý (giữ hướng dẫn + nút "
+    "Đăng nhập / Bỏ qua / Dùng số khác). Chỉ còn 2 câu: \"Vui lòng nhập số điện thoại để kiểm tra tài khoản\" "
+    "trước ô SĐT và \"Anh chị chưa có tài khoản, vui lòng nhập thông tin để mua hàng\" khi SĐT mới. |",
+    "| A1, A2 · Ngân hàng (10/10) | Danh sách theo file Techcombank `DomesticBeneficiaryBank.xlsx` "
+    "(sheet External batch payment, 111 ngân hàng, giữ nguyên tên để khớp file chi trả; bỏ Kho bạc, NHNN, "
+    "Quỹ TDCS) — `tools/banks_tcb.py`; bỏ gọi API VietQR. Thêm link \"Nhập tay\" → ô nhập tên ngân hàng + "
+    "chi nhánh (`a1-buy.html#ngan-hang-nhap-tay`). |",
+    "| A1 · Sức khỏe (10/10) | Khung \"Thông tin sức khỏe cá nhân\" ngay dưới khung gói HOMI365-01: 4 mục, "
+    "mỗi mục tick Không / Có (`#suc-khoe`). Đơn hàng lưu lại; B6 chi tiết đơn hiện từng mục, \"Có\" tô đỏ. |",
+    "| B6 · Chấp thuận điều khoản (10/10) | Chi tiết đơn có khung Chấp thuận điều khoản như hồ sơ thành viên: "
+    "văn bản, Phiên bản HOMI365, thời điểm đồng ý, IP, định danh (mã đơn · SĐT). Đổi nhãn \"Phiên bản T&C\" "
+    "→ \"Phiên bản HOMI365\" ở cả B2. |",
+    "| A1 · QR (10/10) | Số tài khoản nhận: TECHCOMBANK - 79365 (CONG TY CO PHAN GIAI PHAP VA DICH VU HOMI365). |",
+]
+
+MARKUP.extend(MARKUP_1010)
+JS.extend(JS_1010)

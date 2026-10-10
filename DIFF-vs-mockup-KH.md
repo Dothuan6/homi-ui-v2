@@ -481,10 +481,16 @@ Cả A1 và A2: ô đồng ý chỉ mở khi **kéo đọc hết** khung; bấm 
 | A2 | Tên màn "Đăng ký thành viên"; "Số tài khoản nhận ưu đãi"; SĐT + email tự điền từ đơn mua (chỉ đọc). |
 | A1, A2 | Tỉnh/Phường/Ngân hàng/Giới tính để trống, không chọn sẵn; placeholder mẫu: dd/mm/yyyy, VD: NGUYEN VAN AN, VD: Nguyễn Văn A, VD: Cục Cảnh sát QLHC về TTXH. |
 | A3 | Có yêu cầu đổi điểm đang mở thì số đó hiện ở "Đang chờ duyệt" và trừ khỏi "Số dư khả dụng"; không có yêu cầu thì "Đang chờ duyệt" = 0đ. |
+| A1 header | Trước ô SĐT có câu "Vui lòng nhập số điện thoại để kiểm tra tài khoản". SĐT mới → dưới ô báo "Anh chị chưa có tài khoản, vui lòng nhập thông tin để mua hàng" và mở form (10/10). |
 | B3 | Cột "Khoản thưởng hiện tại" → "Số dư khả dụng". |
 | B6 | Cột Nội dung 1 dòng, cắt chữ, rê chuột xem đủ. |
 | B7 | Mở mặc định với vai Head; thêm trạng thái vai Admin (không có quyền). Sửa mô tả vai trò. |
 | B8 | Tab File: "Bổ nhiệm đặc biệt · Lê Văn Cường". |
+| A1 header (10/10) | Bỏ tiêu đề "Anh chị đã có tài khoản" ở khung gợi ý (giữ hướng dẫn + nút Đăng nhập / Bỏ qua / Dùng số khác). Chỉ còn 2 câu: "Vui lòng nhập số điện thoại để kiểm tra tài khoản" trước ô SĐT và "Anh chị chưa có tài khoản, vui lòng nhập thông tin để mua hàng" khi SĐT mới. |
+| A1, A2 · Ngân hàng (10/10) | Danh sách theo file Techcombank `DomesticBeneficiaryBank.xlsx` (sheet External batch payment, 111 ngân hàng, giữ nguyên tên để khớp file chi trả; bỏ Kho bạc, NHNN, Quỹ TDCS) — `tools/banks_tcb.py`; bỏ gọi API VietQR. Thêm link "Nhập tay" → ô nhập tên ngân hàng + chi nhánh (`a1-buy.html#ngan-hang-nhap-tay`). |
+| A1 · Sức khỏe (10/10) | Khung "Thông tin sức khỏe cá nhân" ngay dưới khung gói HOMI365-01: 4 mục, mỗi mục tick Không / Có (`#suc-khoe`). Đơn hàng lưu lại; B6 chi tiết đơn hiện từng mục, "Có" tô đỏ. |
+| B6 · Chấp thuận điều khoản (10/10) | Chi tiết đơn có khung Chấp thuận điều khoản như hồ sơ thành viên: văn bản, Phiên bản HOMI365, thời điểm đồng ý, IP, định danh (mã đơn · SĐT). Đổi nhãn "Phiên bản T&C" → "Phiên bản HOMI365" ở cả B2. |
+| A1 · QR (10/10) | Số tài khoản nhận: TECHCOMBANK - 79365 (CONG TY CO PHAN GIAI PHAP VA DICH VU HOMI365). |
 
 ## Ghi chú
 

@@ -98,7 +98,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           <div style="height:1px;background:rgba(154,163,176,.25);margin:var(--s2) 0"></div>
           <div style="font-size:14px;font-weight:700;color:var(--c1)">Thông tin nhận ưu đãi (khi đạt điều kiện)</div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngân hàng (*)</label>
-            <div style="position:relative">
+            <sc-if value="{{bankPick}}" hint-placeholder-val="{{true}}"><div style="position:relative">
                 <input type="text" value="{{bankQuery}}" sc-camel-on-change="{{setBankQuery}}" sc-camel-on-click="{{toggleBank}}" placeholder="Chọn ngân hàng" style="width:100%;height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
                 <sc-if value="{{bankOpen}}" hint-placeholder-val="{{false}}">
                   <div style="position:absolute;left:0;right:0;top:48px;z-index:60;background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:260px;overflow-y:auto">
@@ -110,7 +110,9 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
                     </sc-if>
                   </div>
                 </sc-if>
-              </div>
+              </div></sc-if>
+              <sc-if value="{{bankManual}}" hint-placeholder-val="{{false}}"><input type="text" placeholder="VD: NH TMCP ABC — CN Quận 1, TP.HCM" value="{{bankManualText}}" sc-camel-on-change="{{setBankManualText}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;width:100%"></sc-if>
+              <div style="font-size:12px;color:var(--c5)">{{bankModeHint}} <span sc-camel-on-click="{{toggleBankManual}}" style="color:var(--c6);font-weight:600;cursor:pointer;text-decoration:underline">{{bankModeLink}}</span></div>
           </div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số tài khoản nhận ưu đãi (*)</label><input type="text" placeholder="Số tài khoản ngân hàng" value="{{buyerBankAccount}}" sc-camel-on-change="{{setBuyerBankAccount}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"><div style="font-size:11px;color:var(--c5)">Chỉ hiển thị đầy đủ trong khu vực quản trị nội bộ.</div></div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Tên chủ tài khoản (*)</label><input type="text" placeholder="VD: NGUYEN VAN AN" value="{{accountHolder}}" sc-camel-on-change="{{setAccountHolder}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px;text-transform:uppercase" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"><div style="font-size:11px;color:var(--c5);line-height:1.5">Viết hoa, không dấu — hệ thống tự chuẩn hoá khi bạn gõ.</div></div>
@@ -263,7 +265,7 @@ class Component extends DCLogic {
     orderActivationCode: '', orderCodeError: '',
     copyPersonalLabel: 'Copy link',
     banks: null, provinceData: null,
-    bankQuery: '', bankOpen: false,
+    bankQuery: '', bankOpen: false, bankManual: false, bankManualText: '', buyHealth: {},
     provinceQuery: '', provinceOpen: false,
     wardQuery: '', wardOpen: false,
     accountHolder: '', buyTcChecked: false,
@@ -324,7 +326,7 @@ class Component extends DCLogic {
       buyerPhone: phone, buyPhoneInput: phone, buyerName: p.buyerName, buyerEmail: p.buyerEmail,
       buyerCccd: p.buyerCccd, buyerAddress: p.buyerAddress, buyerDob: p.buyerDob,
       buyerBankAccount: p.buyerBankAccount, accountHolder: p.accountHolder,
-      provinceQuery: 'Thành phố Hồ Chí Minh', wardQuery: 'Phường Bình Trưng', bankQuery: 'Vietcombank' };
+      provinceQuery: 'Thành phố Hồ Chí Minh', wardQuery: 'Phường Bình Trưng', bankQuery: 'NGOAI THUONG VN (VCB)' };
   }
 
   // (20) Mục 3 — người mua phải từ 18 đến 100 tuổi. Chỉ xét khi đã gõ đủ
@@ -488,6 +490,10 @@ class Component extends DCLogic {
 
   ORDER_FILTERS = [['all','Tất cả'],['order_pending','Chờ đối soát'],['order_paid','Đã thanh toán'],['order_rejected','Từ chối']];
 
+  // (10/10) Thông tin sức khỏe cá nhân khách khai lúc mua (A1), lưu theo đơn.
+  HEALTH_Q = ["Người bị bệnh tâm thần, bệnh phong, bệnh ung thư;", "Người bị tàn tật hoặc thương tật vĩnh viễn từ 50% trở lên;", "Người đang trong thời gian điều trị nội trú ốm đau, bệnh tật, tai nạn;", "Người mất năng lực hoặc bị hạn chế năng lực hành vi dân sự."];
+  ORDER_HEALTH = { DH923983: ['no','no','no','no'], DH100511: ['no','yes','no','no'],
+                   DH100234: ['no','no','no','no'], DH100088: ['no','no','no','no'] };
   makeOrders() {
     const raw = [
       { id:'DH923983', buyer:'Nguyễn Văn A', phone:'0901111111', email:'nguyenvana@gmail.com',
@@ -529,7 +535,8 @@ class Component extends DCLogic {
   // --- Danh sách ngân hàng & địa giới hành chính -------------------------
   // Nạp từ API công khai lúc khởi động; hỏng mạng thì rơi về danh sách rút gọn
   // bên dưới để prototype vẫn mở được bằng file://.
-  BANKS_FALLBACK = ['Vietcombank — NH TMCP Ngoại thương Việt Nam','Techcombank — NH TMCP Kỹ thương Việt Nam','BIDV — NH Đầu tư và Phát triển Việt Nam','VietinBank — NH TMCP Công thương Việt Nam','Agribank — NH NN&PTNT Việt Nam','MB Bank — NH TMCP Quân đội','ACB — NH TMCP Á Châu','VPBank — NH TMCP Việt Nam Thịnh Vượng','Sacombank — NH TMCP Sài Gòn Thương Tín','TPBank — NH TMCP Tiên Phong','HDBank — NH TMCP Phát triển TP.HCM','SHB — NH TMCP Sài Gòn – Hà Nội','VIB — NH TMCP Quốc tế Việt Nam','MSB — NH TMCP Hàng Hải','OCB — NH TMCP Phương Đông','SeABank — NH TMCP Đông Nam Á','Eximbank — NH TMCP Xuất Nhập khẩu','LPBank — NH TMCP Lộc Phát Việt Nam','Nam A Bank — NH TMCP Nam Á','BVBank — NH TMCP Bản Việt'];
+  // (10/10) Theo DomesticBeneficiaryBank.xlsx (Techcombank) — xem tools/banks_tcb.py
+  BANKS_FALLBACK = ["NH TMCP KY THUONG VN", "A CHAU (ACB)", "AGRICULTURAL BANK OF CHINA LIMITED CN HA NOI", "AN BINH (AB BANK)", "ANZ VN", "BAC A (NASB)", "BAN VIET (VIETCAPITALBANK)", "BANGKOK BANK CN HA NOI", "BANGKOK BANK TP HO CHI MINH", "BANK OF CHINA", "BANK OF COMMUNICATIONS", "BANK OF INDIA CN TP HO CHI MINH", "BAO VIET (BAOVIETBANK)", "BNP PARIBAS CN HA NOI", "BNP PARIBAS CN HCM", "BPCEIOM", "BUSAN CN TP HO CHI MINH", "LOC PHAT VIET NAM (LPB)", "CATHAY", "CHINA CONSTRUCTION CORPORATION", "CHINA TRUST COMMERCIAL (CTBC)", "CHINH SACH XA HOI (VBSP)", "CIMB VIET NAM", "CITIBANK HA NOI", "CITIBANK HO CHI MINH", "CONG THUONG VN (VIETINBANK)", "NGAN HANG iM CN TP HO CHI MINH", "DAI CHUNG VN (PVCOMBANK)", "NGAN HANG TNHH MTV VIET NAM HIEN DAI (MBV)", "DAU KHI TOAN CAU (GPBANK)", "DAU TU VA PHAT TRIEN VN ( BIDV)", "DBS BANK LTD", "DEUTSCHE", "VIKKI BANK (VIKKI)", "DONG NAM A (SEA BANK)", "DT VA PT CAMPUCHIA (BIDC) CN HN", "DT VA PT CAMPUCHIA (BIDC) CN HCM", "E.SUN CN DONG NAI", "FIRST COMMERCIAL BANK CN HA NOI", "FIRST COMMERCIAL BANK CN HCM", "HANG HAI (MARITIMEBANK-MSB)", "HONG LEONG VIET NAM", "HOP TAC (CO-OPBANK)", "HSBC", "HUA NAN COMMERCIAL", "ICBC HA NOI", "INDOVINA", "INDUSTRIAL BANK OF KOREA HA NOI (IBK)", "INDUSTRIAL BANK OF KOREA HO CHI MINH (IBK)", "JP Morgan Chase", "KEB HANA CN HA NOI", "KEB HANA CN TP HCM", "KIEN LONG (KIENLONGBANK)", "KOOKMIN CHI NHANH HA NOI", "KOOKMIN CN TP HO CHI MINH", "LD VIET NGA (VRB)", "MAY BANK HO CHI MINH", "MAY BANK HA NOI", "MEGA ICBC", "MIZUHO CN HA NOI", "MIZUHO CN HO CHI MINH", "MUFG Bank Ltd CN HA NOI", "MUFG Bank Ltd CN HCM", "NAM A", "NGOAI THUONG VN (VCB)", "NONG NGHIEP VA PTNT VN (AGRIBANK)", "NH DAI CHUNG TNHH KASIKORNBANK CN TP HCM", "PHAT TRIEN VIET NAM (VDB)", "PHAT TRIEN TP HCM (HDBANK)", "QUAN DOI (MB)", "QUOC TE (VIB)", "VIET NAM THINH VUONG (VPBANK)", "NONG HYUP CN HA NOI", "OVERSEA-CHINESE (OCBC)", "PHUONG DONG (OCB)", "PUBLIC VIET NAM", "QUOC DAN (NCB)", "SAI GON - HA NOI (SHB)", "SAI GON (SCB)", "SAI GON CONG THUONG", "SAI GON THUONG TIN (SACOMBANK)", "SHINHAN VIET NAM", "SINOPAC", "STANDARD CHARTERED", "TAIPEI FUBON CN BINH DUONG", "TAIPEI FUBON CN HA NOI", "TAIPEI FUBON CN HCM", "THE SHANGHAI COMMERCIAL AND SAVING", "THE SIAM COMMERCIAL BANK PUBLIC", "TIEN PHONG (TPBANK)", "UNITED OVERSEAS BANK VIET NAM", "VIET A (VIETABANK)", "VIET HOA", "VIET NAM THUONG TIN (VIETBANK)", "WOORI VIET NAM", "NGAN HANG TMCP THINH VUONG VA PHAT TRIEN (PGBANK)", "NGOAI THUONG CONG NGHE SO (VCBNEO)", "XUAT NHAP KHAU (EXIMBANK)", "NGAN HANG SO CAKE BY VPBANK", "NGAN HANG SO UBANK BY VPBANK", "NGAN HANG SO TIMO BY BAN VIET Bank", "NGAN HANG SO UMEE BY KIENLONGBANK", "TRUNG TAM DICH VU TAI CHINH SO VNPT", "Viettel Money", "CONG TY TAI CHINH TNHH MTV MIRAE ASSET", "NGAN HANG SO LIOBANK BY OCB", "KENH SO HOA VIKKI TRUC THUOC HDBANK", "CONG TY TAI CHINH TNHH MTV SHINHAN VIET NAM", "SUMITOMO MITSUI BANKING CORP HCM", "SUMITOMO MITSUI CN HA NOI", "PVCOMBANK PAY"];
 
   PROVINCES_FALLBACK = [
     { name: 'Thành phố Hồ Chí Minh', wards: ['Phường Bến Thành','Phường Sài Gòn','Phường Cầu Ông Lãnh','Phường Bàn Cờ','Phường Chợ Lớn','Phường Bình Trưng','Phường An Khánh','Phường Thủ Đức','Phường Hoà Hưng','Phường Tân Sơn Nhất'] },
@@ -647,11 +654,7 @@ class Component extends DCLogic {
     // Nạp danh sách ngân hàng và địa giới hành chính từ API công khai.
     // Lỗi mạng thì giữ nguyên danh sách rút gọn, prototype vẫn dùng được.
     try {
-      fetch('https://api.vietqr.io/v2/banks')
-        .then(r => r.json())
-        .then(j => { const b = (j && j.data || []).map(x => x.shortName + ' — ' + x.name);
-                     if (b.length) this.setState({ banks: b }); })
-        .catch(() => {});
+      // (10/10) Ngân hàng lấy theo file Techcombank (BANKS_FALLBACK), không gọi API.
       fetch('https://provinces.open-api.vn/api/v2/?depth=2')
         .then(r => r.json())
         .then(j => { const p = (j || []).map(x => ({ name: x.name,
@@ -1295,6 +1298,13 @@ class Component extends DCLogic {
       const canRejectO = selOrderRaw.status === 'order_pending';
       selectedOrder = { ...selOrderRaw, badgeBg: obg, badgeColor: ocolor, statusLabel: olabel,
         activationCodeLabel: selOrderRaw.activationCode || '— chưa cấp —',
+        healthRows: this.HEALTH_Q.map((q, i) => { const v = (this.ORDER_HEALTH[selOrderRaw.id] || [])[i];
+          return { no: i + 1, q, label: v === 'yes' ? 'Có' : v === 'no' ? 'Không' : 'Chưa đánh dấu',
+            color: v === 'yes' ? '#C0392B' : v === 'no' ? 'var(--c1)' : 'var(--c5)' }; }),
+        // (10/10) Lưu vết chấp thuận Chính sách mua hàng khi khách đặt đơn.
+        tncDoc: 'Chính sách mua hàng & bảo mật dữ liệu', tncVersion: 'v1.0',
+        tncAt: selOrderRaw.date + ':04', tncIp: '113.161.' + (40 + selOrderRaw.id.length) + '.' + (+selOrderRaw.id.slice(-3) % 250),
+        tncUser: selOrderRaw.id + ' · ' + selOrderRaw.phone,
         canConfirm: canConfirmO, canReject: canRejectO, canAct: canConfirmO || canRejectO,
         needsCodePick: canConfirmO,
         isRejected: selOrderRaw.status === 'order_rejected',
@@ -1320,7 +1330,8 @@ class Component extends DCLogic {
       buyHeaderPhone: s.buyStep === 'form' ? (s.buyerPhone || s.buyPhoneInput || '') : (s.buyPhoneInput || ''),
       buyHeaderAsk: s.buyStep !== 'form' && !s.buyPhoneFound,
       buyChangePhone: () => this.setState({ buyStep: 'phone', buyPhoneInput: '',
-        buyPhoneFound: false, buyPhoneError: '', buyMode: '' }),
+        buyPhoneFound: false, buyPhoneError: '', buyMode: '', buyPhoneNew: false }),
+      buyPhoneNewNote: s.buyStep === 'form' && !!s.buyPhoneNew,
       buyPhoneInput: s.buyPhoneInput,
       setBuyPhoneInput: (e) => this.setState({
         buyPhoneInput: (e.target.value || '').replace(/\D/g, '').slice(0, 10),
@@ -1335,7 +1346,7 @@ class Component extends DCLogic {
         if (!ph) { this.setState({ buyPhoneError: 'Vui lòng nhập số điện thoại.' }); return; }
         if (!/^0\d{9}$/.test(ph)) { this.setState({ buyPhoneError: 'Số điện thoại gồm 10 chữ số, bắt đầu bằng 0.' }); return; }
         if (this.REGISTERED_PHONES.includes(ph)) { this.setState({ buyPhoneFound: true, buyPhoneError: '' }); return; }
-        this.setState({ buyStep: 'form', buyerPhone: ph, buyMode: '' });
+        this.setState({ buyStep: 'form', buyerPhone: ph, buyMode: '', buyPhoneNew: true });
       },
       buyGoLogin: () => GO('C1', { agentLoginStep: 'login', agentPhone: s.buyPhoneInput,
         loginPhoneChecked: true, returnTo: 'A1' }),
@@ -2015,10 +2026,23 @@ class Component extends DCLogic {
 
       // --- Dropdown có tìm kiếm: ngân hàng / tỉnh thành / phường xã --------
       bankQuery: s.bankQuery, bankOpen: s.bankOpen,
+      // (10/10) Không có trong danh sách -> nhập tay tên ngân hàng + chi nhánh.
+      bankPick: !s.bankManual, bankManual: !!s.bankManual, bankManualText: s.bankManualText || '',
+      setBankManualText: (e) => this.setState({ bankManualText: e.target.value }),
+      toggleBankManual: () => this.setState({ bankManual: !s.bankManual, bankOpen: false }),
+      bankModeHint: s.bankManual ? 'Nhập đúng tên ngân hàng và chi nhánh.' : 'Không tìm thấy ngân hàng?',
+      bankModeLink: s.bankManual ? 'Chọn từ danh sách' : 'Nhập tay',
+      // (10/10) Thông tin sức khỏe: mỗi mục chọn Không hoặc Có (bấm lại để bỏ chọn).
+      healthRows: this.HEALTH_Q.map((q, i) => { const v = (s.buyHealth || {})[i];
+        const set = (x) => this.setState({ buyHealth: { ...(s.buyHealth || {}), [i]: v === x ? undefined : x } });
+        const box = (on) => on ? ['#1E3A66', '#1E3A66', '✓'] : ['rgba(154,163,176,.8)', 'transparent', ''];
+        const [nb, nbg, nm] = box(v === 'no'), [yb, ybg, ym] = box(v === 'yes');
+        return { no: i + 1, q, onNo: () => set('no'), onYes: () => set('yes'),
+          noBorder: nb, noBg: nbg, noMark: nm, yesBorder: yb, yesBg: ybg, yesMark: ym }; }),
       toggleBank: () => this.setState({ bankOpen: !s.bankOpen }),
       setBankQuery: (e) => this.setState({ bankQuery: e.target.value, bankOpen: true }),
       bankOptions: bankList.filter(b => norm(b).includes(norm(s.bankQuery)) || s.bankQuery === b)
-        .slice(0, 60).map(b => ({ label: b,
+        .slice(0, 200).map(b => ({ label: b,
           onPick: () => this.setState({ bankQuery: b, bankOpen: false }) })),
       bankEmpty: bankList.filter(b => norm(b).includes(norm(s.bankQuery))).length === 0,
       bankCount: bankList.length,
