@@ -487,7 +487,7 @@ Cả A1 và A2: ô đồng ý chỉ mở khi **kéo đọc hết** khung; bấm 
 | B7 | Mở mặc định với vai Head; thêm trạng thái vai Admin (không có quyền). Sửa mô tả vai trò. |
 | B8 | Tab File: "Bổ nhiệm đặc biệt · Lê Văn Cường". |
 | A1 header (10/10) | Bỏ tiêu đề "Anh chị đã có tài khoản" ở khung gợi ý (giữ hướng dẫn + nút Đăng nhập / Bỏ qua / Dùng số khác). Chỉ còn 2 câu: "Vui lòng nhập số điện thoại để kiểm tra tài khoản" trước ô SĐT và "Anh chị chưa có tài khoản, vui lòng nhập thông tin để mua hàng" khi SĐT mới. |
-| A1, A2 · Ngân hàng (10/10) | Danh sách theo file Techcombank `DomesticBeneficiaryBank.xlsx` (sheet External batch payment, 111 ngân hàng, giữ nguyên tên để khớp file chi trả; bỏ Kho bạc, NHNN, Quỹ TDCS) — `tools/banks_tcb.py`; bỏ gọi API VietQR. Thêm link "Nhập tay" → ô nhập tên ngân hàng + chi nhánh (`a1-buy.html#ngan-hang-nhap-tay`). |
+| A1, A2 · Ngân hàng (10/10) | Danh sách theo file Techcombank `DomesticBeneficiaryBank.xlsx` (sheet External batch payment, 111 ngân hàng, giữ nguyên tên để khớp file chi trả; bỏ Kho bạc, NHNN, Quỹ TDCS) — `tools/banks_tcb.py`; bỏ gọi API VietQR. Dưới ô chọn có luôn ô nhập tay tên ngân hàng + chi nhánh (`a1-buy.html#ngan-hang-nhap-tay`). |
 | A1 · Sức khỏe (10/10) | Khung "Thông tin sức khỏe cá nhân" ngay dưới khung gói HOMI365-01: 4 mục, mỗi mục tick Không / Có (`#suc-khoe`). Đơn hàng lưu lại; B6 chi tiết đơn hiện từng mục, "Có" tô đỏ. |
 | B6 · Chấp thuận điều khoản (10/10) | Chi tiết đơn có khung Chấp thuận điều khoản như hồ sơ thành viên: văn bản, Phiên bản HOMI365, thời điểm đồng ý, IP, định danh (mã đơn · SĐT). Đổi nhãn "Phiên bản T&C" → "Phiên bản HOMI365" ở cả B2. |
 | A1 · QR (10/10) | Số tài khoản nhận: TECHCOMBANK - 79365 (CONG TY CO PHAN GIAI PHAP VA DICH VU HOMI365). |

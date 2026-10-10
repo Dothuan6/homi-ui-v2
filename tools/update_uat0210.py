@@ -2419,22 +2419,15 @@ _BANK_STATE = ("    bankQuery: '', bankOpen: false,",
 _BANK_INPUT = ('height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);'
                'border-radius:var(--r-md);font-size:14px;width:100%')
 MARKUP_1010 = [
-    ('<div style="position:relative">\n                <input type="text" value="{{bankQuery}}"',
-     '<sc-if value="{{bankPick}}" hint-placeholder-val="{{true}}">'
-     '<div style="position:relative">\n                <input type="text" value="{{bankQuery}}"',
-     None, 'all'),
     ('<sc-if value="{{bankEmpty}}" hint-placeholder-val="{{false}}">\n'
      '                      <div style="padding:var(--s5);font-size:13px;color:var(--c5)">Không tìm thấy kết quả phù hợp</div>\n'
      '                    </sc-if>\n                  </div>\n                </sc-if>\n              </div>',
      '<sc-if value="{{bankEmpty}}" hint-placeholder-val="{{false}}">\n'
      '                      <div style="padding:var(--s5);font-size:13px;color:var(--c5)">Không tìm thấy kết quả phù hợp</div>\n'
-     '                    </sc-if>\n                  </div>\n                </sc-if>\n              </div></sc-if>\n'
-     '              <sc-if value="{{bankManual}}" hint-placeholder-val="{{false}}">'
-     '<input type="text" placeholder="VD: NH TMCP ABC — CN Quận 1, TP.HCM" value="{{bankManualText}}" '
-     'sc-camel-on-change="{{setBankManualText}}" style="' + _BANK_INPUT + '"></sc-if>\n'
-     '              <div style="font-size:12px;color:var(--c5)">{{bankModeHint}} '
-     '<span sc-camel-on-click="{{toggleBankManual}}" style="color:var(--c6);font-weight:600;cursor:pointer;'
-     'text-decoration:underline">{{bankModeLink}}</span></div>',
+     '                    </sc-if>\n                  </div>\n                </sc-if>\n              </div>\n'
+     # (10/10, lần 2) KH: ô nhập tay hiện luôn ngay dưới ô chọn, không cần bấm link.
+     '              <input type="text" class="bank-manual" placeholder="Hoặc nhập tay: tên ngân hàng, chi nhánh" '
+     'value="{{bankManualText}}" sc-camel-on-change="{{setBankManualText}}" style="' + _BANK_INPUT + '">',
      None, 'all'),
 ]
 JS_1010 = [
@@ -2481,7 +2474,7 @@ def patch_screens(screens):  # noqa: F811
             sc["states"] = [(h, lb, dict(st, bankQuery="NGOAI THUONG VN (VCB)") if st.get("bankQuery") else st)
                             for h, lb, st in sc["states"]]
             sc["states"].append(("ngan-hang-nhap-tay", "Ngân hàng không có trong danh sách — nhập tay",
-                                 {"buyStep": "form", "buyerPhone": "0900000000", "bankManual": True,
+                                 {"buyStep": "form", "buyerPhone": "0900000000",
                                   "bankManualText": "QUY TDCS PHUONG 1 — TP Cao Lanh"}))
     return screens
 
@@ -2601,7 +2594,7 @@ DIFF_0910[-1:-1] = [
     "trước ô SĐT và \"Anh chị chưa có tài khoản, vui lòng nhập thông tin để mua hàng\" khi SĐT mới. |",
     "| A1, A2 · Ngân hàng (10/10) | Danh sách theo file Techcombank `DomesticBeneficiaryBank.xlsx` "
     "(sheet External batch payment, 111 ngân hàng, giữ nguyên tên để khớp file chi trả; bỏ Kho bạc, NHNN, "
-    "Quỹ TDCS) — `tools/banks_tcb.py`; bỏ gọi API VietQR. Thêm link \"Nhập tay\" → ô nhập tên ngân hàng + "
+    "Quỹ TDCS) — `tools/banks_tcb.py`; bỏ gọi API VietQR. Dưới ô chọn có luôn ô nhập tay tên ngân hàng + "
     "chi nhánh (`a1-buy.html#ngan-hang-nhap-tay`). |",
     "| A1 · Sức khỏe (10/10) | Khung \"Thông tin sức khỏe cá nhân\" ngay dưới khung gói HOMI365-01: 4 mục, "
     "mỗi mục tick Không / Có (`#suc-khoe`). Đơn hàng lưu lại; B6 chi tiết đơn hiện từng mục, \"Có\" tô đỏ. |",

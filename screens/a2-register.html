@@ -98,7 +98,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           <div style="height:1px;background:rgba(154,163,176,.25);margin:var(--s2) 0"></div>
           <div style="font-size:14px;font-weight:700;color:var(--c1)">Thông tin nhận ưu đãi (khi đạt điều kiện)</div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Ngân hàng (*)</label>
-            <sc-if value="{{bankPick}}" hint-placeholder-val="{{true}}"><div style="position:relative">
+            <div style="position:relative">
                 <input type="text" value="{{bankQuery}}" sc-camel-on-change="{{setBankQuery}}" sc-camel-on-click="{{toggleBank}}" placeholder="Chọn ngân hàng" style="width:100%;height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
                 <sc-if value="{{bankOpen}}" hint-placeholder-val="{{false}}">
                   <div style="position:absolute;left:0;right:0;top:48px;z-index:60;background:var(--c12);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:260px;overflow-y:auto">
@@ -110,9 +110,8 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
                     </sc-if>
                   </div>
                 </sc-if>
-              </div></sc-if>
-              <sc-if value="{{bankManual}}" hint-placeholder-val="{{false}}"><input type="text" placeholder="VD: NH TMCP ABC — CN Quận 1, TP.HCM" value="{{bankManualText}}" sc-camel-on-change="{{setBankManualText}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;width:100%"></sc-if>
-              <div style="font-size:12px;color:var(--c5)">{{bankModeHint}} <span sc-camel-on-click="{{toggleBankManual}}" style="color:var(--c6);font-weight:600;cursor:pointer;text-decoration:underline">{{bankModeLink}}</span></div>
+              </div>
+              <input type="text" class="bank-manual" placeholder="Hoặc nhập tay: tên ngân hàng, chi nhánh" value="{{bankManualText}}" sc-camel-on-change="{{setBankManualText}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:14px;width:100%">
           </div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Số tài khoản nhận ưu đãi (*)</label><input type="text" placeholder="Số tài khoản ngân hàng" value="{{buyerBankAccount}}" sc-camel-on-change="{{setBuyerBankAccount}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"><div style="font-size:11px;color:var(--c5)">Chỉ hiển thị đầy đủ trong khu vực quản trị nội bộ.</div></div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)"><label style="font-size:14px;font-weight:600;color:var(--c2)">Tên chủ tài khoản (*)</label><input type="text" placeholder="VD: NGUYEN VAN AN" value="{{accountHolder}}" sc-camel-on-change="{{setAccountHolder}}" style="height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:16px;text-transform:uppercase" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)"><div style="font-size:11px;color:var(--c5);line-height:1.5">Viết hoa, không dấu — hệ thống tự chuẩn hoá khi bạn gõ.</div></div>
