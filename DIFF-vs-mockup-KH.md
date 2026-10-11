@@ -491,6 +491,7 @@ Cả A1 và A2: ô đồng ý chỉ mở khi **kéo đọc hết** khung; bấm 
 | A1 · Sức khỏe (10/10) | Khung "Thông tin sức khỏe cá nhân" ngay dưới khung gói HOMI365-01: 4 mục, mỗi mục tick Không / Có (`#suc-khoe`). Đơn hàng lưu lại; B6 chi tiết đơn hiện từng mục, "Có" tô đỏ. |
 | B6 · Chấp thuận điều khoản (10/10) | Chi tiết đơn có khung Chấp thuận điều khoản như hồ sơ thành viên: văn bản, Phiên bản HOMI365, thời điểm đồng ý, IP, định danh (mã đơn · SĐT). Đổi nhãn "Phiên bản T&C" → "Phiên bản HOMI365" ở cả B2. |
 | A1 · QR (10/10) | Số tài khoản nhận: TECHCOMBANK - 79365 (CONG TY CO PHAN GIAI PHAP VA DICH VU HOMI365). |
+| C1 (11/10) | Vào từ form mua hàng: nhập SĐT → mật khẩu → **màn OTP** → xác thực xong mới quay lại form A1 (tự điền) — `c1-login.html#tu-mua-hang-otp`. Bấm "Đăng nhập thành viên HOMI365" giữ flow cũ: đúng mật khẩu vào thẳng dashboard. |
 
 ## Ghi chú
 

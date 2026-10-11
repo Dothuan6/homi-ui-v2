@@ -729,8 +729,9 @@ _JS_PAY_NEW = """      payDisabled: !payOk,
 _JS_LOGIN_OLD = """        if (ph && s.agentPassword === '123456') {
           GO('A3',"""
 _JS_LOGIN_NEW = """        if (ph && s.agentPassword === '123456') {
-          // (20) Gọi từ form mua hàng thì quay lại form, điền sẵn.
-          if (s.returnTo === 'A1') { GO('A1', this.buyCarry(ph)); return; }
+          // (20) Gọi từ form mua hàng: (11/10) đúng mật khẩu vẫn phải qua bước
+          // OTP, xác thực xong mới quay lại form A1 (điền sẵn) — agentOtpConfirm.
+          if (s.returnTo === 'A1') { this.setState({ agentLoginStep: 'otp', agentLoginError: false }); return; }
           GO('A3',"""
 
 _JS_OTP_OLD = "      agentOtpConfirm: () => GO('A3', { agentStage: 'active' }),"
@@ -2602,6 +2603,39 @@ DIFF_0910[-1:-1] = [
     "văn bản, Phiên bản HOMI365, thời điểm đồng ý, IP, định danh (mã đơn · SĐT). Đổi nhãn \"Phiên bản T&C\" "
     "→ \"Phiên bản HOMI365\" ở cả B2. |",
     "| A1 · QR (10/10) | Số tài khoản nhận: TECHCOMBANK - 79365 (CONG TY CO PHAN GIAI PHAP VA DICH VU HOMI365). |",
+]
+
+
+# (11/10) C1 từ form mua hàng: SĐT → mật khẩu → OTP → về A1. Đăng nhập thường giữ flow cũ.
+MARKUP_1010 += [
+    ('Đăng nhập không thành công. Nhập mã OTP đã gửi tới {{agentMaskedPhone}} để tiếp tục.',
+     '{{agentOtpNote}}'),
+]
+JS_1010 += [
+    ("      agentBackToLogin: () => this.setState({ agentLoginStep: 'login' }),",
+     "      agentBackToLogin: () => this.setState({ agentLoginStep: 'login' }),\n"
+     "      agentOtpNote: (s.returnTo === 'A1' && !s.agentLoginError)\n"
+     "        ? 'Nhập mã OTP đã gửi tới ' + (s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123') + ' để hoàn tất đăng nhập và quay lại form mua hàng.'\n"
+     "        : 'Đăng nhập không thành công. Nhập mã OTP đã gửi tới ' + (s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123') + ' để tiếp tục.',"),
+]
+_patch_screens_1110 = patch_screens
+
+
+def patch_screens(screens):  # noqa: F811
+    screens = _patch_screens_1110(screens)
+    for sc in screens:
+        if sc["code"] == "C1":
+            i = [h for h, _, _ in sc["states"]].index("tu-mua-hang") + 1
+            sc["states"].insert(i, ("tu-mua-hang-otp", "Từ form mua hàng — nhập OTP sau mật khẩu, xong quay lại A1",
+                                    {"agentLoginStep": "otp", "agentPhone": "0901234567",
+                                     "loginPhoneChecked": True, "returnTo": "A1"}))
+    return screens
+
+
+DIFF_0910[-1:-1] = [
+    "| C1 (11/10) | Vào từ form mua hàng: nhập SĐT → mật khẩu → **màn OTP** → xác thực xong mới quay lại "
+    "form A1 (tự điền) — `c1-login.html#tu-mua-hang-otp`. Bấm \"Đăng nhập thành viên HOMI365\" giữ flow cũ: "
+    "đúng mật khẩu vào thẳng dashboard. |",
 ]
 
 MARKUP.extend(MARKUP_1010)

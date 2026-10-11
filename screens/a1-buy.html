@@ -1582,8 +1582,9 @@ class Component extends DCLogic {
         // cũng vào dashboard dùng được ngay. 'new' chỉ còn nghĩa là chưa có
         // đơn nào được duyệt nên số dư bằng 0.
         if (ph && s.agentPassword === '123456') {
-          // (20) Gọi từ form mua hàng thì quay lại form, điền sẵn.
-          if (s.returnTo === 'A1') { GO('A1', this.buyCarry(ph)); return; }
+          // (20) Gọi từ form mua hàng: (11/10) đúng mật khẩu vẫn phải qua bước
+          // OTP, xác thực xong mới quay lại form A1 (điền sẵn) — agentOtpConfirm.
+          if (s.returnTo === 'A1') { this.setState({ agentLoginStep: 'otp', agentLoginError: false }); return; }
           GO('A3', { agentStage: this.PENDING_PHONES.includes(ph) ? 'new' : 'active' });
         }
         else { this.setState({ agentLoginError: true, agentLoginStep: 'otp' }); }
@@ -1629,6 +1630,9 @@ class Component extends DCLogic {
       },
       agentMaskedPhone: s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123',
       agentBackToLogin: () => this.setState({ agentLoginStep: 'login' }),
+      agentOtpNote: (s.returnTo === 'A1' && !s.agentLoginError)
+        ? 'Nhập mã OTP đã gửi tới ' + (s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123') + ' để hoàn tất đăng nhập và quay lại form mua hàng.'
+        : 'Đăng nhập không thành công. Nhập mã OTP đã gửi tới ' + (s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123') + ' để tiếp tục.',
       agentOtpConfirm: () => (s.returnTo === 'A1'
         ? GO('A1', this.buyCarry(s.agentPhone.trim()))
         : GO('A3', { agentStage: 'active' })),

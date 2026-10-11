@@ -17,7 +17,7 @@ window.__STATE__ = {"agentLoginStep": "login", "screen": "C1"};
 try { var c = sessionStorage.getItem('__homi_carry');
       if (c) { Object.assign(window.__STATE__, JSON.parse(c)); sessionStorage.removeItem('__homi_carry'); } } catch (e) {}
 // mở thẳng một trạng thái: c1-login.html#mat-khau
-var H = {"mat-khau": {"agentLoginStep": "login", "agentPhone": "0901234567", "loginPhoneChecked": true}, "tu-mua-hang": {"agentLoginStep": "login", "agentPhone": "0901234567", "loginPhoneChecked": true, "returnTo": "A1"}, "chua-du-dk": {"agentLoginStep": "login", "agentPhone": "0900000000", "loginNotEligible": true}, "otp": {"agentLoginStep": "otp"}, "quen-sdt": {"agentLoginStep": "forgot_phone"}, "quen-otp": {"agentLoginStep": "forgot_otp"}, "quen-dat-lai": {"agentLoginStep": "forgot_reset"}, "quen-ok": {"agentLoginStep": "forgot_success"}, "tuyen-tren-chan": {"agentLoginStep": "login", "showUplineBlockedModal": true}}, h = location.hash.slice(1);
+var H = {"mat-khau": {"agentLoginStep": "login", "agentPhone": "0901234567", "loginPhoneChecked": true}, "tu-mua-hang": {"agentLoginStep": "login", "agentPhone": "0901234567", "loginPhoneChecked": true, "returnTo": "A1"}, "tu-mua-hang-otp": {"agentLoginStep": "otp", "agentPhone": "0901234567", "loginPhoneChecked": true, "returnTo": "A1"}, "chua-du-dk": {"agentLoginStep": "login", "agentPhone": "0900000000", "loginNotEligible": true}, "otp": {"agentLoginStep": "otp"}, "quen-sdt": {"agentLoginStep": "forgot_phone"}, "quen-otp": {"agentLoginStep": "forgot_otp"}, "quen-dat-lai": {"agentLoginStep": "forgot_reset"}, "quen-ok": {"agentLoginStep": "forgot_success"}, "tuyen-tren-chan": {"agentLoginStep": "login", "showUplineBlockedModal": true}}, h = location.hash.slice(1);
 if (H[h]) Object.assign(window.__STATE__, H[h]);
 </script>
 <script src="../js/dc-runtime.js"></script>
@@ -77,7 +77,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
 
       <sc-if value="{{isAgentOtpStep}}" hint-placeholder-val="{{false}}">
         <div style="display:flex;flex-direction:column;gap:var(--s8)">
-          <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:var(--c1)">Xác thực số điện thoại</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Đăng nhập không thành công. Nhập mã OTP đã gửi tới {{agentMaskedPhone}} để tiếp tục.</div></div>
+          <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:var(--c1)">Xác thực số điện thoại</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">{{agentOtpNote}}</div></div>
           <div style="display:flex;gap:var(--s3);justify-content:space-between">
             <sc-for list="{{otpBoxes}}" as="box" hint-placeholder-count="6">
               <input type="text" maxlength="1" inputmode="numeric" class="otp-box" style="width:44px;height:52px;text-align:center;font-size:20px;font-weight:700;border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md)" style-focus="border-color:#1E3A66;box-shadow:0 0 0 3px rgba(30,58,102,.25)">
@@ -1550,8 +1550,9 @@ class Component extends DCLogic {
         // cũng vào dashboard dùng được ngay. 'new' chỉ còn nghĩa là chưa có
         // đơn nào được duyệt nên số dư bằng 0.
         if (ph && s.agentPassword === '123456') {
-          // (20) Gọi từ form mua hàng thì quay lại form, điền sẵn.
-          if (s.returnTo === 'A1') { GO('A1', this.buyCarry(ph)); return; }
+          // (20) Gọi từ form mua hàng: (11/10) đúng mật khẩu vẫn phải qua bước
+          // OTP, xác thực xong mới quay lại form A1 (điền sẵn) — agentOtpConfirm.
+          if (s.returnTo === 'A1') { this.setState({ agentLoginStep: 'otp', agentLoginError: false }); return; }
           GO('A3', { agentStage: this.PENDING_PHONES.includes(ph) ? 'new' : 'active' });
         }
         else { this.setState({ agentLoginError: true, agentLoginStep: 'otp' }); }
@@ -1597,6 +1598,9 @@ class Component extends DCLogic {
       },
       agentMaskedPhone: s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123',
       agentBackToLogin: () => this.setState({ agentLoginStep: 'login' }),
+      agentOtpNote: (s.returnTo === 'A1' && !s.agentLoginError)
+        ? 'Nhập mã OTP đã gửi tới ' + (s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123') + ' để hoàn tất đăng nhập và quay lại form mua hàng.'
+        : 'Đăng nhập không thành công. Nhập mã OTP đã gửi tới ' + (s.agentPhone ? s.agentPhone.slice(0, 3) + '•••' + s.agentPhone.slice(-3) : '090•••123') + ' để tiếp tục.',
       agentOtpConfirm: () => (s.returnTo === 'A1'
         ? GO('A1', this.buyCarry(s.agentPhone.trim()))
         : GO('A3', { agentStage: 'active' })),
