@@ -147,6 +147,7 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
           <sc-for list="{{healthRows}}" as="h" hint-placeholder-count="4">
             <div style="display:grid;grid-template-columns:22px 1fr 46px 30px;gap:var(--s3);align-items:center;font-size:13px;color:var(--c2);line-height:1.5;padding-bottom:var(--s3);border-bottom:1px solid rgba(154,163,176,.15)"><div style="font-weight:700;color:var(--c1)">{{h.no}}</div><div>{{h.q}}</div><div style="text-align:center"><span class="health-no" sc-camel-on-click="{{h.onNo}}" style="width:18px;height:18px;border:1.5px solid {{h.noBorder}};border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#FFFFFF;background:{{h.noBg}};cursor:pointer">{{h.noMark}}</span></div><div style="text-align:center"><span class="health-yes" sc-camel-on-click="{{h.onYes}}" style="width:18px;height:18px;border:1.5px solid {{h.yesBorder}};border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#FFFFFF;background:{{h.yesBg}};cursor:pointer">{{h.yesMark}}</span></div></div>
           </sc-for>
+          <sc-if value="{{healthMissing}}" hint-placeholder-val="{{false}}"><div class="health-hint" style="font-size:12px;color:#965C0A;background:rgba(150,92,10,.1);border-radius:var(--r-sm);padding:var(--s3) var(--s4);line-height:1.5">Vui lòng đánh dấu Không / Có cho đủ 4 mục để tiếp tục thanh toán ({{healthDoneCount}}/4).</div></sc-if>
         </div>
 
         <div style="background:var(--c12);border:1px solid rgba(154,163,176,.35);border-radius:var(--r-lg);padding:var(--s7);display:flex;flex-direction:column;gap:var(--s5)">
@@ -836,7 +837,9 @@ class Component extends DCLogic {
 
     // (20) A1 sau UAT 02/10 — tuổi người mua + điều kiện bật nút Thanh toán.
     const buyerDobError = this.dobError(s.buyerDob);
-    const payOk = s.buyTcChecked && s.payStage !== 'sending' && !buyerDobError;
+    // (12/10) Đủ 4 mục Thông tin sức khỏe mới cho thanh toán.
+    const healthDoneCount = [0, 1, 2, 3].filter(i => ['no', 'yes'].includes((s.buyHealth || {})[i])).length;
+    const payOk = s.buyTcChecked && s.payStage !== 'sending' && !buyerDobError && healthDoneCount === 4;
 
     // A2
     const regStepBg = (n) => s.regStep >= n ? '#1E3A66' : 'rgba(154,163,176,.3)';
@@ -2061,6 +2064,7 @@ class Component extends DCLogic {
       toggleBankManual: () => this.setState({ bankManual: !s.bankManual, bankOpen: false }),
       bankModeHint: s.bankManual ? 'Nhập đúng tên ngân hàng và chi nhánh.' : 'Không tìm thấy ngân hàng?',
       bankModeLink: s.bankManual ? 'Chọn từ danh sách' : 'Nhập tay',
+      healthDoneCount, healthMissing: healthDoneCount < 4,
       // (10/10) Thông tin sức khỏe: mỗi mục chọn Không hoặc Có (bấm lại để bỏ chọn).
       healthRows: this.HEALTH_Q.map((q, i) => { const v = (s.buyHealth || {})[i];
         const set = (x) => this.setState({ buyHealth: { ...(s.buyHealth || {}), [i]: v === x ? undefined : x } });

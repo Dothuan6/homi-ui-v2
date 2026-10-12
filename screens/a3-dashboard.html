@@ -809,7 +809,9 @@ class Component extends DCLogic {
 
     // (20) A1 sau UAT 02/10 — tuổi người mua + điều kiện bật nút Thanh toán.
     const buyerDobError = this.dobError(s.buyerDob);
-    const payOk = s.buyTcChecked && s.payStage !== 'sending' && !buyerDobError;
+    // (12/10) Đủ 4 mục Thông tin sức khỏe mới cho thanh toán.
+    const healthDoneCount = [0, 1, 2, 3].filter(i => ['no', 'yes'].includes((s.buyHealth || {})[i])).length;
+    const payOk = s.buyTcChecked && s.payStage !== 'sending' && !buyerDobError && healthDoneCount === 4;
 
     // A2
     const regStepBg = (n) => s.regStep >= n ? '#1E3A66' : 'rgba(154,163,176,.3)';
@@ -2034,6 +2036,7 @@ class Component extends DCLogic {
       toggleBankManual: () => this.setState({ bankManual: !s.bankManual, bankOpen: false }),
       bankModeHint: s.bankManual ? 'Nhập đúng tên ngân hàng và chi nhánh.' : 'Không tìm thấy ngân hàng?',
       bankModeLink: s.bankManual ? 'Chọn từ danh sách' : 'Nhập tay',
+      healthDoneCount, healthMissing: healthDoneCount < 4,
       // (10/10) Thông tin sức khỏe: mỗi mục chọn Không hoặc Có (bấm lại để bỏ chọn).
       healthRows: this.HEALTH_Q.map((q, i) => { const v = (s.buyHealth || {})[i];
         const set = (x) => this.setState({ buyHealth: { ...(s.buyHealth || {}), [i]: v === x ? undefined : x } });

@@ -2508,6 +2508,11 @@ A1_HEALTH = (
     '<div style="text-align:center"><span class="health-yes" sc-camel-on-click="{{h.onYes}}" style="' + (_HBOX % ('yes', 'yes')) + '">{{h.yesMark}}</span></div>'
     '</div>\n'
     '          </sc-for>\n'
+    # (12/10) Chưa đủ 4 mục thì nhắc + khoá nút Thanh toán.
+    '          <sc-if value="{{healthMissing}}" hint-placeholder-val="{{false}}">'
+    '<div class="health-hint" style="font-size:12px;color:#965C0A;background:rgba(150,92,10,.1);'
+    'border-radius:var(--r-sm);padding:var(--s3) var(--s4);line-height:1.5">'
+    'Vui lòng đánh dấu Không / Có cho đủ 4 mục để tiếp tục thanh toán ({{healthDoneCount}}/4).</div></sc-if>\n'
     '        </div>')
 _B6_HEALTH = (
     '\n            <div style="height:1px;background:rgba(154,163,176,.25)"></div>\n\n'
@@ -2689,6 +2694,18 @@ DIFF_0910[-1:-1] = [
     "| A1 · Thanh toán thành công (12/10) | SĐT đã có tài khoản: tiêu đề \"Đơn hàng đã được ghi nhận\", "
     "báo SĐT đã có tài khoản, nút **Đăng nhập thành viên** (sang C1, vào dashboard) + \"Để sau\" — "
     "`a1-buy.html#thanh-toan-ok-thanh-vien`. SĐT mới giữ lời mời đăng ký thành viên. |",
+]
+
+
+# (12/10) Phải trả lời đủ 4 mục sức khỏe (Không hoặc Có) mới bấm được Thanh toán.
+JS_1010 += [
+    ("    const payOk = s.buyTcChecked && s.payStage !== 'sending' && !buyerDobError;",
+     "    // (12/10) Đủ 4 mục Thông tin sức khỏe mới cho thanh toán.\n"
+     "    const healthDoneCount = [0, 1, 2, 3].filter(i => ['no', 'yes'].includes((s.buyHealth || {})[i])).length;\n"
+     "    const payOk = s.buyTcChecked && s.payStage !== 'sending' && !buyerDobError && healthDoneCount === 4;"),
+    ("      bankModeLink: s.bankManual ? 'Chọn từ danh sách' : 'Nhập tay',",
+     "      bankModeLink: s.bankManual ? 'Chọn từ danh sách' : 'Nhập tay',\n"
+     "      healthDoneCount, healthMissing: healthDoneCount < 4,"),
 ]
 
 MARKUP.extend(MARKUP_1010)
