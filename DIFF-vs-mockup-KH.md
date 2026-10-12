@@ -492,6 +492,7 @@ Cả A1 và A2: ô đồng ý chỉ mở khi **kéo đọc hết** khung; bấm 
 | B6 · Chấp thuận điều khoản (10/10) | Chi tiết đơn có khung Chấp thuận điều khoản như hồ sơ thành viên: văn bản, Phiên bản HOMI365, thời điểm đồng ý, IP, định danh (mã đơn · SĐT). Đổi nhãn "Phiên bản T&C" → "Phiên bản HOMI365" ở cả B2. |
 | A1 · QR (10/10) | Số tài khoản nhận: TECHCOMBANK - 79365 (CONG TY CO PHAN GIAI PHAP VA DICH VU HOMI365). |
 | C1 (11/10) | Vào từ form mua hàng: nhập SĐT → mật khẩu → **màn OTP** → xác thực xong mới quay lại form A1 (tự điền) — `c1-login.html#tu-mua-hang-otp`. Bấm "Đăng nhập thành viên HOMI365" giữ flow cũ: đúng mật khẩu vào thẳng dashboard. |
+| A1 · Thanh toán thành công (12/10) | SĐT đã có tài khoản: tiêu đề "Đơn hàng đã được ghi nhận", báo SĐT đã có tài khoản, nút **Đăng nhập thành viên** (sang C1, vào dashboard) + "Để sau" — `a1-buy.html#thanh-toan-ok-thanh-vien`. SĐT mới giữ lời mời đăng ký thành viên. |
 
 ## Ghi chú
 

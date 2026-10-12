@@ -17,7 +17,7 @@ window.__STATE__ = {"buyStep": "phone", "screen": "A1"};
 try { var c = sessionStorage.getItem('__homi_carry');
       if (c) { Object.assign(window.__STATE__, JSON.parse(c)); sessionStorage.removeItem('__homi_carry'); } } catch (e) {}
 // mở thẳng một trạng thái: a1-buy.html#sdt-da-co
-var H = {"sdt-da-co": {"buyStep": "phone", "buyPhoneInput": "0901234567", "buyPhoneFound": true}, "form": {"buyStep": "form", "buyerPhone": "0900000000", "buyPhoneInput": "0900000000", "buyPhoneNew": true}, "form-tu-dien": {"buyerName": "Hoàng Thị Mỹ Trinh", "buyerPhone": "0901234567", "buyerEmail": "trinh.htm@gmail.com", "buyerCccd": "079191000083", "buyerAddress": "Số 36 đường 27A", "buyerDob": "22/01/1991", "buyerBankAccount": "0071001234567", "accountHolder": "HOANG THI MY TRINH", "buyStep": "form", "buyMode": "self", "buyProfile": {"orderId": "DH100077", "orderDate": "12/08/2026", "buyerName": "Hoàng Thị Mỹ Trinh", "buyerPhone": "0901234567", "buyerEmail": "trinh.htm@gmail.com", "buyerCccd": "079191000083", "buyerAddress": "Số 36 đường 27A", "buyerDob": "22/01/1991", "buyerBankAccount": "0071001234567", "accountHolder": "HOANG THI MY TRINH"}, "provinceQuery": "Thành phố Hồ Chí Minh", "wardQuery": "Phường Bình Trưng", "bankQuery": "NGOAI THUONG VN (VCB)"}, "loi-tuoi": {"buyStep": "form", "buyerPhone": "0900000000", "buyerDob": "15/03/2015", "buyTcChecked": true}, "qr": {"showQRPayment": true, "buyStep": "form"}, "thanh-toan-ok": {"showPaymentSuccess": true, "buyStep": "form"}, "loi-duong-truyen": {"buyTcChecked": true, "payStage": "timeout", "buyStep": "form"}, "ngan-hang-nhap-tay": {"buyStep": "form", "buyerPhone": "0900000000", "bankManualText": "QUY TDCS PHUONG 1 — TP Cao Lanh"}, "suc-khoe": {"buyStep": "form", "buyerPhone": "0900000000", "buyHealth": {"0": "no", "1": "yes", "2": "no", "3": "no"}}}, h = location.hash.slice(1);
+var H = {"sdt-da-co": {"buyStep": "phone", "buyPhoneInput": "0901234567", "buyPhoneFound": true}, "form": {"buyStep": "form", "buyerPhone": "0900000000", "buyPhoneInput": "0900000000", "buyPhoneNew": true}, "form-tu-dien": {"buyerName": "Hoàng Thị Mỹ Trinh", "buyerPhone": "0901234567", "buyerEmail": "trinh.htm@gmail.com", "buyerCccd": "079191000083", "buyerAddress": "Số 36 đường 27A", "buyerDob": "22/01/1991", "buyerBankAccount": "0071001234567", "accountHolder": "HOANG THI MY TRINH", "buyStep": "form", "buyMode": "self", "buyProfile": {"orderId": "DH100077", "orderDate": "12/08/2026", "buyerName": "Hoàng Thị Mỹ Trinh", "buyerPhone": "0901234567", "buyerEmail": "trinh.htm@gmail.com", "buyerCccd": "079191000083", "buyerAddress": "Số 36 đường 27A", "buyerDob": "22/01/1991", "buyerBankAccount": "0071001234567", "accountHolder": "HOANG THI MY TRINH"}, "provinceQuery": "Thành phố Hồ Chí Minh", "wardQuery": "Phường Bình Trưng", "bankQuery": "NGOAI THUONG VN (VCB)"}, "loi-tuoi": {"buyStep": "form", "buyerPhone": "0900000000", "buyerDob": "15/03/2015", "buyTcChecked": true}, "qr": {"showQRPayment": true, "buyStep": "form"}, "thanh-toan-ok": {"showPaymentSuccess": true, "buyStep": "form"}, "thanh-toan-ok-thanh-vien": {"showPaymentSuccess": true, "buyStep": "form", "buyMode": "self", "buyerPhone": "0901234567", "buyPhoneInput": "0901234567"}, "loi-duong-truyen": {"buyTcChecked": true, "payStage": "timeout", "buyStep": "form"}, "ngan-hang-nhap-tay": {"buyStep": "form", "buyerPhone": "0900000000", "bankManualText": "QUY TDCS PHUONG 1 — TP Cao Lanh"}, "suc-khoe": {"buyStep": "form", "buyerPhone": "0900000000", "buyHealth": {"0": "no", "1": "yes", "2": "no", "3": "no"}}}, h = location.hash.slice(1);
 if (H[h]) Object.assign(window.__STATE__, H[h]);
 </script>
 <script src="../js/dc-runtime.js"></script>
@@ -211,11 +211,11 @@ if (H[h]) Object.assign(window.__STATE__, H[h]);
     <div style="position:fixed;inset:0;background:rgba(43,48,58,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:var(--s7)">
       <div style="width:100%;max-width:380px;background:var(--c12);border-radius:var(--r-lg);padding:var(--s8);display:flex;flex-direction:column;gap:var(--s7);box-shadow:0 8px 30px rgba(0,0,0,.25);text-align:center;align-items:center">
         <div style="width:64px;height:64px;border-radius:var(--r-full);background:rgba(47,122,72,.15);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--c8)">✓</div>
-        <div><div style="font-size:20px;font-weight:700;color:var(--c1);line-height:1.4">Đơn hàng đã được ghi nhận, mời gia nhập HOMI365</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Đơn hàng #{{orderId}} · {{cn02PackagePrice}} · Đang chờ xác nhận thanh toán</div></div>
-        <div style="font-size:14px;color:var(--c2);line-height:1.6">Bạn có muốn đăng ký làm Thành viên HOMI365 để nhận các ưu đãi không?</div>
+        <div><div style="font-size:20px;font-weight:700;color:var(--c1);line-height:1.4">{{payOkTitle}}</div><div style="font-size:13px;color:var(--c5);margin-top:var(--s2)">Đơn hàng #{{orderId}} · {{cn02PackagePrice}} · Đang chờ xác nhận thanh toán</div></div>
+        <div style="font-size:14px;color:var(--c2);line-height:1.6">{{payOkAsk}}</div>
         <div style="display:flex;flex-direction:column;gap:var(--s3);width:100%">
-          <button sc-camel-on-click="{{choosRegisterSeller}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:700;box-shadow:var(--sh)" style-hover="background:#1B3358">Đăng ký thành viên</button>
-          <button sc-camel-on-click="{{choosSkipSeller}}" style="height:46px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:15px;font-weight:600" style-hover="background:rgba(154,163,176,.08)">Không, thoát ra</button>
+          <sc-if value="{{payOkNew}}" hint-placeholder-val="{{true}}"><button sc-camel-on-click="{{choosRegisterSeller}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:700;box-shadow:var(--sh)" style-hover="background:#1B3358">Đăng ký thành viên</button></sc-if><sc-if value="{{payOkMember}}" hint-placeholder-val="{{false}}"><button sc-camel-on-click="{{payOkLogin}}" style="height:46px;background:var(--c6);color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:700;box-shadow:var(--sh)">Đăng nhập thành viên</button></sc-if>
+          <button sc-camel-on-click="{{choosSkipSeller}}" style="height:46px;background:var(--c12);color:var(--c2);border:1px solid rgba(154,163,176,.6);border-radius:var(--r-md);font-size:15px;font-weight:600" style-hover="background:rgba(154,163,176,.08)">{{payOkSkipLabel}}</button>
         </div>
       </div>
     </div>
@@ -1381,6 +1381,17 @@ class Component extends DCLogic {
       buyerDobError,
       buyerDobBorder: buyerDobError ? '#C0392B' : 'rgba(154,163,176,.6)',
       // (20) C1 được gọi từ form mua hàng.
+      // (12/10) Modal thanh toán thành công — người đã có tài khoản thì mời đăng nhập.
+      ...(() => { const ph = (s.buyerPhone || s.buyPhoneInput || '').trim();
+        const member = s.buyMode === 'self' || this.REGISTERED_PHONES.includes(ph);
+        const masked = ph ? ph.slice(0, 3) + '•••' + ph.slice(-3) : '';
+        return { payOkMember: member, payOkNew: !member,
+          payOkTitle: member ? 'Đơn hàng đã được ghi nhận' : 'Đơn hàng đã được ghi nhận, mời gia nhập HOMI365',
+          payOkAsk: member
+            ? 'Số điện thoại ' + masked + ' đã có tài khoản thành viên HOMI365. Đăng nhập để theo dõi đơn hàng và điểm ưu đãi.'
+            : 'Bạn có muốn đăng ký làm Thành viên HOMI365 để nhận các ưu đãi không?',
+          payOkSkipLabel: member ? 'Để sau' : 'Không, thoát ra',
+          payOkLogin: () => GO('C1', { agentLoginStep: 'login', agentPhone: ph, loginPhoneChecked: true, returnTo: '' }) }; })(),
       loginFromBuy: s.returnTo === 'A1',
       loginHeading: s.returnTo === 'A1' ? 'Đăng nhập để tiếp tục mua hàng'
         : 'Đăng nhập để xem điểm thưởng và ưu đãi của bạn',

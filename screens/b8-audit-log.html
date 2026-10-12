@@ -2403,6 +2403,17 @@ class Component extends DCLogic {
       buyerDobError,
       buyerDobBorder: buyerDobError ? '#C0392B' : 'rgba(154,163,176,.6)',
       // (20) C1 được gọi từ form mua hàng.
+      // (12/10) Modal thanh toán thành công — người đã có tài khoản thì mời đăng nhập.
+      ...(() => { const ph = (s.buyerPhone || s.buyPhoneInput || '').trim();
+        const member = s.buyMode === 'self' || this.REGISTERED_PHONES.includes(ph);
+        const masked = ph ? ph.slice(0, 3) + '•••' + ph.slice(-3) : '';
+        return { payOkMember: member, payOkNew: !member,
+          payOkTitle: member ? 'Đơn hàng đã được ghi nhận' : 'Đơn hàng đã được ghi nhận, mời gia nhập HOMI365',
+          payOkAsk: member
+            ? 'Số điện thoại ' + masked + ' đã có tài khoản thành viên HOMI365. Đăng nhập để theo dõi đơn hàng và điểm ưu đãi.'
+            : 'Bạn có muốn đăng ký làm Thành viên HOMI365 để nhận các ưu đãi không?',
+          payOkSkipLabel: member ? 'Để sau' : 'Không, thoát ra',
+          payOkLogin: () => GO('C1', { agentLoginStep: 'login', agentPhone: ph, loginPhoneChecked: true, returnTo: '' }) }; })(),
       loginFromBuy: s.returnTo === 'A1',
       loginHeading: s.returnTo === 'A1' ? 'Đăng nhập để tiếp tục mua hàng'
         : 'Đăng nhập để xem điểm thưởng và ưu đãi của bạn',

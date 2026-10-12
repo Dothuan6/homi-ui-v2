@@ -2638,5 +2638,58 @@ DIFF_0910[-1:-1] = [
     "đúng mật khẩu vào thẳng dashboard. |",
 ]
 
+
+# (12/10) Modal thanh toán thành công: SĐT đã có tài khoản thì mời ĐĂNG NHẬP
+# (không mời đăng ký thành viên nữa); SĐT mới giữ nội dung mời đăng ký.
+_PAYOK_LOGIN_BTN = ('<button sc-camel-on-click="{{payOkLogin}}" style="height:46px;background:var(--c6);'
+                    'color:var(--c12);border:none;border-radius:var(--r-md);font-size:15px;font-weight:700;'
+                    'box-shadow:var(--sh)">Đăng nhập thành viên</button>')
+MARKUP_1010 += [
+    ('Đơn hàng đã được ghi nhận, mời gia nhập HOMI365</div>', '{{payOkTitle}}</div>'),
+    ('Bạn có muốn đăng ký làm Thành viên HOMI365 để nhận các ưu đãi không?', '{{payOkAsk}}'),
+    ('<button sc-camel-on-click="{{choosRegisterSeller}}"',
+     '<sc-if value="{{payOkNew}}" hint-placeholder-val="{{true}}"><button sc-camel-on-click="{{choosRegisterSeller}}"',
+     ),
+    ('>Đăng ký thành viên</button>',
+     '>Đăng ký thành viên</button></sc-if>'
+     '<sc-if value="{{payOkMember}}" hint-placeholder-val="{{false}}">' + _PAYOK_LOGIN_BTN + '</sc-if>',
+     ),
+    ('>Không, thoát ra</button>', '>{{payOkSkipLabel}}</button>'),
+]
+JS_1010 += [
+    ("      loginFromBuy: s.returnTo === 'A1',",
+     "      // (12/10) Modal thanh toán thành công — người đã có tài khoản thì mời đăng nhập.\n"
+     "      ...(() => { const ph = (s.buyerPhone || s.buyPhoneInput || '').trim();\n"
+     "        const member = s.buyMode === 'self' || this.REGISTERED_PHONES.includes(ph);\n"
+     "        const masked = ph ? ph.slice(0, 3) + '•••' + ph.slice(-3) : '';\n"
+     "        return { payOkMember: member, payOkNew: !member,\n"
+     "          payOkTitle: member ? 'Đơn hàng đã được ghi nhận' : 'Đơn hàng đã được ghi nhận, mời gia nhập HOMI365',\n"
+     "          payOkAsk: member\n"
+     "            ? 'Số điện thoại ' + masked + ' đã có tài khoản thành viên HOMI365. Đăng nhập để theo dõi đơn hàng và điểm ưu đãi.'\n"
+     "            : 'Bạn có muốn đăng ký làm Thành viên HOMI365 để nhận các ưu đãi không?',\n"
+     "          payOkSkipLabel: member ? 'Để sau' : 'Không, thoát ra',\n"
+     "          payOkLogin: () => GO('C1', { agentLoginStep: 'login', agentPhone: ph, loginPhoneChecked: true, returnTo: '' }) }; })(),\n"
+     "      loginFromBuy: s.returnTo === 'A1',"),
+]
+_patch_screens_1210 = patch_screens
+
+
+def patch_screens(screens):  # noqa: F811
+    screens = _patch_screens_1210(screens)
+    for sc in screens:
+        if sc["code"] == "A1":
+            i = [h for h, _, _ in sc["states"]].index("thanh-toan-ok") + 1
+            sc["states"].insert(i, ("thanh-toan-ok-thanh-vien", "Thanh toán xong — SĐT đã có tài khoản, mời đăng nhập",
+                                    {"showPaymentSuccess": True, "buyStep": "form", "buyMode": "self",
+                                     "buyerPhone": "0901234567", "buyPhoneInput": "0901234567"}))
+    return screens
+
+
+DIFF_0910[-1:-1] = [
+    "| A1 · Thanh toán thành công (12/10) | SĐT đã có tài khoản: tiêu đề \"Đơn hàng đã được ghi nhận\", "
+    "báo SĐT đã có tài khoản, nút **Đăng nhập thành viên** (sang C1, vào dashboard) + \"Để sau\" — "
+    "`a1-buy.html#thanh-toan-ok-thanh-vien`. SĐT mới giữ lời mời đăng ký thành viên. |",
+]
+
 MARKUP.extend(MARKUP_1010)
 JS.extend(JS_1010)
