@@ -226,7 +226,7 @@ POLICIES.unshift(
             "<strong>Thanh toán:</strong> Khách hàng thanh toán theo phương thức và thời hạn được HOMI365 thông báo hoặc thỏa thuận.",
             "<strong>Hủy/đổi/hoàn tiền:</strong> Thực hiện theo chính sách áp dụng cho từng sản phẩm, dịch vụ và quy định pháp luật hiện hành.",
             "<strong>Trách nhiệm:</strong> HOMI365 cung cấp dịch vụ theo nội dung đã công bố hoặc thỏa thuận; khách hàng có trách nhiệm sử dụng dịch vụ đúng mục đích và tuân thủ hướng dẫn của HOMI365.",
-            "<strong>Khiếu nại và tranh chấp:</strong> Mọi khiếu nại được tiếp nhận và giải quyết trên tinh thần thiện chí, hợp tác và phù hợp với quy định pháp luật Việt Nam.",
+            "<strong>Khiếu nại và tranh chấp:</strong> Mọi khiếu nại được tiếp nhận và giải quyết trên tinh thần thiện chí, hợp tác và phù hợp với quy định pháp luật Việt Nam.<div style=\"margin-top:6px;padding:8px 12px;border-left:3px solid #1E3A66;background:rgba(30,58,102,.05);line-height:1.7\"><strong>CÔNG TY CỔ PHẦN GIẢI PHÁP VÀ DỊCH VỤ HOMI365</strong><br>Giấy chứng nhận đăng ký doanh nghiệp số 0319717698 cấp ngày 21 tháng 09 năm 2026<br>Trụ sở chính tại: Số 36 đường 27A, Phường Bình Trưng, Thành Phố Hồ Chí Minh, Việt Nam<br>Mã số thuế: 0319717698<br>Hotline: 1900 9007<br>Email: info@homi365.com.vn</div>",
             "<strong>Điều chỉnh:</strong> HOMI365 có quyền cập nhật Điều kiện giao dịch chung để phù hợp với hoạt động và quy định pháp luật. Phiên bản mới được công bố trên các kênh chính thức của HOMI365."
           ]
         }

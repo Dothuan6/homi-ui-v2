@@ -2419,18 +2419,8 @@ _BANK_STATE = ("    bankQuery: '', bankOpen: false,",
                "    bankQuery: '', bankOpen: false, bankManual: false, bankManualText: '',")
 _BANK_INPUT = ('height:44px;padding:0 var(--s5);border:1px solid rgba(154,163,176,.6);'
                'border-radius:var(--r-md);font-size:14px;width:100%')
-MARKUP_1010 = [
-    ('<sc-if value="{{bankEmpty}}" hint-placeholder-val="{{false}}">\n'
-     '                      <div style="padding:var(--s5);font-size:13px;color:var(--c5)">Không tìm thấy kết quả phù hợp</div>\n'
-     '                    </sc-if>\n                  </div>\n                </sc-if>\n              </div>',
-     '<sc-if value="{{bankEmpty}}" hint-placeholder-val="{{false}}">\n'
-     '                      <div style="padding:var(--s5);font-size:13px;color:var(--c5)">Không tìm thấy kết quả phù hợp</div>\n'
-     '                    </sc-if>\n                  </div>\n                </sc-if>\n              </div>\n'
-     # (10/10, lần 2) KH: ô nhập tay hiện luôn ngay dưới ô chọn, không cần bấm link.
-     '              <input type="text" class="bank-manual" placeholder="Hoặc nhập tay: tên ngân hàng, chi nhánh" '
-     'value="{{bankManualText}}" sc-camel-on-change="{{setBankManualText}}" style="' + _BANK_INPUT + '">',
-     None, 'all'),
-]
+# (12/10) KH bỏ ô nhập tay ngân hàng — chỉ chọn từ danh sách.
+MARKUP_1010 = []
 JS_1010 = [
     (_BANK_STATE[0], _BANK_STATE[1]),
     # 111 ngân hàng — hiện đủ, không cắt 60 như trước.
@@ -2474,9 +2464,6 @@ def patch_screens(screens):  # noqa: F811
         if sc["code"] == "A1":
             sc["states"] = [(h, lb, dict(st, bankQuery="NGOAI THUONG VN (VCB)") if st.get("bankQuery") else st)
                             for h, lb, st in sc["states"]]
-            sc["states"].append(("ngan-hang-nhap-tay", "Ngân hàng không có trong danh sách — nhập tay",
-                                 {"buyStep": "form", "buyerPhone": "0900000000",
-                                  "bankManualText": "QUY TDCS PHUONG 1 — TP Cao Lanh"}))
     return screens
 
 
@@ -2600,8 +2587,7 @@ DIFF_0910[-1:-1] = [
     "trước ô SĐT và \"Anh chị chưa có tài khoản, vui lòng nhập thông tin để mua hàng\" khi SĐT mới. |",
     "| A1, A2 · Ngân hàng (10/10) | Danh sách theo file Techcombank `DomesticBeneficiaryBank.xlsx` "
     "(sheet External batch payment, 111 ngân hàng, giữ nguyên tên để khớp file chi trả; bỏ Kho bạc, NHNN, "
-    "Quỹ TDCS) — `tools/banks_tcb.py`; bỏ gọi API VietQR. Dưới ô chọn có luôn ô nhập tay tên ngân hàng + "
-    "chi nhánh (`a1-buy.html#ngan-hang-nhap-tay`). |",
+    "Quỹ TDCS) — `tools/banks_tcb.py`; bỏ gọi API VietQR. Không có ô nhập tay (KH bỏ 12/10). |",
     "| A1 · Sức khỏe (10/10) | Khung \"Thông tin sức khỏe cá nhân\" ngay dưới khung gói HOMI365-01: 4 mục, "
     "mỗi mục tick Không / Có (`#suc-khoe`). Đơn hàng lưu lại; B6 chi tiết đơn hiện từng mục, \"Có\" tô đỏ. |",
     "| B6 · Chấp thuận điều khoản (10/10) | Chi tiết đơn có khung Chấp thuận điều khoản như hồ sơ thành viên: "
